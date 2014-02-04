@@ -5,5 +5,11 @@
 
     
       <!-- -*- extra stuff goes here -*- -->
+       <permission
+          id="esdrt.content.AddObservation"
+	  title="esdrt.content: Add Observation"
+	  />       
+
+
 
 </configure>
