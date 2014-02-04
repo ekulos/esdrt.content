@@ -5,6 +5,11 @@
 <object name="portal_types" meta_type="Plone Types Tool">
   <!-- -*- extra stuff goes here -*- -->
 
+  <type portal_type="Question">
+   <field name="any" difftype="Compound Diff for Dexterity types"/>
+  </type>
+
+
   <type portal_type="Observation">
    <field name="any" difftype="Compound Diff for Dexterity types"/>
   </type>
