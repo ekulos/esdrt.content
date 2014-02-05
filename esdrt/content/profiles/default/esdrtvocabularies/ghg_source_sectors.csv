@@ -1,7 +1,7 @@
-"energy","Energy"
-"ip","Industrial Processes"
-"solvent","Solvent use"
-"agriculture","Agriculture"
-"lulucf","LULUCF"
-"waste","Waste"
-"other","Other"
+energy,Energy
+ip,Industrial Processes
+solvent,Solvent use
+agriculture,Agriculture
+lulucf,LULUCF
+waste,Waste
+other,Other
