@@ -32,6 +32,30 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     )
 
+    crf_code = schema.Choice(
+        title=_(u"CRF Code"),
+        vocabulary='esdrt.content.crf_code',
+
+    )
+
+    ghg_source_category = schema.Choice(
+        title=_(u"GHG Source Category"),
+        vocabulary='esdrt.content.ghg_source_category',
+
+    )
+
+    ghg_source_sectors = schema.Choice(
+        title=_(u"GHG Source Sectors"),
+        vocabulary='esdrt.content.ghg_source_sectors',
+
+    )
+
+    status_flag = schema.Choice(
+        title=_(u"Status Flag"),
+        vocabulary='esdrt.content.status_flag',
+
+    )
+
 
 
 # Custom content-type class; objects created for this content type will
