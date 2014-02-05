@@ -26,6 +26,11 @@ class IObservation(form.Schema, IImageScaleTraversable):
     """
     New review observation
     """
+    country = schema.Choice(
+        title=_(u"Country"),
+        vocabulary='esdrt.content.eu_member_states',
+
+    )
 
 
 
