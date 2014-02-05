@@ -10,8 +10,10 @@
   <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
   <property name="factory">esdrt.content.observation</property>
   <property name="global_allow">True</property>
-  <property name="filter_content_types">False</property>
-  <property name="allowed_content_types" />
+  <property name="filter_content_types">True</property>
+  <property name="allowed_content_types">
+    <element value="Question" />
+  </property>
   <property name="allow_discussion">False</property>
 
   <!-- schema and class used for content items -->
@@ -30,7 +32,6 @@
     <element value="plone.app.versioningbehavior.behaviors.IVersionable" />
     <element value="plone.app.contenttypes.behaviors.tableofcontents.ITableOfContents"/>
     <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
-    <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" /> 
    </property>
 
   <!-- View information -->
