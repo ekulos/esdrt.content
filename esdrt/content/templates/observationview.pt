@@ -7,19 +7,28 @@
       i18n:domain="esdrt.content">
 <body>
 
-<tal:comment tal:condition="nothing">
-    This is a sample view template. It will not be used for rendering the
-    content unless activated by creation of a view class with a matching name.
-</tal:comment>
-
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
-    <h2>
-        Rendered from 
-        templates/<span tal:replace="template/id" />
-    </h2>
-    
+    <dl>
+      <dt>Country</dt>
+      <dd tal:content="context/country_value">Spain</dd>
+
+      <dt>GHG Source Category</dt>
+      <dd tal:content="context/ghg_source_category_value">Spain</dd>
+
+      <dt>GHG Source Sectors</dt>
+      <dd tal:content="context/ghg_source_sectors_value">Spain</dd>
+
+      <dt>CRF Code</dt>
+      <dd tal:content="context/crf_code_value">Spain</dd>
+
+      <dt>Status Flag</dt>
+      <dd tal:content="context/status_flag_value">Spain</dd>
+
+
+    </dl>
+
   </metal:content-core>
 </metal:main>
 
