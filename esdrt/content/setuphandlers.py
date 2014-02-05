@@ -35,20 +35,14 @@ def create_vocabulary(context, vocabname, vocabtitle, importfilename=None,
 
         )
     vocabulary = context.getVocabularyByName(vocabname)
-    # wtool = getToolByName(context, 'portal_workflow')
-    # import pdb; pdb.set_trace()
-    # wtool.doActionFor(vocabulary, 'publish')
+    wtool = getToolByName(context, 'portal_workflow')
+    wtool.doActionFor(vocabulary, 'publish')
     from logging import getLogger
     log = getLogger('create_vocabulary')
     log.info('Created %s vocabulary' % vocabname)
     if importfilename is not None:
         data = profile.readDataFile(importfilename, subdir='esdrtvocabularies')
         vocabulary.importCSV(data)
-        # csvreader = csv.DictReader(data)
-        # for item in csvreader:
-        #     vocabulary.addTerm(key=item['term-id'], value=item['term-value'])
-        #     log.info('Added term: %s - %s' %
-        #         (item['term-id'], item['term-value']))
 
     log.info('done')
 
