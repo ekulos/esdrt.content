@@ -1,3 +1,6 @@
+from zope.component import getUtility
+from zope.schema.interfaces import IVocabularyFactory
+from Products.CMFCore.utils import getToolByName
 from five import grok
 from plone.directives import dexterity, form
 
@@ -57,15 +60,40 @@ class IObservation(form.Schema, IImageScaleTraversable):
     )
 
 
-
-# Custom content-type class; objects created for this content type will
-# be instances of this class. Use this class to add content-type specific
-# methods and properties. Put methods that are mainly useful for rendering
-# in separate view classes.
 class Observation(dexterity.Container):
     grok.implements(IObservation)
     # Add your class methods and properties here
 
+    def country_value(self):
+        return self._vocabulary_value('esdrt.content.eu_member_states',
+            self.country
+        )
+
+    def crf_code_value(self):
+        return self._vocabulary_value('esdrt.content.crf_code',
+            self.crf_code
+        )
+
+    def ghg_source_category_value(self):
+        return self._vocabulary_value('esdrt.content.ghg_source_category',
+            self.ghg_source_category
+        )
+
+    def ghg_source_sectors_value(self):
+        return self._vocabulary_value('esdrt.content.ghg_source_sectors',
+            self.ghg_source_sectors
+        )
+
+    def status_flag_value(self):
+        return self._vocabulary_value('esdrt.content.status_flag',
+            self.status_flag
+        )
+
+    def _vocabulary_value(self, vocabulary, term):
+        vocab_factory = getUtility(IVocabularyFactory, name=vocabulary)
+        vocabulary = vocab_factory(self)
+        value = vocabulary.getTerm(term)
+        return value.title
 
 # View class
 # The view will automatically use a similarly named template in
