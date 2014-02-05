@@ -11,22 +11,13 @@
   <includeDependencies package="." />
 
   <include file="permissions.zcml" />
+  <include file="profiles.zcml" />
   <include package=".browser" />
 
   <!-- Grok the package to initialise schema interfaces and content classes -->
   <grok:grok package="." />
 
   <i18n:registerTranslations directory="locales" />
-
-  <!-- Register an extension profile to make the product installable
-       in Plone -->
-  <genericsetup:registerProfile
-      name="default"
-      title="esdrt.content: Content-types"
-      directory="profiles/default"
-      description="Content-types for esdrt.content. Content-types for ESD Review Tool"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
 
   <!-- -*- extra stuff goes here -*- -->
 
