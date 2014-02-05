@@ -1,7 +1,5 @@
 from Products.CMFCore.utils import getToolByName
 
-import csv
-
 
 VOCABULARIES = [
     {'id': 'eu_member_states',
