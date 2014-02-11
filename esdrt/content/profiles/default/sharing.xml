@@ -1,0 +1,45 @@
+<sharing xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="plone">
+    <role
+        id="ReviewExpert"
+        title="ReviewExpert"
+        permission="Sharing page: Delegate roles"
+        i18n:attributes="title"
+        />
+    <role
+        id="LeadReviewer"
+        title="LeadReviewer"
+        permission="Sharing page: Delegate roles"
+        i18n:attributes="title"
+        />
+    <role
+        id="MSExpert"
+        title="MSExpert"
+        permission="Sharing page: Delegate roles"
+        i18n:attributes="title"
+        />
+    <role
+        id="MSAuthority"
+        title="MSAuthority"
+        permission="Sharing page: Delegate roles"
+        i18n:attributes="title"
+        />
+    <role
+        id="Manager"
+        title="Manager"
+        permission="Sharing page: Delegate roles"
+        i18n:attributes="title"
+        />
+    <role
+        remove="True"
+        id="Editor"
+        />
+    <role
+        remove="True"
+        id="Contributor"
+        />
+    <role
+        remove="True"
+        id="Reviewer"
+        />
+
+</sharing>
