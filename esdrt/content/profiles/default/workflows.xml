@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<object name="portal_workflow" meta_type="Plone Workflow Tool">
+ <object name="esd-review-workflow" meta_type="Workflow"/>
+ <bindings>
+  <type type_id="Observation">
+   <bound-workflow workflow_id="esd-review-workflow"/>
+  </type>
+  <type type_id="Plone Site"/>
+ </bindings>
+</object>
