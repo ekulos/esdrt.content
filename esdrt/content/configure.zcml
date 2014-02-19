@@ -12,6 +12,7 @@
 
   <include file="permissions.zcml" />
   <include file="profiles.zcml" />
+  <include package=".upgrades" />
   <include package=".adapters" />
   <include package=".browser" />
   <include package=".roles" />

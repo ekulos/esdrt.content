@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="esdrt.content">
+
+    <genericsetup:upgradeStep
+         title="Diff tool support"
+         description="Improve history_view"
+         source="1"
+         destination="2"
+         handler=".1_2.upgrade"
+         profile="esdrt.content:default" />
+
+</configure>
