@@ -31,7 +31,70 @@
 
 
     </dl>
-
+    <div class="esdDiv">
+      <div class="row">
+        <div class="cell position-0 width-3 label">Ref. Number</div>
+        <div class="cell position-3 width-13 label">Observation</div>
+      </div>
+      <div class="row">
+        <div class="cell position-0 width-3 value" tal:content="context/id">UK-WAS-13-001</div>
+        <div class="cell position-3 width-13 value" tal:content="context/title"></div>
+      </div>
+      <div class="row">
+        <div class="cell position-3 width-2 label">Country</div>
+        <div class="cell position-5 width-2 label">Sector</div>
+        <div class="cell position-7 width-2 label">Gas</div>
+        <div class="cell position-9 width-2 label">Year of emission</div>
+      </div>
+      <div class="row">
+        <div class="cell position-3 width-2" tal:content="context/country_value">Country</div>
+        <div class="cell position-5 width-2">Sector</div>
+        <div class="cell position-7 width-2">Gas</div>
+        <div class="cell position-9 width-2">Year of emission</div>
+      </div>      
+    </div>
+    <div class="esdDiv">
+      <div class="row">
+        <div class="cell position-0 width-5">Public Electricity and Heat Production (Gc CO2 eq)</div>
+        <div class="cell position-5 width-1">CO2</div>
+        <div class="cell position-6 width-1">CH4</div>
+        <div class="cell position-7 width-1">N2O</div>
+        <div class="cell position-8 width-1">NOX</div>
+        <div class="cell position-9 width-1">CO</div>
+        <div class="cell position-10 width-1">NMVOC</div>
+        <div class="cell position-11 width-1">SO2</div>
+      </div>
+      <div class="row">
+        <div class="cell position-0 width-5">Original estimate</div>
+        <div class="cell position-5 width-1"></div>
+        <div class="cell position-6 width-1"></div>
+        <div class="cell position-7 width-1"></div>
+        <div class="cell position-8 width-1"></div>
+        <div class="cell position-9 width-1"></div>
+        <div class="cell position-10 width-1"></div>
+        <div class="cell position-11 width-1"></div>
+      </div>  
+      <div class="row">
+        <div class="cell position-0 width-5">Revised estimate</div>
+        <div class="cell position-5 width-1"></div>
+        <div class="cell position-6 width-1"></div>
+        <div class="cell position-7 width-1"></div>
+        <div class="cell position-8 width-1"></div>
+        <div class="cell position-9 width-1"></div>
+        <div class="cell position-10 width-1"></div>
+        <div class="cell position-11 width-1"></div>
+      </div> 
+      <div class="row">
+        <div class="cell position-0 width-5">Corrected estimate</div>
+        <div class="cell position-5 width-1"></div>
+        <div class="cell position-6 width-1"></div>
+        <div class="cell position-7 width-1"></div>
+        <div class="cell position-8 width-1"></div>
+        <div class="cell position-9 width-1"></div>
+        <div class="cell position-10 width-1"></div>
+        <div class="cell position-11 width-1"></div>
+      </div>                 
+    </div> 
   </metal:content-core>
 </metal:main>
 
