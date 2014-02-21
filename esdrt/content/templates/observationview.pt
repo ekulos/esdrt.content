@@ -55,45 +55,44 @@
     </div>
     <div class="esdDiv">
       <div class="row">
-        <div class="cell position-0 width-7">Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)</div>
-        <div class="cell position-8 width-1">CO<sub>2</sub></div>
-        <div class="cell position-9 width-1">CH<sub>4</sub></div>
-        <div class="cell position-10 width-1">N<sub>2</sub>O</div>
-        <div class="cell position-11 width-1">NO<sub>x</sub></div>
-        <div class="cell position-12 width-1">CO</div>
-        <div class="cell position-13 width-1">NMVOC</div>
-        <div class="cell position-14 width-1">SO<sub>2</sub></div>
+        <div class="cell position-0 width-7 label">Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)</div>
+        <div class="cell position-7 width-2 label" style="text-align:center">CO<sub>2</sub></div>
+        <div class="cell position-9 width-1 label" style="text-align:center">CH<sub>4</sub></div>
+        <div class="cell position-10 width-1 label" style="text-align:center">N<sub>2</sub>O</div>
+        <div class="cell position-11 width-1 label" style="text-align:center">NO<sub>x</sub></div>
+        <div class="cell position-12 width-1 label" style="text-align:center">CO</div>
+        <div class="cell position-13 width-1 label" style="text-align:center">NMVOC</div>
+        <div class="cell position-14 width-1 label" style="text-align:center">SO<sub>2</sub></div>
       </div>
       <div class="row">
-        <div class="cell position-0 width-7">Original estimate</div>
-        <div class="cell position-8 width-1"></div>
-        <div class="cell position-9 width-1"></div>
-        <div class="cell position-10 width-1"></div>
-        <div class="cell position-11 width-1"></div>
-        <div class="cell position-12 width-1"></div>
-        <div class="cell position-13 width-1"></div>
-        <div class="cell position-14 width-1"></div>
+        <div class="cell position-0 width-7 label">Original estimate</div>
+        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
+        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
+        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
+        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
+        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
+        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
+        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
       </div>  
       <div class="row">
-        <div class="cell position-0 width-7">Revised estimate</div>
-        <div class="cell position-8 width-1"></div>
-        <div class="cell position-9 width-1"></div>
-        <div class="cell position-10 width-1"></div>
-        <div class="cell position-11 width-1"></div>
-        <div class="cell position-12 width-1"></div>
-        <div class="cell position-13 width-1"></div>
-        <div class="cell position-14 width-1"></div>
+        <div class="cell position-0 width-7 label">Revised estimate</div>
+        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
+        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
+        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
+        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
+        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
+        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
+        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
       </div> 
       <div class="row">
-        <div class="cell position-0 width-7">Corrected estimate</div>
-        <div class="cell position-7 width-1"></div>
-        <div class="cell position-8 width-1"></div>
-        <div class="cell position-9 width-1"></div>
-        <div class="cell position-10 width-1"></div>
-        <div class="cell position-11 width-1"></div>
-        <div class="cell position-12 width-1"></div>
-        <div class="cell position-13 width-1"></div>
-        <div class="cell position-14 width-1"></div>
+        <div class="cell position-0 width-7 label">Corrected estimate</div>
+        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
+        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
+        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
+        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
+        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
+        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
+        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
       </div>                 
     </div>    
   </metal:content-core>
