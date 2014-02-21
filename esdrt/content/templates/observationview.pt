@@ -103,7 +103,28 @@
     <div class="eea-tabs-panels">
 
       <div class="eea-tabs-panel">
-        Content for first tab
+        <div class="row">
+          <div class="cell position-0 width-8 label">GHG source category</div>
+          <div class="cell position-8 width-4 label">CRF code</div>
+          <div class="cell position-12 width-4 label">Parameter</div>
+        </div> 
+        <div class="row">
+          <div class="cell position-0 width-8" tal:content="context/ghg_source_category_value">GHG source category</div>
+          <div class="cell position-8 width-4" tal:content="context/crf_code_value">CRF code</div>
+          <div class="cell position-12 width-4">Parameter</div>
+        </div>    
+        <div class="row">
+          <div class="cell position-0 width-4 label">Year</div>
+          <div class="cell position-4 width-4 label">Key category</div>
+          <div class="cell position-8 width-4 label">Status flag</div>
+          <div class="cell position-12 width-4 label">Last update</div>
+        </div> 
+        <div class="row">
+          <div class="cell position-0 width-4">Year</div>
+          <div class="cell position-4 width-4">Key category</div>
+          <div class="cell position-8 width-4" tal:content="context/status_flag_value">Status flag</div>
+          <div class="cell position-12 width-4">Last update</div>
+        </div>              
       </div>
       <div class="eea-tabs-panel">
         Content for second tab
