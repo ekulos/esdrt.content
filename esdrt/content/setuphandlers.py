@@ -61,6 +61,12 @@ def prepareVocabularies(context, profile):
             )
 
 
+def enable_atd_spellchecker(portal):
+    tinymce = getToolByName(portal, 'portal_tinymce')
+    tinymce.libraries_spellchecker_choice = 'AtD'
+    tinymce.libraries_atd_service_url = 'service.afterthedeadline.com'
+
+
 def setupVarious(context):
     """ various import steps for esdrt.content """
     portal = context.getSite()
@@ -69,3 +75,4 @@ def setupVarious(context):
         return
 
     prepareVocabularies(portal, context)
+    enable_atd_spellchecker(portal)
