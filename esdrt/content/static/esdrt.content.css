@@ -14,3 +14,10 @@
 	color: #00446a;
 	font-size: 2em;
 }
+.eea-tabs {
+	margin-top: 10px !important;
+}
+#visual-portal-wrapper ul.eea-tabs a{
+	height: 100% !important;
+	max-width: 100% !important;
+}

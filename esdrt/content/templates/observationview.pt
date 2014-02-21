@@ -94,7 +94,24 @@
         <div class="cell position-13 width-1" style="text-align:center">0,95</div>
         <div class="cell position-14 width-1" style="text-align:center">2,96</div>
       </div>                 
-    </div>    
+    </div>  
+    <ul class="eea-tabs">
+      <li>About this question</li>
+      <li>Question chat room</li>
+      <li>Technical corrections</li>
+    </ul>
+    <div class="eea-tabs-panels">
+
+      <div class="eea-tabs-panel">
+        Content for first tab
+      </div>
+      <div class="eea-tabs-panel">
+        Content for second tab
+      </div>
+      <div class="eea-tabs-panel">
+        Content for third tab
+      </div>      
+    </div>  
   </metal:content-core>
 </metal:main>
 
