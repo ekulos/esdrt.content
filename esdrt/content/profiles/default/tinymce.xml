@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<object>
+ <resourcetypes>
+  <linkable purge="False">
+   <element value="Observation"/>
+  </linkable>
+  <containsobjects purge="False">
+   <element value="Observation"/>
+  </containsobjects>
+ </resourcetypes>
+ <toolbar purge="False">
+  <toolbar_spellchecker value="True"/>
+ </toolbar>
+</object>
