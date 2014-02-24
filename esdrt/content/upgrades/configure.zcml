@@ -4,8 +4,8 @@
     i18n_domain="esdrt.content">
 
     <genericsetup:upgradeStep
-         title="Diff tool support"
-         description="Improve history_view"
+         title="Upgrade to 2."
+         description="Diff-tool, new content-type"
          source="1"
          destination="2"
          handler=".1_2.upgrade"
