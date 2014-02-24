@@ -6,6 +6,12 @@
     
       <!-- -*- extra stuff goes here -*- -->
        <permission
+          id="esdrt.content.AddComment"
+	  title="esdrt.content: Add Comment"
+	  />       
+
+
+       <permission
           id="esdrt.content.AddQuestion"
 	  title="esdrt.content: Add Question"
 	  />       
