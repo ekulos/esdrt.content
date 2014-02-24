@@ -6,7 +6,7 @@
   <!-- Basic metadata -->
   <property name="title" i18n:translate="">Comment</property>
   <property name="description"
-    i18n:translate="">Q&A item</property>
+    i18n:translate="">Q&amp;A item</property>
   <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
   <property name="factory">esdrt.content.comment</property>
   <property name="global_allow">False</property>
@@ -30,7 +30,7 @@
     <element value="plone.app.versioningbehavior.behaviors.IVersionable" />
     <element value="plone.app.contenttypes.behaviors.tableofcontents.ITableOfContents"/>
     <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
-    <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" /> 
+    <element value="plone.multilingualbehavior.interfaces.IDexterityTranslatable" />
    </property>
 
   <!-- View information -->
