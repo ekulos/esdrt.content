@@ -1,0 +1,23 @@
+.esdDiv .row:first-child{
+	margin-top: 4px;
+}
+.esdDiv .row{
+	background-color: #FAEFE1;
+	padding: 8px;
+}
+.esdDiv .label{
+	font-style: italic;
+	font-weight: normal;
+	color: #918C86;
+}
+.esdDiv .value{
+	color: #00446a;
+	font-size: 2em;
+}
+.eea-tabs {
+	margin-top: 10px !important;
+}
+#visual-portal-wrapper ul.eea-tabs a{
+	height: 100% !important;
+	max-width: 100% !important;
+}

@@ -48,139 +48,110 @@
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
-    <dl>
-      <dt>Reference number</dt>
-      <dd tal:content="context/id">Spain</dd>
 
-      <dt>Country</dt>
-      <dd tal:content="context/country_value">Spain</dd>
-
-      <dt>GHG Source Category</dt>
-      <dd tal:content="context/ghg_source_category_value">Spain</dd>
-
-      <dt>GHG Source Sectors</dt>
-      <dd tal:content="context/ghg_source_sectors_value">Spain</dd>
-
-      <dt>CRF Code</dt>
-      <dd tal:content="context/crf_code_value">Spain</dd>
-
-      <dt>Status Flag</dt>
-      <dd tal:content="context/status_flag_value">Spain</dd>
-    </dl>
-
-    <div class="info" tal:condition="view/wf_info">
-      <h2>
-        Workflow last action
-      </h2>
-      <dl tal:define="info view/wf_info;
-                      toLocalizedTime nocall:context/@@plone/toLocalizedTime
-              ">
-        <dt>User</dt>
-        <dd tal:content="info/actor">Mikel</dd>
-        <dt>Date</dt>
-        <dd tal:content="python:toLocalizedTime(info.get('time'))">Mikel</dd>
-        <dt>Comments</dt>
-        <dd tal:content="info/comments">Mikel</dd>
-
-      </dl>
-
+    <div class="esdDiv">
+      <div class="row">
+        <div class="cell position-0 width-4 label">Ref. Number</div>
+        <div class="cell position-4 width-13 label">Observation</div>
+      </div>
+      <div class="row">
+        <div class="cell position-0 width-4 value" tal:content="context/id">UK-WAS-13-001</div>
+        <div class="cell position-4 width-13 value" tal:content="context/title"></div>
+      </div>
+      <div class="row">
+        <div class="cell position-4 width-2 label">Country</div>
+        <div class="cell position-6 width-2 label">Sector</div>
+        <div class="cell position-8 width-2 label">Gas</div>
+        <div class="cell position-10 width-3 label">Year of emission</div>
+      </div>
+      <div class="row">
+        <div class="cell position-4 width-2" tal:content="context/country_value">Country</div>
+        <div class="cell position-6 width-2">Sector</div>
+        <div class="cell position-8 width-2">Gas</div>
+        <div class="cell position-10 width-3">Year of emission</div>
+      </div>
     </div>
-
-
-    <div class="changes">
-
-          <p tal:condition="not:view/history" i18n:translate="no_history">
-            This object has no revision information.
-          </p>
-
-          <tal:block condition="view/history">
-
-            <form id="versionSelector"
-                  action="#"
-                  tal:attributes="action pps/current_page_url"
-                  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                              pps here/@@plone_context_state
-                  ">
-              <fieldset>
-                <legend i18n:translate="legend_revisions">Revisions</legend>
-                <label for="two"><span tal:omit-tag="" i18n:translate="">First revision</span>
-                  <select id="two" name="two" tal:define="rev request/form/two|string:current">
-                    <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
-                    <option tal:repeat="version view/history"
-                            tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
-                            i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
-                            (<span tal:replace="version/sys_metadata/review_state"/> <span tal:replace="version/sys_metadata/principal"/> <tal:date i18n:name="date" content="python:toLocalizedTime(version['sys_metadata']['timestamp'])">1975-12-24</tal:date>)</option>
-                  </select>
-                </label>
-
-                <label for="one"><span tal:omit-tag="" i18n:translate="">Second revision</span>
-                  <select id="one" name="one" tal:define="rev request/one|string:current">
-                    <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
-                    <option tal:repeat="version view/history"
-                            tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
-                            i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
-                            (<span tal:replace="version/sys_metadata/review_state"/> <span tal:replace="version/sys_metadata/principal"/> <tal:date i18n:name="date" content="python:toLocalizedTime(version['sys_metadata']['timestamp'])">1975-12-24</tal:date>)</option>
-                  </select>
-                </label>
-              </fieldset>
-
-              <noscript>
-                <input type="submit" i18n:attributes="value label_update" value="Update"/>
-              </noscript>
-            </form>
-
-            <div metal:use-macro="here/diff_legend/macros/diff_legend" />
-
-            <p tal:condition="not:view/changes" i18n:translate="">
-              There are no changes between the selected revisions.
-            </p>
-
-            <tal:changes condition="view/changes">
-              <form method="post" action="">
-                <label for="diffstyle" class="jsOnly" style="display: none" i18n:translate="">Show differences</label>
-                <ul class="radioRow" id="diffTypeSelector">
-                  <li>
-                    <input id="diffstylevisual" type="radio" name="diffstyle" value="visual" checked="checked" />
-                    <label for="diffstylevisual" i18n:translate="">inline</label>
-                  </li>
-                  <li>
-                    <input id="diffstylecode" type="radio" name="diffstyle" value="code" />
-                    <label for="diffstylecode" i18n:translate="">as code</label>
-                  </li>
-                </ul>
-              </form>
-
-              <fieldset class="diff" tal:repeat="diff view/changes">
-                <legend tal:content="diff/label">Body text</legend>
-
-                <div class="fieldDiff inline-diff" tal:condition="exists:diff/inline_diff"
-                     tal:content="structure python:diff.inline_diff()">
-                  Inline changes
-                </div>
-
-                <p class="fieldDiff inline-diff" tal:condition="not:exists:diff/inline_diff" i18n:translate="">
-                  This field has no inline difference view.
-                </p>
-
-                <div class="fieldDiff code-diff" style="display: none">
-                  <pre tal:condition="exists:diff/html_diff" tal:content="structure python:diff.html_diff(wrapcolumn=80)">
-                    HTML formatted differences
-                  </pre>
-
-                  <pre class="fieldDiff code-diff" tal:condition="python:not exists('diff/html_diff') and exists('diff/ndiff')" tal:content="diff/ndiff">
-                    ndiff formatted differences
-                  </pre>
-                  <p class="fieldDiff" tal:condition="python:not exists('diff/html_diff') and not exists('diff/ndiff')">
-                    This field has no code difference view.
-                  </p>
-                </div>
-              </fieldset>
-            </tal:changes>
-          </tal:block>
-
-
+    <div class="esdDiv">
+      <div class="row">
+        <div class="cell position-0 width-7 label">Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)</div>
+        <div class="cell position-7 width-2 label" style="text-align:center">CO<sub>2</sub></div>
+        <div class="cell position-9 width-1 label" style="text-align:center">CH<sub>4</sub></div>
+        <div class="cell position-10 width-1 label" style="text-align:center">N<sub>2</sub>O</div>
+        <div class="cell position-11 width-1 label" style="text-align:center">NO<sub>x</sub></div>
+        <div class="cell position-12 width-1 label" style="text-align:center">CO</div>
+        <div class="cell position-13 width-1 label" style="text-align:center">NMVOC</div>
+        <div class="cell position-14 width-1 label" style="text-align:center">SO<sub>2</sub></div>
+      </div>
+      <div class="row">
+        <div class="cell position-0 width-7 label">Original estimate</div>
+        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
+        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
+        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
+        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
+        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
+        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
+        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
+      </div>
+      <div class="row">
+        <div class="cell position-0 width-7 label">Revised estimate</div>
+        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
+        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
+        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
+        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
+        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
+        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
+        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
+      </div>
+      <div class="row">
+        <div class="cell position-0 width-7 label">Corrected estimate</div>
+        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
+        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
+        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
+        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
+        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
+        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
+        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
+      </div>
     </div>
+    <ul class="eea-tabs">
+      <li>About this question</li>
+      <li>Question chat room</li>
+      <li>Technical corrections</li>
+    </ul>
+    <div class="eea-tabs-panels">
 
+
+      <div class="eea-tabs-panel">
+        <div class="row">
+          <div class="cell position-0 width-8 label">GHG source category</div>
+          <div class="cell position-8 width-4 label">CRF code</div>
+          <div class="cell position-12 width-4 label">Parameter</div>
+        </div>
+        <div class="row">
+          <div class="cell position-0 width-8" tal:content="context/ghg_source_category_value">GHG source category</div>
+          <div class="cell position-8 width-4" tal:content="context/crf_code_value">CRF code</div>
+          <div class="cell position-12 width-4">Parameter</div>
+        </div>
+        <div class="row">
+          <div class="cell position-0 width-4 label">Year</div>
+          <div class="cell position-4 width-4 label">Key category</div>
+          <div class="cell position-8 width-4 label">Status flag</div>
+          <div class="cell position-12 width-4 label">Last update</div>
+        </div>
+        <div class="row">
+          <div class="cell position-0 width-4">Year</div>
+          <div class="cell position-4 width-4">Key category</div>
+          <div class="cell position-8 width-4" tal:content="context/status_flag_value">Status flag</div>
+          <div class="cell position-12 width-4">Last update</div>
+        </div>
+      </div>
+      <div class="eea-tabs-panel">
+        Content for second tab
+      </div>
+      <div class="eea-tabs-panel">
+        Content for third tab
+      </div>
+    </div>
   </metal:content-core>
 </metal:main>
 
