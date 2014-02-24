@@ -1,20 +1,18 @@
-from collective.z3cform.datagridfield import DictRow
-from collective.z3cform.datagridfield import DataGridFieldFactory
+from AccessControl import getSecurityManager
 from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName
-from datetime import datetime
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
 from five import grok
 from plone.app.textfield import RichText
 from plone.directives import dexterity, form
-from plone.directives.form import default_value
 from plone.namedfile.interfaces import IImageScaleTraversable
+from Products.CMFCore.utils import getToolByName
+from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
 from zope import schema
 from zope.component import getUtility
-from zope.schema.interfaces import IVocabularyFactory
 from zope.i18n import translate
-
-from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
+from zope.schema.interfaces import IVocabularyFactory
 
 
 class ITableRowSchema(form.Schema):
@@ -78,6 +76,12 @@ class IObservation(form.Schema, IImageScaleTraversable):
             {'title': 'Corrected estimate'},
 
         ],
+    )
+
+    form.write_permission(technical_corrections='cmf.ManagePortal')
+    technical_corrections = RichText(
+        title=_(u'Technical Corrections'),
+        required=False
     )
 
 
@@ -144,10 +148,14 @@ class ObservationView(grok.View):
             'time', wf_id='esd-review-workflow')
         return {'comments': comments, 'actor': actor, 'time': time}
 
+    def isManager(self):
+        sm = getSecurityManager()
+        context = aq_inner(self.context)
+        return sm.checkPermission('Manage portal', context)
+
     @property
     def repo_tool(self):
         return getToolByName(self.context, "portal_repository")
-
 
     def getVersion(self, version):
         context = aq_inner(self.context)
@@ -158,8 +166,9 @@ class ObservationView(grok.View):
 
     def versionName(self, version):
         """
-        Translate the version name. This is needed to allow translation when `version` is the
-        string 'current'.
+        Copied from @@history_view
+        Translate the version name. This is needed to allow translation
+        when `version` is the string 'current'.
         """
         return _CMFE(version)
 
@@ -173,7 +182,6 @@ class ObservationView(grok.View):
         )
 
     def update(self):
-
         history_metadata = self.repo_tool.getHistoryMetadata(self.context)
         retrieve = history_metadata.retrieve
         getId = history_metadata.getVersionId

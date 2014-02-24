@@ -136,11 +136,9 @@
     <ul class="eea-tabs">
       <li>About this question</li>
       <li>Question chat room</li>
-      <li>Technical corrections</li>
+      <li tal:condition="view/isManager">Technical corrections</li>
     </ul>
     <div class="eea-tabs-panels">
-
-
       <div class="eea-tabs-panel">
         <div class="row">
           <div class="cell position-0 width-8 label">GHG source category</div>
@@ -168,7 +166,8 @@
       <div class="eea-tabs-panel">
         Content for second tab
       </div>
-      <div class="eea-tabs-panel">
+      <div class="eea-tabs-panel" tal:condition="view/isManager"
+        tal:content="structure context/technical_corrections">
         Content for third tab
       </div>
     </div>
