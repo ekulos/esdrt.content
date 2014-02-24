@@ -52,4 +52,4 @@ class CommentView(grok.View):
         parent = aq_parent(context)
         url = '%s#%s' % (parent.absolute_url(), context.getId())
 
-        return response.redirect(url)
+        return self.request.response.redirect(url)
