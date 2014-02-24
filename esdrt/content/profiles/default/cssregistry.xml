@@ -24,7 +24,7 @@
       -->
 
  <stylesheet title=""
-    id="++resource++esdrt.content/eea.tabs.css"
+    id="++resource++esdrt.content/eea-tabs.css"
     media="" rel="stylesheet" rendering="link"
     cacheable="True" compression="safe" cookable="False"
     enabled="1" expression=""/>
