@@ -73,44 +73,64 @@
     </div>
     <div class="esdDiv">
       <div class="row">
-        <div class="cell position-0 width-7 label">Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)</div>
-        <div class="cell position-7 width-2 label" style="text-align:center">CO<sub>2</sub></div>
-        <div class="cell position-9 width-1 label" style="text-align:center">CH<sub>4</sub></div>
-        <div class="cell position-10 width-1 label" style="text-align:center">N<sub>2</sub>O</div>
-        <div class="cell position-11 width-1 label" style="text-align:center">NO<sub>x</sub></div>
-        <div class="cell position-12 width-1 label" style="text-align:center">CO</div>
-        <div class="cell position-13 width-1 label" style="text-align:center">NMVOC</div>
-        <div class="cell position-14 width-1 label" style="text-align:center">SO<sub>2</sub></div>
+        <div class="cell position-0 width-7 label">
+          Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)
+        </div>
+        <div class="cell position-7 width-2 label" style="text-align:center">
+          CO<sub>2</sub>
+        </div>
+        <div class="cell position-9 width-1 label" style="text-align:center">
+          CH<sub>4</sub>
+        </div>
+        <div class="cell position-10 width-1 label" style="text-align:center">
+          N<sub>2</sub>O
+        </div>
+        <div class="cell position-11 width-1 label" style="text-align:center">
+          NO<sub>x</sub>
+        </div>
+        <div class="cell position-12 width-1 label" style="text-align:center">
+          CO
+        </div>
+        <div class="cell position-13 width-1 label" style="text-align:center">
+          NMVOC
+        </div>
+        <div class="cell position-14 width-1 label" style="text-align:center">
+          SO<sub>2</sub>
+        </div>
       </div>
-      <div class="row">
-        <div class="cell position-0 width-7 label">Original estimate</div>
-        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
-        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
-        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
-        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
-        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
-        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
-        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
-      </div>
-      <div class="row">
-        <div class="cell position-0 width-7 label">Revised estimate</div>
-        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
-        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
-        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
-        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
-        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
-        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
-        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
-      </div>
-      <div class="row">
-        <div class="cell position-0 width-7 label">Corrected estimate</div>
-        <div class="cell position-7 width-2" style="text-align:center">10.492,24</div>
-        <div class="cell position-9 width-1" style="text-align:center">0,41</div>
-        <div class="cell position-10 width-1" style="text-align:center">0,36</div>
-        <div class="cell position-11 width-1" style="text-align:center">11,36</div>
-        <div class="cell position-12 width-1" style="text-align:center">5,32</div>
-        <div class="cell position-13 width-1" style="text-align:center">0,95</div>
-        <div class="cell position-14 width-1" style="text-align:center">2,96</div>
+      <div class="row" tal:repeat="row context/ghg_estimations">
+        <div class="cell position-0 width-7 label"
+            tal:content="row/title">
+          Original estimate
+        </div>
+        <div class="cell position-7 width-2" style="text-align:center"
+            tal:content="row/co2">
+          10.492,24
+        </div>
+        <div class="cell position-9 width-1" style="text-align:center"
+            tal:content="row/ch4">
+          0,41
+        </div>
+        <div class="cell position-10 width-1" style="text-align:center"
+            tal:content="row/n2o">
+          0,36
+        </div>
+        <div class="cell position-11 width-1" style="text-align:center"
+            tal:content="row/nox">
+          11,36
+        </div>
+        <div class="cell position-12 width-1" style="text-align:center"
+            tal:content="row/co">
+          5,32
+        </div>
+        <div class="cell position-13 width-1" style="text-align:center"
+            tal:content="row/nmvoc">
+          0,95
+        </div>
+        <div class="cell position-14 width-1" style="text-align:center"
+            tal:content="row/so2">
+          2,96
+        </div>
       </div>
     </div>
     <ul class="eea-tabs">

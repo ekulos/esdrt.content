@@ -1,3 +1,5 @@
+from collective.z3cform.datagridfield import DictRow
+from collective.z3cform.datagridfield import DataGridFieldFactory
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from datetime import datetime
@@ -13,6 +15,18 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.i18n import translate
 
 from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
+
+
+class ITableRowSchema(form.Schema):
+
+    title = schema.TextLine(title=_(u'Title'), required=True)
+    co2 = schema.TextLine(title=_(u'CO\u2082'), required=False)
+    ch4 = schema.TextLine(title=_(u'CH\u2084'), required=False)
+    n2o = schema.TextLine(title=_(u'N\u2082O'), required=False)
+    nox = schema.TextLine(title=_(u'NO\u2093'), required=False)
+    co = schema.TextLine(title=_(u'CO'), required=False)
+    nmvoc = schema.TextLine(title=_(u'NMVOC'), required=False)
+    so2 = schema.TextLine(title=_(u'SO\u2082'), required=False)
 
 
 # Interface class; used to define content-type schema.
@@ -52,6 +66,18 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u"Status Flag"),
         vocabulary='esdrt.content.status_flag',
 
+    )
+
+    form.widget(ghg_estimations=DataGridFieldFactory)
+    ghg_estimations = schema.List(
+        title=_(u'GHG estimates'),
+        value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
+        default=[
+            {'title': 'Original estimate'},
+            {'title': 'Revised estimate'},
+            {'title': 'Corrected estimate'},
+
+        ],
     )
 
 

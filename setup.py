@@ -29,6 +29,7 @@ setup(name='esdrt.content',
           'five.grok',
           'plone.app.dexterity [grok, relations]',
           'plone.namedfile [blobs]',
+          'collective.z3cform.datagridfield',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
