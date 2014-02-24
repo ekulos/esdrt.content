@@ -12,6 +12,7 @@ def upgrade(context, logger=None):
     upgrade_diff_tool(context, logger)
     enable_atd_spellchecker(context, logger)
     install_comments(context, logger)
+    css_and_js(context, logger)
     logger.info('Upgrade steps executed')
 
 
@@ -36,3 +37,10 @@ def install_comments(context, logger):
     setup.runImportStepFromProfile(PROFILE_ID, 'rolemap')
     setup.runImportStepFromProfile(PROFILE_ID, 'difftool')
     logger.info('Comments installed')
+
+
+def css_and_js(context, logger):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runImportStepFromProfile(PROFILE_ID, 'cssregistry')
+    setup.runImportStepFromProfile(PROFILE_ID, 'jsregistry')
+    logger.info('Reload CSS and JS')
