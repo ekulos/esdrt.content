@@ -5,6 +5,7 @@ from plone.app.textfield import RichText
 from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
+from esdrt.content import MessageFactory as _
 
 
 # Interface class; used to define content-type schema.
