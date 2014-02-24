@@ -56,7 +56,7 @@
       </div>
       <div class="row">
         <div class="cell position-0 width-4 value" tal:content="context/id">UK-WAS-13-001</div>
-        <div class="cell position-4 width-13 value" tal:content="context/title"></div>
+        <div class="cell position-4 width-13 value" tal:content="context/title">Title</div>
       </div>
       <div class="row">
         <div class="cell position-4 width-2 label">Country</div>
@@ -66,9 +66,9 @@
       </div>
       <div class="row">
         <div class="cell position-4 width-2" tal:content="context/country_value">Country</div>
-        <div class="cell position-6 width-2">Sector</div>
-        <div class="cell position-8 width-2">Gas</div>
-        <div class="cell position-10 width-3">Year of emission</div>
+        <div class="cell position-6 width-2" tal:content="context/ghg_source_sectors_value">Sector</div>
+        <div class="cell position-8 width-2" tal:content="context/crf_code_value">Gas</div>
+        <div class="cell position-10 width-3" tal:content="context/year">Year of emission</div>
       </div>
     </div>
     <div class="esdDiv">
