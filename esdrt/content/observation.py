@@ -81,11 +81,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
     )
 
 
-@default_value(field=IObservation['year'])
-def year_default_value(data):
-    return datetime.now().year - 1
-
-
 class Observation(dexterity.Container):
     grok.implements(IObservation)
     # Add your class methods and properties here
