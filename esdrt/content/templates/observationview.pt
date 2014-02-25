@@ -48,7 +48,7 @@
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core">
 
-
+  <metal:observation define-macro="observation-info">
     <div class="esdDiv">
       <div class="row">
         <div class="cell position-0 width-4 label">Ref. Number</div>
@@ -133,6 +133,7 @@
         </div>
       </div>
     </div>
+  </metal:observation>
     <ul class="eea-tabs">
       <li>About this question</li>
       <li>Question chat room</li>
