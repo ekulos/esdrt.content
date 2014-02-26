@@ -19,7 +19,7 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 
 class ITableRowSchema(form.Schema):
 
-    title = schema.TextLine(title=_(u'Title'), required=True)
+    line_title = schema.TextLine(title=_(u'Title'), required=True)
     co2 = schema.Int(title=_(u'CO\u2082'), required=False)
     ch4 = schema.Int(title=_(u'CH\u2084'), required=False)
     n2o = schema.Int(title=_(u'N\u2082O'), required=False)
@@ -77,9 +77,9 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'GHG estimates'),
         value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
         default=[
-            {'title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'title': 'Revised estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Revised estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
 
         ],
     )
