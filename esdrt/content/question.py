@@ -1,3 +1,5 @@
+from Acquisition import aq_parent
+from plone.app.contentlisting.interfaces import IContentListing
 from time import time
 from Acquisition import aq_inner
 from plone.dexterity.interfaces import IDexterityFTI
@@ -27,6 +29,8 @@ class IQuestion(form.Schema, IImageScaleTraversable):
 class Question(dexterity.Container):
     grok.implements(IQuestion)    # Add your class methods and properties here
 
+    def get_questions(self):
+        return IContentListing(self.getFolderContents({'portal_type': 'Comment'}))
 
 # View class
 # The view will automatically use a similarly named template in
@@ -44,6 +48,9 @@ class QuestionView(grok.View):
     grok.context(IQuestion)
     grok.require('zope2.View')
     grok.name('view')
+
+    def observation(self):
+        return aq_parent(aq_inner(self.context))
 
 
 class AddForm(dexterity.AddForm):
