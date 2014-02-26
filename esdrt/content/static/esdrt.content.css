@@ -21,3 +21,7 @@
 	height: 100% !important;
 	max-width: 100% !important;
 }
+
+.template-esdrt-content-observation .datagridwidget-cell .int-field {
+	width: 8em;
+}
