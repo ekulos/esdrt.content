@@ -4,6 +4,7 @@ from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
 from five import grok
+from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.textfield import RichText
 from plone.directives import dexterity, form
 from plone.namedfile.interfaces import IImageScaleTraversable
@@ -13,18 +14,19 @@ from zope import schema
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 
 
 class ITableRowSchema(form.Schema):
 
     title = schema.TextLine(title=_(u'Title'), required=True)
-    co2 = schema.TextLine(title=_(u'CO\u2082'), required=False)
-    ch4 = schema.TextLine(title=_(u'CH\u2084'), required=False)
-    n2o = schema.TextLine(title=_(u'N\u2082O'), required=False)
-    nox = schema.TextLine(title=_(u'NO\u2093'), required=False)
-    co = schema.TextLine(title=_(u'CO'), required=False)
-    nmvoc = schema.TextLine(title=_(u'NMVOC'), required=False)
-    so2 = schema.TextLine(title=_(u'SO\u2082'), required=False)
+    co2 = schema.Int(title=_(u'CO\u2082'), required=False)
+    ch4 = schema.Int(title=_(u'CH\u2084'), required=False)
+    n2o = schema.Int(title=_(u'N\u2082O'), required=False)
+    nox = schema.Int(title=_(u'NO\u2093'), required=False)
+    co = schema.Int(title=_(u'CO'), required=False)
+    nmvoc = schema.Int(title=_(u'NMVOC'), required=False)
+    so2 = schema.Int(title=_(u'SO\u2082'), required=False)
 
 
 # Interface class; used to define content-type schema.
@@ -60,9 +62,13 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     )
 
-    status_flag = schema.Choice(
+    form.widget(status_flag=CheckBoxFieldWidget)
+    status_flag = schema.List(
         title=_(u"Status Flag"),
-        vocabulary='esdrt.content.status_flag',
+        value_type=schema.Choice(
+            vocabulary='esdrt.content.status_flag',
+            ),
+
 
     )
 
@@ -71,9 +77,9 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'GHG estimates'),
         value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
         default=[
-            {'title': 'Original estimate'},
-            {'title': 'Revised estimate'},
-            {'title': 'Corrected estimate'},
+            {'title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'title': 'Revised estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
 
         ],
     )
@@ -153,6 +159,10 @@ class ObservationView(grok.View):
         context = aq_inner(self.context)
         return sm.checkPermission('Manage portal', context)
 
+    def get_questions(self):
+        context = aq_inner(self.context)
+        return IContentListing(context.getFolderContents({'portal_type': 'Question'}))
+
     @property
     def repo_tool(self):
         return getToolByName(self.context, "portal_repository")
@@ -215,3 +225,4 @@ class ObservationView(grok.View):
     #             id2=self.versionTitle(version1))
     #     self.changes = [change for change in changeset.getDiffs()
     #                   if not change.same]
+
