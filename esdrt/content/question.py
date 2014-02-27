@@ -1,3 +1,4 @@
+from plone.app.textfield.value import RichTextValue
 from Acquisition import aq_parent
 from plone.app.contentlisting.interfaces import IContentListing
 from time import time
@@ -31,6 +32,20 @@ class Question(dexterity.Container):
 
     def get_questions(self):
         return IContentListing(self.getFolderContents({'portal_type': 'Comment'}))
+
+    def getFirstComment(self):
+        res = self.getFolderContents(
+                {'portal_type': 'Comment',
+                 'sort_on': 'created',
+                 'sort_limit': 1,
+                 }
+        )
+        if res:
+            return res[0].getObject()
+        else:
+            return None
+
+
 
 # View class
 # The view will automatically use a similarly named template in
@@ -91,5 +106,6 @@ class AddForm(dexterity.AddForm):
         item_id = item.invokeFactory(
             type_name='Comment',
             id=id,
-            text=text
         )
+        comment = item.get(item_id)
+        comment.text = RichTextValue(text, 'text/html', 'text/html')
