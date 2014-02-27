@@ -1,4 +1,5 @@
-.esdDiv .row:first-child{
+.esdDiv {
+	overflow: hidden;
 	margin-top: 4px;
 }
 .esdDiv .row{
