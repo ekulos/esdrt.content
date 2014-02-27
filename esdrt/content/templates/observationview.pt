@@ -168,8 +168,7 @@
         Content for second tab
       </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
-        tal:content="structure context/technical_corrections">
-        Content for third tab
+        tal:content="structure context/technical_corrections/output">
       </div>
     </div>
   </metal:content-core>
