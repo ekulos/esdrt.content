@@ -10,11 +10,12 @@ from plone.directives import dexterity, form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
+from zope.browsermenu.menu import getMenu
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
-from z3c.form.browser.checkbox import CheckBoxFieldWidget
 
 
 class ITableRowSchema(form.Schema):
@@ -34,6 +35,13 @@ class IObservation(form.Schema, IImageScaleTraversable):
     """
     New review observation
     """
+
+    text = RichText(
+        title=_(u'Text'),
+        description=_(u''),
+        required=True,
+        )
+
     country = schema.Choice(
         title=_(u"Country"),
         vocabulary='esdrt.content.eu_member_states',
@@ -84,6 +92,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
         ],
     )
 
+    form.read_permission(technical_corrections='cmf.ManagePortal')
     form.write_permission(technical_corrections='cmf.ManagePortal')
     technical_corrections = RichText(
         title=_(u'Technical Corrections'),
@@ -116,9 +125,11 @@ class Observation(dexterity.Container):
         )
 
     def status_flag_value(self):
-        return self._vocabulary_value('esdrt.content.status_flag',
-            self.status_flag
-        )
+        values = []
+        for val in self.status_flag:
+            values.append(self._vocabulary_value('esdrt.content.status_flag',
+            val))
+        return values
 
     def _vocabulary_value(self, vocabulary, term):
         vocab_factory = getUtility(IVocabularyFactory, name=vocabulary)
@@ -158,6 +169,14 @@ class ObservationView(grok.View):
         sm = getSecurityManager()
         context = aq_inner(self.context)
         return sm.checkPermission('Manage portal', context)
+
+    def get_menu_actions(self):
+        context = aq_inner(self.context)
+        return getMenu(
+            'plone_contentmenu_workflow',
+            self.context,
+            self.request
+            )
 
     def get_questions(self):
         context = aq_inner(self.context)
