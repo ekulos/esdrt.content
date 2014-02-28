@@ -63,8 +63,8 @@ def prepareVocabularies(context, profile):
 
 def enable_atd_spellchecker(portal):
     tinymce = getToolByName(portal, 'portal_tinymce')
-    tinymce.libraries_spellchecker_choice = 'AtD'
-    tinymce.libraries_atd_service_url = 'service.afterthedeadline.com'
+    tinymce.libraries_spellchecker_choice = u'AtD'
+    tinymce.libraries_atd_service_url = u'service.afterthedeadline.com'
 
 
 def setupVarious(context):
