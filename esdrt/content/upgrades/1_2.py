@@ -49,5 +49,5 @@ def css_and_js(context, logger):
 
 def install_workflow(context, logger):
     setup = getToolByName(context, 'portal_setup')
-    setup.runImportStepFromProfile(PROFILE_ID, 'workflows')
+    setup.runImportStepFromProfile(PROFILE_ID, 'workflow')
     logger.info('Resinstalled  Workflows')
