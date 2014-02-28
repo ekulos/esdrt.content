@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
-<object name="esdrt.content.comment"
+<object name="esdrt.content.commentanswer"
    meta_type="Dexterity FTI"
    i18n:domain="esdrt.content" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
   <!-- Basic metadata -->
-  <property name="title" i18n:translate="">Comment</property>
+  <property name="title" i18n:translate="">CommentAnswer</property>
   <property name="description"
-    i18n:translate="">Q&amp;A item</property>
+    i18n:translate="">Answer for Questions</property>
   <property name="icon_expr">string:${portal_url}/folder_icon.png</property>
-  <property name="factory">esdrt.content.comment</property>
+  <property name="factory">esdrt.content.commentanswer</property>
   <property name="global_allow">False</property>
   <property name="filter_content_types">False</property>
   <property name="allowed_content_types" />
   <property name="allow_discussion">False</property>
 
   <!-- schema and class used for content items -->
-  <property name="schema">esdrt.content.comment.IComment</property>
-  <property name="klass">esdrt.content.comment.Comment</property>
+  <property name="schema">esdrt.content.commentanswer.ICommentAnswer</property>
+  <property name="klass">esdrt.content.commentanswer.CommentAnswer</property>
 
   <property name="behaviors">
     <element value="plone.app.content.interfaces.INameFromTitle" />
@@ -38,7 +38,7 @@
    <element value="view"/>
   </property>
   <property name="default_view_fallback">False</property>
-  <property name="add_permission">esdrt.content.AddComment</property>
+  <property name="add_permission">esdrt.content.AddCommentAnswer</property>
 
 
   <!-- Method aliases -->

@@ -1,3 +1,4 @@
+from zope.browsermenu.menu import getMenu
 from plone.app.textfield.value import RichTextValue
 from Acquisition import aq_parent
 from plone.app.contentlisting.interfaces import IContentListing
@@ -16,6 +17,7 @@ from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from z3c.form import field
+from plone import api
 
 # Interface class; used to define content-type schema.
 class IQuestion(form.Schema, IImageScaleTraversable):
@@ -31,21 +33,14 @@ class Question(dexterity.Container):
     grok.implements(IQuestion)    # Add your class methods and properties here
 
     def get_questions(self):
-        return IContentListing(self.getFolderContents({'portal_type': 'Comment'}))
+        return IContentListing([v for v in self.values() if v.portal_type in ['Comment', 'CommentAnswer']])
 
     def getFirstComment(self):
-        res = self.getFolderContents(
-                {'portal_type': 'Comment',
-                 'sort_on': 'created',
-                 'sort_limit': 1,
-                 }
-        )
-        if res:
-            return res[0].getObject()
-        else:
-            return None
-
-
+        comments = [v for v in self.values() if v.portal_type == 'Comment']
+        comments.sort(lambda x, y: cmp(x.created(), y.created()))
+        if comments:
+            return comments[-1]
+        return None
 
 # View class
 # The view will automatically use a similarly named template in
@@ -67,6 +62,31 @@ class QuestionView(grok.View):
     def observation(self):
         return aq_parent(aq_inner(self.context))
 
+    def actions(self):
+        context = aq_inner(self.context)
+        return getMenu(
+            'plone_contentmenu_workflow',
+            context,
+            self.request
+            )
+
+    def get_user_name(self, userid):
+        mtool = api.portal.get_tool('portal_membership')
+        member = mtool.getMemberById(userid)
+        if member is not None:
+            return member.getProperty('fullname', userid)
+        return ''
+
+
+    def actions_for_comment(self, commentid):
+        context = aq_inner(self.context)
+        comment = context.get(commentid)
+        return getMenu(
+            'plone_contentmenu_workflow',
+            comment,
+            self.request
+            )
+
 
 class AddForm(dexterity.AddForm):
     grok.name('esdrt.content.question')
@@ -79,8 +99,6 @@ class AddForm(dexterity.AddForm):
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
     def create(self, data={}):
-        # import pdb; pdb.set_trace()
-        # return super(AddForm, self).create(data)
         fti = getUtility(IDexterityFTI, name=self.portal_type)
         container = aq_inner(self.context)
         content = createObject(fti.factory)
