@@ -1,6 +1,11 @@
 from Acquisition import aq_inner
+from Acquisition import aq_parent
 from borg.localrole.interfaces import ILocalRoleProvider
+from esdrt.content.comment import IComment
+from esdrt.content.commentanswer import ICommentAnswer
 from esdrt.content.observation import IObservation
+from esdrt.content.question import IQuestion
+from plone import api
 from Products.CMFCore.utils import getToolByName
 from zope.component import adapts
 from zope.interface import implements
@@ -12,22 +17,6 @@ class ObservationRoleAdapter(object):
 
     def __init__(self, context):
         self.context = context
-
-    # def getDummyRolesOnContext(self, context, principal_id):
-    #     """ Calculate magical Dummy roles based on the user object.
-
-    #     Note: This function is *heavy* since it wakes lots of objects
-    #      along the acquisition chain.
-    #     """
-
-    #     # Filter out bogus look-ups - Plone calls this function
-    #     # for every possible role look up out there, but
-    #     # we are interested only these two cases
-    #     if IObservation.providedBy(context):
-    #             return ["Dummy Member"]
-
-    #     # No match
-    #     return []
 
     def getRoles(self, principal_id):
         """Returns the roles for the given principal in context.
@@ -46,16 +35,166 @@ class ObservationRoleAdapter(object):
         if member is not None:
             groups = member.getGroups()
             for group in groups:
+                if 'reviewexperts-%s' % sector in group:
+                    roles.append('SectorExpertReviewer')
                 if 'leadreviewers-%s' % country in group:
                     roles.append('LeadReviewer')
                 if 'ms-authorities-%s' % country in group:
                     roles.append('MSAuthority')
-                if 'ms-authorities-%s' % country in group:
-                    roles.append('MSAuthority')
                 if 'ms-experts-%s' % country in group:
                     roles.append('MSExpert')
-                if 'ms-reviewexperts-%s' % sector in group:
-                    roles.append('ExpertReviewer')
+        return roles
+
+    def getAllRoles(self):
+        """Returns all the local roles assigned in this context:
+        (principal_id, [role1, role2])"""
+        return []
+
+
+class QuestionRoleAdapter(object):
+    implements(ILocalRoleProvider)
+    adapts(IQuestion)
+
+    def __init__(self, context):
+        self.context = context
+
+    def getRoles(self, principal_id):
+        """Returns the roles for the given principal in context.
+
+        This function is additional besides other ILocalRoleProvider plug-ins.
+
+        @param context: Any Plone object
+        @param principal_id: User login id
+        """
+        observation = aq_parent(aq_inner(self.context))
+        roles = []
+        if IObservation.providedBy(observation):
+            country = observation.country.lower()
+            sector = observation.ghg_source_sectors
+            mtool = getToolByName(observation, 'portal_membership')
+            member = mtool.getMemberById(principal_id)
+            if member is not None:
+                groups = member.getGroups()
+                import pdb; pdb.set_trace()
+                for group in groups:
+                    if 'reviewexperts-%s' % sector in group:
+                        roles.append('SectorExpertReviewer')
+                    if 'leadreviewers-%s' % country in group:
+                        roles.append('LeadReviewer')
+                    if 'ms-authorities-%s' % country in group:
+                        roles.append('MSAuthority')
+                    if 'ms-experts-%s' % country in group:
+                        roles.append('MSExpert')
+        return roles
+
+    def getAllRoles(self):
+        """Returns all the local roles assigned in this context:
+        (principal_id, [role1, role2])"""
+        return []
+
+
+class CommentRoleAdapter(object):
+    implements(ILocalRoleProvider)
+    adapts(IComment)
+
+    def __init__(self, context):
+        self.context = context
+
+    def getRoles(self, principal_id):
+        """Returns the roles for the given principal in context.
+
+        This function is additional besides other ILocalRoleProvider plug-ins.
+
+        @param context: Any Plone object
+        @param principal_id: User login id
+        """
+        comment = aq_inner(self.context)
+        question = aq_parent(aq_inner(self.context))
+        roles = []
+        if IQuestion.providedBy(question):
+            observation = aq_parent(question)
+            if IObservation.providedBy(observation):
+                country = observation.country.lower()
+                sector = observation.ghg_source_sectors
+                mtool = getToolByName(comment, 'portal_membership')
+                member = mtool.getMemberById(principal_id)
+                if member is not None:
+                    groups = member.getGroups()
+                    for group in groups:
+                        if 'reviewexperts-%s' % sector in group:
+                            roles.append('SectorExpertReviewer')
+                        if 'leadreviewers-%s' % country in group:
+                            roles.append('LeadReviewer')
+                        if 'ms-authorities-%s' % country in group:
+                            roles.append('MSAuthority')
+                        if 'ms-experts-%s' % country in group:
+                            roles.append('MSExpert')
+
+                        if api.content.get_state(question) == 'pending':
+                            if 'ms-authorities-%s' % country in group:
+                                roles.append('Reader')
+
+                        if api.content.get_state(question) == 'pending-answer':
+                            if 'ms-authorities-%s' % country in group:
+                                roles.append('Reader')
+                            if 'ms-experts-%s' % country in group:
+                                roles.append('Reader')
+
+        return roles
+
+    def getAllRoles(self):
+        """Returns all the local roles assigned in this context:
+        (principal_id, [role1, role2])"""
+        return []
+
+
+class CommentAnswerRoleAdapter(object):
+    implements(ILocalRoleProvider)
+    adapts(ICommentAnswer)
+
+    def __init__(self, context):
+        self.context = context
+
+    def getRoles(self, principal_id):
+        """Returns the roles for the given principal in context.
+
+        This function is additional besides other ILocalRoleProvider plug-ins.
+
+        @param context: Any Plone object
+        @param principal_id: User login id
+        """
+        commentanswer = aq_inner(self.context)
+        question = aq_parent(aq_inner(self.context))
+        roles = []
+        if IQuestion.providedBy(question):
+            observation = aq_parent(question)
+            if IObservation.providedBy(observation):
+                country = observation.country.lower()
+                sector = observation.ghg_source_sectors
+                mtool = getToolByName(commentanswer, 'portal_membership')
+                member = mtool.getMemberById(principal_id)
+                if member is not None:
+                    groups = member.getGroups()
+                    for group in groups:
+                        if 'reviewexperts-%s' % sector in group:
+                            roles.append('SectorExpertReviewer')
+                        if 'leadreviewers-%s' % country in group:
+                            roles.append('LeadReviewer')
+                        if 'ms-authorities-%s' % country in group:
+                            roles.append('MSAuthority')
+                        if 'ms-experts-%s' % country in group:
+                            roles.append('MSExpert')
+
+                        if api.content.get_state(question) == 'answered':
+                            if 'leadreviewers-%s' % country in group:
+                                roles.append('Reader')
+
+                        if api.content.get_state(question) == 'validate-answer':
+                            if 'leadreviewers-%s' % country in group:
+                                roles.append('Reader')
+                            if 'reviewexperts-%s' % sector in group:
+                                roles.append('Reader')
+
         return roles
 
     def getAllRoles(self):
