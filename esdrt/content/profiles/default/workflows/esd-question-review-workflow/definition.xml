@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+<dc-workflow workflow_id="esd-question-review-workflow" title="ESD Question Review Workflow" description="" state_variable="review_state" initial_state="draft" manager_bypass="True">
+ <instance-creation-conditions>
+   <guard>
+    <guard-permission>esdrt.content: Add Question</guard-permission>
+   </guard>
+ </instance-creation-conditions>
+ <permission>Access contents information</permission>
+ <permission>Modify portal content</permission>
+ <permission>View</permission>
+ <permission>esdrt.content: Add Comment</permission>
+ <permission>esdrt.content: Add CommentAnswer</permission>
+ <state state_id="answered" title="Answered">
+  <exit-transition transition_id="ask-validation"/>
+  <exit-transition transition_id="close-lr"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Comment" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="closed" title="Closed">
+ </state>
+ <state state_id="draft" title="Draft">
+  <exit-transition transition_id="ask-question-approval"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Comment" acquired="True">
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="pending" title="Pending">
+  <exit-transition transition_id="assign-answerer"/>
+  <exit-transition transition_id="recall-question-lr"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Comment" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="pending-answer" title="Pending Answer">
+  <exit-transition transition_id="ask-answer-approval"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Comment" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Add CommentAnswer" acquired="True">
+   <permission-role>MSExpert</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="pending-answer-validation" title="Pending Answer Validation">
+  <exit-transition transition_id="recall-msa"/>
+  <exit-transition transition_id="answer"/>
+  <exit-transition transition_id="redraft-msa"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSLeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSLeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Comment" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="pending-approval" title="Pending Approval">
+  <exit-transition transition_id="redraft"/>
+  <exit-transition transition_id="approve-question"/>
+  <exit-transition transition_id="recall-question-er"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Comment" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="validate-answer" title="Validate Answer">
+  <exit-transition transition_id="close"/>
+ </state>
+ <transition transition_id="answer" title="Answer" new_state="answered" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=answer" category="workflow" icon="">Answer</action>
+  <guard>
+   <guard-role>MSAuthority</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="approve-question" title="Approve Question" new_state="pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve-question" category="workflow" icon="">Approve Question</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="ask-answer-approval" title="Ask Answer Approval" new_state="pending-answer-validation" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=ask-answer-approval" category="workflow" icon="">Ask Answer Approval</action>
+  <guard>
+   <guard-role>MSExpert</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="ask-question-approval" title="Ask Question Approval" new_state="pending-approval" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=ask-question-approval" category="workflow" icon="">Ask Question Approval</action>
+  <guard>
+   <guard-role>Owner</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="ask-validation" title="Ask Validation" new_state="validate-answer" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=ask-validation" category="workflow" icon="">Ask Validation</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="assign-answerer" title="Assign Answerer" new_state="pending-answer" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=assign-answerer" category="workflow" icon="">Assign Answerer</action>
+  <guard>
+   <guard-role>MSAuthority</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="close" title="Close" new_state="closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Close</action>
+  <guard>
+   <guard-role>ExpertReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="close-lr" title="Close (LR)" new_state="closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=close-lr" category="workflow" icon="">Close (LR)</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="recall-msa" title="Recall (MSA)" new_state="pending-answer" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=recall-msa" category="workflow" icon="">Recall</action>
+  <guard>
+   <guard-role>MSExpert</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="recall-question-er" title="Recall Question (ER)" new_state="draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=recall-question-er" category="workflow" icon="">Recall Question</action>
+  <guard>
+   <guard-role>Owner</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="recall-question-lr" title="Recall Question (LR)" new_state="pending-approval" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=recall-question-lr" category="workflow" icon="">Recall Question (LR)</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="redraft" title="Redraft" new_state="draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=redraft" category="workflow" icon="">Redraft</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="redraft-msa" title="Redraft (MSA)" new_state="pending-answer" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=redraft-msa" category="workflow" icon="">Redraft (MSA)</action>
+  <guard>
+   <guard-role>MSAuthority</guard-role>
+  </guard>
+ </transition>
+ <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
+  <description>Previous transition</description>
+  <default>
+   
+   <expression>transition/getId|nothing</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
+  <description>The ID of the user who performed the previous transition</description>
+  <default>
+   
+   <expression>user/getUserName</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
+  <description>Comment about the last transition</description>
+  <default>
+   
+   <expression>python:state_change.kwargs.get('comment', '')</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+ <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
+  <description>Provides access to workflow history</description>
+  <default>
+   
+   <expression>state_change/getHistory</expression>
+  </default>
+  <guard>
+   <guard-permission>Request review</guard-permission>
+   <guard-permission>Review portal content</guard-permission>
+  </guard>
+ </variable>
+ <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
+  <description>When the previous transition was performed</description>
+  <default>
+   
+   <expression>state_change/getDateTime</expression>
+  </default>
+  <guard>
+  </guard>
+ </variable>
+</dc-workflow>

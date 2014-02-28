@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="esd-review-workflow" title="ESD Review Workflow" description=" - Simple workflow that is useful for basic web sites. - Things start out as private, and can either be submitted for review, or published directly. - The creator of a content item can edit the item even after it is published." state_variable="review_state" initial_state="private" manager_bypass="False">
+<dc-workflow workflow_id="esd-review-workflow" title="ESD Review Workflow" description="" state_variable="review_state" initial_state="private" manager_bypass="True">
  <permission>Access contents information</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
@@ -8,9 +8,9 @@
  <permission>List folder contents</permission>
  <state state_id="closed" title="Closed">
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
@@ -26,9 +26,9 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
@@ -41,9 +41,10 @@
   <exit-transition transition_id="approve"/>
   <exit-transition transition_id="redraft"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
@@ -60,9 +61,10 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
@@ -72,14 +74,17 @@
  </state>
  <state state_id="pending" title="Pending question">
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
@@ -91,15 +96,17 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
@@ -107,18 +114,18 @@
   <description>Can only be seen and edited by the owner.</description>
   <exit-transition transition_id="request-review"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Site Administrator</permission-role>
@@ -128,10 +135,10 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
@@ -152,7 +159,7 @@
   </guard>
  </transition>
  <transition transition_id="redraft" title="Redraft" new_state="private" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=redraft" category="workflow" icon="">Redraft</action>
+  <action url="%(content_url)s/state_change_form?workflow_action=redraft" category="workflow" icon="">Redraft</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
@@ -160,7 +167,7 @@
  <transition transition_id="request-review" title="Request Review" new_state="draft" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=request-review" category="workflow" icon="">Request Review</action>
   <guard>
-   <guard-role>ExpertReviewer</guard-role>
+   <guard-role>Owner</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="reviewer_queue" title="">
