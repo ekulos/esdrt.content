@@ -1,4 +1,5 @@
-.esdDiv .row:first-child{
+.esdDiv {
+	overflow: hidden;
 	margin-top: 4px;
 }
 .esdDiv .row{
@@ -12,7 +13,7 @@
 }
 .esdDiv .value{
 	color: #00446a;
-	font-size: 2em;
+	font-size: 1.5em;
 }
 .eea-tabs {
 	margin-top: 10px !important;
