@@ -4,6 +4,7 @@ from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
 from five import grok
+from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.textfield import RichText
 from plone.directives import dexterity, form
@@ -12,8 +13,11 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
+from zope.app.container.interfaces import IObjectAddedEvent
 from zope.browsermenu.menu import getMenu
+from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 
@@ -174,13 +178,13 @@ class ObservationView(grok.View):
         context = aq_inner(self.context)
         return getMenu(
             'plone_contentmenu_workflow',
-            self.context,
+            context,
             self.request
             )
 
     def get_questions(self):
         context = aq_inner(self.context)
-        return IContentListing(context.getFolderContents({'portal_type': 'Question'}))
+        return IContentListing([v for v in context.values() if v.portal_type == 'Question'])
 
     @property
     def repo_tool(self):
@@ -245,3 +249,14 @@ class ObservationView(grok.View):
     #     self.changes = [change for change in changeset.getDiffs()
     #                   if not change.same]
 
+@grok.subscribe(IObservation, IObjectAddedEvent)
+def add_observation(context, event):
+    request = getRequest()
+    pps = getMultiAdapter((context, request), name='plone_portal_state')
+    member = pps.member()
+    member_id = member.getId()
+    api.user.grant_roles(
+        username=member_id,
+        obj=context,
+        roles=['ExpertReviewer']
+    )

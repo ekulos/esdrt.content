@@ -9,22 +9,35 @@
 
 <metal:main fill-slot="content-core">
   <metal:content-core define-macro="content-core"
-    tal:define="observation view/observation">
+    tal:define="observation view/observation;
+                context nocall:observation">
 
-    <metal:obs use-macro="observation/@@view/macros/observation-info" />
+    <metal:obs use-macro="context/@@view/macros/observation-info" />
 
 
   </metal:content-core>
 
   <div id="qa" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
-    <div class="question" tal:repeat="question context/get_questions">
-      <strong>Author</strong>: <span tal:content="question/Creator" /><br/>
-      <strong>Date</strong>: <span tal:content="python:toLocalizedTime(question.created)" /><br/>
+    <div class="question" tal:repeat="question context/get_questions"
+          tal:attributes="id question/getId;
+                          class string:question ${question/portal_type/lower};
+          ">
+      <strong>Author</strong>: <span tal:content="python:view.get_user_name(question.Creator())" /><br/>
+      <strong>Date</strong>: <span tal:content="python:toLocalizedTime(question.created())" /><br/>
       <strong>Text</strong>:<br/>
       <div class="question-text"
-        tal:content="structure question/text">
+        tal:content="structure question/text/output|string:">
         Here goes the text
       </div>
+      <ul class="actions">
+        <li tal:repeat="action view/actions">
+          <a href=""
+            tal:attributes="href string:${action/action}&comment=${question/getId}"
+            tal:content="action/title">
+            Action
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 

@@ -1,11 +1,19 @@
+from plone.app.textfield.value import RichTextValue
+from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from Acquisition.interfaces import IAcquirer
+from esdrt.content import MessageFactory as _
 from five import grok
 from plone.app.textfield import RichText
+from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
-from esdrt.content import MessageFactory as _
+from time import time
+from z3c.form import field
+from zope.component import createObject
+from zope.component import getUtility
 
 
 # Interface class; used to define content-type schema.
@@ -54,3 +62,35 @@ class CommentView(grok.View):
         url = '%s#%s' % (parent.absolute_url(), context.getId())
 
         return self.request.response.redirect(url)
+
+
+class AddForm(dexterity.AddForm):
+    grok.name('esdrt.content.comment')
+    grok.context(IComment)
+    grok.require('esdrt.content.AddComment')
+
+    def updateFields(self):
+        super(AddForm, self).updateFields()
+        self.fields = field.Fields(IComment).select('text')
+        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+
+    def create(self, data={}):
+        # import pdb; pdb.set_trace()
+        # return super(AddForm, self).create(data)
+        fti = getUtility(IDexterityFTI, name=self.portal_type)
+        container = aq_inner(self.context)
+        content = createObject(fti.factory)
+        if hasattr(content, '_setPortalTypeName'):
+            content._setPortalTypeName(fti.getId())
+
+        # Acquisition wrap temporarily to satisfy things like vocabularies
+        # depending on tools
+        if IAcquirer.providedBy(content):
+            content = content.__of__(container)
+        id = str(int(time()))
+        content.title = id
+        content.id = id
+        text = self.request.form.get('form.widgets.text', '')
+        content.text = RichTextValue(text, 'text/html', 'text/html')
+
+        return aq_base(content)
