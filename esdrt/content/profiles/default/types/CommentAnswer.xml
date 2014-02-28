@@ -19,12 +19,10 @@
   <property name="klass">esdrt.content.commentanswer.CommentAnswer</property>
 
   <property name="behaviors">
-    <element value="plone.app.content.interfaces.INameFromTitle" />
     <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
     <element value="plone.app.dexterity.behaviors.discussion.IAllowDiscussion"/>
     <element
        value="plone.app.dexterity.behaviors.exclfromnav.IExcludeFromNavigation"/>
-    <element value="Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes"/>
     <element value="plone.app.relationfield.behavior.IRelatedItems"/>
     <element value="plone.app.versioningbehavior.behaviors.IVersionable" />
     <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
