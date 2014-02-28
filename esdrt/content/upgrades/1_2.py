@@ -13,7 +13,7 @@ def upgrade(context, logger=None):
     enable_atd_spellchecker(context, logger)
     install_comments(context, logger)
     css_and_js(context, logger)
-    install_workflow(content, logger)
+    install_workflow(context, logger)
     logger.info('Upgrade steps executed')
 
 
