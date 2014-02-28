@@ -13,6 +13,7 @@ def upgrade(context, logger=None):
     enable_atd_spellchecker(context, logger)
     install_comments(context, logger)
     css_and_js(context, logger)
+    install_workflow(content, logger)
     logger.info('Upgrade steps executed')
 
 
@@ -44,3 +45,9 @@ def css_and_js(context, logger):
     setup.runImportStepFromProfile(PROFILE_ID, 'cssregistry')
     setup.runImportStepFromProfile(PROFILE_ID, 'jsregistry')
     logger.info('Reload CSS and JS')
+
+
+def install_workflow(context, logger):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runImportStepFromProfile(PROFILE_ID, 'workflows')
+    logger.info('Resinstalled  Workflows')
