@@ -51,18 +51,18 @@
   <metal:observation define-macro="observation-info">
     <div class="esdDiv">
       <div class="row">
-        <div class="cell position-0 width-4 label">Ref. Number</div>
-        <div class="cell position-4 width-13 label">Observation</div>
+        <div class="cell position-0 width-4 esdLabel">Ref. Number</div>
+        <div class="cell position-4 width-13 esdLabel">Observation</div>
       </div>
       <div class="row">
         <div class="cell position-0 width-4 value" tal:content="context/id">UK-WAS-13-001</div>
         <div class="cell position-4 width-13 value" tal:content="context/title">Title</div>
       </div>
       <div class="row">
-        <div class="cell position-4 width-2 label">Country</div>
-        <div class="cell position-6 width-2 label">Sector</div>
-        <div class="cell position-8 width-2 label">Gas</div>
-        <div class="cell position-10 width-3 label">Year of emission</div>
+        <div class="cell position-4 width-2 esdLabel">Country</div>
+        <div class="cell position-6 width-2 esdLabel">Sector</div>
+        <div class="cell position-8 width-2 esdLabel">Gas</div>
+        <div class="cell position-10 width-3 esdLabel">Year of emission</div>
       </div>
       <div class="row">
         <div class="cell position-4 width-2" tal:content="context/country_value">Country</div>
@@ -72,34 +72,76 @@
       </div>
     </div>
     <div class="esdDiv">
-      <div class="row">
-        <div class="cell position-0 width-7 label">
+      <table class="estTable">
+        <thead>
+          <tr>
+            <th>Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)</th>
+            <th>CO<sub>2</sub></th>
+            <th>CH<sub>4</sub></th>
+            <th>N<sub>2</sub>O</th>
+            <th>NO<sub>x</sub></th>
+            <th>CO</th>
+            <th>NMVOC</th>
+            <th>SO<sub>2</sub></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="row context/ghg_estimations">
+            <td class="esdesdLabel" tal:content="row/line_title">
+              Original estimate
+            </td>
+            <td style="text-align:center" tal:content="row/co2">
+              10.492,24
+            </td>
+            <td style="text-align:center" tal:content="row/ch4">
+              0,41
+            </td>
+            <td style="text-align:center" tal:content="row/n2o">
+              0,36
+            </td>
+            <td style="text-align:center" tal:content="row/nox">
+              11,36
+            </td>
+            <td style="text-align:center" tal:content="row/co">
+              5,32
+            </td>
+            <td style="text-align:center" tal:content="row/nmvoc">
+              0,95
+            </td>
+            <td style="text-align:center" tal:content="row/so2">
+              2,96
+            </td>
+          </tr>
+        </tbody>
+      </table>      
+      <!--div class="row">
+        <div class="cell position-0 width-7 esdLabel">
           Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)
         </div>
-        <div class="cell position-7 width-2 label" style="text-align:center">
+        <div class="cell position-7 width-2 esdLabel" style="text-align:center">
           CO<sub>2</sub>
         </div>
-        <div class="cell position-9 width-1 label" style="text-align:center">
+        <div class="cell position-9 width-1 esdLabel" style="text-align:center">
           CH<sub>4</sub>
         </div>
-        <div class="cell position-10 width-1 label" style="text-align:center">
+        <div class="cell position-10 width-1 esdLabel" style="text-align:center">
           N<sub>2</sub>O
         </div>
-        <div class="cell position-11 width-1 label" style="text-align:center">
+        <div class="cell position-11 width-1 esdLabel" style="text-align:center">
           NO<sub>x</sub>
         </div>
-        <div class="cell position-12 width-1 label" style="text-align:center">
+        <div class="cell position-12 width-1 esdLabel" style="text-align:center">
           CO
         </div>
-        <div class="cell position-13 width-1 label" style="text-align:center">
+        <div class="cell position-13 width-1 esdLabel" style="text-align:center">
           NMVOC
         </div>
-        <div class="cell position-14 width-1 label" style="text-align:center">
+        <div class="cell position-14 width-1 esdLabel" style="text-align:center">
           SO<sub>2</sub>
         </div>
       </div>
       <div class="row" tal:repeat="row context/ghg_estimations">
-        <div class="cell position-0 width-7 label"
+        <div class="cell position-0 width-7 esdLabel"
             tal:content="row/line_title">
           Original estimate
         </div>
@@ -132,7 +174,7 @@
           2,96
         </div>
       </div>
-    </div>
+    </div-->
   </metal:observation>
 
   <div id="actions" tal:define="actions view/get_menu_actions">
@@ -159,9 +201,9 @@
     <div class="eea-tabs-panels">
       <div class="eea-tabs-panel">
         <div class="row">
-          <div class="cell position-0 width-8 label">GHG source category</div>
-          <div class="cell position-8 width-4 label">CRF code</div>
-          <div class="cell position-12 width-4 label">Parameter</div>
+          <div class="cell position-0 width-8 esdLabel">GHG source category</div>
+          <div class="cell position-8 width-4 esdLabel">CRF code</div>
+          <div class="cell position-12 width-4 esdLabel">Parameter</div>
         </div>
         <div class="row">
           <div class="cell position-0 width-8" tal:content="context/ghg_source_category_value">GHG source category</div>
@@ -169,10 +211,10 @@
           <div class="cell position-12 width-4">Parameter</div>
         </div>
         <div class="row">
-          <div class="cell position-0 width-4 label">Year</div>
-          <div class="cell position-4 width-4 label">Key category</div>
-          <div class="cell position-8 width-4 label">Status flag</div>
-          <div class="cell position-12 width-4 label">Last update</div>
+          <div class="cell position-0 width-4 esdLabel">Year</div>
+          <div class="cell position-4 width-4 esdLabel">Key category</div>
+          <div class="cell position-8 width-4 esdLabel">Status flag</div>
+          <div class="cell position-12 width-4 esdLabel">Last update</div>
         </div>
         <div class="row" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
           <div class="cell position-0 width-4" tal:content="context/year">Year</div>
@@ -207,7 +249,7 @@
         </tal:question>
       </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
-        tal:content="structure context/technical_corrections/output">
+        tal:content="structure context/technical_corrections">
       </div>
     </div>
   </metal:content-core>
