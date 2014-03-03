@@ -7,58 +7,59 @@
    </guard>
  </instance-creation-conditions>
  <permission>Access contents information</permission>
- <permission>Change portal events</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
- <permission>Add portal content</permission>
  <permission>List folder contents</permission>
+ <state state_id="pending" title="Pending">
+  <exit-transition transition_id="approve-question"/>
+  <exit-transition transition_id="redraft"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+ </state>
  <state state_id="private" title="Private">
   <description>Can only be seen and edited by the owner.</description>
-  <exit-transition transition_id="publish"/>
+  <exit-transition transition_id="ask-approval"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Contributor</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
-  <permission-map name="Change portal events" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Site Administrator</permission-role>
+  <permission-map name="List folder contents" acquired="True">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>Editor</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>Editor</permission-role>
-   <permission-role>Reader</permission-role>
-   <permission-role>Contributor</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
  <state state_id="published" title="Published">
   <description>Visible to everyone, editable by the owner.</description>
-  <exit-transition transition_id="redraft"/>
+  <exit-transition transition_id="recall-question"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>Reader</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
-  </permission-map>
-  <permission-map name="Add portal content" acquired="True">
-  </permission-map>
-  <permission-map name="Change portal events" acquired="False">
-   <permission-role>Manager</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
@@ -69,17 +70,30 @@
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>Reader</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
- <transition transition_id="publish" title="Ask approval" new_state="published" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=publish" category="workflow" icon="">Ask approval</action>
+ <transition transition_id="approve-question" title="Approve Question" new_state="published" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve-question" category="workflow" icon="">Approve Question</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="ask-approval" title="Ask approval" new_state="pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=ask-approval" category="workflow" icon="">Ask approval</action>
   <guard>
    <guard-role>SectorExpertReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="recall-question" title="Recall Question" new_state="pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=recall-question" category="workflow" icon="">Recall Question</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
  <transition transition_id="redraft" title="Redraft" new_state="private" trigger="USER" before_script="" after_script="">

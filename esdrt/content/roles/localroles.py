@@ -5,7 +5,6 @@ from esdrt.content.comment import IComment
 from esdrt.content.commentanswer import ICommentAnswer
 from esdrt.content.observation import IObservation
 from esdrt.content.question import IQuestion
-from plone import api
 from Products.CMFCore.utils import getToolByName
 from zope.component import adapts
 from zope.interface import implements
@@ -75,7 +74,6 @@ class QuestionRoleAdapter(object):
             member = mtool.getMemberById(principal_id)
             if member is not None:
                 groups = member.getGroups()
-                import pdb; pdb.set_trace()
                 for group in groups:
                     if 'reviewexperts-%s' % sector in group:
                         roles.append('SectorExpertReviewer')
@@ -130,16 +128,6 @@ class CommentRoleAdapter(object):
                         if 'ms-experts-%s' % country in group:
                             roles.append('MSExpert')
 
-                        if api.content.get_state(question) == 'pending':
-                            if 'ms-authorities-%s' % country in group:
-                                roles.append('Reader')
-
-                        if api.content.get_state(question) == 'pending-answer':
-                            if 'ms-authorities-%s' % country in group:
-                                roles.append('Reader')
-                            if 'ms-experts-%s' % country in group:
-                                roles.append('Reader')
-
         return roles
 
     def getAllRoles(self):
@@ -184,16 +172,6 @@ class CommentAnswerRoleAdapter(object):
                             roles.append('MSAuthority')
                         if 'ms-experts-%s' % country in group:
                             roles.append('MSExpert')
-
-                        if api.content.get_state(question) == 'answered':
-                            if 'leadreviewers-%s' % country in group:
-                                roles.append('Reader')
-
-                        if api.content.get_state(question) == 'validate-answer':
-                            if 'leadreviewers-%s' % country in group:
-                                roles.append('Reader')
-                            if 'reviewexperts-%s' % sector in group:
-                                roles.append('Reader')
 
         return roles
 
