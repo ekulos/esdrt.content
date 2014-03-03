@@ -173,8 +173,32 @@
             tal:content="row/so2">
           2,96
         </div>
+      </div-->
+    </div>
+    <div class="esdDiv">
+      <div class="row">
+        <div class="cell position-0 width-8 esdLabel">GHG source category</div>
+        <div class="cell position-8 width-4 esdLabel">CRF code</div>
+        <div class="cell position-12 width-4 esdLabel">Parameter</div>
       </div>
-    </div-->
+      <div class="row">
+        <div class="cell position-0 width-8" tal:content="context/ghg_source_category_value">GHG source category</div>
+        <div class="cell position-8 width-4" tal:content="context/crf_code_value">CRF code</div>
+        <div class="cell position-12 width-4">Parameter</div>
+      </div>
+      <div class="row">
+        <div class="cell position-0 width-4 esdLabel">Year</div>
+        <div class="cell position-4 width-4 esdLabel">Key category</div>
+        <div class="cell position-8 width-4 esdLabel">Status flag</div>
+        <div class="cell position-12 width-4 esdLabel">Last update</div>
+      </div>
+      <div class="row" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
+        <div class="cell position-0 width-4" tal:content="context/year">Year</div>
+        <div class="cell position-4 width-4" tal:content="context/ghg_source_sectors_value">Key category</div>
+        <div class="cell position-8 width-4" tal:content="python:', '.join(context.status_flag_value())">Status flag</div>
+        <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.ModificationDate())">Last update</div>
+      </div>  
+    </div>  
   </metal:observation>
 
   <div id="actions" tal:define="actions view/get_menu_actions">
@@ -194,35 +218,10 @@
   </div>
 
     <ul class="eea-tabs">
-      <li>About this question</li>
       <li>Question chat room</li>
       <li tal:condition="view/isManager">Technical corrections</li>
     </ul>
     <div class="eea-tabs-panels">
-      <div class="eea-tabs-panel">
-        <div class="row">
-          <div class="cell position-0 width-8 esdLabel">GHG source category</div>
-          <div class="cell position-8 width-4 esdLabel">CRF code</div>
-          <div class="cell position-12 width-4 esdLabel">Parameter</div>
-        </div>
-        <div class="row">
-          <div class="cell position-0 width-8" tal:content="context/ghg_source_category_value">GHG source category</div>
-          <div class="cell position-8 width-4" tal:content="context/crf_code_value">CRF code</div>
-          <div class="cell position-12 width-4">Parameter</div>
-        </div>
-        <div class="row">
-          <div class="cell position-0 width-4 esdLabel">Year</div>
-          <div class="cell position-4 width-4 esdLabel">Key category</div>
-          <div class="cell position-8 width-4 esdLabel">Status flag</div>
-          <div class="cell position-12 width-4 esdLabel">Last update</div>
-        </div>
-        <div class="row" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
-          <div class="cell position-0 width-4" tal:content="context/year">Year</div>
-          <div class="cell position-4 width-4" tal:content="context/ghg_source_sectors_value">Key category</div>
-          <div class="cell position-8 width-4" tal:content="python:', '.join(context.status_flag_value())">Status flag</div>
-          <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.ModificationDate())">Last update</div>
-        </div>
-      </div>
       <div class="eea-tabs-panel questions">
         <tal:question repeat="question_item view/get_questions">
           <div class="question"
