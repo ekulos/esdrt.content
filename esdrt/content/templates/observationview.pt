@@ -224,6 +224,16 @@
     <div class="eea-tabs-panels">
       <div class="eea-tabs-panel questions">
         <tal:question repeat="question_item view/get_questions">
+          <div class="row"
+              tal:define="question question_item/getObject">
+              <h2>
+                <a href=""
+                  tal:attributes="href string:./${question_item/id}"
+                  tal:content="question_item/title|string:">
+                  Text of the comment
+                </a>
+              </h2>
+          </div>
           <div class="question"
               tal:define="question question_item/getObject;
                           first_comment question/getFirstComment;
