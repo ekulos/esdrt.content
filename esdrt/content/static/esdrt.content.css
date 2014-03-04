@@ -1,12 +1,10 @@
 .esdDiv {
 	overflow: hidden;
 	margin-top: 4px;
-}
-.esdDiv .row{
 	background-color: #FAEFE1;
 	padding: 8px;
 }
-.esdDiv .label{
+.esdLabel{
 	font-style: italic;
 	font-weight: normal;
 	color: #918C86;
@@ -25,4 +23,37 @@
 
 .template-esdrt-content-observation .datagridwidget-cell .int-field {
 	width: 8em;
+}
+.estTable {
+	max-width: 100%;
+	width: 100%;
+	overflow: auto;
+	/**border-width: 0px 0px 0px 1px;
+	border-style: dotted;
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;*/
+	border: 1px solid #b6b6b6;
+	color: #666666;
+	line-height: normal;
+}
+.estTable th{
+	cursor: auto !important;
+	text-align: center;
+	background-color: #005e7d;
+	color: #fff;
+	padding: 4px;
+	width: 9%;
+}
+.estTable th:first-child{
+	width: 37%;
+	text-align: left;
+}
+.estTable td{
+	padding: 4px;
+}
+.estTable tbody tr:nth-child(odd) {
+	background: #eee;
+}
+.estTable tbody tr:nth-child(even) {
+	background: #fff;
 }
