@@ -16,4 +16,5 @@ def upgrade(context, logger=None):
 def install_workflow(context, logger):
     setup = getToolByName(context, 'portal_setup')
     setup.runImportStepFromProfile(PROFILE_ID, 'rolemap')
+    setup.runImportStepFromProfile(PROFILE_ID, 'workflow')
     logger.info('Resinstalled  Workflows')
