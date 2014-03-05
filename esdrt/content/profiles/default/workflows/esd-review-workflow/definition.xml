@@ -1,11 +1,36 @@
 <?xml version="1.0"?>
 <dc-workflow workflow_id="esd-review-workflow" title="ESD Review Workflow" description="" state_variable="review_state" initial_state="private" manager_bypass="True">
  <permission>Access contents information</permission>
+ <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
+ <permission>Sharing page: Delegate roles</permission>
  <permission>View</permission>
  <permission>esdrt.content: Add Question</permission>
- <permission>Sharing page: Delegate roles</permission>
- <permission>List folder contents</permission>
+ <state state_id="close-requested" title="Close requested">
+  <exit-transition transition_id="close-observation"/>
+  <exit-transition transition_id="reopen"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="True">
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Sharing page: Delegate roles" acquired="True">
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Question" acquired="True">
+  </permission-map>
+ </state>
  <state state_id="closed" title="Closed">
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -37,10 +62,9 @@
   </permission-map>
  </state>
  <state state_id="draft" title="Draft">
-  <exit-transition transition_id="close"/>
-  <exit-transition transition_id="approve"/>
-  <exit-transition transition_id="redraft"/>
+  <exit-transition transition_id="send-comments"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>Counterpart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -52,15 +76,17 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
+   <permission-role>Counterpart</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>Counterpart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -72,7 +98,35 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
+ <state state_id="drafted" title="Drafted">
+  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="approve"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="True">
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="Sharing page: Delegate roles" acquired="True">
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Site Administrator</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Question" acquired="True">
+  </permission-map>
+ </state>
  <state state_id="pending" title="Pending question">
+  <exit-transition transition_id="request-close"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -131,7 +185,6 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
-   <permission-role>Manager</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
@@ -146,28 +199,46 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
- <transition transition_id="approve" title="Approve" new_state="pending" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=approve" category="workflow" icon="">Approve</action>
+ <transition transition_id="approve" title="Open" new_state="pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve" category="workflow" icon="">Open</action>
   <guard>
-   <guard-role>LeadReviewer</guard-role>
+   <guard-role>Owner</guard-role>
   </guard>
  </transition>
  <transition transition_id="close" title="Close" new_state="closed" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Close</action>
   <guard>
+   <guard-role>Owner</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="close-observation" title="Close Observation" new_state="closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=close-observation" category="workflow" icon="">Close Observation</action>
+  <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="redraft" title="Redraft" new_state="private" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/state_change_form?workflow_action=redraft" category="workflow" icon="">Redraft</action>
+ <transition transition_id="reopen" title="Reopen" new_state="pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=reopen" category="workflow" icon="">Reopen</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="request-close" title="Request Close" new_state="close-requested" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=request-close" category="workflow" icon="">Request Close</action>
+  <guard>
+   <guard-role>Owner</guard-role>
   </guard>
  </transition>
  <transition transition_id="request-review" title="Request Review" new_state="draft" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=request-review" category="workflow" icon="">Request Review</action>
   <guard>
    <guard-role>Owner</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="send-comments" title="Send Comments" new_state="drafted" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=send-comments" category="workflow" icon="">Send Comments</action>
+  <guard>
+   <guard-role>Counterpart</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="reviewer_queue" title="">

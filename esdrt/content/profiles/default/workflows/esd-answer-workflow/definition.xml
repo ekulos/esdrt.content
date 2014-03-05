@@ -7,9 +7,9 @@
    </guard>
  </instance-creation-conditions>
  <permission>Access contents information</permission>
+ <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
- <permission>List folder contents</permission>
  <state state_id="pending" title="Pending">
   <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="redraft"/>
@@ -81,7 +81,7 @@
  <transition transition_id="approve-question" title="Approve Answer" new_state="published" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=approve-question" category="workflow" icon="">Approve Answer</action>
   <guard>
-   <guard-role>LeadReviewer</guard-role>
+   <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
  <transition transition_id="ask-approval" title="Ask approval" new_state="pending" trigger="USER" before_script="" after_script="">
@@ -93,13 +93,13 @@
  <transition transition_id="recall-question" title="Recall Answer" new_state="pending" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=recall-question" category="workflow" icon="">Recall Question</action>
   <guard>
-   <guard-role>LeadReviewer</guard-role>
+   <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
  <transition transition_id="redraft" title="Redraft" new_state="private" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=redraft" category="workflow" icon="">Redraft</action>
   <guard>
-   <guard-role>LeadReviewer</guard-role>
+   <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="reviewer_queue" title="">

@@ -7,9 +7,9 @@
    </guard>
  </instance-creation-conditions>
  <permission>Access contents information</permission>
+ <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
- <permission>List folder contents</permission>
  <state state_id="pending" title="Pending">
   <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="redraft"/>
