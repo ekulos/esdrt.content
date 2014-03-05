@@ -5,13 +5,15 @@
     <role name="LeadReviewer"/>
     <role name="MSExpert"/>
     <role name="MSAuthority"/>
+    <role name="Counterpart"/>
+    <role name="SectorExpertReviewer"/>
   </roles>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
     <permission name="esdrt.content: Add CommentAnswer" acquire="False">
       <role name="Manager" />
-      <role name="Site Administrator" /> 
-      <role name="Contributor" />      
+      <role name="Site Administrator" />
+      <role name="Contributor" />
     </permission>
     <permission name="esdrt.content: Add Comment" acquire="False">
       <role name="Manager" />
