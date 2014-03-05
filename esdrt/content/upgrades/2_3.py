@@ -1,0 +1,19 @@
+from Products.CMFCore.utils import getToolByName
+
+
+PROFILE_ID = 'profile-esdrt.content:default'
+
+
+def upgrade(context, logger=None):
+    if logger is None:
+        from logging import getLogger
+        logger = getLogger('esdrt.content.upgrades.2_3')
+
+    install_workflow(context, logger)
+    logger.info('Upgrade steps executed')
+
+
+def install_workflow(context, logger):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runImportStepFromProfile(PROFILE_ID, 'rolemap')
+    logger.info('Resinstalled  Workflows')

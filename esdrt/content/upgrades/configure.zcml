@@ -11,4 +11,12 @@
          handler=".1_2.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 3."
+         description="Permissions and workflow"
+         source="2"
+         destination="3"
+         handler=".2_3.upgrade"
+         profile="esdrt.content:default" />
+
 </configure>
