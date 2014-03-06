@@ -230,7 +230,7 @@
   </guard>
  </transition>
  <transition transition_id="request-review" title="Request Review" new_state="draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=request-review" category="workflow" icon="">Request Review</action>
+  <action url="%(content_url)s/assign_counterpart_form?workflow_action=request-review" category="workflow" icon="">Request Review</action>
   <guard>
    <guard-role>Owner</guard-role>
   </guard>
