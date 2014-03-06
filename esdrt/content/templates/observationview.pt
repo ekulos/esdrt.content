@@ -141,19 +141,15 @@
     </div>
   </metal:observation>
 
-  <div id="actions" tal:define="actions view/get_menu_actions">
-    <h2>
-      Actions
-    </h2>
-    <ul>
-      <li tal:repeat="action actions">
+  <div class="actions" tal:define="actions view/get_menu_actions">
+    <tal:block  tal:repeat="action actions">
         <a href=""
           tal:attributes="href action/action"
+          class="standardButton"
           tal:content="action/title">
           Action
         </a>
-      </li>
-    </ul>
+    </tal:block>
 
   </div>
 
