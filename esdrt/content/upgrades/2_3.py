@@ -18,4 +18,5 @@ def install_workflow(context, logger):
     setup.runImportStepFromProfile(PROFILE_ID, 'rolemap')
     setup.runImportStepFromProfile(PROFILE_ID, 'workflow')
     setup.runImportStepFromProfile(PROFILE_ID, 'sharing')
+    setup.runImportStepFromProfile(PROFILE_ID, 'typeinfo')
     logger.info('Resinstalled  Workflows')
