@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="esdrt.content">
+
+<body>
+  <metal:main fill-slot="content-core">
+    <metal:content-core define-macro="content-core">
+
+      <table class="listing">
+        <thead>
+          <tr>
+            <th>
+              Ref. Number
+            </th>
+            <th>
+              Observation title
+            </th>
+            <th>
+              Status
+            </th>
+            <th>
+              Country
+            </th>
+            <th>
+              Sector
+            </th>
+            <th>
+              Gas
+            </th>
+            <th>
+              Modification date
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr tal:repeat="observation view/get_observations">
+            <tal:item define="item observation/getObject;
+                              toLocalizedTime nocall:here/@@plone/toLocalizedTime
+            ">
+              <td>
+                <a href=""
+                  tal:attributes="href observation/getURL"
+                  tal:content="observation/getId">
+                  UK-WAS-13-001
+                </a>
+              </td>
+              <td>
+                <a href=""
+                  tal:attributes="href observation/getURL"
+                  tal:content="observation/Title">
+                  Observation title
+                </a>
+              </td>
+              <td tal:content="item/get_status|nothing">
+                Observation title
+              </td>
+              <td tal:content="item/country_value">
+                Observation title
+              </td>
+              <td tal:content="item/ghg_source_sectors_value">
+                Observation title
+              </td>
+              <td tal:content="item/crf_code_value">
+                Observation title
+              </td>
+              <td tal:content="python:toLocalizedTime(item.modified(), True)">
+                Observation title
+              </td>
+
+            </tal:item>
+
+          </tr>
+        </tbody>
+
+      </table>
+
+
+    </metal:content-core>
+  </metal:main>
+
+</body>
+</html>
+
