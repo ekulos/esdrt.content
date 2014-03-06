@@ -17,18 +17,33 @@
 
   </metal:content-core>
 
-  <div id="qa" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
+  <div id="qa" class="eea-tabs-panels" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
+
     <div class="question" tal:repeat="question context/get_questions"
           tal:attributes="id question/getId;
                           class string:question ${question/portal_type/lower};
           ">
-      <strong>Author</strong>: <!--span tal:content="python:view.get_user_name(question.Creator())" /--><br/>
-      <strong>Date</strong>: <span tal:content="python:toLocalizedTime(question.created())" /><br/>
-      <strong>Text</strong>:<br/>
-      <div class="question-text"
-        tal:content="structure question/text/output|string:">
-        Here goes the text
+      <tal:block tal:define="portalType question/portal_type/lower"
+        tal:condition="python:portalType == 'comment'">
+        <div class="arrow-right-border"></div>
+        <div class="arrow-right"></div>
+      </tal:block>           
+      <tal:block tal:define="portalType question/portal_type/lower"
+        tal:condition="python:portalType == 'commentanswer'">
+        <div class="arrow-left-border"></div>
+        <div class="arrow-left"></div>
+      </tal:block>     
+      <div class="from">
+        <span class="esdLabel">from</span> 
+        <span class="value" tal:content="python:view.get_user_name(question.Creator())">John Smith</span>
+        <span class="messageDate" tal:content="python:toLocalizedTime(question.created())">11/12/2013 12:00</span>
       </div>
+      <div tal:content="structure question/text/output|string:">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+      </div>
+      <div>
+
+      </div>         
       <div class="actions">
         <tal:block tal:repeat="action view/actions">
           <a href=""
@@ -40,6 +55,8 @@
         </tal:block>
       </div>
     </div>
+
+
     <div class="actions">
       <a href="./++add++Comment"
         class="standardButton">
