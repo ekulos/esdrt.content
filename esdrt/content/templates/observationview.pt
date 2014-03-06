@@ -150,7 +150,6 @@
           Action
         </a>
     </tal:block>
-
   </div>
 
     <ul class="eea-tabs">
@@ -159,6 +158,13 @@
     </ul>
     <div class="eea-tabs-panels">
       <div class="eea-tabs-panel questions">
+        <div class="row">
+          <div class="cell position-0 width-7">Question</div>
+          <div class="cell position-7 width-2">Author</div>
+          <div class="cell position-9 width-1">Status</div>
+          <div class="cell position-10 width-3">Creation date</div>
+          <div class="cell position-13 width-3">Last update</div>
+        </div>
         <tal:question repeat="question_item view/get_questions">
           <div class="question"
               tal:define="question question_item/getObject;
@@ -168,6 +174,37 @@
                         "
               >
             <tal:comment condition="nocall:question">
+              <div class="row">
+                <div class="cell position-0 width-7">
+                  <a href=""
+                    tal:attributes="href first_comment/absolute_url"
+                    tal:content="first_comment/@@text-transform/text/text/plain">
+                    Text of the question
+                  </a>
+                </div>
+                <div class="cell position-7 width-2">
+                  <span tal:replace="python:view.get_user_name(question.Creator())">
+                    Mikel
+                  </span>
+                </div>
+                <div class="cell position-9 width-1">
+                  <span tal:replace="question/get_status">
+                    Pending
+                  </span>                  
+                </div>
+                <div class="cell position-10 width-3">
+                  <span tal:replace="python:toLocalizedTime(question.created(), True)">
+                    2014-01-01
+                  </span>
+                </div>
+                <div class="cell position-13 width-3">
+                  <span tal:replace="python:toLocalizedTime(question.modified(), True)">
+                    2014-01-01
+                  </span>
+                </div>
+              </div>
+            </tal:comment>
+            <!--tal:comment condition="nocall:question">
               <h2>
                 <a href=""
                   tal:attributes="href first_comment/absolute_url"
@@ -183,12 +220,18 @@
                 <dt>
                   Author
                 </dt>
+                <dd>
+                  Mikel
+                </dd>                
                 <dd tal:replace="python:view.get_user_name(question.Creator())">
                   Mikel
                 </dd>
                 <dt>
                   Status
                 </dt>
+                <dd>
+                  Pending
+                </dd>                
                 <dd tal:replace="question/get_status">
                   Pending
                 </dd>
@@ -205,9 +248,15 @@
                   2014-01-01
                 </dd>
               </dl>
-            </tal:comment>
+            </tal:comment-->
           </div>
         </tal:question>
+        <div class="actions">
+          <a href="./++add++Question"
+            class="standardButton">
+            Add new question
+          </a>
+        </div>        
       </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
         tal:content="structure context/technical_corrections">
