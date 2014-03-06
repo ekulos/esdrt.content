@@ -113,67 +113,7 @@
             </td>
           </tr>
         </tbody>
-      </table>      
-      <!--div class="row">
-        <div class="cell position-0 width-7 esdLabel">
-          Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)
-        </div>
-        <div class="cell position-7 width-2 esdLabel" style="text-align:center">
-          CO<sub>2</sub>
-        </div>
-        <div class="cell position-9 width-1 esdLabel" style="text-align:center">
-          CH<sub>4</sub>
-        </div>
-        <div class="cell position-10 width-1 esdLabel" style="text-align:center">
-          N<sub>2</sub>O
-        </div>
-        <div class="cell position-11 width-1 esdLabel" style="text-align:center">
-          NO<sub>x</sub>
-        </div>
-        <div class="cell position-12 width-1 esdLabel" style="text-align:center">
-          CO
-        </div>
-        <div class="cell position-13 width-1 esdLabel" style="text-align:center">
-          NMVOC
-        </div>
-        <div class="cell position-14 width-1 esdLabel" style="text-align:center">
-          SO<sub>2</sub>
-        </div>
-      </div>
-      <div class="row" tal:repeat="row context/ghg_estimations">
-        <div class="cell position-0 width-7 esdLabel"
-            tal:content="row/line_title">
-          Original estimate
-        </div>
-        <div class="cell position-7 width-2" style="text-align:center"
-            tal:content="row/co2">
-          10.492,24
-        </div>
-        <div class="cell position-9 width-1" style="text-align:center"
-            tal:content="row/ch4">
-          0,41
-        </div>
-        <div class="cell position-10 width-1" style="text-align:center"
-            tal:content="row/n2o">
-          0,36
-        </div>
-        <div class="cell position-11 width-1" style="text-align:center"
-            tal:content="row/nox">
-          11,36
-        </div>
-        <div class="cell position-12 width-1" style="text-align:center"
-            tal:content="row/co">
-          5,32
-        </div>
-        <div class="cell position-13 width-1" style="text-align:center"
-            tal:content="row/nmvoc">
-          0,95
-        </div>
-        <div class="cell position-14 width-1" style="text-align:center"
-            tal:content="row/so2">
-          2,96
-        </div>
-      </div-->
+      </table>
     </div>
     <div class="esdDiv">
       <div class="row">
@@ -197,8 +137,8 @@
         <div class="cell position-4 width-4" tal:content="context/ghg_source_sectors_value">Key category</div>
         <div class="cell position-8 width-4" tal:content="python:', '.join(context.status_flag_value())">Status flag</div>
         <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.ModificationDate())">Last update</div>
-      </div>  
-    </div>  
+      </div>
+    </div>
   </metal:observation>
 
   <div id="actions" tal:define="actions view/get_menu_actions">
@@ -224,35 +164,51 @@
     <div class="eea-tabs-panels">
       <div class="eea-tabs-panel questions">
         <tal:question repeat="question_item view/get_questions">
-          <div class="row"
-              tal:define="question question_item/getObject">
-              <h2>
-                <a href=""
-                  tal:attributes="href string:./${question_item/id}"
-                  tal:content="question_item/title|string:">
-                  Text of the comment
-                </a>
-              </h2>
-          </div>
           <div class="question"
               tal:define="question question_item/getObject;
                           first_comment question/getFirstComment;
                           cropText nocall:view/@@plone/cropText;
+                          toLocalizedTime nocall:here/@@plone/toLocalizedTime;
                         "
               >
             <tal:comment condition="nocall:question">
               <h2>
                 <a href=""
                   tal:attributes="href first_comment/absolute_url"
-                  tal:content="first_comment/@@text-transform/text/text/plain">
+                  tal:content="question/Title">
                   Text of the comment
                 </a>
               </h2>
               <p class="txt"
                 tal:content="first_comment/@@text-transform/text/text/plain">
                 Text of the question
-
               </p>
+              <dl class="metadata">
+                <dt>
+                  Author
+                </dt>
+                <dd tal:replace="python:view.get_user_name(question.Creator())">
+                  Mikel
+                </dd>
+                <dt>
+                  Status
+                </dt>
+                <dd tal:replace="question/get_status">
+                  Pending
+                </dd>
+                <dt>
+                  Creation date
+                </dt>
+                <dd tal:replace="python:toLocalizedTime(question.created(), True)">
+                  2014-01-01
+                </dd>
+                <dt>
+                  Last Modification
+                </dt>
+                <dd tal:replace="python:toLocalizedTime(question.modified(), True)">
+                  2014-01-01
+                </dd>
+              </dl>
             </tal:comment>
           </div>
         </tal:question>

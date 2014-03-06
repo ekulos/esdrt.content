@@ -177,6 +177,10 @@ class ObservationView(grok.View):
         context = aq_inner(self.context)
         return sm.checkPermission('Manage portal', context)
 
+    def get_user_name(self, userid):
+        user = api.user.get(username=userid)
+        return user.getProperty('fullname', userid)
+
     def get_menu_actions(self):
         context = aq_inner(self.context)
         menu_items = getMenu(
