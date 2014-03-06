@@ -38,8 +38,7 @@
         </thead>
 
         <tbody>
-          <tr tal:repeat="observation view/get_observations"
-            tal:attributes="class string:question ${observation/getObject/get_status|nothing}">
+          <tr tal:repeat="observation view/get_observations">
             <tal:item define="item observation/getObject;
                               toLocalizedTime nocall:here/@@plone/toLocalizedTime
             ">

@@ -154,7 +154,7 @@
 
     <ul class="eea-tabs">
       <li>Question chat room</li>
-      <li tal:condition="view/isManager">Technical corrections</li>
+      <li tal:condition="view/isManager" style="width: 150px;">Technical corrections</li>
     </ul>
     <div class="eea-tabs-panels">
       <div class="eea-tabs-panel questions">
@@ -166,7 +166,7 @@
           <div class="cell position-13 width-3 esdLabel">Last update</div>
         </div>
         <tal:question repeat="question_item view/get_questions">
-          <div class="question"
+          <tal:block
               tal:define="question question_item/getObject;
                           first_comment question/getFirstComment;
                           cropText nocall:view/@@plone/cropText;
@@ -204,7 +204,7 @@
                 </div>
               </div>
             </tal:comment>
-          </div>
+          </tal:block>
         </tal:question>
         <div class="actions">
           <a href="./++add++Question"
