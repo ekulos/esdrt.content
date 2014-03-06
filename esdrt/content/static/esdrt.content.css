@@ -1,3 +1,6 @@
+.portaltype-observation .documentFirstHeading{
+	display:none;
+}
 .esdDiv {
 	overflow: hidden;
 	margin-top: 4px;
