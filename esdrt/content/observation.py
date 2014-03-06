@@ -176,11 +176,23 @@ class ObservationView(grok.View):
 
     def get_menu_actions(self):
         context = aq_inner(self.context)
-        return getMenu(
+        menu_items = getMenu(
             'plone_contentmenu_workflow',
             context,
             self.request
             )
+
+        HIDE_ACTIONS = ['/content_status_history',
+            '/placeful_workflow_configuration',
+        ]
+
+        def hide(menuitem):
+            for action in HIDE_ACTIONS:
+                if menuitem.get('action').endswith(action):
+                    return True
+            return False
+
+        return [mitem for mitem in menu_items if not hide(mitem)]
 
     def get_questions(self):
         context = aq_inner(self.context)
