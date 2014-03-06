@@ -141,6 +141,9 @@ class Observation(dexterity.Container):
         value = vocabulary.getTerm(term)
         return value.title
 
+    def get_status(self):
+        return api.content.get_state(self)
+
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
