@@ -192,3 +192,21 @@
 	position: absolute;
 	padding: 0px !important;
 }
+.listing {
+	max-width: 100%;
+	width: 100%;
+	overflow: auto;
+	border: 1px solid #b6b6b6;
+	color: #666666;
+	line-height: normal;
+}
+.listing th{
+	text-align: center;
+	background-color: #005e7d;
+	color: #fff;
+	padding: 4px;
+	width: 9%;
+}
+.listing td{
+	padding: 4px;
+}
