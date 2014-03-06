@@ -38,7 +38,8 @@
         </thead>
 
         <tbody>
-          <tr tal:repeat="observation view/get_observations">
+          <tr tal:repeat="observation view/get_observations"
+            tal:attributes="class string:question ${observation/getObject/get_status|nothing}">
             <tal:item define="item observation/getObject;
                               toLocalizedTime nocall:here/@@plone/toLocalizedTime
             ">
@@ -57,19 +58,19 @@
                 </a>
               </td>
               <td tal:content="item/get_status|nothing">
-                Observation title
+                Status
               </td>
               <td tal:content="item/country_value">
-                Observation title
+                Country
               </td>
               <td tal:content="item/ghg_source_sectors_value">
-                Observation title
+                Sector
               </td>
               <td tal:content="item/crf_code_value">
-                Observation title
+                Gas
               </td>
               <td tal:content="python:toLocalizedTime(item.modified(), True)">
-                Observation title
+                06/03/2014
               </td>
 
             </tal:item>
