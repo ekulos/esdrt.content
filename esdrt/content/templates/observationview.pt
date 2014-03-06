@@ -204,51 +204,6 @@
                 </div>
               </div>
             </tal:comment>
-            <!--tal:comment condition="nocall:question">
-              <h2>
-                <a href=""
-                  tal:attributes="href first_comment/absolute_url"
-                  tal:content="question/Title">
-                  Text of the comment
-                </a>
-              </h2>
-              <p class="txt"
-                tal:content="first_comment/@@text-transform/text/text/plain">
-                Text of the question
-              </p>
-              <dl class="metadata">
-                <dt>
-                  Author
-                </dt>
-                <dd>
-                  Mikel
-                </dd>                
-                <dd tal:replace="python:view.get_user_name(question.Creator())">
-                  Mikel
-                </dd>
-                <dt>
-                  Status
-                </dt>
-                <dd>
-                  Pending
-                </dd>                
-                <dd tal:replace="question/get_status">
-                  Pending
-                </dd>
-                <dt>
-                  Creation date
-                </dt>
-                <dd tal:replace="python:toLocalizedTime(question.created(), True)">
-                  2014-01-01
-                </dd>
-                <dt>
-                  Last Modification
-                </dt>
-                <dd tal:replace="python:toLocalizedTime(question.modified(), True)">
-                  2014-01-01
-                </dd>
-              </dl>
-            </tal:comment-->
           </div>
         </tal:question>
         <div class="actions">
