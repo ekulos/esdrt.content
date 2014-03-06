@@ -193,20 +193,20 @@
 	padding: 0px !important;
 }
 .listing {
-	max-width: 100%;
-	width: 100%;
-	overflow: auto;
-	border: 1px solid #b6b6b6;
-	color: #666666;
-	line-height: normal;
+	max-width: 100% !important;
+	width: 100% !important;
+	overflow: auto !important;
+	border: 1px solid #b6b6b6 !important;
+	color: #666666 !important;
+	line-height: normal !important;
 }
 .listing th{
-	text-align: center;
-	background-color: #005e7d;
-	color: #fff;
-	padding: 4px;
-	width: 9%;
+	text-align: center !important;
+	background-color: #005e7d !important;
+	color: #fff !important;
+	padding: 4px !important;
+	width: 9% !important;
 }
 .listing td{
-	padding: 4px;
+	padding: 4px !important;
 }
