@@ -22,23 +22,36 @@
           tal:attributes="id question/getId;
                           class string:question ${question/portal_type/lower};
           ">
-      <strong>Author</strong>: <span tal:content="python:view.get_user_name(question.Creator())" /><br/>
+      <strong>Author</strong>: <!--span tal:content="python:view.get_user_name(question.Creator())" /--><br/>
       <strong>Date</strong>: <span tal:content="python:toLocalizedTime(question.created())" /><br/>
       <strong>Text</strong>:<br/>
       <div class="question-text"
         tal:content="structure question/text/output|string:">
         Here goes the text
       </div>
-      <ul class="actions">
-        <li tal:repeat="action view/actions">
+      <div class="actions">
+        <tal:block tal:repeat="action view/actions">
           <a href=""
             tal:attributes="href string:${action/action}&comment=${question/getId}"
+            class="standardButton"
             tal:content="action/title">
             Action
           </a>
-        </li>
-      </ul>
+        </tal:block>
+      </div>
     </div>
+    <div class="actions">
+      <a href="./++add++Comment"
+        class="standardButton">
+          Reply (Add comment)
+      </a>
+    </div>
+    <div class="actions">
+      <a href="./++add++CommentAnswer"
+        class="standardButton">
+          Reply (Add comment answer)
+      </a>
+    </div>    
   </div>
 
 
