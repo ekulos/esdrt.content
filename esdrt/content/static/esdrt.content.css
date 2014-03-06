@@ -1,3 +1,9 @@
+#edit-bar{
+	display: none;
+}
+.userrole-manager #edit-bar{
+	display: block;
+}
 .portaltype-observation .documentFirstHeading,
 .portaltype-question .documentFirstHeading{
 	display:none;
