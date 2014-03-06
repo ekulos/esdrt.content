@@ -1,7 +1,8 @@
-#edit-bar{
+#edit-bar, .formTabs{
 	display: none;
 }
-.userrole-manager #edit-bar{
+.userrole-manager #edit-bar,
+.userrole-manager .formTabs{
 	display: block;
 }
 .portaltype-observation .documentFirstHeading,
