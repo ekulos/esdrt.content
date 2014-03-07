@@ -17,7 +17,7 @@
               Ref. Number
             </th>
             <th>
-              Observation title
+              Question title
             </th>
             <th>
               Status
@@ -38,37 +38,36 @@
         </thead>
 
         <tbody>
-          <tr tal:repeat="observation view/get_observations">
-            <tal:item define="item observation/getObject;
-                              toLocalizedTime nocall:here/@@plone/toLocalizedTime
-            ">
+          <tr tal:repeat="question view/get_questions">
+            <tal:item define="observation question/get_observation;
+                              toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
               <td>
                 <a href=""
-                  tal:attributes="href observation/getURL"
+                  tal:attributes="href question/absolute_url"
                   tal:content="observation/getId">
                   UK-WAS-13-001
                 </a>
               </td>
               <td>
                 <a href=""
-                  tal:attributes="href observation/getURL"
-                  tal:content="observation/Title">
+                  tal:attributes="href question/absolute_url"
+                  tal:content="question/Title">
                   Observation title
                 </a>
               </td>
-              <td tal:content="item/get_status|nothing">
+              <td tal:content="question/get_status|nothing">
                 Observation title
               </td>
-              <td tal:content="item/country_value">
+              <td tal:content="observation/country_value">
                 Observation title
               </td>
-              <td tal:content="item/ghg_source_sectors_value">
+              <td tal:content="observation/ghg_source_sectors_value">
                 Observation title
               </td>
-              <td tal:content="item/crf_code_value">
+              <td tal:content="observation/crf_code_value">
                 Observation title
               </td>
-              <td tal:content="python:toLocalizedTime(item.modified(), True)">
+              <td tal:content="python:toLocalizedTime(question.modified(), True)">
                 Observation title
               </td>
 

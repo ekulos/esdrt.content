@@ -67,6 +67,9 @@ class Question(dexterity.Container):
 
         return 'unknown'
 
+    def get_observation(self):
+        return aq_parent(aq_inner(self))
+
 
 # View class
 # The view will automatically use a similarly named template in

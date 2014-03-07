@@ -1,7 +1,6 @@
 from AccessControl import getSecurityManager
-from Acquisition import aq_inner
 from five import grok
-from plone.app.contentlisting.interfaces import IContentListing
+from plone import api
 from zope.interface import Interface
 
 grok.templatedir('templates')
@@ -12,15 +11,18 @@ class WorklistView(grok.View):
     grok.name('worklistview')
     grok.require('zope2.View')
 
-    def get_observations(self):
+    def get_questions(self):
         items = []
+        catalog = api.portal.get_tool('portal_catalog')
         sm = getSecurityManager()
-        context = aq_inner(self.context)
-        for item in context.values():
-            if item.portal_type == 'Observation' and \
-                sm.checkPermission('View', item):
+        values = catalog.unrestrictedSearchResults(
+            portal_type='Question',
+            sort_on='modified',
+            sort_order='reverse',
+        )
+        for brain in values:
+            item = brain.getObject()
+            if sm.checkPermission('View', item):
                 items.append(item)
 
-        items.sort(lambda x, y: cmp(x.modified(), y.modified()))
-
-        return IContentListing(items)
+        return items
