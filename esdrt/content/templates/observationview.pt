@@ -183,14 +183,14 @@
                   </a>
                 </div>
                 <div class="cell position-7 width-2">
-                  <!--span tal:replace="python:view.get_user_name(question.Creator())"-->
+                  <span tal:replace="python:view.get_user_name(question.Creator())">
                     Mikel
-                  <!--/span-->
+                  </span>
                 </div>
                 <div class="cell position-9 width-1">
-                  <!--span tal:replace="question/get_status"-->
+                  <span tal:replace="question/get_status">
                     Pending
-                  <!--/span-->
+                  </span>
                 </div>
                 <div class="cell position-10 width-3">
                   <span tal:replace="python:toLocalizedTime(question.created(), True)">
