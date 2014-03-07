@@ -5,7 +5,6 @@ from Acquisition import aq_parent
 from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from esdrt.content.comment import IComment
-from esdrt.content.observation import IObservation
 from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
@@ -19,6 +18,7 @@ from z3c.form import field
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
+from esdrt.content.observation import hidden
 
 
 class IQuestion(form.Schema, IImageScaleTraversable):
@@ -94,11 +94,12 @@ class QuestionView(grok.View):
 
     def actions(self):
         context = aq_inner(self.context)
-        return getMenu(
+        menu_items = getMenu(
             'plone_contentmenu_workflow',
             context,
             self.request
             )
+        return [mitem for mitem in menu_items if not hidden(mitem)]
 
     def get_user_name(self, userid):
         user = api.user.get(username=userid)
