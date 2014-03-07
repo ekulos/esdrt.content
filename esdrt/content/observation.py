@@ -233,6 +233,11 @@ class ObservationView(grok.View):
             context=self.request
         )
 
+    def can_add_question(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: Add Question', self)
+
+
     # def update(self):
     #     history_metadata = self.repo_tool.getHistoryMetadata(self.context)
     #     retrieve = history_metadata.retrieve

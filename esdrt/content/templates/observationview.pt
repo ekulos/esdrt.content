@@ -190,7 +190,7 @@
                 <div class="cell position-9 width-1">
                   <!--span tal:replace="question/get_status"-->
                     Pending
-                  <!--/span-->                  
+                  <!--/span-->
                 </div>
                 <div class="cell position-10 width-3">
                   <span tal:replace="python:toLocalizedTime(question.created(), True)">
@@ -206,12 +206,13 @@
             </tal:comment>
           </tal:block>
         </tal:question>
-        <div class="actions">
+        <div class="actions" tal:condition="view/can_add_question">
           <a href="./++add++Question"
+            tal:attributes="href string:${here/absolute_url}/++add++Question"
             class="standardButton">
             Add new question
           </a>
-        </div>        
+        </div>
       </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
         tal:content="structure context/technical_corrections">
