@@ -44,7 +44,7 @@
       <div>
 
       </div>
-      <div class="actions">
+      <div class="actions" tal:condition="repeat/question/end">
         <tal:block tal:repeat="action view/actions">
           <a href=""
             tal:attributes="href string:${action/action}&comment=${question/getId}"

@@ -145,6 +145,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=ask-answer-approval" category="workflow" icon="">Ask Answer Approval</action>
   <guard>
    <guard-role>MSExpert</guard-role>
+   <guard-expression>object/has_answers</guard-expression>
   </guard>
  </transition>
  <transition transition_id="ask-question-approval" title="Ask Question Approval" new_state="pending-approval" trigger="USER" before_script="" after_script="">

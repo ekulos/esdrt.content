@@ -71,6 +71,12 @@ class Question(dexterity.Container):
     def get_observation(self):
         return aq_parent(aq_inner(self))
 
+    def has_answers(self):
+        items = self.values()
+        questions = [q for q in items if q.portal_type == 'Comment']
+        answers = [q for q in items if q.portal_type == 'CommentAnswer']
+
+        return len(questions) == len(answers)
 
 # View class
 # The view will automatically use a similarly named template in
@@ -116,13 +122,19 @@ class QuestionView(grok.View):
 
     def can_add_comment(self):
         sm = getSecurityManager()
-        return sm.checkPermission('esdrt.content: Add Comment', self)
+        permission = sm.checkPermission('esdrt.content: Add Comment', self)
+        context = aq_inner(self.context)
+        questions = [q for q in context.values() if q.portal_type == 'Comment']
+        answers = [q for q in context.values() if q.portal_type == 'CommentAnswer']
+        return permission and len(questions) == len(answers)
 
     def can_add_answer(self):
         sm = getSecurityManager()
-        return sm.checkPermission('esdrt.content: Add CommentAnswer', self)
-
-
+        permission = sm.checkPermission('esdrt.content: Add CommentAnswer', self)
+        context = aq_inner(self.context)
+        questions = [q for q in context.values() if q.portal_type == 'Comment']
+        answers = [q for q in context.values() if q.portal_type == 'CommentAnswer']
+        return permission and len(questions) > len(answers)
 
 
 class AddForm(dexterity.AddForm):
