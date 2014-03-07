@@ -26,3 +26,7 @@ class WorklistView(grok.View):
                 items.append(item)
 
         return items
+
+    def can_add_observation(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: Add Observation', self)
