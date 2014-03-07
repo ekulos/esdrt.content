@@ -78,6 +78,19 @@ class Question(dexterity.Container):
 
         return len(questions) == len(answers)
 
+    def can_close(self):
+        """
+        Check if this observation can be closed:
+            - There has been at least, one question-answer.
+        """
+        items = self.values()
+        questions = [q for q in items if q.portal_type == 'Comment']
+        answers = [q for q in items if q.portal_type == 'CommentAnswer']
+
+        return len(questions) > 0 and len(questions) == len(answers)
+
+
+
 # View class
 # The view will automatically use a similarly named template in
 # templates called questionview.pt .
