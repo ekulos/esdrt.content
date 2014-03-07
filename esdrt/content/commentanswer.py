@@ -43,7 +43,8 @@ class CommentAnswer(dexterity.Container):
 
     def can_edit(self):
         sm = getSecurityManager()
-        return sm.checkPermission('Modify portal content', self)
+        parent = aq_parent(self)
+        return sm.checkPermission('esdrt.content: Add CommentAnswer', parent)
 
 
 # View class
@@ -106,7 +107,7 @@ class AddForm(dexterity.AddForm):
 class EditForm(dexterity.EditForm):
     grok.name('edit')
     grok.context(ICommentAnswer)
-    grok.require('cmf.ModifyPortalContent')
+    grok.require('esdrt.content.AddCommentAnswer')
 
     def updateFields(self):
         super(EditForm, self).updateFields()

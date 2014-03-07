@@ -12,7 +12,7 @@
  <permission>esdrt.content: Add CommentAnswer</permission>
  <state state_id="answered" title="Answered">
   <exit-transition transition_id="ask-validation"/>
-  <exit-transition transition_id="close-lr"/>
+  <exit-transition transition_id="validate-answer-msa"/>
   <permission-map name="Access contents information" acquired="True">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -34,6 +34,8 @@
  </state>
  <state state_id="draft" title="Draft">
   <exit-transition transition_id="ask-question-approval"/>
+  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="close-lr"/>
   <permission-map name="Access contents information" acquired="True">
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
@@ -127,7 +129,7 @@
   </permission-map>
  </state>
  <state state_id="validate-answer" title="Validate Answer">
-  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="validate-answer"/>
  </state>
  <transition transition_id="answer" title="Answer" new_state="answered" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=answer" category="workflow" icon="">Answer</action>
@@ -152,6 +154,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=ask-question-approval" category="workflow" icon="">Ask Question Approval</action>
   <guard>
    <guard-role>Owner</guard-role>
+   <guard-expression>object/unanswered_questions</guard-expression>
   </guard>
  </transition>
  <transition transition_id="ask-validation" title="Ask Validation" new_state="validate-answer" trigger="USER" before_script="" after_script="">
@@ -166,16 +169,18 @@
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
- <transition transition_id="close" title="Close" new_state="closed" trigger="USER" before_script="" after_script="">
+ <transition transition_id="close" title="Close Question" new_state="closed" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Close</action>
   <guard>
    <guard-role>ExpertReviewer</guard-role>
+   <guard-expression>object/can_close</guard-expression>
   </guard>
  </transition>
- <transition transition_id="close-lr" title="Close (LR)" new_state="closed" trigger="USER" before_script="" after_script="">
+ <transition transition_id="close-lr" title="Close Question (LR)" new_state="closed" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=close-lr" category="workflow" icon="">Close (LR)</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
+   <guard-expression>object/can_close</guard-expression>
   </guard>
  </transition>
  <transition transition_id="recall-msa" title="Recall (MSA)" new_state="pending-answer" trigger="USER" before_script="" after_script="">
@@ -206,6 +211,18 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=redraft-msa" category="workflow" icon="">Redraft (MSA)</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="validate-answer" title="Validate Answer" new_state="draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer" category="workflow" icon="">Validate Answer</action>
+  <guard>
+   <guard-role>ExpertReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="validate-answer-msa" title="Validate Answer (MSA)" new_state="draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer-msa" category="workflow" icon="">Validate Answer (MSA)</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">

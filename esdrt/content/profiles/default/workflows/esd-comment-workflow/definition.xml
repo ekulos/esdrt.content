@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<dc-workflow workflow_id="esd-comment-workflow" title="ESD Comment Workflow" description="" state_variable="review_state" initial_state="private" manager_bypass="True">
+<dc-workflow workflow_id="esd-comment-workflow" title="ESD Comment Workflow" description="" state_variable="review_state" initial_state="initial" manager_bypass="True">
  <instance-creation-conditions>
    <guard>
     <guard-permission>esdrt.content: Add Comment</guard-permission>
@@ -10,6 +10,16 @@
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
+ <state state_id="initial" title="">
+  <permission-map name="Access contents information" acquired="True">
+  </permission-map>
+  <permission-map name="List folder contents" acquired="True">
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+  </permission-map>
+  <permission-map name="View" acquired="True">
+  </permission-map>
+ </state>
  <state state_id="pending" title="Pending">
   <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="redraft"/>

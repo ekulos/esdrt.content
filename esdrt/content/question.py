@@ -78,6 +78,13 @@ class Question(dexterity.Container):
 
         return len(questions) == len(answers)
 
+    def unanswered_questions(self):
+        items = self.values()
+        questions = [q for q in items if q.portal_type == 'Comment']
+        answers = [q for q in items if q.portal_type == 'CommentAnswer']
+
+        return len(questions) > len(answers)
+
     def can_close(self):
         """
         Check if this observation can be closed:
