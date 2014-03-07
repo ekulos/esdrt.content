@@ -79,6 +79,7 @@
       </table>
       <div class="actions" tal:condition="view/can_add_observation">
         <a href="./++add++Observation"
+          tal:attributes="href string:${here/absolute_url}/++add++Observation"
           class="standardButton">
             New observation
         </a>
