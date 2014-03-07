@@ -64,7 +64,7 @@
  <state state_id="draft" title="Draft">
   <exit-transition transition_id="send-comments"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>Counterpart</permission-role>
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -76,7 +76,7 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
-   <permission-role>Counterpart</permission-role>
+   <permission-role>CounterPart</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
@@ -86,7 +86,7 @@
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>Counterpart</permission-role>
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
@@ -238,7 +238,7 @@
  <transition transition_id="send-comments" title="Send Comments" new_state="drafted" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=send-comments" category="workflow" icon="">Send Comments</action>
   <guard>
-   <guard-role>Counterpart</guard-role>
+   <guard-role>CounterPart</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="reviewer_queue" title="">
@@ -252,7 +252,7 @@
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
-   
+
    <expression>transition/getId|nothing</expression>
   </default>
   <guard>
@@ -261,7 +261,7 @@
  <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
   <description>The ID of the user who performed the previous transition</description>
   <default>
-   
+
    <expression>user/getId</expression>
   </default>
   <guard>
@@ -270,7 +270,7 @@
  <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
-   
+
    <expression>python:state_change.kwargs.get('comment', '')</expression>
   </default>
   <guard>
@@ -279,7 +279,7 @@
  <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
   <description>Provides access to workflow history</description>
   <default>
-   
+
    <expression>state_change/getHistory</expression>
   </default>
   <guard>
@@ -290,7 +290,7 @@
  <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
-   
+
    <expression>state_change/getDateTime</expression>
   </default>
   <guard>
