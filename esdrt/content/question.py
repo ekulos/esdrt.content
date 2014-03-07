@@ -1,3 +1,4 @@
+from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
