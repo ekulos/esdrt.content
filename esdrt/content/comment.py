@@ -1,4 +1,4 @@
-from plone.app.textfield.value import RichTextValue
+from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -6,6 +6,7 @@ from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from five import grok
 from plone.app.textfield import RichText
+from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
@@ -38,6 +39,10 @@ class IComment(form.Schema, IImageScaleTraversable):
 class Comment(dexterity.Container):
     grok.implements(IComment)
     # Add your class methods and properties here
+
+    def can_edit(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('Modify portal content', self)
 
 
 # View class
@@ -94,3 +99,14 @@ class AddForm(dexterity.AddForm):
         content.text = RichTextValue(text, 'text/html', 'text/html')
 
         return aq_base(content)
+
+
+class EditForm(dexterity.EditForm):
+    grok.name('edit')
+    grok.context(IComment)
+    grok.require('cmf.ModifyPortalContent')
+
+    def updateFields(self):
+        super(EditForm, self).updateFields()
+        self.fields = field.Fields(IComment).select('text')
+        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
