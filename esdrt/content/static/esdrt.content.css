@@ -1,3 +1,14 @@
+#edit-bar, .formTabs{
+	display: none;
+}
+.userrole-manager #edit-bar,
+.userrole-manager .formTabs{
+	display: block;
+}
+.portaltype-observation .documentFirstHeading,
+.portaltype-question .documentFirstHeading{
+	display:none;
+}
 .esdDiv {
 	overflow: hidden;
 	margin-top: 4px;
@@ -56,4 +67,153 @@
 }
 .estTable tbody tr:nth-child(even) {
 	background: #fff;
+}
+.standardButton{
+	color:#fff !important;
+	background:#346F83;
+	background-image: -webkit-gradient(linear,0% 40%,0% 70%,from(#478EA5),to(#346F83));
+	background: -webkit-linear-gradient(#478EA5, #346F83); /* */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#478EA5', endColorstr='#346F83'); /* */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#478EA5', endColorstr='#346F83')"; /* */
+	background-image: -moz-linear-gradient(270deg, #478EA5, #346F83);
+	background-image: -ms-linear-gradient(top,#478EA5,#346F83);
+	background-image: -o-linear-gradient(top,#478EA5,#346F83);
+	background-image: linear-gradient(top,#478EA5,#346F83);
+	font: bold 12px Verdana, Arial, sans-serif;
+	padding: 7px 11px;
+	position: relative;
+	display: inline-block;
+	text-shadow: 0 1px 1px #000;
+	-webkit-transition: border-color .218s;
+	-moz-transition: border .218s;
+	-ms-transition: border-color .218s;
+	-o-transition: border-color .218s;
+	transition: border-color .218s;
+	-webkit-transition: box-shadow .218s;
+	-moz-transition: box-shadow .218s;
+	-ms-transition: box-shadow .218s;
+	-o-transition: box-shadow .218s;
+	transition: box-shadow .218s;
+	border: 1px solid #346F83;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+.standardButton:hover,
+#content a.standardButton:hover{
+	background-color:#f6a800;
+	background-image: -webkit-gradient(linear,0% 40%,0% 70%,from(orange),to(#FF9123));
+	background: -webkit-linear-gradient(orange, #FF9123); /* */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='orange', endColorstr='#FF9123'); /* */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='orange', endColorstr='#FF9123')"; /* */
+	background-image: -moz-linear-gradient(270deg, orange, #FF9123);
+	background-image: -ms-linear-gradient(top,orange,#FF9123);
+	background-image: -o-linear-gradient(top,orange,#FF9123);
+	background-image: linear-gradient(top,orange,#FF9123);
+	color: #FFFFFF !important;
+	cursor:pointer;
+	border-color: #999999;
+	-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	-ms-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	-o-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	text-shadow: none;
+}
+.standardButton a, .standardButton a:hover, .standardButton a:visited {
+	color: #FFFFFF !important;
+}
+.actions{
+	text-align: right;
+	margin-top: 10px;
+}
+#qa{
+	margin-top: 10px;
+}
+.question {
+	background-color: white;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid lightgray;
+	position: relative;
+	margin-top: 5px;
+	font-size: 13px !important;
+}
+.question.comment{
+	margin-right:10px;
+}
+.question.commentanswer{
+	margin-left:10px	
+}
+.question div{
+	padding: 5px;
+}
+.question .from{
+	border-bottom: 1px solid lightgray;
+}
+.question .messageDate{
+	float: right;
+}
+.arrow-left-border{
+	border-color: transparent lightgray transparent transparent;
+	border-style: solid;
+	border-width: 10px;
+	height: 0;
+	width: 0;
+	top: 33px;
+	left: -21px;
+	position: absolute;
+	padding: 0px !important;
+}
+.arrow-left{
+	border-color: transparent white transparent transparent;
+	border-style: solid;
+	border-width: 10px;
+	height: 0;
+	width: 0;
+	top: 33px;
+	left: -20px;
+	position: absolute;
+	padding: 0px !important;
+}
+.arrow-right-border{
+	border-color: transparent transparent transparent lightgray;
+	border-style: solid;
+	border-width: 10px;
+	height: 0;
+	width: 0;
+	top: 33px;
+	right: -21px;
+	position: absolute;
+	padding: 0px !important;
+}
+.arrow-right{
+	border-color: transparent transparent transparent white;
+	border-style: solid;
+	border-width: 10px;
+	height: 0;
+	width: 0;
+	top: 33px;
+	right: -20px;
+	position: absolute;
+	padding: 0px !important;
+}
+.listing {
+	max-width: 100% !important;
+	width: 100% !important;
+	overflow: auto !important;
+	border: 1px solid #b6b6b6 !important;
+	color: #666666 !important;
+	line-height: normal !important;
+}
+.listing th{
+	text-align: center !important;
+	background-color: #005e7d !important;
+	color: #fff !important;
+	padding: 4px !important;
+	width: 9% !important;
+}
+.listing td{
+	padding: 4px !important;
 }

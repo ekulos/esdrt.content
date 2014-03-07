@@ -77,7 +77,12 @@
         </tbody>
 
       </table>
-
+      <div class="actions">
+        <a href="./++add++Observation"
+          class="standardButton">
+            New observation
+        </a>
+      </div>
 
     </metal:content-core>
   </metal:main>

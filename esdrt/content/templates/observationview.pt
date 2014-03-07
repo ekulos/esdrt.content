@@ -141,30 +141,32 @@
     </div>
   </metal:observation>
 
-  <div id="actions" tal:define="actions view/get_menu_actions">
-    <h2>
-      Actions
-    </h2>
-    <ul>
-      <li tal:repeat="action actions">
+  <div class="actions" tal:define="actions view/get_menu_actions">
+    <tal:block  tal:repeat="action actions">
         <a href=""
           tal:attributes="href action/action"
+          class="standardButton"
           tal:content="action/title">
           Action
         </a>
-      </li>
-    </ul>
-
+    </tal:block>
   </div>
 
     <ul class="eea-tabs">
       <li>Question chat room</li>
-      <li tal:condition="view/isManager">Technical corrections</li>
+      <li tal:condition="view/isManager" style="width: 150px;">Technical corrections</li>
     </ul>
     <div class="eea-tabs-panels">
       <div class="eea-tabs-panel questions">
+        <div class="row">
+          <div class="cell position-0 width-7 esdLabel">Question</div>
+          <div class="cell position-7 width-2 esdLabel">Author</div>
+          <div class="cell position-9 width-1 esdLabel">Status</div>
+          <div class="cell position-10 width-3 esdLabel">Creation date</div>
+          <div class="cell position-13 width-3 esdLabel">Last update</div>
+        </div>
         <tal:question repeat="question_item view/get_questions">
-          <div class="question"
+          <tal:block
               tal:define="question question_item/getObject;
                           first_comment question/getFirstComment;
                           cropText nocall:view/@@plone/cropText;
@@ -172,46 +174,44 @@
                         "
               >
             <tal:comment condition="nocall:question">
-              <h2>
-                <a href=""
-                  tal:attributes="href first_comment/absolute_url"
-                  tal:content="question/Title">
-                  Text of the comment
-                </a>
-              </h2>
-              <p class="txt"
-                tal:content="first_comment/@@text-transform/text/text/plain">
-                Text of the question
-              </p>
-              <dl class="metadata">
-                <dt>
-                  Author
-                </dt>
-                <dd tal:replace="python:view.get_user_name(question.Creator())">
-                  Mikel
-                </dd>
-                <dt>
-                  Status
-                </dt>
-                <dd tal:replace="question/get_status">
-                  Pending
-                </dd>
-                <dt>
-                  Creation date
-                </dt>
-                <dd tal:replace="python:toLocalizedTime(question.created(), True)">
-                  2014-01-01
-                </dd>
-                <dt>
-                  Last Modification
-                </dt>
-                <dd tal:replace="python:toLocalizedTime(question.modified(), True)">
-                  2014-01-01
-                </dd>
-              </dl>
+              <div class="row">
+                <div class="cell position-0 width-7">
+                  <a href=""
+                    tal:attributes="href first_comment/absolute_url"
+                    tal:content="first_comment/@@text-transform/text/text/plain">
+                    Text of the question
+                  </a>
+                </div>
+                <div class="cell position-7 width-2">
+                  <!--span tal:replace="python:view.get_user_name(question.Creator())"-->
+                    Mikel
+                  <!--/span-->
+                </div>
+                <div class="cell position-9 width-1">
+                  <!--span tal:replace="question/get_status"-->
+                    Pending
+                  <!--/span-->                  
+                </div>
+                <div class="cell position-10 width-3">
+                  <span tal:replace="python:toLocalizedTime(question.created(), True)">
+                    2014-01-01
+                  </span>
+                </div>
+                <div class="cell position-13 width-3">
+                  <span tal:replace="python:toLocalizedTime(question.modified(), True)">
+                    2014-01-01
+                  </span>
+                </div>
+              </div>
             </tal:comment>
-          </div>
+          </tal:block>
         </tal:question>
+        <div class="actions">
+          <a href="./++add++Question"
+            class="standardButton">
+            Add new question
+          </a>
+        </div>        
       </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
         tal:content="structure context/technical_corrections">
