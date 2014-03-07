@@ -22,6 +22,19 @@ from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 
 
+HIDDEN_ACTIONS = [
+    '/content_status_history',
+    '/placeful_workflow_configuration',
+]
+
+
+def hidden(menuitem):
+    for action in HIDDEN_ACTIONS:
+        if menuitem.get('action').endswith(action):
+            return True
+    return False
+
+
 class ITableRowSchema(form.Schema):
 
     line_title = schema.TextLine(title=_(u'Title'), required=True)
@@ -188,18 +201,7 @@ class ObservationView(grok.View):
             context,
             self.request
             )
-
-        HIDE_ACTIONS = ['/content_status_history',
-            '/placeful_workflow_configuration',
-        ]
-
-        def hide(menuitem):
-            for action in HIDE_ACTIONS:
-                if menuitem.get('action').endswith(action):
-                    return True
-            return False
-
-        return [mitem for mitem in menu_items if not hide(mitem)]
+        return [mitem for mitem in menu_items if not hidden(mitem)]
 
     def get_questions(self):
         context = aq_inner(self.context)
