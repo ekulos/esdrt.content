@@ -112,6 +112,16 @@ class QuestionView(grok.View):
             self.request
             )
 
+    def can_add_comment(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: Add Comment', self)
+
+    def can_add_answer(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: Add CommentAnswer', self)
+
+
+
 
 class AddForm(dexterity.AddForm):
     grok.name('esdrt.content.question')
