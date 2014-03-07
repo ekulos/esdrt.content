@@ -24,8 +24,8 @@
         i18n:attributes="title"
         />
     <role
-        id="Counterpart"
-        title="Counterpart"
+        id="CounterPart"
+        title="CounterPart"
         permission="Sharing page: Delegate roles"
         i18n:attributes="title"
         />

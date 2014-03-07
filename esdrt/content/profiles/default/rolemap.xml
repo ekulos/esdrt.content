@@ -5,7 +5,7 @@
     <role name="LeadReviewer"/>
     <role name="MSExpert"/>
     <role name="MSAuthority"/>
-    <role name="Counterpart"/>
+    <role name="CounterPart"/>
     <role name="SectorExpertReviewer"/>
   </roles>
   <permissions>
