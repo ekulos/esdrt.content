@@ -11,7 +11,14 @@
   <metal:content-core define-macro="content-core"
     tal:define="observation view/observation;
                 context nocall:observation">
-
+    <div class="backButton">
+      <a 
+        tal:attributes="href observation/absolute_url"
+          class="standardButton">
+          <span class="eea-icon"><!-- --></span>
+            Back
+      </a>
+    </div>
     <metal:obs use-macro="context/@@view/macros/observation-info" />
 
 

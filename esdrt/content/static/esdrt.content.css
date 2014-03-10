@@ -123,6 +123,9 @@
 .standardButton a, .standardButton a:hover, .standardButton a:visited {
 	color: #FFFFFF !important;
 }
+.backButton .eea-icon:before{
+  content: "\f053";
+}
 .actions{
 	text-align: right;
 	margin-top: 10px;
