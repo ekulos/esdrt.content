@@ -207,6 +207,18 @@
 	color: #666666 !important;
 	line-height: normal !important;
 }
+.listing tr.pending {
+	background-color: #faefe1;
+}
+.listing tr.draft {
+	background-color: #eee;
+}
+.listing tr.open {
+	background-color: #f6fae1;
+}
+.listing tr.closed {
+	background-color: #ededed;
+}
 .listing th{
 	text-align: center !important;
 	background-color: #005e7d !important;
