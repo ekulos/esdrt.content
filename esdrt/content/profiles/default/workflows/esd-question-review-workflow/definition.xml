@@ -113,7 +113,6 @@
  <state state_id="pending-approval" title="Pending Approval">
   <exit-transition transition_id="redraft"/>
   <exit-transition transition_id="approve-question"/>
-  <exit-transition transition_id="recall-question-er"/>
   <permission-map name="Access contents information" acquired="True">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
@@ -126,6 +125,43 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="recalled-lr" title="Recalled (LR)">
+  <exit-transition transition_id="approve-question"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Comment" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Add CommentAnswer" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="recalled-msa" title="Recalled (MSA)">
+  <exit-transition transition_id="answer"/>
+  <permission-map name="Access contents information" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="True">
+  </permission-map>
+  <permission-map name="View" acquired="True">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Comment" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Add CommentAnswer" acquired="True">
   </permission-map>
  </state>
  <state state_id="validate-answer" title="Validate Answer">
@@ -183,19 +219,13 @@
    <guard-expression>object/can_close</guard-expression>
   </guard>
  </transition>
- <transition transition_id="recall-msa" title="Recall (MSA)" new_state="pending-answer" trigger="USER" before_script="" after_script="">
+ <transition transition_id="recall-msa" title="Recall Answer (MSA)" new_state="recalled-msa" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=recall-msa" category="workflow" icon="">Recall</action>
   <guard>
-   <guard-role>MSExpert</guard-role>
+   <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
- <transition transition_id="recall-question-er" title="Recall Question (ER)" new_state="draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=recall-question-er" category="workflow" icon="">Recall Question</action>
-  <guard>
-   <guard-role>Owner</guard-role>
-  </guard>
- </transition>
- <transition transition_id="recall-question-lr" title="Recall Question (LR)" new_state="pending-approval" trigger="USER" before_script="" after_script="">
+ <transition transition_id="recall-question-lr" title="Recall Question (LR)" new_state="recalled-lr" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=recall-question-lr" category="workflow" icon="">Recall Question (LR)</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
