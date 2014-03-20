@@ -1,23 +1,16 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:plone="http://namespaces.plone.org/plone">
-
-    <adapter
-        for="plone.app.folder.folder.IATUnifiedFolder"
-        provides="zope.container.interfaces.INameChooser"
-        factory=".reference_number.ReferenceNumberCreator"
-    />
+    xmlns="http://namespaces.zope.org/zope">
 
     <adapter
         for="plone.dexterity.interfaces.IDexterityContent"
-        provides=".interfacaces.INotificationSubscriptions"
+        provides=".interfaces.INotificationSubscriptions"
         factory=".dexterity.NotificationSubscriptions"
     />
 
     <adapter
         for="plone.dexterity.interfaces.IDexterityContent"
-        provides=".interfacaces.INotificationUnsubscriptions"
-        factory=".dexterity.NotificationSubscriptions"
+        provides=".interfaces.INotificationUnsubscriptions"
+        factory=".dexterity.NotificationUnsubscriptions"
     />
 
 

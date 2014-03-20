@@ -152,6 +152,18 @@
     </tal:block>
   </div>
 
+  <div class="subscription actions" tal:define="actions view/subscription_options">
+    <tal:block  tal:repeat="action actions">
+        <a href=""
+          tal:attributes="href action/action"
+          class="standardButton"
+          i18n:translate=""
+          tal:content="action/title">
+          Action
+        </a>
+    </tal:block>
+  </div>
+
     <ul class="eea-tabs">
       <li>Question chat room</li>
       <li tal:condition="view/isManager" style="width: 150px;">Technical corrections</li>

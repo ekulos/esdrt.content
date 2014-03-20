@@ -3,6 +3,8 @@ from Acquisition import aq_inner
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
+from esdrt.content.subscriptions.interfaces import INotificationSubscriptions
+from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
 from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
@@ -11,6 +13,7 @@ from plone.directives import dexterity, form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
+from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.app.container.interfaces import IObjectAddedEvent
@@ -239,6 +242,38 @@ class ObservationView(grok.View):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Question', self)
 
+    def subscription_options(self):
+        actions = []
+        # actions.append(
+        #     dict(
+        #         url='/addsubscription',
+        #         name=_(u'Add Subscription')
+        #     )
+        # )
+        # actions.append(
+        #     dict(
+        #         url='/deletesubscription',
+        #         name=_(u'Delete Subscription')
+        #     )
+        # )
+        url = self.context.absolute_url()
+        actions.append(
+            dict(
+                action='%s/unsubscribenotifications' % url,
+                title=_(u'Unsubscribe from notifications')
+            )
+        )
+        actions.append(
+            dict(
+                action='%s/deleteunsubscribenotifications' % url,
+                title=_(u'Delete unsubscription from notifications')
+            )
+        )
+
+        return actions
+
+
+
 
     # def update(self):
     #     history_metadata = self.repo_tool.getHistoryMetadata(self.context)
@@ -274,6 +309,75 @@ class ObservationView(grok.View):
     #             id2=self.versionTitle(version1))
     #     self.changes = [change for change in changeset.getDiffs()
     #                   if not change.same]
+
+
+class AddSubscription(grok.View):
+    grok.context(IObservation)
+    grok.require('zope2.View')
+
+    def render(self):
+        context = self.context
+        user = api.user.get_current()
+        ok = INotificationSubscriptions(context).add_notifications(user.getId())
+        status = IStatusMessage(self.request)
+        if ok:
+            status.add(_(u'Subscription enabled'), type=u'info')
+        else:
+            status.add(_(u'Subscription already enabled'), type=u'info')
+        return self.request.response.redirect(self.context.absolute_url())
+
+
+class DeleteSubscription(grok.View):
+    grok.context(IObservation)
+    grok.require('zope2.View')
+
+    def render(self):
+        context = self.context
+        user = api.user.get_current()
+        ok = INotificationSubscriptions(context).del_notifications(user.getId())
+        status = IStatusMessage(self.request)
+        if ok:
+            status.add(_(u'Correctly unsubscribed'), type=u'info')
+        else:
+            status.add(_(u'You were not subscribed'), type=u'info')
+        return self.request.response.redirect(self.context.absolute_url())
+
+
+class UnsubscribeNotifications(grok.View):
+    grok.context(IObservation)
+    grok.require('zope2.View')
+
+    def render(self):
+        context = self.context
+        user = api.user.get_current()
+        ok = INotificationUnsubscriptions(context).unsubscribe(user.getId())
+        status = IStatusMessage(self.request)
+        if ok:
+            status.add(_(u'Correctly unsubscribed'), type=u'info')
+        else:
+            status.add(_(u'You were already unsubscribed'), type=u'info')
+        return self.request.response.redirect(self.context.absolute_url())
+
+
+class DeleteUnsubscribeNotifications(grok.View):
+    grok.context(IObservation)
+    grok.require('zope2.View')
+
+    def render(self):
+        context = self.context
+        user = api.user.get_current()
+        ok = INotificationUnsubscriptions(context).delete_unsubscribe(
+            user.getId()
+        )
+        status = IStatusMessage(self.request)
+        if ok:
+            status.add(_(u'You will receive again notifications'),
+                type=u'info')
+        else:
+            status.add(_(u'You were not in the unsubscription list'),
+                type=u'info')
+        return self.request.response.redirect(self.context.absolute_url())
+
 
 @grok.subscribe(IObservation, IObjectAddedEvent)
 def add_observation(context, event):

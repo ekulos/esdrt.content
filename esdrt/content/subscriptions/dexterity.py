@@ -26,9 +26,12 @@ class NotificationSubscriptions(object):
     def del_notifications(self, userid):
         annotated = IAnnotations(self.context)
         data = annotated.get(SUBSCRIPTION_KEY, OOSet())
-        if data.remove(userid):
+        try:
+            data.remove(userid)
             annotated[SUBSCRIPTION_KEY] = data
             return 1
+        except KeyError:
+            return 0
 
         return 0
 
@@ -53,8 +56,10 @@ class NotificationUnsubscriptions(object):
     def delete_unsubscribe(self, userid):
         annotated = IAnnotations(self.context)
         data = annotated.get(UNSUBSCRIPTION_KEY, OOSet())
-        if data.remove(userid):
+        try:
+            data.remove(userid)
             annotated[UNSUBSCRIPTION_KEY] = data
             return 1
-
+        except KeyError:
+            return 0
         return 0
