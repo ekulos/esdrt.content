@@ -17,6 +17,7 @@
   <include package=".adapters" />
   <include package=".browser" />
   <include package=".roles" />
+  <include package=".subscriptions" />
 
   <!-- Grok the package to initialise schema interfaces and content classes -->
   <grok:grok package="." />
