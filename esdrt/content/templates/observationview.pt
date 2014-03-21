@@ -141,6 +141,15 @@
     </div>
   </metal:observation>
 
+  <div class="edit actions">
+      <a href=""
+          tal:attributes="href string:${here/absolute_url}/modifications"
+          class="standardButton">
+          Edit
+      </a>
+
+  </div>
+
   <div class="actions" tal:define="actions view/get_menu_actions">
     <tal:block  tal:repeat="action actions">
         <a href=""

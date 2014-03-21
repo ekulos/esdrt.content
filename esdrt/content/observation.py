@@ -1,3 +1,4 @@
+from z3c.form import field
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from collective.z3cform.datagridfield import DataGridFieldFactory
@@ -160,6 +161,8 @@ class Observation(dexterity.Container):
     def get_status(self):
         return api.content.get_state(self)
 
+
+
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
@@ -241,6 +244,10 @@ class ObservationView(grok.View):
     def can_add_question(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Question', self)
+
+    def can_edit(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('Modify portal content', self)
 
     def subscription_options(self):
         actions = []
@@ -377,6 +384,36 @@ class DeleteUnsubscribeNotifications(grok.View):
             status.add(_(u'You were not in the unsubscription list'),
                 type=u'info')
         return self.request.response.redirect(self.context.absolute_url())
+
+
+class ModificationForm(dexterity.EditForm):
+    grok.name('modifications')
+    grok.context(IObservation)
+    grok.require('cmf.ModifyPortalContent')
+
+    def updateFields(self):
+        super(ModificationForm, self).updateFields()
+
+        user = api.user.get_current()
+        roles = api.user.get_roles(username=user.getId())
+        fields = []
+        if 'ExpertReviewer' in roles:
+            fields = [
+                'text', 'country', 'status_flag',
+                'year', 'crf_code', 'ghg_source_category',
+                'ghg_source_sectors', 'ghg_estimations',
+            ]
+        elif 'LeadReviewer' in roles:
+            fields = ['text', 'status_flag']
+        elif 'CounterPart' in roles:
+            fields = ['text', 'status_flag']
+
+        self.fields = field.Fields(IObservation).select(*fields)
+        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+        if 'status_flag' in fields:
+            self.fields['status_flag'].widgetFactory = CheckBoxFieldWidget
+        if 'ghg_estimations' in fields:
+            self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
 
 
 @grok.subscribe(IObservation, IObjectAddedEvent)
