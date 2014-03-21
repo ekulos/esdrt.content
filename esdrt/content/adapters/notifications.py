@@ -1,3 +1,4 @@
+from Acquisition import aq_parent
 from collective.contentrules.mailadapter.interfaces import IRecipientsResolver
 from esdrt.content.observation import IObservation
 from esdrt.content.question import IQuestion
@@ -79,13 +80,6 @@ class QuestionNotificationReceivers(object):
             wf_id='esd-question-review-workflow'
         )
         actors = [inf['actor'] for inf in info]
-
-        # 2. Get all involved users in the observation
-        observation = aq_parent(context)
-        info = wtool.getInfoFor(observation, 'review_history',
-            wf_id='esd-review-workflow'
-        )
-        actors.extend([inf['actor'] for inf in info])
 
         # 2. Explicit subscribed users
         actors.extend(INotificationSubscriptions(context).get())
