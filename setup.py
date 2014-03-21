@@ -31,7 +31,8 @@ setup(name='esdrt.content',
           'plone.namedfile [blobs]',
           'collective.z3cform.datagridfield',
           'plone.api',
-          'Products.ATVocabularyManager'
+          'Products.ATVocabularyManager',
+          'collective.contentrules.mailadapter',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
