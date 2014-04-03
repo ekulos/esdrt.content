@@ -16,9 +16,9 @@ setup(name='esdrt.content',
         "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='',
-      author='',
-      author_email='',
-      url='http://svn.plone.org/svn/collective/',
+      author='Mikel Larreategi',
+      author_email='mlarreategi@codesyntax.com',
+      url='https://github.com/eea/eea.esdrt.content/',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['esdrt'],
@@ -33,7 +33,8 @@ setup(name='esdrt.content',
           'plone.api',
           'Products.ATVocabularyManager',
           'collective.contentrules.mailadapter',
-          # -*- Extra requirements: -*-
+          'plone.app.versioningbehavior',
+          'plone.app.workflowmanager'
       ],
       entry_points="""
       # -*- Entry points: -*-
@@ -44,6 +45,5 @@ setup(name='esdrt.content',
       # addcontent support from paster and before you distribute
       # your package.
       setup_requires=["PasteScript"],
-      paster_plugins = ["ZopeSkel"],
-
+      paster_plugins=["ZopeSkel"],
       )
