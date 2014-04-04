@@ -1,6 +1,5 @@
 Introduction
 ============
 
-
-
-This product may contain traces of nuts.
+Product containing content-types and workflow information for Effort Sharing Decission
+Review Tool
