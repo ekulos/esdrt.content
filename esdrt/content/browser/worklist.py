@@ -12,20 +12,13 @@ class WorklistView(grok.View):
     grok.require('zope2.View')
 
     def get_questions(self):
-        items = []
         catalog = api.portal.get_tool('portal_catalog')
-        sm = getSecurityManager()
-        values = catalog.unrestrictedSearchResults(
+        values = catalog.searchResults(
             portal_type='Question',
             sort_on='modified',
             sort_order='reverse',
         )
-        for brain in values:
-            item = brain.getObject()
-            if sm.checkPermission('View', item):
-                items.append(item)
-
-        return items
+        return [item.getObject() for item in values]
 
     def can_add_observation(self):
         sm = getSecurityManager()
