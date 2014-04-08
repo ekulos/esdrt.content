@@ -2,9 +2,9 @@ from Products.CMFCore.utils import getToolByName
 
 
 VOCABULARIES = [
-    {'id': 'eu_member_states',
-     'title': 'EU Member States',
-     'filename': 'eu_member_states.csv',
+    {'id': 'eea_member_states',
+     'title': 'EEA Member States',
+     'filename': 'eea_member_states.csv',
     },
     {'id': 'ghg_source_category',
      'title': 'GHG Source Category',
@@ -22,6 +22,8 @@ VOCABULARIES = [
      'title': 'Status Flag',
      'filename': 'status_flag.csv',
     },
+
+
 ]
 
 
