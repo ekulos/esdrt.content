@@ -35,6 +35,13 @@
          handler=".4_5.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 6."
+         description="New vocabularies and fields"
+         source="5"
+         destination="6"
+         handler=".5_6.upgrade"
+         profile="esdrt.content:default" />
 
 
 </configure>
