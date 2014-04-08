@@ -1,28 +1,31 @@
-au, Austria
-be, Belgium
-bg, Bulgaria
-cr, Croatia
-cy, Cyprus
-cz, Czech Republic
-dk, Denmark
-et, Estonia
-fi, Finland
-fr, France
-de, Germany
-gr, Greece
-hu, Hungary
-ie, Ireland
-it, Italy
-lv, Latvia
-lt, Lithuania
-lu, Luxembourg
-mt, Malta
-nl, Netherlands
-pl, Poland
-pt, Portugal
-ro, Romania
-sv, Slovakia
-sl, Slovania
-es, Spain
-se, Sweden
-uk, United Kingdom
+at,Austria
+be,Belgium
+bg,Bulgaria
+hr,Croatia
+cy,Cyprus
+cz,Czech Republic
+dk,Denmark
+ee,Estonia
+fi,Finland
+fr,France
+de,Germany
+gr,Greece
+hu,Hungary
+is,Iceland
+ie,Republic of Ireland
+it,Italy
+lv,Latvia
+li,Liechtenstein
+lt,Lithuania
+lu,Luxembourg
+mt,Malta
+nl,The Netherlands
+pl,Poland
+pt,Portugal
+ro,Romania
+sk,Slovakia
+sl,Slovania
+es,Spain
+se,Sweden
+tr,Turkey
+uk,United Kingdom
