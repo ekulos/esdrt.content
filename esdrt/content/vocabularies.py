@@ -9,7 +9,7 @@ class MSVocabulary(object):
 
     def __call__(self, context):
         pvoc = getToolByName(context, 'portal_vocabularies')
-        voc = pvoc.getVocabularyByName('eu_member_states')
+        voc = pvoc.getVocabularyByName('eea_member_states')
         terms = []
         if voc is not None:
             for key, value in voc.getVocabularyLines():
@@ -18,7 +18,7 @@ class MSVocabulary(object):
                 terms.append(SimpleVocabulary.createTerm(key, key, value))
         return SimpleVocabulary(terms)
 
-grok.global_utility(MSVocabulary, name=u"esdrt.content.eu_member_states")
+grok.global_utility(MSVocabulary, name=u"esdrt.content.eea_member_states")
 
 
 class GHGSourceCategory(object):

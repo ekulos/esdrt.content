@@ -126,7 +126,7 @@ class Observation(dexterity.Container):
     # Add your class methods and properties here
 
     def country_value(self):
-        return self._vocabulary_value('esdrt.content.eu_member_states',
+        return self._vocabulary_value('esdrt.content.eea_member_states',
             self.country
         )
 
