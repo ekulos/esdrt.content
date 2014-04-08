@@ -22,7 +22,14 @@ VOCABULARIES = [
      'title': 'Status Flag',
      'filename': 'status_flag.csv',
     },
-
+    {'id': 'fuel',
+     'title': 'Fuel',
+     'filename': 'fuel.csv',
+    },
+    {'id': 'gas',
+     'title': 'Gas',
+     'filename': 'gas.csv',
+    },
 
 ]
 
