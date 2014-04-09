@@ -35,8 +35,8 @@ class ReferenceNumberCreator(NormalizingNameChooser):
     def chooseName(self, name, object):
         parent = self.context
         items = []
-        items.append(object.country)
-        items.append(object.ghg_source_category)
+        items.append(object.country.upper())
+        items.append(object.crf_code)
         items.append(str(object.year))
         prename = '-'.join(items)
         number = 1
