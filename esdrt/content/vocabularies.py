@@ -57,6 +57,78 @@ grok.global_utility(GHGSourceSectors,
     name=u"esdrt.content.ghg_source_sectors")
 
 
+class Gas(object):
+    grok.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        pvoc = getToolByName(context, 'portal_vocabularies')
+        voc = pvoc.getVocabularyByName('gas')
+        terms = []
+        if voc is not None:
+            for key, value in voc.getVocabularyLines():
+                # create a term - the arguments are the value, the token, and
+                # the title (optional)
+                terms.append(SimpleVocabulary.createTerm(key, key, value))
+        return SimpleVocabulary(terms)
+
+grok.global_utility(Gas,
+    name=u"esdrt.content.gas")
+
+
+class Fuel(object):
+    grok.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        pvoc = getToolByName(context, 'portal_vocabularies')
+        voc = pvoc.getVocabularyByName('fuel')
+        terms = []
+        if voc is not None:
+            for key, value in voc.getVocabularyLines():
+                # create a term - the arguments are the value, the token, and
+                # the title (optional)
+                terms.append(SimpleVocabulary.createTerm(key, key, value))
+        return SimpleVocabulary(terms)
+
+grok.global_utility(Fuel,
+    name=u"esdrt.content.fuel")
+
+
+class Highlight(object):
+    grok.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        pvoc = getToolByName(context, 'portal_vocabularies')
+        voc = pvoc.getVocabularyByName('highlight')
+        terms = []
+        if voc is not None:
+            for key, value in voc.getVocabularyLines():
+                # create a term - the arguments are the value, the token, and
+                # the title (optional)
+                terms.append(SimpleVocabulary.createTerm(key, key, value))
+        return SimpleVocabulary(terms)
+
+grok.global_utility(Highlight,
+    name=u"esdrt.content.highlight")
+
+
+class Parameter(object):
+    grok.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        pvoc = getToolByName(context, 'portal_vocabularies')
+        voc = pvoc.getVocabularyByName('parameter')
+        terms = []
+        if voc is not None:
+            for key, value in voc.getVocabularyLines():
+                # create a term - the arguments are the value, the token, and
+                # the title (optional)
+                terms.append(SimpleVocabulary.createTerm(key, key, value))
+        return SimpleVocabulary(terms)
+
+grok.global_utility(Parameter,
+    name=u"esdrt.content.parameter")
+
+
 class StatusFlag(object):
     grok.implements(IVocabularyFactory)
 
