@@ -1,4 +1,4 @@
-from z3c.form import field
+from Products.CMFPlone.utils import safe_unicode
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from collective.z3cform.datagridfield import DataGridFieldFactory
@@ -10,12 +10,17 @@ from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.textfield import RichText
+from plone.dexterity.browser.add import DefaultAddForm
 from plone.directives import dexterity, form
+from plone.directives.form import default_value
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
 from Products.statusmessages.interfaces import IStatusMessage
+from z3c.form import field
+from z3c.form import interfaces
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from z3c.form.browser.radio import RadioFieldWidget
 from zope import schema
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.browsermenu.menu import getMenu
@@ -25,6 +30,7 @@ from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 
+import datetime
 
 HIDDEN_ACTIONS = [
     '/content_status_history',
@@ -58,48 +64,80 @@ class IObservation(form.Schema, IImageScaleTraversable):
     """
 
     text = RichText(
-        title=_(u'Text'),
+        title=_(u'Short description'),
         description=_(u''),
         required=True,
         )
 
     country = schema.Choice(
         title=_(u"Country"),
-        vocabulary='esdrt.content.eu_member_states',
-
+        vocabulary='esdrt.content.eea_member_states',
+        required=True,
     )
 
     year = schema.Int(
-        title=_(u'Observation year'),
+        title=_(u'Inventory year'),
+        required=True
     )
 
-    crf_code = schema.Choice(
-        title=_(u"CRF Code"),
-        vocabulary='esdrt.content.crf_code',
+    gas = schema.Choice(
+        title=_(u"Gas"),
+        vocabulary='esdrt.content.gas',
+        required=True,
+    )
 
+    review_year = schema.Int(
+        title=_(u'Review year'),
+        required=True,
+    )
+
+    fuel = schema.Choice(
+        title=_(u"Fuel"),
+        vocabulary='esdrt.content.fuel',
+        required=False,
     )
 
     ghg_source_category = schema.Choice(
         title=_(u"GHG Source Category"),
         vocabulary='esdrt.content.ghg_source_category',
-
+        required=False,
     )
 
     ghg_source_sectors = schema.Choice(
         title=_(u"GHG Source Sectors"),
         vocabulary='esdrt.content.ghg_source_sectors',
-
+        required=True,
     )
 
-    form.widget(status_flag=CheckBoxFieldWidget)
-    status_flag = schema.List(
-        title=_(u"Status Flag"),
+    crf_code = schema.Choice(
+        title=_(u"CRF Code"),
+        vocabulary='esdrt.content.crf_code',
+        required=True,
+    )
+
+    form.widget(highlight=CheckBoxFieldWidget)
+    highlight = schema.List(
+        title=_(u"Highlight"),
         value_type=schema.Choice(
-            vocabulary='esdrt.content.status_flag',
+            vocabulary='esdrt.content.highlight',
             ),
-
-
+        required=False,
     )
+
+    form.widget(parameter=RadioFieldWidget)
+    parameter = schema.Choice(
+        title=_(u"Parameter"),
+        vocabulary='esdrt.content.parameter',
+        required=True,
+    )
+
+    # form.widget(status_flag=CheckBoxFieldWidget)
+    # status_flag = schema.List(
+    #     title=_(u"Status Flag"),
+    #     value_type=schema.Choice(
+    #         vocabulary='esdrt.content.status_flag',
+    #         ),
+    # )
 
     form.widget(ghg_estimations=DataGridFieldFactory)
     ghg_estimations = schema.List(
@@ -119,6 +157,20 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'Technical Corrections'),
         required=False
     )
+
+
+@default_value(field=IObservation['review_year'])
+def default_year(data):
+    return datetime.datetime.now().year
+
+
+@grok.subscribe(IObservation, IObjectAddedEvent)
+def add_observation(object, event):
+    sector = safe_unicode(object.ghg_source_category_value())
+    gas = safe_unicode(object.gas_value())
+    inventory_year = safe_unicode(str(object.year))
+    parameter = safe_unicode(object.parameter_value())
+    object.title = u' '.join([sector, gas, inventory_year, parameter])
 
 
 class Observation(dexterity.Container):
@@ -144,6 +196,22 @@ class Observation(dexterity.Container):
         return self._vocabulary_value('esdrt.content.ghg_source_sectors',
             self.ghg_source_sectors
         )
+
+    def parameter_value(self):
+        return self._vocabulary_value('esdrt.content.parameter',
+            self.parameter
+        )
+
+    def gas_value(self):
+        return self._vocabulary_value('esdrt.content.gas',
+            self.gas
+        )
+
+    def highlight_value(self):
+
+        highlight = [self._vocabulary_value('esdrt.content.highlight',
+            h) for h in self.highlight]
+        return u', '.join(highlight)
 
     def status_flag_value(self):
         values = []
@@ -173,6 +241,19 @@ class Observation(dexterity.Container):
 # This will make this view the default view for your content-type
 
 grok.templatedir('templates')
+
+
+class AddForm(dexterity.AddForm):
+    grok.name('esdrt.content.observation')
+    grok.context(IObservation)
+    grok.require('esdrt.content.AddObservation')
+
+    def updateWidgets(self):
+        super(AddForm, self).updateWidgets()
+        self.fields['IDublinCore.title'].field.required = False
+        self.widgets['IDublinCore.title'].mode = interfaces.HIDDEN_MODE
+        self.widgets['IDublinCore.description'].mode = interfaces.HIDDEN_MODE
+        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
 
 class ObservationView(grok.View):
@@ -398,15 +479,11 @@ class ModificationForm(dexterity.EditForm):
         roles = api.user.get_roles(username=user.getId())
         fields = []
         if 'ExpertReviewer' in roles:
-            fields = [
-                'text', 'country', 'status_flag',
-                'year', 'crf_code', 'ghg_source_category',
-                'ghg_source_sectors', 'ghg_estimations',
-            ]
+            fields = field.Fields(IObservation)
         elif 'LeadReviewer' in roles:
-            fields = ['text', 'status_flag']
+            fields = ['text']
         elif 'CounterPart' in roles:
-            fields = ['text', 'status_flag']
+            fields = ['text']
 
         self.fields = field.Fields(IObservation).select(*fields)
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
@@ -414,6 +491,10 @@ class ModificationForm(dexterity.EditForm):
             self.fields['status_flag'].widgetFactory = CheckBoxFieldWidget
         if 'ghg_estimations' in fields:
             self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
+        if 'parameter' in fields:
+            self.fields['parameter'].widgetFactory = RadioFieldWidget
+        if 'highlight' in fields:
+            self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
 
 
 @grok.subscribe(IObservation, IObjectAddedEvent)
