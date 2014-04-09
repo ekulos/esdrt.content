@@ -30,6 +30,14 @@ VOCABULARIES = [
      'title': 'Gas',
      'filename': 'gas.csv',
     },
+    {'id': 'highlight',
+     'title': 'Highligt',
+     'filename': 'highlight.csv',
+    },
+    {'id': 'parameter',
+     'title': 'Parameter',
+     'filename': 'parameter.csv',
+    },
 
 ]
 
