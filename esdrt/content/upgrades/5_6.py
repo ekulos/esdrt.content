@@ -17,9 +17,9 @@ def upgrade(context, logger=None):
 def reimport_vocabularies(context, logger):
     atvm = getToolByName(context, 'portal_vocabularies')
     del atvm['eu_member_states']
-    del atvm['fuel']
-    del atvm['gas']
-    prepareVocabularies(context, logger)
+    psetup = getToolByName(context, 'portal_setup')
+    profile = psetup._getImportContext(PROFILE_ID)
+    prepareVocabularies(context, profile)
 
 
 def upgradeObservations(context, logger):
