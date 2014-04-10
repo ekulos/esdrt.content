@@ -32,13 +32,19 @@ class NotificationReceivers(object):
         wtool = getToolByName(context, 'portal_workflow')
 
         # 1. Get all involved users
-        info = wtool.getInfoFor(context, 'review_history',
-            wf_id='esd-review-workflow'
-        )
-        actors = [inf['actor'] for inf in info]
+        with api.env.adopt_roles(['Manager']):
+            info = wtool.getInfoFor(context, 'review_history',
+                wf_id='esd-review-workflow'
+            )
+            actors = [inf['actor'] for inf in info]
 
         # 2. Explicit subscribed users
         actors.extend(INotificationSubscriptions(context).get())
+
+        # 3. All users affected in the question
+        with api.env.adopt_roles(['Manager']):
+            for question in context.values():
+                actors.extend(IRecipientsResolver(question).recipients())
 
         unsubscribed_users = INotificationUnsubscriptions(context).get()
         items = []
@@ -76,10 +82,11 @@ class QuestionNotificationReceivers(object):
         wtool = getToolByName(context, 'portal_workflow')
 
         # 1. Get all involved users
-        info = wtool.getInfoFor(context, 'review_history',
-            wf_id='esd-question-review-workflow'
-        )
-        actors = [inf['actor'] for inf in info]
+        with api.env.adopt_roles(['Manager']):
+            info = wtool.getInfoFor(context, 'review_history',
+                wf_id='esd-question-review-workflow'
+            )
+            actors = [inf['actor'] for inf in info]
 
         # 2. Explicit subscribed users
         actors.extend(INotificationSubscriptions(context).get())
