@@ -9,26 +9,26 @@
  <state state_id="close-requested" title="Close requested">
   <exit-transition transition_id="close-observation"/>
   <exit-transition transition_id="reopen"/>
-  <permission-map name="Access contents information" acquired="True">
+  <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Owner</permission-role>
   </permission-map>
-  <permission-map name="List folder contents" acquired="True">
+  <permission-map name="List folder contents" acquired="False">
   </permission-map>
-  <permission-map name="Modify portal content" acquired="True">
+  <permission-map name="Modify portal content" acquired="False">
    <permission-role>LeadReviewer</permission-role>
   </permission-map>
-  <permission-map name="Sharing page: Delegate roles" acquired="True">
+  <permission-map name="Sharing page: Delegate roles" acquired="False">
   </permission-map>
-  <permission-map name="View" acquired="True">
+  <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Owner</permission-role>
   </permission-map>
-  <permission-map name="esdrt.content: Add Question" acquired="True">
+  <permission-map name="esdrt.content: Add Question" acquired="False">
   </permission-map>
  </state>
  <state state_id="closed" title="Closed">
@@ -99,30 +99,31 @@
   </permission-map>
  </state>
  <state state_id="drafted" title="Drafted">
+  <exit-transition transition_id="request-review"/>
   <exit-transition transition_id="close"/>
   <exit-transition transition_id="approve"/>
-  <permission-map name="Access contents information" acquired="True">
+  <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
-  <permission-map name="List folder contents" acquired="True">
+  <permission-map name="List folder contents" acquired="False">
   </permission-map>
-  <permission-map name="Modify portal content" acquired="True">
+  <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
-  <permission-map name="Sharing page: Delegate roles" acquired="True">
+  <permission-map name="Sharing page: Delegate roles" acquired="False">
   </permission-map>
-  <permission-map name="View" acquired="True">
+  <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
-  <permission-map name="esdrt.content: Add Question" acquired="True">
+  <permission-map name="esdrt.content: Add Question" acquired="False">
   </permission-map>
  </state>
  <state state_id="pending" title="Pending question">
@@ -226,7 +227,8 @@
  <transition transition_id="request-close" title="Request Close" new_state="close-requested" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=request-close" category="workflow" icon="">Request Close</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-role>SectorExpertReviewer</guard-role>
+   <guard-expression>here/can_close</guard-expression>
   </guard>
  </transition>
  <transition transition_id="request-review" title="Request Review" new_state="draft" trigger="USER" before_script="" after_script="">
@@ -236,7 +238,7 @@
   </guard>
  </transition>
  <transition transition_id="send-comments" title="Send Comments" new_state="drafted" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=send-comments" category="workflow" icon="">Send Comments</action>
+  <action url="%(content_url)s/send_counterpart_comments?workflow_action=send-comments" category="workflow" icon="">Send Comments</action>
   <guard>
    <guard-role>CounterPart</guard-role>
   </guard>
@@ -252,7 +254,7 @@
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
-
+   
    <expression>transition/getId|nothing</expression>
   </default>
   <guard>
@@ -261,7 +263,7 @@
  <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
   <description>The ID of the user who performed the previous transition</description>
   <default>
-
+   
    <expression>user/getId</expression>
   </default>
   <guard>
@@ -270,7 +272,7 @@
  <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
-
+   
    <expression>python:state_change.kwargs.get('comment', '')</expression>
   </default>
   <guard>
@@ -279,7 +281,7 @@
  <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
   <description>Provides access to workflow history</description>
   <default>
-
+   
    <expression>state_change/getHistory</expression>
   </default>
   <guard>
@@ -290,7 +292,7 @@
  <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
-
+   
    <expression>state_change/getDateTime</expression>
   </default>
   <guard>
