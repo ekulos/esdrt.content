@@ -11,6 +11,7 @@ def upgrade(context, logger=None):
 
     reimport_vocabularies(context, logger)
     upgradeObservations(context, logger)
+    install_workflow(context, logger)
     logger.info('Upgrade steps executed')
 
 
@@ -43,3 +44,11 @@ def upgradeObservations(context, logger):
         observation.country = new
         logger.info('Country set for %s (%s -> %s)' % (observation.id, old, new))
 
+
+def install_workflow(context, logger):
+    setup = getToolByName(context, 'portal_setup')
+    wtool = getToolByName(context, 'portal_workflow')
+    wtool.manage_delObjects(['esd-question-review-workflow',
+        'esd-review-workflow'])
+    setup.runImportStepFromProfile(PROFILE_ID, 'workflow')
+    logger.info('Reinstalled  Workflows')
