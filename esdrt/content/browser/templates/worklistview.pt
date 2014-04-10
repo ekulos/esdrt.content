@@ -10,14 +10,20 @@
   <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core">
 
-      <table class="listing">
+      <div id="no-content" tal:condition="not: view/get_questions">
+
+        <p>
+          There are no observations or questions to review.
+        </p>
+
+      </div>
+
+
+      <table class="listing" tal:condition="view/get_questions">
         <thead>
           <tr>
             <th>
-              Ref. Number
-            </th>
-            <th>
-              Question title
+              Observation Ref. Number
             </th>
             <th>
               Status
@@ -38,42 +44,77 @@
         </thead>
 
         <tbody>
-          <tr tal:repeat="question view/get_questions"
-              tal:attributes="class question/get_status|nothing">
-            <tal:item define="observation question/get_observation;
-                              toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
-              <td>
-                <a href=""
-                  tal:attributes="href question/absolute_url"
-                  tal:content="observation/getId">
-                  UK-WAS-13-001
-                </a>
-              </td>
-              <td>
-                <a href=""
-                  tal:attributes="href question/absolute_url"
-                  tal:content="question/Title">
-                  Observation title
-                </a>
-              </td>
-              <td tal:content="question/get_status|nothing">
-                Observation title
-              </td>
-              <td tal:content="observation/country_value">
-                Observation title
-              </td>
-              <td tal:content="observation/ghg_source_sectors_value">
-                Observation title
-              </td>
-              <td tal:content="observation/crf_code_value">
-                Observation title
-              </td>
-              <td tal:content="python:toLocalizedTime(question.modified(), True)">
-                Observation title
-              </td>
+          <tr tal:repeat="item view/get_questions"
+              tal:attributes="class item/get_status|nothing">
 
+            <tal:item condition="python:item.portal_type == 'Observation'">
+              <tal:item define="observation nocall:item;
+                                toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                <td>
+                  <a href=""
+                    tal:attributes="href observation/absolute_url"
+                    tal:content="observation/getId">
+                    UK-WAS-13-001
+                  </a><br />
+                  <a href=""
+                    tal:attributes="href observation/absolute_url"
+                    tal:content="observation/Title">
+                    Observation title
+                  </a>
+                </td>
+                <td tal:content="observation/get_status|nothing">
+                  Observation title
+                </td>
+                <td tal:content="observation/country_value">
+                  Observation title
+                </td>
+                <td tal:content="observation/ghg_source_sectors_value">
+                  Observation title
+                </td>
+                <td tal:content="observation/gas_value">
+                  Observation title
+                </td>
+                <td tal:content="python:toLocalizedTime(observation.modified(), True)">
+                  Observation title
+                </td>
+
+              </tal:item>
             </tal:item>
 
+            <tal:item condition="python:item.portal_type == 'Question'" tal:replace="nothing">
+              <tal:item define="question nocall:item;
+                                observation question/get_observation;
+                                toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                <td>
+                  <a href=""
+                    tal:attributes="href observation/absolute_url"
+                    tal:content="observation/getId">
+                    UK-WAS-13-001
+                  </a><br />
+                  <a href=""
+                    tal:attributes="href observation/absolute_url"
+                    tal:content="observation/Title">
+                    Observation title
+                  </a>
+                </td>
+                <td tal:content="question/get_status|nothing">
+                  Observation title
+                </td>
+                <td tal:content="observation/country_value">
+                  Observation title
+                </td>
+                <td tal:content="observation/ghg_source_sectors_value">
+                  Observation title
+                </td>
+                <td tal:content="observation/crf_code_value">
+                  Observation title
+                </td>
+                <td tal:content="python:toLocalizedTime(question.modified(), True)">
+                  Observation title
+                </td>
+
+              </tal:item>
+            </tal:item>
           </tr>
         </tbody>
 
