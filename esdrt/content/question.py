@@ -55,6 +55,14 @@ class Question(dexterity.Container):
             return comments[-1]
         return None
 
+    def get_state(self):
+        state = api.content.get_state(self)
+        workflows = api.portal.get_tool('portal_workflow').getWorkflowsFor(self)
+        if workflows:
+            for w in workflows:
+                if state in w.states:
+                    return w.states[state].title or state
+
     def get_status(self):
         state = api.content.get_state(self)
         if state in PENDING_STATUS_NAMES:
@@ -87,7 +95,7 @@ class Question(dexterity.Container):
 
     def can_close(self):
         """
-        Check if this observation can be closed:
+        Check if this question can be closed:
             - There has been at least, one question-answer.
         """
         items = self.values()
@@ -95,7 +103,6 @@ class Question(dexterity.Container):
         answers = [q for q in items if q.portal_type == 'CommentAnswer']
 
         return len(questions) > 0 and len(questions) == len(answers)
-
 
 
 # View class

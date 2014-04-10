@@ -12,11 +12,11 @@
     tal:define="observation view/observation;
                 context nocall:observation">
     <div class="backButton">
-      <a 
+      <a
         tal:attributes="href observation/absolute_url"
           class="standardButton">
           <span class="eea-icon"><!-- --></span>
-            Back
+            Back to observation
       </a>
     </div>
     <metal:obs use-macro="context/@@view/macros/observation-info" />
@@ -52,6 +52,11 @@
 
       </div>
       <div class="actions" tal:condition="repeat/question/end">
+
+        <p>
+          Status: <span tal:content="python:question.getObject().get_state()" />
+        </p>
+
         <a href=""
           tal:define="question_obj question/getObject"
           tal:condition="question_obj/can_edit"
