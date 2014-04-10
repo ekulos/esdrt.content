@@ -199,7 +199,7 @@
         </table>
         </div>
 
-            <input id="counterpart-save-button" class="context allowMultiSubmit" type="submit" name="form.button.Save" value="Save" i18n:attributes="value label_save" />
+            <input id="counterpart-save-button" class="context allowMultiSubmit" type="submit" name="form.button.Save" value="Select" i18n:attributes="value label_save" />
             <input class="standalone" type="submit" name="form.button.Cancel" value="Cancel" i18n:attributes="value label_cancel"/>
 
 
