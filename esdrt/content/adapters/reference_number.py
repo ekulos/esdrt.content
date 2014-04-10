@@ -46,7 +46,7 @@ class ReferenceNumberCreator(NormalizingNameChooser):
             last_observation = observations[-1]
             number = int(last_observation.split('-')[-1])
             number = number + 1
-        last_part = '%04d' % (number + 1)
+        last_part = '%04d' % number
         name = prename + '-' + last_part
 
         return name
