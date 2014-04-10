@@ -29,6 +29,7 @@ from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
+from zope.interface import Invalid
 
 import datetime
 
@@ -109,6 +110,14 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=True,
     )
 
+    ms_key_catagory = schema.Bool(
+        title=_(u"MS key category"),
+    )
+
+    eu_key_catagory = schema.Bool(
+        title=_(u"EU key category"),
+    )
+
     crf_code = schema.Choice(
         title=_(u"CRF Code"),
         vocabulary='esdrt.content.crf_code',
@@ -157,6 +166,14 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'Technical Corrections'),
         required=False
     )
+
+
+@form.validator(field=IObservation['ghg_source_sectors'])
+def check_sector(value):
+    user = api.user.get_current()
+    groups = user.getGroups()
+    if 'extranet-esd-reviewexperts-%s' % value not in groups:
+        raise Invalid(u'You are not allowed to add observations for this sector')
 
 
 @default_value(field=IObservation['review_year'])
@@ -223,13 +240,25 @@ class Observation(dexterity.Container):
     def _vocabulary_value(self, vocabulary, term):
         vocab_factory = getUtility(IVocabularyFactory, name=vocabulary)
         vocabulary = vocab_factory(self)
-        value = vocabulary.getTerm(term)
-        return value.title
+        try:
+            value = vocabulary.getTerm(term)
+            return value.title
+        except LookupError:
+            return u''
 
     def get_status(self):
         return api.content.get_state(self)
 
+    def can_close(self):
+        if self.get_status() == 'pending':
+            questions = [v for v in self.values() if v.portal_type == 'Question']
+            if len(questions) > 0:
+                for q in questions:
+                    if api.content.get_state(q) != 'closed':
+                        return False
+                return True
 
+        return False
 
 # View class
 # The view will automatically use a similarly named template in
@@ -292,7 +321,15 @@ class ObservationView(grok.View):
 
     def get_questions(self):
         context = aq_inner(self.context)
-        return IContentListing([v for v in context.values() if v.portal_type == 'Question'])
+        items = []
+        mtool = api.portal.get_tool('portal_membership')
+        for item in context.values():
+            if item.portal_type == 'Question' and \
+                mtool.checkPermission('View', item):
+                items.append(item)
+
+        return IContentListing(items)
+
 
     @property
     def repo_tool(self):

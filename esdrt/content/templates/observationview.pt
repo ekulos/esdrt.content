@@ -46,9 +46,12 @@
 <body>
 
 <metal:main fill-slot="content-core">
-  <metal:content-core define-macro="content-core">
+  <metal:content-core define-macro="content-core"
 
-  <metal:observation define-macro="observation-info">
+      tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
+
+  <metal:observation define-macro="observation-info"
+    tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
     <div class="esdDiv">
       <div class="row">
         <div class="cell position-0 width-4 esdLabel">Ref. Number</div>
@@ -132,7 +135,7 @@
         <div class="cell position-8 width-4 esdLabel">Status flag</div>
         <div class="cell position-12 width-4 esdLabel">Last update</div>
       </div>
-      <div class="row" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
+      <div class="row">
         <div class="cell position-0 width-4" tal:content="context/review_year">Year</div>
         <div class="cell position-4 width-4" tal:content="context/ghg_source_sectors_value">Key category</div>
         <div class="cell position-8 width-4" tal:content="context/highlight_value">Status flag</div>
@@ -141,7 +144,31 @@
     </div>
   </metal:observation>
 
-  <div class="edit actions">
+
+  <div class="esdDiv description">
+    <div class="esdLabel">
+      Description
+    </div>
+    <span
+    tal:replace="structure context/text/output">
+      Here goes the description
+    </span>
+  </div>
+
+  <div class="esdDiv action-comments"
+      tal:define="info view/wf_info;
+                  status context/get_status"
+      tal:condition="python:status in ['drafted', 'draft']">
+    <div class="esdLabel">Counterpart comments</div>
+      <p>
+        <span class="author" tal:content="info/actor" />
+        <span class="datetime" tal:content="python:toLocalizedTime(info['time'])" />
+        <span class="comment" tal:content="info/comments|nothing" />
+      </p>
+  </div>
+
+
+  <div class="edit actions" tal:condition="view/can_edit">
       <a href=""
           tal:attributes="href string:${here/absolute_url}/modifications"
           class="standardButton">
@@ -161,7 +188,8 @@
     </tal:block>
   </div>
 
-  <div class="subscription actions" tal:define="actions view/subscription_options">
+  <div class="subscription actions" tal:define="actions view/subscription_options"
+    tal:replace="nothing">
     <tal:block  tal:repeat="action actions">
         <a href=""
           tal:attributes="href action/action"
@@ -236,7 +264,7 @@
         </div>
       </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
-        tal:content="structure context/technical_corrections">
+        tal:content="structure context/technical_corrections/output|nothing">
       </div>
     </div>
   </metal:content-core>
