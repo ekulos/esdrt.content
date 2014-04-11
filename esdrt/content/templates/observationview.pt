@@ -161,7 +161,7 @@
       tal:condition="python:status in ['drafted', 'draft']">
     <div class="esdLabel">Counterpart comments</div>
       <p>
-        <span class="author" tal:content="info/actor" />
+        <span class="author" tal:content="python:view.get_user_name(info['actor'])" />
         <span class="datetime" tal:content="python:toLocalizedTime(info['time'])" />
         <span class="comment" tal:content="info/comments|nothing" />
       </p>
