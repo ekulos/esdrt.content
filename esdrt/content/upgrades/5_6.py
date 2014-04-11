@@ -52,3 +52,5 @@ def install_workflow(context, logger):
         'esd-review-workflow'])
     setup.runImportStepFromProfile(PROFILE_ID, 'workflow')
     logger.info('Reinstalled  Workflows')
+    wtool.updateRoleMappings()
+    logger.info('Security settings updated')
