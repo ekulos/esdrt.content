@@ -13,7 +13,7 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
-   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
   </permission-map>
@@ -26,7 +26,7 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
-   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
   </permission-map>
@@ -34,8 +34,10 @@
  <state state_id="closed" title="Closed">
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
@@ -52,8 +54,10 @@
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
@@ -67,7 +71,6 @@
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
@@ -82,14 +85,13 @@
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
@@ -105,14 +107,14 @@
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
@@ -120,7 +122,7 @@
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
@@ -133,7 +135,6 @@
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
@@ -178,14 +179,19 @@
   <permission-map name="List folder contents" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
    <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
@@ -203,13 +209,13 @@
  <transition transition_id="approve" title="Open" new_state="pending" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=approve" category="workflow" icon="">Open</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-role>SectorExpertReviewer</guard-role>
   </guard>
  </transition>
  <transition transition_id="close" title="Close" new_state="closed" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Close</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-role>SectorExpertReviewer</guard-role>
   </guard>
  </transition>
  <transition transition_id="close-observation" title="Close Observation" new_state="closed" trigger="USER" before_script="" after_script="">
@@ -234,7 +240,7 @@
  <transition transition_id="request-review" title="Request Review" new_state="draft" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/assign_counterpart_form?workflow_action=request-review" category="workflow" icon="">Request Review</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-role>SectorExpertReviewer</guard-role>
   </guard>
  </transition>
  <transition transition_id="send-comments" title="Send Comments" new_state="drafted" trigger="USER" before_script="" after_script="">

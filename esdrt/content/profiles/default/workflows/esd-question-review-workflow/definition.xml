@@ -237,7 +237,7 @@
  <transition transition_id="ask-question-approval" title="Ask Question Approval" new_state="pending-approval" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=ask-question-approval" category="workflow" icon="">Ask Question Approval</action>
   <guard>
-   <guard-role>Owner</guard-role>
+   <guard-role>SectorExpertReviewer</guard-role>
    <guard-expression>object/unanswered_questions</guard-expression>
   </guard>
  </transition>
@@ -256,7 +256,7 @@
  <transition transition_id="close" title="Close Question" new_state="closed" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Close</action>
   <guard>
-   <guard-role>ExpertReviewer</guard-role>
+   <guard-role>SectorExpertReviewer</guard-role>
    <guard-expression>object/can_close</guard-expression>
   </guard>
  </transition>
