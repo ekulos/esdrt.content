@@ -10,6 +10,11 @@
   </roles>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+    <permission name="esdrt.content: Add ESDRTFile" acquire="False">
+      <role name="Manager" />
+      <role name="Site Administrator" /> 
+      <role name="Contributor" />      
+    </permission>
     <permission name="esdrt.content: Add CommentAnswer" acquire="False">
       <role name="Manager" />
       <role name="Site Administrator" />
