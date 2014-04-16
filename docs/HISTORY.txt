@@ -4,7 +4,7 @@ Changelog
 1.2 (UNRELEASED)
 -----------------------
 
-
+- Add content-type: electronic files in comment and answers [erral]
 
 1.1.1 (2014-04-11)
 ---------------------
