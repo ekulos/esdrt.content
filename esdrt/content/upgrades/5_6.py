@@ -23,15 +23,6 @@ def reimport_vocabularies(context, logger):
     prepareVocabularies(context, profile)
 
 
-def content_types(context, logger):
-    setup = getToolByName(context, 'portal_setup')
-    setup.runImportStepFromProfile(PROFILE_ID, 'typeinfo')
-    setup.runImportStepFromProfile(PROFILE_ID, 'rolemap')
-    setup.runImportStepFromProfile(PROFILE_ID, 'difftool')
-    logger.info('Content-types reinstalled')
-
-
-
 def upgradeObservations(context, logger):
     """ check if any observation has old country assignments
     """
