@@ -43,5 +43,13 @@
          handler=".5_6.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 7."
+         description="Files and workflow fixes"
+         source="6"
+         destination="7"
+         handler=".6_7.upgrade"
+         profile="esdrt.content:default" />
+
 
 </configure>
