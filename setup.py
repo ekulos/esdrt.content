@@ -34,7 +34,7 @@ setup(name='esdrt.content',
           'Products.ATVocabularyManager',
           'collective.contentrules.mailadapter',
           'plone.app.versioningbehavior',
-          'plone.app.workflowmanager'
+          'plone.app.workflowmanager',
       ],
       entry_points="""
       # -*- Entry points: -*-
