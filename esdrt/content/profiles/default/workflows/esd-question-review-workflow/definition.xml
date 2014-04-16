@@ -10,6 +10,7 @@
  <permission>View</permission>
  <permission>esdrt.content: Add Comment</permission>
  <permission>esdrt.content: Add CommentAnswer</permission>
+ <permission>esdrt.content: Add ESDRTFile</permission>
  <state state_id="answered" title="Answered">
   <exit-transition transition_id="validate-answer-msa"/>
   <exit-transition transition_id="ask-validation"/>
@@ -73,6 +74,9 @@
   </permission-map>
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
  </state>
  <state state_id="pending" title="Pending">
   <exit-transition transition_id="assign-answerer"/>
@@ -113,6 +117,9 @@
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
+   <permission-role>MSExpert</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
    <permission-role>MSExpert</permission-role>
   </permission-map>
  </state>

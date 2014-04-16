@@ -10,6 +10,7 @@
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
+ <permission>esdrt.content: Add ESDRTFile</permission>
  <state state_id="initial" title="Initial">
   <permission-map name="Access contents information" acquired="True">
   </permission-map>
