@@ -1,12 +1,13 @@
 from AccessControl import getSecurityManager
-from plone.app.textfield.value import RichTextValue
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from five import grok
+from plone import api
 from plone.app.textfield import RichText
+from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
@@ -45,6 +46,11 @@ class CommentAnswer(dexterity.Container):
         sm = getSecurityManager()
         parent = aq_parent(self)
         return sm.checkPermission('esdrt.content: Add CommentAnswer', parent)
+
+    def get_files(self):
+        items = self.values()
+        mtool = api.portal.get_tool('portal_membership')
+        return [item for item in items if mtool.checkPermission('View', item)]
 
 
 # View class
