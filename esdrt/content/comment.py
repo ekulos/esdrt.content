@@ -5,6 +5,7 @@ from Acquisition import aq_parent
 from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from five import grok
+from plone import api
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
@@ -45,6 +46,10 @@ class Comment(dexterity.Container):
         parent = aq_parent(self)
         return sm.checkPermission('esdrt.content: Add Comment', parent)
 
+    def get_files(self):
+        items = self.values()
+        mtool = api.portal.get_tool('portal_membership')
+        return [item for item in items if mtool.checkPermission('View', item)]
 
 # View class
 # The view will automatically use a similarly named template in
