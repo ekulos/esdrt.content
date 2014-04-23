@@ -86,7 +86,7 @@
         <div class="cell position-10 width-3" tal:content="context/year">Year of emission</div>
       </div>
     </div>
-    <div class="esdDiv">
+    <div class="esdDiv observationDetailsRow">
       <table class="estTable">
         <thead>
           <tr>
