@@ -58,8 +58,20 @@
         <div class="cell position-4 width-13 esdLabel">Observation</div>
       </div>
       <div class="row">
-        <div class="cell position-0 width-4 value" tal:content="context/id">UK-WAS-13-001</div>
-        <div class="cell position-4 width-13 value" tal:content="context/title">Title</div>
+        <div class="cell position-0 width-4 value">
+          <a href=""
+            tal:attributes="href string:${context/absolute_url}"
+            tal:content="context/id">
+             UK-WAS-13-001
+          </a>
+        </div>
+        <div class="cell position-4 width-13 value">
+          <a href=""
+            tal:attributes="href string:${context/absolute_url}"
+            tal:content="context/title">
+             Title
+          </a>
+        </div>
       </div>
       <div class="row">
         <div class="cell position-4 width-2 esdLabel">Country</div>
