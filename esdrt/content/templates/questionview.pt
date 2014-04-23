@@ -47,7 +47,9 @@
   </metal:content-core>
 
   <div id="qa" class="eea-tabs-panels" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
-
+    <span 
+      class="questionTitle"
+      tal:content="context/title">Question X</span>
     <div class="question" tal:repeat="question context/get_questions"
           tal:attributes="id question/getId;
                           class string:question ${question/portal_type/lower};
