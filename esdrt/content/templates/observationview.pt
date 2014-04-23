@@ -224,7 +224,7 @@
     </ul>
     <div class="eea-tabs-panels">
       <div class="eea-tabs-panel questions">
-        <div class="row">
+        <div class="row" tal:condition="view/get_questions">
           <div class="cell position-0 width-7 esdLabel">Question</div>
           <div class="cell position-7 width-2 esdLabel">Author</div>
           <div class="cell position-9 width-1 esdLabel">Status</div>
