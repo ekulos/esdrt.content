@@ -1,8 +1,11 @@
 Changelog
 =========
 
-1.2 (UNRELEASED)
+1.2 (2014-04-28)
 -----------------------
+
+- Visualization changes
+  [msantamaria]
 
 - Add content-type: electronic files in comment and answers [erral]
 
