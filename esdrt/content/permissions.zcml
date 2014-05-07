@@ -3,36 +3,36 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="esdrt.content">
 
-    
+
       <!-- -*- extra stuff goes here -*- -->
        <permission
           id="esdrt.content.AddESDRTFile"
 	  title="esdrt.content: Add ESDRTFile"
-	  />       
+	  />
 
 
        <permission
           id="esdrt.content.AddCommentAnswer"
 	  title="esdrt.content: Add CommentAnswer"
-	  />       
+	  />
 
 
        <permission
           id="esdrt.content.AddComment"
 	  title="esdrt.content: Add Comment"
-	  />       
+	  />
 
 
        <permission
           id="esdrt.content.AddQuestion"
 	  title="esdrt.content: Add Question"
-	  />       
+	  />
 
 
        <permission
           id="esdrt.content.AddObservation"
 	  title="esdrt.content: Add Observation"
-	  />       
+	  />
 
 
 
