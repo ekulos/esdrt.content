@@ -1,4 +1,5 @@
 from esdrt.content import MessageFactory as _
+from esdrt.content.question import IQuestion
 from five import grok
 from plone.app.workflow.browser.sharing import SharingView
 from plone.directives import form
@@ -8,7 +9,6 @@ from z3c.form import button
 from z3c.form import field
 from zope import schema
 from zope.interface import Interface
-from esdrt.content.observation import IObservation
 
 
 class IAssignCounterPartForm(Interface):
@@ -45,7 +45,7 @@ class AssignCounterPartForm(SharingView):
         """Perform the update and redirect if necessary, or render the page
         """
         if self.request.get('form.button.Assign', None):
-            wf_action = 'request-review'
+            wf_action = 'request-for-counterpart-comments'
             wf_comments = self.request.get('comments')
             return self.context.content_status_modify(
                 workflow_action=wf_action,
@@ -71,12 +71,12 @@ class ISendCounterPartComments(Interface):
 
 
 class SendCounterPartComments(form.Form):
-    grok.context(IObservation)
+    grok.context(IQuestion)
     grok.name('send_counterpart_comments')
     grok.require('cmf.ModifyPortalContent')
 
     fields = field.Fields(ISendCounterPartComments)
-    label = _(u'Familien egitura inportatu')
+    label = _(u'Send comments')
     ignoreContext = True
 
     @button.buttonAndHandler(u'Send comments')
