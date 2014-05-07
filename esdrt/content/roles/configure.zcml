@@ -9,4 +9,20 @@
       name="observation_role_adapter"
       />
 
+  <adapter
+      factory=".localroles.QuestionRoleAdapter"
+      name="question_role_adapter"
+      />
+
+  <adapter
+      factory=".localroles.CommentRoleAdapter"
+      name="comment_role_adapter"
+      />
+
+  <adapter
+      factory=".localroles.CommentAnswerRoleAdapter"
+      name="answer_role_adapter"
+      />
+
+
 </configure>
