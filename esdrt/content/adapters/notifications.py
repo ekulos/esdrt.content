@@ -53,9 +53,10 @@ class NotificationReceivers(object):
             # 3. remove unsubsribed users
             if actor not in unsubscribed_users:
                 user = api.user.get(username=actor)
-                email = user.getProperty('email')
-                if email and putils.validateSingleEmailAddress(email):
-                    items.append(email)
+                if user is not None:
+                    email = user.getProperty('email')
+                    if email and putils.validateSingleEmailAddress(email):
+                        items.append(email)
 
         return items
 
@@ -98,8 +99,9 @@ class QuestionNotificationReceivers(object):
             # 3. remove unsubsribed users
             if actor not in unsubscribed_users:
                 user = api.user.get(username=actor)
-                email = user.getProperty('email')
-                if email and putils.validateSingleEmailAddress(email):
-                    items.append(email)
+                if user is not None:
+                    email = user.getProperty('email')
+                    if email and putils.validateSingleEmailAddress(email):
+                        items.append(email)
 
         return items
