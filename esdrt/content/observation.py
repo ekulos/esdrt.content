@@ -330,7 +330,6 @@ class ObservationView(grok.View):
 
         return IContentListing(items)
 
-
     @property
     def repo_tool(self):
         return getToolByName(self.context, "portal_repository")
@@ -361,7 +360,8 @@ class ObservationView(grok.View):
 
     def can_add_question(self):
         sm = getSecurityManager()
-        return sm.checkPermission('esdrt.content: Add Question', self)
+        questions = len([q for q in self.context.values() if q.portal_type == 'Question'])
+        return sm.checkPermission('esdrt.content: Add Question', self) and not questions
 
     def can_edit(self):
         sm = getSecurityManager()

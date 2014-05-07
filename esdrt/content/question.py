@@ -5,6 +5,7 @@ from Acquisition import aq_parent
 from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from esdrt.content.comment import IComment
+from esdrt.content.observation import hidden
 from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
@@ -13,12 +14,12 @@ from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
+from Products.CMFCore.utils import getToolByName
 from time import time
 from z3c.form import field
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
-from esdrt.content.observation import hidden
 
 
 class IQuestion(form.Schema, IImageScaleTraversable):
@@ -31,11 +32,13 @@ class IQuestion(form.Schema, IImageScaleTraversable):
 # methods and properties. Put methods that are mainly useful for rendering
 # in separate view classes.
 
-PENDING_STATUS_NAMES = ['pending-approval']
+PENDING_STATUS_NAMES = ['answered']
 OPEN_STATUS_NAMES = ['pending', 'pending-answer', 'pending-answer-validation',
-    'answered', 'validate-answer']
+     'validate-answer', 'recalled-msa']
 CLOSED_STATUS_NAMES = ['closed']
-DRAFT_STATUS_NAMES = ['draft']
+DRAFT_STATUS_NAMES = ['draft', 'counterpart-comments',
+    'drafted', 'pending-approval', 'recalled-lr']
+
 PENDING_STATUS_NAME = 'pending'
 DRAFT_STATUS_NAME = 'draft'
 OPEN_STATUS_NAME = 'open'
@@ -46,7 +49,9 @@ class Question(dexterity.Container):
     grok.implements(IQuestion)    # Add your class methods and properties here
 
     def get_questions(self):
-        return IContentListing([v for v in self.values() if v.portal_type in ['Comment', 'CommentAnswer']])
+        sm = getSecurityManager()
+        values = [v for v in self.values() if sm.checkPermission('View', v)]
+        return IContentListing(values)
 
     def getFirstComment(self):
         comments = [v for v in self.values() if v.portal_type == 'Comment']
@@ -103,6 +108,10 @@ class Question(dexterity.Container):
         answers = [q for q in items if q.portal_type == 'CommentAnswer']
 
         return len(questions) > 0 and len(questions) == len(answers)
+
+    def observation_not_closed(self):
+        observation = self.get_observation()
+        return api.content.get_state(observation) == 'pending'
 
 
 # View class
@@ -162,6 +171,17 @@ class QuestionView(grok.View):
         questions = [q for q in context.values() if q.portal_type == 'Comment']
         answers = [q for q in context.values() if q.portal_type == 'CommentAnswer']
         return permission and len(questions) > len(answers)
+
+    def wf_info(self):
+        context = aq_inner(self.context)
+        wf = getToolByName(context, 'portal_workflow')
+        comments = wf.getInfoFor(self.context,
+            'comments', wf_id='esd-question-review-workflow')
+        actor = wf.getInfoFor(self.context,
+            'actor', wf_id='esd-question-review-workflow')
+        time = wf.getInfoFor(self.context,
+            'time', wf_id='esd-question-review-workflow')
+        return {'comments': comments, 'actor': actor, 'time': time}
 
 
 class AddForm(dexterity.AddForm):

@@ -1,13 +1,14 @@
 from Acquisition import aq_parent
+from esdrt.content import MessageFactory as _
 from five import grok
 from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.field import NamedBlobFile
 from plone.namedfile.interfaces import IImageScaleTraversable
+from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import field
 from z3c.form import group
 from zope import schema
-from esdrt.content import MessageFactory as _
 
 
 # Interface class; used to define content-type schema.
@@ -46,6 +47,15 @@ class AddForm(dexterity.AddForm):
     grok.name('esdrt.content.esdrtfile')
     grok.context(IESDRTFile)
     grok.require('esdrt.content.AddESDRTFile')
+
+    def update(self):
+        super(AddForm, self).update()
+        status = IStatusMessage(self.request)
+        msg = _(u'To guarantee the full confidentiality of confidential files '
+                u'we suggest you to zip your file, protect it with password '
+                u'and send the password using other means'
+            )
+        status.add(msg, type='info')
 
     def updateFields(self):
         super(AddForm, self).updateFields()
