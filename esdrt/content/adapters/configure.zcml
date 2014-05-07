@@ -12,6 +12,10 @@
         factory=".notifications.NotificationReceivers"
     />
 
+    <adapter
+        factory=".notifications.QuestionNotificationReceivers"
+    />
+
 
 
 </configure>
