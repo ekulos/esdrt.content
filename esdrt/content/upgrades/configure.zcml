@@ -51,5 +51,12 @@
          handler=".6_7.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 8."
+         description="Reload workflows"
+         source="7"
+         destination="8"
+         handler=".7_8.upgrade"
+         profile="esdrt.content:default" />
 
 </configure>
