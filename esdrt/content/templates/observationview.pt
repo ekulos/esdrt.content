@@ -130,7 +130,7 @@
         </tbody>
       </table>
     </div>
-    <div class="esdDiv">     
+    <div class="esdDiv">
       <div class="row observationDetailsRow">
         <div class="cell position-0 width-8 esdLabel">GHG source category</div>
         <div class="cell position-8 width-4 esdLabel">CRF code</div>
@@ -157,7 +157,7 @@
         <div class="cell position-0 width-16">
           <a href="#" id="showObservationDetails">[+]</a>
         </div>
-      </div>       
+      </div>
     </div>
   </metal:observation>
 
@@ -170,18 +170,6 @@
     tal:replace="structure context/text/output">
       Here goes the description
     </span>
-  </div>
-
-  <div class="esdDiv action-comments"
-      tal:define="info view/wf_info;
-                  status context/get_status"
-      tal:condition="python:status in ['drafted', 'draft']">
-    <div class="esdLabel">Counterpart comments</div>
-      <p>
-        <span class="author" tal:content="python:view.get_user_name(info['actor'])" />
-        <span class="datetime" tal:content="python:toLocalizedTime(info['time'])" />
-        <span class="comment" tal:content="info/comments|nothing" />
-      </p>
   </div>
 
 

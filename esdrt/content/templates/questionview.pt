@@ -47,9 +47,23 @@
   </metal:content-core>
 
   <div id="qa" class="eea-tabs-panels" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
-    <span 
+    <span
       class="questionTitle"
       tal:content="context/title">Question X</span>
+
+      <div class="esdDiv action-comments"
+          tal:define="info view/wf_info;
+                      status context/get_status"
+          tal:condition="python:status in ['draft']">
+        <div class="esdLabel">Counterpart comments</div>
+          <p>
+            <span class="author" tal:content="python:view.get_user_name(info['actor'])" />
+            <span class="datetime" tal:content="python:toLocalizedTime(info['time'])" />
+            <span class="comment" tal:content="info/comments|nothing" />
+          </p>
+      </div>
+
+
     <div class="question" tal:repeat="question context/get_questions"
           tal:attributes="id question/getId;
                           class string:question ${question/portal_type/lower};
@@ -72,7 +86,7 @@
       <div tal:content="structure question/text/output|string:">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </div>
-      <div class="files">
+      <div class="files" tal:condition="python:question.getObject().get_files()">
         Files:
         <div class="file" tal:repeat="file python:question.getObject().get_files()">
           <p>
@@ -93,7 +107,7 @@
 
         <a href=""
           tal:define="question_obj question/getObject"
-          tal:condition="question_obj/can_edit"
+          tal:condition="question_obj/can_add_files"
           tal:attributes="href string:${question/getURL}/++add++ESDRTFile"
           class="standardButton addfile">
             Add file
