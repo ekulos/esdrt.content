@@ -150,11 +150,12 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     form.widget(ghg_estimations=DataGridFieldFactory)
     ghg_estimations = schema.List(
-        title=_(u'GHG estimates'),
+        title=_(u'GHG estimates [Gg CO2 eq.]'),
         value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
         default=[
             {'line_title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'line_title': 'Revised estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Technical correction proposed by  TERT', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Revised estimate by MS', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
             {'line_title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
 
         ],
