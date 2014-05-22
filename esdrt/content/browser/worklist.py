@@ -16,7 +16,9 @@ class WorklistView(grok.View):
     @memoize
     def get_questions(self):
         catalog = api.portal.get_tool('portal_catalog')
+        path = '/'.join(self.context.getPhysicalPath())
         values = catalog.unrestrictedSearchResults(
+            path=path,
             portal_type=['Observation', 'Question'],
             sort_on='modified',
             sort_order='reverse',
