@@ -5,6 +5,7 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <permission>esdrt.content: Add Observation</permission>
+ <permission>Delete objects</permission>
  <state state_id="ongoing-review" title="Ongoing Review">
   <exit-transition transition_id="end-review"/>
   <exit-transition transition_id="reject"/>
@@ -17,10 +18,15 @@
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="Change portal events" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="Delete objects" acquired="False">
+   <permission-role>ExpertReviewer</permission-role>
+   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Owner</permission-role>

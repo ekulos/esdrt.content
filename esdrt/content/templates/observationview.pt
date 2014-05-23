@@ -39,6 +39,22 @@
       });
     })(jQuery);
 
+    $(document).ready(function(){
+
+        $('#observation-delete').prepOverlay(
+        {
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#delete_confirmation,
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.button.Cancel"]',
+            width:'50%'
+        }
+      );});
+
+
+
 </script>
   </tal:block>
 
@@ -191,6 +207,15 @@
           Action
         </a>
     </tal:block>
+
+    <tal:block condition="view/can_delete_observation">
+      <a href="./delete_confirmation"
+        id="observation-delete"
+        tal:attributes="href string:${here/absolute_url}/delete_confirmation"
+        class="standardButton">
+        Delete observation
+      </a>
+    </tal:block>
   </div>
 
   <div class="subscription actions" tal:define="actions view/subscription_options"
@@ -272,6 +297,10 @@
             Add new question
           </a>
         </div>
+
+
+
+
       </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
         tal:content="structure context/technical_corrections/output|nothing">
@@ -279,6 +308,8 @@
     </div>
   </metal:content-core>
 </metal:main>
+
+
 
 </body>
 </html>

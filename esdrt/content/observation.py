@@ -382,6 +382,13 @@ class ObservationView(grok.View):
             context=self.request
         )
 
+    def can_delete_observation(self):
+        is_draft = api.content.get_state(self.context) == 'draft'
+        questions = len([q for q in self.context.values() if q.portal_type == 'Question'])
+
+        return is_draft and not questions
+
+
     def can_add_question(self):
         sm = getSecurityManager()
         questions = len([q for q in self.context.values() if q.portal_type == 'Question'])
@@ -567,5 +574,5 @@ def add_observation(context, event):
     api.user.grant_roles(
         username=member_id,
         obj=context,
-        roles=['ExpertReviewer']
+        roles=['SectorExpertReviewer']
     )
