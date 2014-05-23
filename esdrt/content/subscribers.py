@@ -3,6 +3,7 @@ from five import grok
 from plone import api
 from Products.CMFCore.interfaces import IActionSucceededEvent
 from Products.CMFCore.utils import getToolByName
+from DateTime import DateTime
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)
@@ -13,6 +14,7 @@ def question_transition(question, event):
             'comments', wf_id='esd-question-review-workflow')
         comment = question.get(comment_id, None)
         if comment is not None:
+            comment.setEffectiveDate(DateTime())
             api.content.transition(obj=comment, transition='publish')
 
     if event.action == 'recall-question-lr':
@@ -29,6 +31,7 @@ def question_transition(question, event):
             'comments', wf_id='esd-question-review-workflow')
         comment = question.get(comment_id, None)
         if comment is not None:
+            comment.setEffectiveDate(DateTime())
             api.content.transition(obj=comment, transition='publish')
 
     if event.action == 'recall-msa':
