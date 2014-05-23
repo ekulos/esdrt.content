@@ -77,7 +77,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=True,
     )
 
-    year = schema.Int(
+    year = schema.TextLine(
         title=_(u'Inventory year'),
         required=True
     )
