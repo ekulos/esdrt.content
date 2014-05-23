@@ -11,7 +11,8 @@ from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.textfield import RichText
 from plone.dexterity.browser.add import DefaultAddForm
-from plone.directives import dexterity, form
+from plone.directives import dexterity
+from plone.directives import form
 from plone.directives.form import default_value
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
@@ -99,13 +100,13 @@ class IObservation(form.Schema, IImageScaleTraversable):
     )
 
     ghg_source_category = schema.Choice(
-        title=_(u"GHG Source Category"),
+        title=_(u"CRF category group"),
         vocabulary='esdrt.content.ghg_source_category',
         required=False,
     )
 
     ghg_source_sectors = schema.Choice(
-        title=_(u"GHG Source Sectors"),
+        title=_(u"CRF Sector"),
         vocabulary='esdrt.content.ghg_source_sectors',
         required=True,
     )
@@ -119,7 +120,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
     )
 
     crf_code = schema.Choice(
-        title=_(u"CRF Code"),
+        title=_(u"CRF category codes"),
         vocabulary='esdrt.content.crf_code',
         required=True,
     )
