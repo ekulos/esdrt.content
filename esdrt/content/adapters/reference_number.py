@@ -37,7 +37,7 @@ class ReferenceNumberCreator(NormalizingNameChooser):
         items = []
         items.append(object.country.upper())
         items.append(object.crf_code)
-        items.append(str(object.year))
+        items.append(str(object.review_year))
         prename = '-'.join(items)
         number = 1
         observations = [k for k in parent.keys() if k.startswith(prename)]
