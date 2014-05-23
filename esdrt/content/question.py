@@ -1,3 +1,4 @@
+from zope.app.container.interfaces import IObjectAddedEvent
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -233,3 +234,13 @@ class AddForm(dexterity.AddForm):
         )
         comment = item.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
+
+
+@grok.subscribe(IQuestion, IObjectAddedEvent)
+def add_question(context, event):
+    """ When adding a question, go directly to
+        'open' status on the observation
+    """
+    observation = aq_parent(context)
+    with api.env.adopt_roles(roles=['Manager']):
+        api.content.transition(obj=observation, transition='approve')
