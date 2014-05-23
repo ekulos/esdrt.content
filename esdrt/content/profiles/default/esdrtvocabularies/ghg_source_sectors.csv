@@ -1,7 +1,6 @@
-energy,Energy
-ip,Industrial Processes
-solvent,Solvent use
-agriculture,Agriculture
-lulucf,LULUCF
-waste,Waste
-other,Other
+energy,1 Energy
+ip,2 Industrial Processes and product use
+agriculture,3 Agriculture
+lulucf,4 LULUCF
+waste,5 Waste
+other,6 Other

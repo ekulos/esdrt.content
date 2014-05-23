@@ -1,2 +1,41 @@
-id1,code1
-id2,code2
+total,Total (Net Emissions)
+1A1,1A1  Energy industries
+1A2,1A2 Manufacturing industries and construction
+1A3,1A3  Transport
+1A4,1A4 Other sectors
+1A5,1A5 Other
+1B1,1B1  Solid fuels
+1B2,1B2  Oil and natural gas and other emissions from energy production
+1C,1C CO2 transport and storage
+2A,2A  Mineral industry
+2B,2B  Chemical industry
+2C,2C  Metal industry
+2D,2D  Non-energy products from fuels and solvent use
+2E,2E  Electronic industry
+2F,2F  Product uses as substitutes for ODS
+2G,2G  Other product manufacture and use
+2H,2H  Other
+3A,3A Enteric fermentation
+3B,3B Manure management
+3C,3C Rice cultivation
+3D,3D Agricultural soils
+3E,3E Prescribed burning of savannahs
+3F,3F  Field burning of agricultural residues
+3G,3G Liming
+3H,3H  Urea application
+3I,3I Other carbon containing fertilisers
+3J,3J Other
+4A,4A Forest land
+4B,4B Cropland
+4C,4C Grassland
+4D,4D Wetlands
+4E,4E Settlements
+4F,4F Other land
+4G,4G Harvested wood products
+4H,4H Other
+5A,5A  Solid waste disposal
+5B,5B  Biological treatment of solid waste
+5C,5C  Incineration and open burning of waste
+5D,5D  Wastewater treatment and discharge
+5E,5E  Other
+6,6  Other (as specified in Summary 1.A)
