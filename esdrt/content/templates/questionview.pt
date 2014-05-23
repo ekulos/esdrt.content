@@ -81,7 +81,14 @@
       <div class="from">
         <span class="esdLabel">from</span>
         <span class="value" tal:content="python:view.get_user_name(question.Creator())">John Smith</span>
-        <span class="messageDate" tal:content="python:toLocalizedTime(question.created())">11/12/2013 12:00</span>
+        <span class="messageDate">
+          <tal:effective condition="question/effective_date">
+            Sent on: <span tal:content="python:toLocalizedTime(question.EffectiveDate(), True)">11/12/2013 12:00</span>
+          </tal:effective>
+          <tal:noteffective condition="not:question/effective_date">
+            Created on: <span tal:content="python:toLocalizedTime(question.created(), True)">11/12/2013 12:00</span>
+          </tal:noteffective>
+       </span>
       </div>
       <div tal:content="structure question/text/output|string:">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

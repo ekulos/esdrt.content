@@ -216,7 +216,7 @@
           <div class="cell position-0 width-7 esdLabel">Question</div>
           <div class="cell position-7 width-2 esdLabel">Author</div>
           <div class="cell position-9 width-1 esdLabel">Status</div>
-          <div class="cell position-10 width-3 esdLabel">Creation date</div>
+          <div class="cell position-10 width-3 esdLabel">Sent to MS</div>
           <div class="cell position-13 width-3 esdLabel">Last update</div>
         </div>
         <tal:question repeat="question_item view/get_questions">
@@ -247,9 +247,14 @@
                   </span>
                 </div>
                 <div class="cell position-10 width-3">
-                  <span tal:replace="python:toLocalizedTime(question.created(), True)">
-                    2014-01-01
-                  </span>
+                  <tal:effective condition="first_comment/effective_date">
+                    <span tal:replace="python:toLocalizedTime(first_comment.EffectiveDate(), True)">
+                      2014-01-01
+                    </span>
+                  </tal:effective>
+                  <tal:noteffective condition="not:first_comment/effective_date">
+                    Not sent to MS yet.
+                  </tal:noteffective>
                 </div>
                 <div class="cell position-13 width-3">
                   <span tal:replace="python:toLocalizedTime(question.modified(), True)">
