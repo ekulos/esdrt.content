@@ -3,7 +3,7 @@
     xmlns:plone="http://namespaces.plone.org/plone">
 
     <adapter
-        for="plone.app.folder.folder.IATUnifiedFolder"
+        for="esdrt.content.reviewfolder.IReviewFolder"
         provides="zope.container.interfaces.INameChooser"
         factory=".reference_number.ReferenceNumberCreator"
     />
