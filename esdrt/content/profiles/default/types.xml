@@ -14,4 +14,5 @@
   <object name="Comment" meta_type="Dexterity FTI" />
   <object name="Question" meta_type="Dexterity FTI" />
   <object name="Observation" meta_type="Dexterity FTI" />
+
 </object>
