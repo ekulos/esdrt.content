@@ -80,7 +80,7 @@
       </tal:block>
       <div class="from">
         <span class="esdLabel">from</span>
-        <span class="value" tal:content="python:view.get_user_name(question.Creator())">John Smith</span>
+        <span class="value" tal:content="python:view.get_user_name(question.Creator(), question)">John Smith</span>
         <span class="messageDate">
           <tal:effective condition="question/effective_date">
             Sent on: <span tal:content="python:toLocalizedTime(question.EffectiveDate(), True)">11/12/2013 12:00</span>

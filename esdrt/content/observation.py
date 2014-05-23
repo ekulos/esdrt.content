@@ -309,8 +309,11 @@ class ObservationView(grok.View):
         return sm.checkPermission('Manage portal', context)
 
     def get_user_name(self, userid):
+        # Check users roles
         user = api.user.get(username=userid)
-        return user.getProperty('fullname', userid)
+        country = self.context.country_value()
+        sector = self.context.ghg_source_sectors_value()
+        return ' - '.join([country, sector])
 
     def get_menu_actions(self):
         context = aq_inner(self.context)

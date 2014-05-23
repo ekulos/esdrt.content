@@ -143,7 +143,17 @@ class QuestionView(grok.View):
             )
         return [mitem for mitem in menu_items if not hidden(mitem)]
 
-    def get_user_name(self, userid):
+    def get_user_name(self, userid, question=None):
+        # check users
+        if question is not None:
+            obs = aq_parent(self.context)
+            country = obs.country_value()
+            sector = obs.ghg_source_sectors_value()
+            if question.portal_type == 'Comment':
+                return ' - '.join([country, sector])
+            elif question.portal_type == 'CommentAnswer':
+                return ' - '.join([country, 'Authority'])
+
         user = api.user.get(username=userid)
         return user.getProperty('fullname', userid)
 
