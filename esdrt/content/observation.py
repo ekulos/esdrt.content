@@ -174,8 +174,27 @@ class IObservation(form.Schema, IImageScaleTraversable):
 def check_sector(value):
     user = api.user.get_current()
     groups = user.getGroups()
-    if 'extranet-esd-reviewexperts-%s' % value not in groups:
+    valid = False
+    for group in groups:
+        if group.startswith('extranet-esd-reviewexperts-%s-' % value):
+            valid = True
+
+    if not valid:
         raise Invalid(u'You are not allowed to add observations for this sector')
+
+
+@form.validator(field=IObservation['country'])
+def check_country(value):
+    user = api.user.get_current()
+    groups = user.getGroups()
+    valid = False
+    for group in groups:
+        if group.startswith('extranet-esd-reviewexperts-') and \
+            group.endswith('-%s' % value):
+            valid = True
+
+    if not valid:
+        raise Invalid(u'You are not allowed to add observations for this country')
 
 
 @default_value(field=IObservation['review_year'])
