@@ -1,9 +1,10 @@
 1,Stationary combustion (1A1, 1A2, 1A4, 1A5)
-2,1A3 Transport + 1C International bunkers
-3,1B Fugitive emissions
+2,1A3 Transport + 1C CO2 transport and storage
+3,Fugitive emissions (1B1, 1B2)
 4,2A Mineral Products + 2B Chemical Industry + Solvents
-5,2C Metal Production + 2D + 2G
+5,2C Metal Production + 2D + 2G + 2H
 6,2E Production of Halocarbons and SF6 + 2F Consumption of Haklocarbons and SF6
-7,4A Enteric Fermentation + 4B Manure Management
-8,4C + 4F
-9,Waste
+7,3A Enteric Fermentation + 3B Manure Management
+8,3C + 3F Agriculture
+10, 4 LULUCF
+9,5 Waste
