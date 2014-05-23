@@ -59,4 +59,12 @@
          handler=".7_8.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 9."
+         description="Reload workflows, install new content-type and reload vocabularies"
+         source="8"
+         destination="9"
+         handler=".8_9.upgrade"
+         profile="esdrt.content:default" />
+
 </configure>
