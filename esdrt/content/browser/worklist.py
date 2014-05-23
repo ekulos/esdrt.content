@@ -44,3 +44,11 @@ class WorklistView(grok.View):
     def can_add_observation(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Observation', self)
+
+    def is_secretariat(self):
+        user = api.user.get_current()
+        return 'Manager' in user.getRoles()
+
+    def get_author_name(self, userid):
+        user = api.user.get(userid)
+        return user.getProperty('fullname', userid)

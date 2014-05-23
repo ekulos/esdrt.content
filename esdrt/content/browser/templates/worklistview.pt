@@ -48,6 +48,9 @@
             <th>
               Modification date
             </th>
+            <th tal:condition="view/is_secretariat">
+              Author
+            </th>
           </tr>
         </thead>
 
@@ -87,7 +90,9 @@
                 <td tal:content="python:toLocalizedTime(observation.modified(), True)">
                   Observation title
                 </td>
-
+                <td tal:condition="view/is_secretariat">
+                  <span tal:replace="python:view.get_author_name(observation.Creator())" />
+                </td>
               </tal:item>
             </tal:item>
 
