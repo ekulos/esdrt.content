@@ -34,7 +34,7 @@ class ObservationRoleAdapter(object):
         if member is not None:
             groups = member.getGroups()
             for group in groups:
-                if 'reviewexperts-%s' % sector in group:
+                if 'reviewexperts-%s-%s' % (sector, country) in group:
                     roles.append('SectorExpertReviewer')
                 if 'leadreviewers-%s' % country in group:
                     roles.append('LeadReviewer')
@@ -75,7 +75,7 @@ class QuestionRoleAdapter(object):
             if member is not None:
                 groups = member.getGroups()
                 for group in groups:
-                    if 'reviewexperts-%s' % sector in group:
+                    if 'reviewexperts-%s-%s' % (sector, country) in group:
                         roles.append('SectorExpertReviewer')
                     if 'leadreviewers-%s' % country in group:
                         roles.append('LeadReviewer')
@@ -119,7 +119,7 @@ class CommentRoleAdapter(object):
                 if member is not None:
                     groups = member.getGroups()
                     for group in groups:
-                        if 'reviewexperts-%s' % sector in group:
+                        if 'reviewexperts-%s-%s' % (sector, country) in group:
                             roles.append('SectorExpertReviewer')
                         if 'leadreviewers-%s' % country in group:
                             roles.append('LeadReviewer')
@@ -164,7 +164,7 @@ class CommentAnswerRoleAdapter(object):
                 if member is not None:
                     groups = member.getGroups()
                     for group in groups:
-                        if 'reviewexperts-%s' % sector in group:
+                        if 'reviewexperts-%s-%s' % (sector, country) in group:
                             roles.append('SectorExpertReviewer')
                         if 'leadreviewers-%s' % country in group:
                             roles.append('LeadReviewer')
