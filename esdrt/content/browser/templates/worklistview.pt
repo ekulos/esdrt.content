@@ -52,14 +52,16 @@
                                 toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                 <td>
                   <a href=""
-                    tal:attributes="href observation/absolute_url"
-                    tal:content="observation/getId">
-                    UK-WAS-13-001
-                  </a><br />
-                  <a href=""
-                    tal:attributes="href observation/absolute_url"
-                    tal:content="observation/Title">
-                    Observation title
+                    tal:attributes="href observation/absolute_url">
+                      <span class="ref-num"
+                      tal:content="observation/getId">
+                      UK-WAS-13-001
+                    </span>
+                    <br />
+                    <span class="obs-title"
+                      tal:content="observation/Title">
+                      Observation title
+                    </span>
                   </a>
                 </td>
                 <td tal:content="observation/get_status|nothing">
