@@ -1,6 +1,6 @@
-energy,1 Energy
-ip,2 Industrial Processes and product use
-agriculture,3 Agriculture
-lulucf,4 LULUCF
-waste,5 Waste
-other,6 Other
+1,1 Energy
+2,2 Industrial Processes and product use
+3,3 Agriculture
+4,4 LULUCF
+5,5 Waste
+6,6 Other
