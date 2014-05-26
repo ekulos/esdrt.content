@@ -1,10 +1,12 @@
+from Acquisition import aq_inner
 from esdrt.content import MessageFactory as _
 from esdrt.content.question import IQuestion
 from five import grok
-from plone.app.workflow.browser.sharing import SharingView
+from plone import api
 from plone.directives import form
-from plone.memoize.instance import memoize
+from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 from z3c.form import field
 from zope import schema
@@ -27,24 +29,51 @@ class IAssignCounterPartForm(Interface):
     )
 
 
-class AssignCounterPartForm(SharingView):
+class AssignCounterPartForm(BrowserView):
 
     index = ViewPageTemplateFile('assing_counterpart_form.pt')
-    macro_wrapper = ViewPageTemplateFile('macro_wrapper.pt')
+    # macro_wrapper = ViewPageTemplateFile('macro_wrapper.pt')
 
-    STICKY = []
+    def target_groupname(self):
+        context = aq_inner(self.context)
+        country = context.country.lower()
+        sector = context.ghg_source_sectors
+        return 'extranet-esd-reviewexperts-%s-%s' % (sector, country)
 
-    @memoize
-    def roles(self):
-        return [{'id': 'CounterPart', 'title': 'CounterPart'}]
-
-    def group_search_results(self):
-        return []
+    def get_counterpart_users(self):
+        groupname = self.target_groupname()
+        current = api.user.get_current()
+        return [u for u in api.user.get_users(groupname=groupname) if current.getId() != u.getId()]
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
         """
-        if self.request.get('form.button.Assign', None):
+        if self.request.form.get('send', None):
+            username = self.request.get('counterpart', None)
+            comments = self.request.get('comments', None)
+            if username is None:
+                status = IStatusMessage(self.request)
+                msg = _(u'You need to select one counterpart')
+                status.addStatusMessage(msg, "error")
+                return self.index()
+
+            user = api.user.get(username=username)
+            groupname = self.target_groupname()
+            if groupname not in user.getGroups():
+                status = IStatusMessage(self.request)
+                msg = _(u'Selected user is not valid')
+                status.addStatusMessage(msg, "error")
+                return self.index()
+
+            if not comments:
+                status = IStatusMessage(self.request)
+                msg = _(u'You need to enter some comments for your counterpart')
+                status.addStatusMessage(msg, "error")
+                return self.index()
+
+            api.user.grant_roles(username=username,
+                roles=['CounterPart'],
+                obj=self.context)
             wf_action = 'request-for-counterpart-comments'
             wf_comments = self.request.get('comments')
             return self.context.content_status_modify(
@@ -53,14 +82,7 @@ class AssignCounterPartForm(SharingView):
             )
 
         else:
-            postback = self.handle_form()
-            if postback:
-                return self.index()
-            else:
-                context_state = self.context.restrictedTraverse(
-                    "@@plone_context_state")
-                url = context_state.view_url()
-                self.request.response.redirect(url)
+            return self.index()
 
 
 class ISendCounterPartComments(Interface):

@@ -15,13 +15,13 @@
         permission="zope2.View"
         />
 
-    <browser:page
+<!--     <browser:page
         name="assign_counterpart_name"
         for="*"
         class=".statechange.AssignCounterPartForm"
         attribute="updateSharingInfo"
         permission="zope2.View"
         />
-
+ -->
 
 </configure>
