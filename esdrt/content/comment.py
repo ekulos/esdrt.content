@@ -14,6 +14,7 @@ from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from time import time
 from z3c.form import field
+from zope.app.container.interfaces import IObjectAddedEvent
 from zope.component import createObject
 from zope.component import getUtility
 
@@ -43,7 +44,10 @@ class Comment(dexterity.Container):
 
     def can_edit(self):
         sm = getSecurityManager()
-        return sm.checkPermission('Modify portal content', self)
+        lr = 'LeadReviewer' in api.user.get_current().getRoles()
+        sre = 'SectorExpertReviewer' in api.user.get_current().getRoles()
+        reviewer = lr or sre
+        return sm.checkPermission('Modify portal content', self) and reviewer
 
     def can_add_files(self):
         sm = getSecurityManager()
@@ -119,3 +123,17 @@ class EditForm(dexterity.EditForm):
         super(EditForm, self).updateFields()
         self.fields = field.Fields(IComment).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+
+
+@grok.subscribe(IComment, IObjectAddedEvent)
+def add_question(context, event):
+    """ When adding a question, go directly to
+        'open' status on the observation
+    """
+    question = aq_parent(context)
+    observation = aq_parent(question)
+    with api.env.adopt_roles(roles=['Manager']):
+        if api.content.get_state(obj=question) == 'closed' and \
+            api.content.get_state(obj=observation) == 'close-requested':
+            api.content.transition(obj=observation, transition='reopen')
+            api.content.transition(obj=question, transition='reopen')

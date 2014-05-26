@@ -48,6 +48,9 @@
             <th>
               Modification date
             </th>
+            <th>
+              WF Location
+            </th>
             <th tal:condition="view/is_secretariat">
               Author
             </th>
@@ -89,6 +92,9 @@
                 </td>
                 <td tal:content="python:toLocalizedTime(observation.modified(), True)">
                   Observation title
+                </td>
+                <td tal:content="observation/wf_location">
+                  Review Expert
                 </td>
                 <td tal:condition="view/is_secretariat">
                   <span tal:replace="python:view.get_author_name(observation.Creator())" />

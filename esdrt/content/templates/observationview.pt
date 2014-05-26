@@ -94,12 +94,14 @@
         <div class="cell position-6 width-2 esdLabel">Sector</div>
         <div class="cell position-8 width-2 esdLabel">Gas</div>
         <div class="cell position-10 width-3 esdLabel">Inventory year</div>
+        <div class="cell position-13 width-3 esdLabel">WF Location</div>
       </div>
       <div class="row">
         <div class="cell position-4 width-2" tal:content="context/country_value">Country</div>
         <div class="cell position-6 width-2" tal:content="context/ghg_source_sectors_value">Sector</div>
         <div class="cell position-8 width-2" tal:content="context/gas_value">Gas</div>
         <div class="cell position-10 width-3" tal:content="context/year">Year of emission</div>
+        <div class="cell position-13 width-3" tal:content="context/wf_location">Year of emission</div>
       </div>
     </div>
     <div class="esdDiv observationDetailsRow">
@@ -178,7 +180,8 @@
   </metal:observation>
 
 
-  <div class="esdDiv description">
+  <div class="esdDiv description"
+    tal:condition="view/show_description">
     <div class="esdLabel">
       Description
     </div>
@@ -231,7 +234,7 @@
     </tal:block>
   </div>
 
-    <ul class="eea-tabs">
+    <ul class="eea-tabs" tal:condition="python: view.isManager() or view.get_questions()">
       <li>Question chat room</li>
       <li tal:condition="view/isManager" style="width: 150px;">Technical corrections</li>
     </ul>

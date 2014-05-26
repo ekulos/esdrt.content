@@ -30,7 +30,7 @@ class NotificationReceivers(object):
         """
         context = self.context
         wtool = getToolByName(context, 'portal_workflow')
-
+        actors = []
         # 1. Get all involved users
         with api.env.adopt_roles(['Manager']):
             info = wtool.getInfoFor(context, 'review_history',
@@ -81,7 +81,7 @@ class QuestionNotificationReceivers(object):
         """
         context = self.context
         wtool = getToolByName(context, 'portal_workflow')
-
+        actors = []
         # 1. Get all involved users
         with api.env.adopt_roles(['Manager']):
             info = wtool.getInfoFor(context, 'review_history',
@@ -97,7 +97,7 @@ class QuestionNotificationReceivers(object):
         putils = getToolByName(context, "plone_utils")
         for actor in set(actors):
             # 3. remove unsubsribed users
-            if actor not in unsubscribed_users:
+            if actor and actor not in unsubscribed_users:
                 user = api.user.get(username=actor)
                 if user is not None:
                     email = user.getProperty('email')

@@ -12,35 +12,15 @@
  <permission>esdrt.content: Add ESDRTFile</permission>
  <state state_id="initial" title="Initial">
   <exit-transition transition_id="publish"/>
-  <permission-map name="Access contents information" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
+  <permission-map name="Access contents information" acquired="True">
   </permission-map>
-  <permission-map name="List folder contents" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
+  <permission-map name="List folder contents" acquired="True">
   </permission-map>
-  <permission-map name="Modify portal content" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
+  <permission-map name="Modify portal content" acquired="True">
   </permission-map>
-  <permission-map name="View" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
+  <permission-map name="View" acquired="True">
   </permission-map>
-  <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
   </permission-map>
  </state>
  <state state_id="public" title="Published">
@@ -51,7 +31,6 @@
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -59,11 +38,9 @@
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -71,11 +48,9 @@
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
  </state>
  <transition transition_id="publish" title="Publish" new_state="public" trigger="USER" before_script="" after_script="">

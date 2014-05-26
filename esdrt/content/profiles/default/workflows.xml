@@ -11,7 +11,7 @@
    <bound-workflow workflow_id="esd-comment-workflow"/>
   </type>
   <type type_id="CommentAnswer">
-   <bound-workflow workflow_id="esd-comment-workflow"/>
+   <bound-workflow workflow_id="esd-answer-workflow"/>
   </type>
   <type type_id="Observation">
    <bound-workflow workflow_id="esd-review-workflow"/>

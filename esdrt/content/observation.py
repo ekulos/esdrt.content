@@ -281,6 +281,29 @@ class Observation(dexterity.Container):
 
         return False
 
+    def wf_location(self):
+        if self.get_status() != 'pending':
+            return 'Review Expert'
+        else:
+            questions = self.values()
+            if questions:
+                question = questions[0]
+                state = api.content.get_state(question)
+                if state in ['draft', 'validate-answer', 'closed']:
+                    return 'Review Expert'
+                elif state in ['counterpart-comments']:
+                    return 'CounterPart'
+                elif state in ['drafted', 'recalled-lr', 'answered']:
+                    return 'Lead Reviewer'
+                elif state in ['pending',
+                    'pending-answer-validation', 'recalled-msa']:
+                    return 'MS Authority'
+                elif state in ['pending-answer']:
+                    return 'MS Expert'
+
+            return 'Review Expert'
+
+
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
@@ -388,7 +411,6 @@ class ObservationView(grok.View):
 
         return is_draft and not questions
 
-
     def can_add_question(self):
         sm = getSecurityManager()
         questions = len([q for q in self.context.values() if q.portal_type == 'Question'])
@@ -428,6 +450,20 @@ class ObservationView(grok.View):
 
         return actions
 
+    def show_description(self):
+        questions = self.get_questions()
+        sm = getSecurityManager()
+        if questions:
+            question = questions[-1]
+            return sm.checkPermission('View', question.getObject())
+        else:
+            user = api.user.get_current()
+            userroles = api.user.get_roles(username=user.getId(),
+                obj=self.context)
+            if 'MSAuthority' in userroles or 'MSExpert' in userroles:
+                return False
+
+            return True
 
 
 
@@ -565,14 +601,14 @@ class ModificationForm(dexterity.EditForm):
             self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
 
 
-@grok.subscribe(IObservation, IObjectAddedEvent)
-def add_observation(context, event):
-    request = getRequest()
-    pps = getMultiAdapter((context, request), name='plone_portal_state')
-    member = pps.member()
-    member_id = member.getId()
-    api.user.grant_roles(
-        username=member_id,
-        obj=context,
-        roles=['SectorExpertReviewer']
-    )
+# @grok.subscribe(IObservation, IObjectAddedEvent)
+# def add_observation(context, event):
+#     request = getRequest()
+#     pps = getMultiAdapter((context, request), name='plone_portal_state')
+#     member = pps.member()
+#     member_id = member.getId()
+#     api.user.grant_roles(
+#         username=member_id,
+#         obj=context,
+#         roles=['SectorExpertReviewer']
+#     )

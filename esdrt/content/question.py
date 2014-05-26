@@ -36,9 +36,9 @@ class IQuestion(form.Schema, IImageScaleTraversable):
 PENDING_STATUS_NAMES = ['answered']
 OPEN_STATUS_NAMES = ['pending', 'pending-answer', 'pending-answer-validation',
      'validate-answer', 'recalled-msa']
-CLOSED_STATUS_NAMES = ['closed']
 DRAFT_STATUS_NAMES = ['draft', 'counterpart-comments',
-    'drafted', 'pending-approval', 'recalled-lr']
+    'drafted', 'recalled-lr']
+CLOSED_STATUS_NAMES = ['closed']
 
 PENDING_STATUS_NAME = 'pending'
 DRAFT_STATUS_NAME = 'draft'
@@ -114,6 +114,21 @@ class Question(dexterity.Container):
         observation = self.get_observation()
         return api.content.get_state(observation) == 'pending'
 
+    def already_commented_by_counterpart(self):
+        wtool = getToolByName(self, 'portal_workflow')
+        wfinfo = wtool.getInfoFor(self,
+            'review_history', 'esd-question-review-workflow')
+        passed_states = [s['review_state'] for s in wfinfo]
+        return 'counterpart-comments' in passed_states
+
+    def one_pending_answer(self):
+        if self.has_answers():
+            answers = [q for q in self.values() if q.portal_type == 'CommentAnswer']
+            answer = answers[-1]
+            user = api.user.get_current()
+            return answer.Creator() == user.getId()
+        else:
+            return False
 
 # View class
 # The view will automatically use a similarly named template in
@@ -155,8 +170,10 @@ class QuestionView(grok.View):
             elif question.portal_type == 'CommentAnswer':
                 return ' - '.join([country, 'Authority'])
 
-        user = api.user.get(username=userid)
-        return user.getProperty('fullname', userid)
+        if userid:
+            user = api.user.get(username=userid)
+            return user.getProperty('fullname', userid)
+        return ''
 
     def actions_for_comment(self, commentid):
         context = aq_inner(self.context)
@@ -173,7 +190,8 @@ class QuestionView(grok.View):
         context = aq_inner(self.context)
         questions = [q for q in context.values() if q.portal_type == 'Comment']
         answers = [q for q in context.values() if q.portal_type == 'CommentAnswer']
-        return permission and len(questions) == len(answers)
+        obs_state = api.content.get_state(obj=self.observation())
+        return permission and len(questions) == len(answers) and obs_state != 'closed'
 
     def can_add_answer(self):
         sm = getSecurityManager()
@@ -243,4 +261,5 @@ def add_question(context, event):
     """
     observation = aq_parent(context)
     with api.env.adopt_roles(roles=['Manager']):
-        api.content.transition(obj=observation, transition='approve')
+        if api.content.get_state(obj=observation) == 'draft':
+            api.content.transition(obj=observation, transition='approve')

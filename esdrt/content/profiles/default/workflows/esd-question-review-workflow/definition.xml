@@ -12,10 +12,9 @@
  <permission>esdrt.content: Add CommentAnswer</permission>
  <permission>esdrt.content: Add ESDRTFile</permission>
  <state state_id="answered" title="Answered">
-  <exit-transition transition_id="recall-msa"/>
   <exit-transition transition_id="validate-answer-msa"/>
   <exit-transition transition_id="ask-validation"/>
-  <exit-transition transition_id="close-lr"/>
+  <exit-transition transition_id="recall-msa"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -43,23 +42,24 @@
  <state state_id="closed" title="Closed">
   <exit-transition transition_id="reopen"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
+   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
@@ -73,11 +73,9 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>CounterPart</permission-role>
-   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
@@ -85,51 +83,19 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
-  </permission-map>
- </state>
- <state state_id="done" title="Done">
-  <exit-transition transition_id="request-for-counterpart-comments"/>
-  <exit-transition transition_id="close"/>
-  <exit-transition transition_id="close-lr"/>
-  <permission-map name="Access contents information" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-  </permission-map>
-  <permission-map name="Modify portal content" acquired="False">
-   <permission-role>Manager</permission-role>
-  </permission-map>
-  <permission-map name="View" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-  </permission-map>
-  <permission-map name="esdrt.content: Add Comment" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-  </permission-map>
-  <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
  </state>
  <state state_id="draft" title="Draft">
-  <exit-transition transition_id="request-for-counterpart-comments"/>
   <exit-transition transition_id="close"/>
   <exit-transition transition_id="close-lr"/>
+  <exit-transition transition_id="request-for-counterpart-comments"/>
+  <exit-transition transition_id="send-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
@@ -156,39 +122,37 @@
   </permission-map>
  </state>
  <state state_id="drafted" title="Drafted">
-  <exit-transition transition_id="ask-question-approval"/>
+  <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="close-lr"/>
-  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="redraft"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
  </state>
  <state state_id="pending" title="Pending">
+  <exit-transition transition_id="answer-to-lr"/>
   <exit-transition transition_id="recall-question-lr"/>
   <exit-transition transition_id="assign-answerer"/>
-  <exit-transition transition_id="close-lr"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -208,13 +172,14 @@
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
+   <permission-role>MSAuthority</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+   <permission-role>MSAuthority</permission-role>
   </permission-map>
  </state>
  <state state_id="pending-answer" title="Pending Answer">
   <exit-transition transition_id="ask-answer-approval"/>
-  <exit-transition transition_id="close-lr"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -244,7 +209,6 @@
  </state>
  <state state_id="pending-answer-validation" title="Pending Answer Validation">
   <exit-transition transition_id="answer"/>
-  <exit-transition transition_id="close-lr"/>
   <exit-transition transition_id="redraft-msa"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -254,35 +218,6 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
-  </permission-map>
-  <permission-map name="View" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-  </permission-map>
-  <permission-map name="esdrt.content: Add Comment" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
-  </permission-map>
- </state>
- <state state_id="pending-approval" title="Pending Approval">
-  <exit-transition transition_id="redraft"/>
-  <exit-transition transition_id="approve-question"/>
-  <exit-transition transition_id="close-lr"/>
-  <permission-map name="Access contents information" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>
-   <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-  </permission-map>
-  <permission-map name="Modify portal content" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -324,7 +259,6 @@
  </state>
  <state state_id="recalled-msa" title="Recalled (MSA)">
   <exit-transition transition_id="answer"/>
-  <exit-transition transition_id="close-lr"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -347,7 +281,6 @@
   </permission-map>
  </state>
  <state state_id="validate-answer" title="Validate Answer">
-  <exit-transition transition_id="close-lr"/>
   <exit-transition transition_id="validate-answer"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>ExpertReviewer</permission-role>
@@ -378,6 +311,13 @@
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
+ <transition transition_id="answer-to-lr" title="Answer to LR" new_state="answered" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=answer-to-lr" category="workflow" icon="">Answer to LR</action>
+  <guard>
+   <guard-role>MSAuthority</guard-role>
+   <guard-expression>object/one_pending_answer</guard-expression>
+  </guard>
+ </transition>
  <transition transition_id="approve-question" title="Send to MS" new_state="pending" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=approve-question" category="workflow" icon="">Send to MS</action>
   <guard>
@@ -391,13 +331,6 @@
    <guard-expression>object/has_answers</guard-expression>
   </guard>
  </transition>
- <transition transition_id="ask-question-approval" title="Forward to LR (SE)" new_state="pending-approval" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=ask-question-approval" category="workflow" icon="">Forward to LR (SE)</action>
-  <guard>
-   <guard-role>SectorExpertReviewer</guard-role>
-   <guard-expression>object/unanswered_questions</guard-expression>
-  </guard>
- </transition>
  <transition transition_id="ask-validation" title="Forward Answer to SE" new_state="validate-answer" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=ask-validation" category="workflow" icon="">Forward Answer to SE</action>
   <guard>
@@ -408,6 +341,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=assign-answerer" category="workflow" icon="">Forward to MSE</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
+   <guard-expression>not:object/one_pending_answer</guard-expression>
   </guard>
  </transition>
  <transition transition_id="close" title="Close Question" new_state="closed" trigger="USER" before_script="" after_script="">
@@ -434,8 +368,8 @@
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="redraft" title="Redraft" new_state="drafted" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=redraft" category="workflow" icon="">Redraft</action>
+ <transition transition_id="redraft" title="Ask SE to redraft" new_state="draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=redraft" category="workflow" icon="">Ask SE to redraft</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
@@ -446,33 +380,39 @@
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
- <transition transition_id="reopen" title="Reopen" new_state="done" trigger="USER" before_script="" after_script="">
+ <transition transition_id="reopen" title="Reopen" new_state="draft" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=reopen" category="workflow" icon="">Reopen</action>
   <guard>
-   <guard-role>SectorExpertReviewer</guard-role>
-   <guard-expression>object/observation_not_closed</guard-expression>
+   <guard-role>Manager</guard-role>
   </guard>
  </transition>
  <transition transition_id="request-for-counterpart-comments" title="Request for Counterpart Comments" new_state="counterpart-comments" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/assign_counterpart_form?workflow_action=request-for-counterpart-comments" category="workflow" icon="">Request for Counterpart Comments</action>
   <guard>
    <guard-role>SectorExpertReviewer</guard-role>
-   <guard-expression>object/unanswered_questions</guard-expression>
+   <guard-expression>python:object.unanswered_questions() and not object.already_commented_by_counterpart()</guard-expression>
   </guard>
  </transition>
- <transition transition_id="send-comments" title="Forward to LR (CP)" new_state="drafted" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/send_counterpart_comments?workflow_action=send-comments" category="workflow" icon="">Forward to LR (CP)</action>
+ <transition transition_id="send-comments" title="Send comments to LR" new_state="drafted" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/send_counterpart_comments?workflow_action=send-comments" category="workflow" icon="">Send comments to LR</action>
   <guard>
    <guard-role>CounterPart</guard-role>
   </guard>
  </transition>
- <transition transition_id="validate-answer" title="Validate Answer" new_state="done" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer" category="workflow" icon="">Validate Answer</action>
+ <transition transition_id="send-to-lr" title="Send to LR" new_state="drafted" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=send-to-lr" category="workflow" icon="">Send to LR</action>
   <guard>
-   <guard-role>ExpertReviewer</guard-role>
+   <guard-role>SectorExpertReviewer</guard-role>
+   <guard-expression>python:object.unanswered_questions() and object.already_commented_by_counterpart()</guard-expression>
   </guard>
  </transition>
- <transition transition_id="validate-answer-msa" title="Validate Answer (LR)" new_state="done" trigger="USER" before_script="" after_script="">
+ <transition transition_id="validate-answer" title="Validate Answer" new_state="closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer" category="workflow" icon="">Validate Answer</action>
+  <guard>
+   <guard-role>SectorExpertReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="validate-answer-msa" title="Validate Answer (LR)" new_state="closed" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer-msa" category="workflow" icon="">Validate Answer (LR)</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
