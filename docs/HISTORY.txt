@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.4 (2014-05-23)
+----------------------
+
+- Workflow changes [erral]
+
+- New content-type to save observations in a review process [erral]
+
+
 1.3 (2014-05-07)
 ---------------------
 
