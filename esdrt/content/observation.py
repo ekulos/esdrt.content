@@ -24,6 +24,7 @@ from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from zope import schema
 from zope.container.interfaces import IObjectAddedEvent
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.browsermenu.menu import getMenu
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -203,6 +204,7 @@ def default_year(data):
 
 
 @grok.subscribe(IObservation, IObjectAddedEvent)
+@grok.subscribe(IObservation, IObjectModifiedEvent)
 def add_observation(object, event):
     sector = safe_unicode(object.ghg_source_category_value())
     gas = safe_unicode(object.gas_value())
