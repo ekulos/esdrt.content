@@ -32,6 +32,7 @@ from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 from zope.interface import Invalid
+from types import IntType
 
 import datetime
 
@@ -169,6 +170,14 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'Technical Corrections'),
         required=False
     )
+
+
+@form.validator(field=IObservation['ghg_estimations'])
+def check_ghg_estimations(value):
+    for item in value:
+        for val in item.values():
+            if type(val) is IntType and val < 0:
+                raise Invalid(u'Estimation values must be positive numbers')
 
 
 @form.validator(field=IObservation['ghg_source_sectors'])
