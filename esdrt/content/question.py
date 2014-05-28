@@ -34,10 +34,19 @@ class IQuestion(form.Schema, IImageScaleTraversable):
 # in separate view classes.
 
 PENDING_STATUS_NAMES = ['answered']
-OPEN_STATUS_NAMES = ['pending', 'pending-answer', 'pending-answer-validation',
-     'validate-answer', 'recalled-msa']
-DRAFT_STATUS_NAMES = ['draft', 'counterpart-comments',
-    'drafted', 'recalled-lr']
+OPEN_STATUS_NAMES = [
+    'pending',
+    'pending-answer',
+    'pending-answer-validation',
+    'validate-answer',
+    'recalled-msa'
+]
+DRAFT_STATUS_NAMES = [
+    'draft',
+    'counterpart-comments',
+    'drafted',
+    'recalled-lr'
+]
 CLOSED_STATUS_NAMES = ['closed']
 
 PENDING_STATUS_NAME = 'pending'
