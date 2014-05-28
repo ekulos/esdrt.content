@@ -23,7 +23,7 @@ from z3c.form import interfaces
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
 from zope import schema
-from zope.app.container.interfaces import IObjectAddedEvent
+from zope.container.interfaces import IObjectAddedEvent
 from zope.browsermenu.menu import getMenu
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -580,10 +580,14 @@ class ModificationForm(dexterity.EditForm):
         super(ModificationForm, self).updateFields()
 
         user = api.user.get_current()
-        roles = api.user.get_roles(username=user.getId())
+        roles = api.user.get_roles(username=user.getId(), obj=self.context)
         fields = []
-        if 'ExpertReviewer' in roles:
-            fields = field.Fields(IObservation)
+        if 'SectorExpertReviewer' in roles:
+            fields = [f for f in field.Fields(IObservation) if f not in [
+                'country',
+                'crf_code',
+                'review_year',
+                ]]
         elif 'LeadReviewer' in roles:
             fields = ['text']
         elif 'CounterPart' in roles:
