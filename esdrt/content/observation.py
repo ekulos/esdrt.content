@@ -312,8 +312,9 @@ class Observation(dexterity.Container):
             return 'Reporting observation'
         else:
             questions = self.values()
-            state = api.content.get_state(question)
             if questions:
+                question = questions[0]
+                state = api.content.get_state(question)
                 if state in ['answered']:
                     return 'Pending question'
                 elif state in ['pending', 'pending-answer', 'pending-answer-validation',
