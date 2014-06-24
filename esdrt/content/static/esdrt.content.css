@@ -66,12 +66,7 @@
 .estTable td{
 	padding: 4px;
 }
-.estTable tbody tr:nth-child(odd) {
-	background: #eee;
-}
-.estTable tbody tr:nth-child(even) {
-	background: #fff;
-}
+
 .standardButton{
 	color:#fff !important;
 	background:#346F83;
@@ -206,33 +201,90 @@
 	position: absolute;
 	padding: 0px !important;
 }
-.listing {
-	max-width: 100% !important;
-	width: 100% !important;
-	overflow: auto !important;
-	border: 1px solid #b6b6b6 !important;
-	color: #666666 !important;
-	line-height: normal !important;
+.observationList {
+	width: 100%;
 }
-.listing tr.pending {
-	background-color: #faefe1;
+.observationList th{
+	cursor: pointer;
+	background-color: #005e7d;
+	color: #fff;
+	border: 0.1em solid #e7e7e7;
+	border-style: solid solid none;
+	padding: 4px;
 }
-.listing tr.draft {
-	background-color: #eee;
+.observationList th.asc:after{
+	content: '▼';
 }
-.listing tr.open {
-	background-color: #f6fae1;
+.observationList th.desc:after{
+	content: '▲';
 }
-.listing tr.closed {
-	background-color: #ededed;
+.observationList tbody tr:nth-child(even){
+	border-bottom: 2px solid gray;
 }
-.listing th{
-	text-align: center !important;
-	background-color: #005e7d !important;
-	color: #fff !important;
-	padding: 4px !important;
-	width: 9% !important;
+.observationList tbody tr.hover{	
+	background-color: #EEEEEE;
+	cursor: pointer;
 }
-.listing td{
-	padding: 4px !important;
+.observationList td{
+	padding: 4px;
+}
+
+.observationRefCell{
+	color: #427597;
+	font-weight: bold;
+	font-size: 14px;
+}
+.statusCell {
+	vertical-align: middle !important;
+	text-align: center;
+}
+.statusCell span{
+	background-color: red;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding: 5px 14px;
+}
+.statusCell span.draft{
+	background-color: #CDF4FE;
+	color: #028CA9;
+}
+.statusCell span.pending{
+	background-color: #CB7801;
+	color: white;
+}
+.statusCell span.closed{
+	background-color: #DADADA;
+	color: #999999;
+}
+.countryCell{
+	vertical-align: middle !important;
+	text-align: center;
+}
+.sectorCell{
+	vertical-align: middle !important;
+	text-align: center;	
+}
+.gasCell{
+	vertical-align: middle !important;
+	text-align: center;
+	font-weight: bold;
+}
+.yearCell{
+	text-align: center;
+}
+.wfRole:before{
+	content: "\f007";
+}
+.wfStep:before{
+	content: "\f044";
+}
+.clickableRow{
+	cursor: pointer !important;
+}
+.wfPoint:before{
+	content: "\f111";
+}
+.wfPoint2:before{
+	content: "\f10c";
 }

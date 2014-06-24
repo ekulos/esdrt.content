@@ -303,6 +303,27 @@ class Observation(dexterity.Container):
 
             return 'Review Expert'
 
+    def wf_status(self):
+        if self.get_status() == 'draft':
+            return 'Draft observation'
+        elif self.get_status() == 'closed':
+            return 'Closed observation'
+        elif self.get_status() == 'close-requested':
+            return 'Reporting observation'
+        else:
+            questions = self.values()
+            state = api.content.get_state(question)
+            if questions:
+                if state in ['answered']:
+                    return 'Pending question'
+                elif state in ['pending', 'pending-answer', 'pending-answer-validation',
+                    'validate-answer', 'recalled-msa']:
+                    return 'Open question'
+                elif state in ['draft', 'counterpart-comments',
+                    'drafted', 'recalled-lr']:
+                    return 'Draft question'
+                elif state in ['closed']:
+                    return 'Closed question'
 
 # View class
 # The view will automatically use a similarly named template in
