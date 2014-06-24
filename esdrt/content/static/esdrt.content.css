@@ -212,6 +212,9 @@
 	border-style: solid solid none;
 	padding: 4px;
 }
+.observationList th:after{
+	content: ' ';
+}
 .observationList th.asc:after{
 	content: '▼';
 }
@@ -239,7 +242,6 @@
 	text-align: center;
 }
 .statusCell span{
-	background-color: red;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -249,8 +251,12 @@
 	background-color: #CDF4FE;
 	color: #028CA9;
 }
-.statusCell span.pending{
+.statusCell span.open{
 	background-color: #CB7801;
+	color: white;
+}
+.statusCell span.reporting{
+	background-color: #5cb85c;
 	color: white;
 }
 .statusCell span.closed{

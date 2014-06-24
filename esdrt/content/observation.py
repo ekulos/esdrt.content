@@ -325,6 +325,16 @@ class Observation(dexterity.Container):
                     return 'Draft question'
                 elif state in ['closed']:
                     return 'Closed question'
+    
+    def observation_status(self):
+        if self.get_status() == 'draft':
+            return 'draft'
+        elif self.get_status() == 'closed':
+            return 'closed'
+        elif self.get_status() == 'close-requested':
+            return 'reporting'
+        else:   
+            return 'open'                 
 
 # View class
 # The view will automatically use a similarly named template in

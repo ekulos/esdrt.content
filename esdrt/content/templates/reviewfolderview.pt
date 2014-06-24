@@ -89,8 +89,8 @@
                 <tr tal:attributes="data-href observation/absolute_url"
                     class="clickableRow">
                   <td class="statusCell">
-                    <span tal:content="observation/get_status|nothing"
-                          tal:attributes="class observation/get_status|nothing">
+                    <span tal:content="observation/observation_status|nothing"
+                          tal:attributes="class observation/observation_status|nothing">
                       Pending
                     </span>
                   </td>
