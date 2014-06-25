@@ -11,6 +11,9 @@
  <permission>esdrt.content: Add Comment</permission>
  <permission>esdrt.content: Add CommentAnswer</permission>
  <permission>esdrt.content: Add ESDRTFile</permission>
+ <permission>Reply to item</permission>
+ <permission>CMFEditions: Access previous versions</permission>
+ <permission>CMFEditions: Save new version</permission>
  <state state_id="answered" title="Answered">
   <exit-transition transition_id="validate-answer-msa"/>
   <exit-transition transition_id="ask-validation"/>
@@ -22,8 +25,15 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -48,8 +58,15 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -74,9 +91,19 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
-  <permission-map name="Modify portal content" acquired="False">
-   <permission-role>CounterPart</permission-role>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
@@ -101,9 +128,18 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -131,9 +167,18 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
@@ -160,7 +205,13 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -187,7 +238,13 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -217,7 +274,13 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -241,9 +304,15 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -265,7 +334,13 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -289,7 +364,13 @@
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
   </permission-map>
+  <permission-map name="CMFEditions: Access previous versions" acquired="False">
+  </permission-map>
+  <permission-map name="CMFEditions: Save new version" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
+  </permission-map>
+  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>ExpertReviewer</permission-role>
@@ -386,24 +467,24 @@
    <guard-role>Manager</guard-role>
   </guard>
  </transition>
- <transition transition_id="request-for-counterpart-comments" title="Request for Counterpart Comments" new_state="counterpart-comments" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/assign_counterpart_form?workflow_action=request-for-counterpart-comments" category="workflow" icon="">Request for Counterpart Comments</action>
+ <transition transition_id="request-for-counterpart-comments" title="Request Comments" new_state="counterpart-comments" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/assign_counterpart_form?workflow_action=request-for-counterpart-comments" category="workflow" icon="">Request Comments</action>
   <guard>
-   <guard-role>SectorExpertReviewer</guard-role>
-   <guard-expression>python:object.unanswered_questions() and not object.already_commented_by_counterpart()</guard-expression>
+   <guard-role>Owner</guard-role>
+   <guard-expression>python:object.unanswered_questions()</guard-expression>
   </guard>
  </transition>
- <transition transition_id="send-comments" title="Send comments to LR" new_state="drafted" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/send_counterpart_comments?workflow_action=send-comments" category="workflow" icon="">Send comments to LR</action>
+ <transition transition_id="send-comments" title="End comments and redraft" new_state="draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=send-comments" category="workflow" icon="">End comments and redraft</action>
   <guard>
-   <guard-role>CounterPart</guard-role>
+   <guard-role>Owner</guard-role>
   </guard>
  </transition>
  <transition transition_id="send-to-lr" title="Send to LR" new_state="drafted" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=send-to-lr" category="workflow" icon="">Send to LR</action>
   <guard>
-   <guard-role>SectorExpertReviewer</guard-role>
-   <guard-expression>python:object.unanswered_questions() and object.already_commented_by_counterpart()</guard-expression>
+   <guard-role>Owner</guard-role>
+   <guard-expression>python:object.unanswered_questions()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="validate-answer" title="Validate Answer" new_state="closed" trigger="USER" before_script="" after_script="">
