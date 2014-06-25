@@ -6,38 +6,9 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="esdrt.content">
 
-  <tal:block metal:fill-slot="head_slot">
-    <link rel="stylesheet" type="text/css" href="compare.css"
-          tal:attributes="href string:${portal_url}/compare.css"/>
-  </tal:block>
 
   <tal:block metal:fill-slot="javascript_head_slot">
     <script type="text/javascript">
-    (function($) {
-      update_display = function() {
-          var style = $(this).attr('value');
-          if (! this.checked) {
-              return;
-          }
-
-          $(".fieldDiff").hide();
-
-          if (style=="visual") {
-              $(".inline-diff").show();
-          }
-          else {
-              $(".code-diff").show();
-          }
-      }
-
-      $(document).ready(function() {
-          $(".jsOnly").show();
-
-          $("#versionSelector select").change(function() { this.form.submit(); });
-          $("#diffTypeSelector input").click(update_display);
-          $("#diffTypeSelector input").each(update_display);
-      });
-    })(jQuery);
 
     $(document).ready(function(){
 
@@ -45,13 +16,21 @@
         {
             subtype: 'ajax',
             filter: common_content_filter,
-            formselector: '#delete_confirmation,
+            formselector: '#delete_confirmation',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref,
             closeselector: '[name="form.button.Cancel"]',
             width:'50%'
         }
-      );});
+        );
+
+        $('#add-question-link').click(function(e){
+          e.preventDefault();
+          $('#question-add-form').toggle();
+        });
+
+
+    });
 
 
 
@@ -294,17 +273,18 @@
           </tal:block>
         </tal:question>
         <div class="actions" tal:condition="view/can_add_question">
-          <a href="./++add++Question"
+          <a id="add-question-link"
             tal:attributes="href string:${here/absolute_url}/++add++Question"
             class="standardButton">
             Add new question
           </a>
         </div>
 
+        <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">
+          <span tal:replace="structure view/add_question_form" />
+        </div>
 
-
-
-      </div>
+       </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
         tal:content="structure context/technical_corrections/output|nothing">
       </div>

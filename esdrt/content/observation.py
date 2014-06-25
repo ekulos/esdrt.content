@@ -1,3 +1,7 @@
+from z3c.form.browser import text
+from zope.interface import alsoProvides
+from z3c.form import button
+from plone.app.textfield.value import RichTextValue
 from Products.CMFPlone.utils import safe_unicode
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
@@ -33,6 +37,9 @@ from zope.i18n import translate
 from zope.schema.interfaces import IVocabularyFactory
 from zope.interface import Invalid
 from types import IntType
+from time import time
+from z3c.form import button
+from z3c.form.form import Form
 
 import datetime
 
@@ -336,7 +343,7 @@ class Observation(dexterity.Container):
                     return 'Draft question'
                 elif state in ['closed']:
                     return 'Closed question'
-    
+
     def observation_status(self):
         if self.get_status() == 'draft':
             return 'draft'
@@ -344,8 +351,8 @@ class Observation(dexterity.Container):
             return 'closed'
         elif self.get_status() == 'close-requested':
             return 'reporting'
-        else:   
-            return 'open'                 
+        else:
+            return 'open'
 
 # View class
 # The view will automatically use a similarly named template in
@@ -508,6 +515,42 @@ class ObservationView(grok.View):
 
             return True
 
+    def add_question_form(self):
+        from plone.z3cform.interfaces import IWrappedForm
+        form_instance = AddQuestionForm(self.context, self.request)
+        alsoProvides(form_instance, IWrappedForm)
+        return form_instance()
+
+from .comment import IComment
+
+
+class AddQuestionForm(Form):
+
+    ignoreContext = True
+    fields = field.Fields(IComment).select('text')
+
+    @button.buttonAndHandler(_('Add question'))
+    def create_question(self, action):
+        qs = [item for item in self.context.values() if item.portal_type == 'Question']
+        if qs:
+            question = qs[0]
+        else:
+            q_id = self.context.invokeFactory(type_name='Question',
+                id='question-1',
+                title='Question 1',
+            )
+            question = self.context.get(q_id)
+
+        id = str(int(time()))
+        item_id = question.invokeFactory(
+                type_name='Comment',
+                id=id,
+        )
+        text = self.request.form.get('form.widgets.text', '')
+        comment = question.get(item_id)
+        comment.text = RichTextValue(text, 'text/html', 'text/html')
+
+        return self.request.response.redirect(comment.absolute_url())
 
 
     # def update(self):

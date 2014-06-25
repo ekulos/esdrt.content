@@ -1,3 +1,4 @@
+from zope.i18n import translate
 from zope.app.container.interfaces import IObjectAddedEvent
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
@@ -21,7 +22,7 @@ from z3c.form import field
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
-
+from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
 
 class IQuestion(form.Schema, IImageScaleTraversable):
     """
@@ -124,11 +125,8 @@ class Question(dexterity.Container):
         return api.content.get_state(observation) == 'pending'
 
     def already_commented_by_counterpart(self):
-        wtool = getToolByName(self, 'portal_workflow')
-        wfinfo = wtool.getInfoFor(self,
-            'review_history', 'esd-question-review-workflow')
-        passed_states = [s['review_state'] for s in wfinfo]
-        return 'counterpart-comments' in passed_states
+        # XXXX
+        return True
 
     def one_pending_answer(self):
         if self.has_answers():
@@ -221,6 +219,77 @@ class QuestionView(grok.View):
             'time', wf_id='esd-question-review-workflow')
         return {'comments': comments, 'actor': actor, 'time': time}
 
+    @property
+    def repo_tool(self):
+        return getToolByName(self.context, "portal_repository")
+
+    def getVersion(self, version):
+        context = self.context.getFirstComment()
+        if version == "current":
+            return context
+        else:
+            return self.repo_tool.retrieve(context, int(version)).object
+
+    def versionName(self, version):
+        """
+        Copied from @@history_view
+        Translate the version name. This is needed to allow translation
+        when `version` is the string 'current'.
+        """
+        return _CMFE(version)
+
+    def versionTitle(self, version):
+        version_name = self.versionName(version)
+
+        return translate(
+            _CMFE(u"version ${version}",
+              mapping=dict(version=version_name)),
+            context=self.request
+        )
+
+    def update(self):
+        context = self.context.getFirstComment()
+        if context.can_edit():
+            history_metadata = self.repo_tool.getHistoryMetadata(context)
+            retrieve = history_metadata.retrieve
+            getId = history_metadata.getVersionId
+            history = self.history = []
+            # Count backwards from most recent to least recent
+            for i in xrange(history_metadata.getLength(countPurged=False)-1, -1, -1):
+                version = retrieve(i, countPurged=False)['metadata'].copy()
+                version['version_id'] = getId(i, countPurged=False)
+                history.append(version)
+            dt = getToolByName(self.context, "portal_diff")
+
+            version1 = self.request.get("one", None)
+            version2 = self.request.get("two", None)
+
+            if version1 is None and version2 is None:
+                self.history.sort(lambda x,y: cmp(x.get('version_id', ''), y.get('version_id')), reverse=True)
+                version1 = self.history[-1].get('version_id', 'current')
+                if len(self.history) > 1:
+                    version2 = self.history[-2].get('version_id', 'current')
+                else:
+                    version2 = 'current'
+            elif version1 is None:
+                version1 = 'current'
+            elif version2 is None:
+                version2 = 'current'
+
+            self.request.set('one', version1)
+            self.request.set('two', version2)
+
+            changeset = dt.createChangeSet(
+                    self.getVersion(version2),
+                    self.getVersion(version1),
+                    id1=self.versionTitle(version2),
+                    id2=self.versionTitle(version1))
+            self.changes = [change for change in changeset.getDiffs()
+                          if not change.same]
+
+    def can_see_comments(self):
+        state = api.content.get_state(self.context)
+        return state in ['draft', 'counterpart-comments', 'drafted']
 
 class AddForm(dexterity.AddForm):
     grok.name('esdrt.content.question')

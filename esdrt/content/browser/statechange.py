@@ -18,10 +18,10 @@ class IAssignCounterPartForm(Interface):
         title=_(u'Select the counterpart'),
     )
 
-    comments = schema.Text(
-        title=_(u'Enter the comments for your Counterpart'),
-        required=True
-    )
+    # comments = schema.Text(
+    #     title=_(u'Enter the comments for your Counterpart'),
+    #     required=True
+    # )
 
     workflow_action = schema.TextLine(
         title=_(u'Workflow action'),
@@ -50,7 +50,7 @@ class AssignCounterPartForm(BrowserView):
         """
         if self.request.form.get('send', None):
             username = self.request.get('counterpart', None)
-            comments = self.request.get('comments', None)
+            #comments = self.request.get('comments', None)
             if username is None:
                 status = IStatusMessage(self.request)
                 msg = _(u'You need to select one counterpart')
@@ -65,20 +65,20 @@ class AssignCounterPartForm(BrowserView):
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
-            if not comments:
-                status = IStatusMessage(self.request)
-                msg = _(u'You need to enter some comments for your counterpart')
-                status.addStatusMessage(msg, "error")
-                return self.index()
+            # if not comments:
+            #     status = IStatusMessage(self.request)
+            #     msg = _(u'You need to enter some comments for your counterpart')
+            #     status.addStatusMessage(msg, "error")
+            #     return self.index()
 
             api.user.grant_roles(username=username,
                 roles=['CounterPart'],
                 obj=self.context)
             wf_action = 'request-for-counterpart-comments'
-            wf_comments = self.request.get('comments')
+            #wf_comments = self.request.get('comments')
             return self.context.content_status_modify(
                 workflow_action=wf_action,
-                comment=wf_comments
+
             )
 
         else:

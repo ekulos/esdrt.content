@@ -51,7 +51,7 @@
               </div>
             </div>
 
-            <div class="comments">
+            <div class="comments" tal:replace="nothing">
 
               <h2>
                 Send comments
@@ -68,9 +68,11 @@
 
               <textarea name="comments" rows="8" cols="20" id="assign_comment"></textarea>
 
+            </div>
+
               <input class="standalone" type="submit" name="send" value="Send"/>
                 <input tal:replace="structure context/@@authenticator/authenticator" />
-            </div>
+
           </form>
 
         </tal:block>

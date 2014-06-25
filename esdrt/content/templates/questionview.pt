@@ -8,12 +8,64 @@
 <body>
 
 
+  <tal:block metal:fill-slot="style_slot">
+    <link rel="stylesheet" type="text/css" href="compare.css"
+          tal:attributes="href string:${portal_url}/compare.css"/>
+  </tal:block>
+
   <metal:js fill-slot="javascript_head_slot">
       <script type="text/javascript">
-      $(document).ready(function(){
 
-        $('.addfile').prepOverlay(
-        {
+    $(document).ready(function(){
+        update_display = function() {
+            var style = $(this).attr('value');
+            if (! this.checked) {
+                return;
+            }
+
+            $(".fieldDiff").hide();
+
+            if (style=="visual") {
+                $(".inline-diff").show();
+            }
+            else {
+                $(".code-diff").show();
+            }
+        }
+
+        $(".jsOnly").show();
+        version_set = function(){
+          $("#versionSelector select").change(function(){
+            $('#versionSelector').submit();
+          });
+
+          $("#diffTypeSelector input").click(update_display);
+          $("#diffTypeSelector input").each(update_display);
+
+          $('#versionSelector').submit(function(e){
+            e.preventDefault();
+            var data = $(this).serializeArray();
+            url = $(this).attr('action');
+            $('.changes').load(url + ' .changes >*', data=data, function(){
+              version_set();
+          });
+          });
+        }
+        version_set();
+
+        $('#observation-delete').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#delete_confirmation',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.button.Cancel"]',
+            width:'50%'
+          }
+        );
+
+
+        $('.addfile').prepOverlay({
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: '#edit',
@@ -21,8 +73,19 @@
             redirect: $.plonepopups.redirectbasehref,
             closeselector: '[name="form.button.Cancel"]',
             width:'50%'
-        }
-      );
+          }
+        );
+
+        $('.edit').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#edit',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.button.Cancel"]',
+            width:'50%'
+          }
+        );
 
         });
 
@@ -51,19 +114,6 @@
       class="questionTitle"
       tal:content="context/title">Question X</span>
 
-      <div class="esdDiv action-comments"
-          tal:define="info view/wf_info;
-                      status context/get_status"
-          tal:condition="python:status in ['draft']">
-        <div class="esdLabel">Counterpart comments</div>
-          <p>
-            <span class="author" tal:content="python:view.get_user_name(info.get('actor', ''))" />
-            <span class="datetime" tal:content="python:toLocalizedTime(info.get('time', ''))" />
-            <span class="comment" tal:content="info/comments|nothing" />
-          </p>
-      </div>
-
-
     <div class="question" tal:repeat="question context/get_questions"
           tal:attributes="id question/getId;
                           class string:question ${question/portal_type/lower};
@@ -90,6 +140,102 @@
           </tal:noteffective>
        </span>
       </div>
+
+  <div class="changes" tal:condition="python:question.getObject().can_edit()">
+
+         <p tal:condition="not:view/history" i18n:translate="no_history">
+           This object has no revision information.
+         </p>
+
+         <tal:block condition="view/history">
+
+           <form id="versionSelector"
+                 action="#"
+                 tal:attributes="action pps/current_page_url"
+                 tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                             pps here/@@plone_context_state
+                 ">
+             <fieldset>
+               <legend i18n:translate="legend_revisions">Revisions</legend>
+               <label for="two"><span tal:omit-tag="" i18n:translate="">First revision</span>
+                 <select id="two" name="two" tal:define="rev request/form/two|string:current">
+                   <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
+                   <option tal:repeat="version view/history"
+                           tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
+                           i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
+                           (<span tal:replace="version/sys_metadata/review_state"/> <span tal:replace="version/sys_metadata/principal"/> <tal:date i18n:name="date" content="python:toLocalizedTime(version['sys_metadata']['timestamp'])">1975-12-24</tal:date>)</option>
+                 </select>
+               </label>
+
+               <label for="one"><span tal:omit-tag="" i18n:translate="">Second revision</span>
+                 <select id="one" name="one" tal:define="rev request/one|string:current">
+                   <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
+                   <option tal:repeat="version view/history"
+                           tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
+                           i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
+                           (<span tal:replace="version/sys_metadata/review_state"/> <span tal:replace="version/sys_metadata/principal"/> <tal:date i18n:name="date" content="python:toLocalizedTime(version['sys_metadata']['timestamp'])">1975-12-24</tal:date>)</option>
+                 </select>
+               </label>
+             </fieldset>
+
+             <noscript>
+               <input type="submit" i18n:attributes="value label_update" value="Update"/>
+             </noscript>
+           </form>
+
+           <div metal:use-macro="here/diff_legend/macros/diff_legend" />
+
+           <p tal:condition="not:view/changes" i18n:translate="">
+             There are no changes between the selected revisions.
+           </p>
+
+           <tal:changes condition="view/changes">
+             <form method="post" action="">
+               <label for="diffstyle" class="jsOnly" style="display: none" i18n:translate="">Show differences</label>
+               <ul class="radioRow" id="diffTypeSelector">
+                 <li>
+                   <input id="diffstylevisual" type="radio" name="diffstyle" value="visual" checked="checked" />
+                   <label for="diffstylevisual" i18n:translate="">inline</label>
+                 </li>
+                 <li>
+                   <input id="diffstylecode" type="radio" name="diffstyle" value="code" />
+                   <label for="diffstylecode" i18n:translate="">as code</label>
+                 </li>
+               </ul>
+             </form>
+
+             <fieldset class="diff" tal:repeat="diff view/changes">
+               <legend tal:content="diff/label">Body text</legend>
+
+               <div class="fieldDiff inline-diff" tal:condition="exists:diff/inline_diff"
+                    tal:content="structure python:diff.inline_diff()">
+                 Inline changes
+               </div>
+
+               <p class="fieldDiff inline-diff" tal:condition="not:exists:diff/inline_diff" i18n:translate="">
+                 This field has no inline difference view.
+               </p>
+
+               <div class="fieldDiff code-diff" style="display: none">
+                 <pre tal:condition="exists:diff/html_diff" tal:content="structure python:diff.html_diff(wrapcolumn=80)">
+                   HTML formatted differences
+                 </pre>
+
+                 <pre class="fieldDiff code-diff" tal:condition="python:not exists('diff/html_diff') and exists('diff/ndiff')" tal:content="diff/ndiff">
+                   ndiff formatted differences
+                 </pre>
+                 <p class="fieldDiff" tal:condition="python:not exists('diff/html_diff') and not exists('diff/ndiff')">
+                   This field has no code difference view.
+                 </p>
+               </div>
+             </fieldset>
+           </tal:changes>
+         </tal:block>
+
+
+   </div>
+
+   <h3 tal:condition="python:question.getObject().can_edit()">Current text of the question</h3>
       <div tal:content="structure question/text/output|string:">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </div>
@@ -107,6 +253,14 @@
           </p>
         </div>
       </div>
+
+
+      <div id="comment-discussion"
+        tal:condition="view/can_see_comments"
+        tal:define="context python:question.getObject()"
+        tal:content="structure provider:esdrt.content.commentmanager">
+
+      </div>
       <div class="actions" tal:condition="repeat/question/end">
         <a href=""
           tal:define="question_obj question/getObject"
@@ -120,7 +274,7 @@
           tal:define="question_obj question/getObject"
           tal:condition="question_obj/can_edit"
           tal:attributes="href string:${question/getURL}/edit"
-          class="standardButton">
+          class="edit standardButton">
             Edit
         </a>
 

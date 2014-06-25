@@ -44,10 +44,11 @@ class Comment(dexterity.Container):
 
     def can_edit(self):
         sm = getSecurityManager()
-        lr = 'LeadReviewer' in api.user.get_current().getRoles()
-        sre = 'SectorExpertReviewer' in api.user.get_current().getRoles()
+        userroles = api.user.get_current().getRoles() + list(self.get_local_roles_for_userid(api.user.get_current().getId()))
+        lr = 'LeadReviewer' in userroles
+        sre = 'SectorExpertReviewer' in userroles
         reviewer = lr or sre
-        return sm.checkPermission('Modify portal content', self) and reviewer
+        return sm.checkPermission('Modify portal content', self) #and reviewer
 
     def can_add_files(self):
         sm = getSecurityManager()
@@ -57,6 +58,8 @@ class Comment(dexterity.Container):
         items = self.values()
         mtool = api.portal.get_tool('portal_membership')
         return [item for item in items if mtool.checkPermission('View', item)]
+
+
 
 # View class
 # The view will automatically use a similarly named template in
