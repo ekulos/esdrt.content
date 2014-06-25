@@ -27,12 +27,17 @@
       </div>
 
 
-      <table class="listing" tal:condition="view/get_questions">
+      <table class="observationList" tal:condition="view/get_questions">
         <thead>
           <tr>
-            <th>
-              Observation Ref. Number
+            <th colspan="7"  tal:condition="not: view/is_secretariat">
+              Ref. Number / Observation 
             </th>
+            <th colspan="8"  tal:condition="view/is_secretariat">
+              Ref. Number / Observation 
+            </th>            
+          </tr>
+          <tr>
             <th>
               Status
             </th>
@@ -46,10 +51,13 @@
               Gas
             </th>
             <th>
+              Inventory year
+            </th>
+            <th>
               Modification date
             </th>
             <th>
-              WF Location
+              Workflow
             </th>
             <th tal:condition="view/is_secretariat">
               Author
@@ -58,47 +66,60 @@
         </thead>
 
         <tbody>
-          <tr tal:repeat="item view/get_questions"
-              tal:attributes="class item/get_status|nothing">
+          <tal:block tal:repeat="item view/get_questions">
 
             <tal:item condition="python:item.portal_type == 'Observation'">
               <tal:item define="observation nocall:item;
                                 toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
-                <td>
-                  <a href=""
-                    tal:attributes="href observation/absolute_url">
+                <tr tal:attributes="data-href observation/absolute_url"
+                    class="clickableRow">
+                  <td colspan="7" class="observationRefCell">  
                       <span class="ref-num"
-                      tal:content="observation/getId">
-                      UK-WAS-13-001
+                        tal:content="observation/getId">
+                        UK-WAS-13-001
+                      </span>
+                      /
+                      <span class="obs-title"
+                        tal:content="observation/Title">
+                        Observation title
+                      </span>
+                  </td>
+                  <td tal:condition="view/is_secretariat"></td>
+                </tr>
+                <tr tal:attributes="data-href observation/absolute_url"
+                    class="clickableRow">
+                  <td class="statusCell">
+                    <span tal:content="observation/observation_status|nothing"
+                          tal:attributes="class observation/observation_status|nothing">
+                      Pending
                     </span>
-                    <br />
-                    <span class="obs-title"
-                      tal:content="observation/Title">
-                      Observation title
-                    </span>
-                  </a>
-                </td>
-                <td tal:content="observation/get_status|nothing">
-                  Observation title
-                </td>
-                <td tal:content="observation/country_value">
-                  Observation title
-                </td>
-                <td tal:content="observation/ghg_source_sectors_value">
-                  Observation title
-                </td>
-                <td tal:content="observation/gas_value">
-                  Observation title
-                </td>
-                <td tal:content="python:toLocalizedTime(observation.modified(), True)">
-                  Observation title
-                </td>
-                <td tal:content="observation/wf_location">
-                  Review Expert
-                </td>
-                <td tal:condition="view/is_secretariat">
-                  <span tal:replace="python:view.get_author_name(observation.Creator())" />
-                </td>
+                  </td>
+                  <td tal:content="observation/country_value" class="countryCell">
+                    Austria
+                  </td>
+                  <td tal:content="observation/ghg_source_sectors_value" class="sectorCell">
+                    Waste
+                  </td>
+                  <td tal:content="observation/gas_value" class="gasCell">
+                    CO2
+                  </td>
+                  <td tal:content="observation/year" class="yearCell">
+                    2014
+                  </td>                  
+                  <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      tal:attributes="data-sorter python:observation.modified()">
+                    20 Jun 2014, 11:35 AM
+                  </td>
+                  <td>
+                    <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                    <span tal:content="observation/wf_location">Review Expert</span><br/>
+                    <span class="eea-icon eea-icon-lg wfStep"><!-- --></span>
+                    <span tal:content="observation/wf_status">Draft observation</span>
+                  </td>
+                  <td tal:condition="view/is_secretariat">
+                    <span tal:replace="python:view.get_author_name(observation.Creator())" />
+                  </td>
+              </tr>
               </tal:item>
             </tal:item>
 
@@ -136,7 +157,7 @@
 
               </tal:item>
             </tal:item>
-          </tr>
+          </tal:block>
         </tbody>
 
       </table>
