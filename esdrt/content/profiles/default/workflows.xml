@@ -25,6 +25,9 @@
   <type type_id="ESDRTFile">
    <bound-workflow workflow_id="esd-file-workflow"/>
   </type>
+  <type type_id="Discussion Item">
+   <bound-workflow workflow_id="one_state_workflow"/>
+  </type>
 
  </bindings>
 </object>
