@@ -31,11 +31,11 @@
         <thead>
           <tr>
             <th colspan="7"  tal:condition="not: view/is_secretariat">
-              Ref. Number / Observation 
+              Ref. Number / Observation
             </th>
             <th colspan="8"  tal:condition="view/is_secretariat">
-              Ref. Number / Observation 
-            </th>            
+              Ref. Number / Observation
+            </th>
           </tr>
           <tr>
             <th>
@@ -73,7 +73,7 @@
                                 toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                 <tr tal:attributes="data-href observation/absolute_url"
                     class="clickableRow">
-                  <td colspan="7" class="observationRefCell">  
+                  <td colspan="7" class="observationRefCell">
                       <span class="ref-num"
                         tal:content="observation/getId">
                         UK-WAS-13-001
@@ -105,7 +105,7 @@
                   </td>
                   <td tal:content="observation/year" class="yearCell">
                     2014
-                  </td>                  
+                  </td>
                   <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                       tal:attributes="data-sorter python:observation.modified()">
                     20 Jun 2014, 11:35 AM
@@ -161,7 +161,7 @@
         </tbody>
 
       </table>
-      <div class="actions" tal:condition="view/can_add_observation">
+      <div class="actions" tal:condition="python:view.can_add_observation() and view.get_questions()">
         <a href="./++add++Observation"
           tal:attributes="href string:${here/absolute_url}/++add++Observation"
           class="standardButton">
