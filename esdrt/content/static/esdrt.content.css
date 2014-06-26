@@ -66,7 +66,12 @@
 .estTable td{
 	padding: 4px;
 }
-
+.estTable tbody tr:nth-child(odd) {
+	background: #eee;
+}
+.estTable tbody tr:nth-child(even) {
+	background: #fff;
+}
 .standardButton{
 	color:#fff !important;
 	background:#346F83;
@@ -293,4 +298,25 @@
 }
 .wfPoint2:before{
 	content: "\f10c";
+}
+.wfTime:before{
+	content: "\f017";
+}
+#workflowTable td{
+	min-width:166px;
+	color:gray;
+	position: relative;
+}
+#workflowTable tr td:last-child {
+	color:black;
+}
+#workflowTable tr td .border{
+	border-top: 1px solid gray;
+	width: 100%;
+	position: absolute;
+	top: 9px;
+	left: 10px;
+}
+#workflowTable tr td:last-child .border{
+	border: none;
 }

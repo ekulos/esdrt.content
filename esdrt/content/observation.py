@@ -351,8 +351,80 @@ class Observation(dexterity.Container):
             return 'closed'
         elif self.get_status() == 'close-requested':
             return 'reporting'
-        else:
-            return 'open'
+        else:   
+            return 'open'                 
+
+    def is_secretariat(self):
+        user = api.user.get_current()
+        return 'Manager' in user.getRoles() 
+
+    def get_author_name(self, userid):
+        user = api.user.get(userid)
+        return user.getProperty('fullname', userid)
+
+    def myHistory(self):
+        observation_history = self.workflow_history['esd-review-workflow']
+        for item in observation_history:
+            if item['review_state'] == 'draft':
+                item['state'] = 'Draft observation'
+            elif item['review_state'] == 'closed':
+                item['state'] = 'Closed observation'
+            elif item['review_state'] == 'close-requested':
+                item['state'] = 'Reporting observation'
+            else:
+                item['state'] = '*' + item['review_state'] + '*'
+            item['object'] = 'observation'
+            item['author'] = self.get_author_name(item['actor'])
+            item['role'] = item['actor']
+
+        history = list(observation_history)
+        questions = self.values()
+
+        if questions:
+            question = questions[0]
+            
+            question_history = question.workflow_history['esd-question-review-workflow']
+            for item in question_history:
+                if item['review_state'] == 'draft' and item['action'] == None:
+                    item['state'] = 'Draft question'
+                elif item['review_state'] == 'counterpart-comments':
+                    item['state'] = 'Requested counterparts comments'                     
+                elif item['review_state'] == 'draft' and item['action'] =='send-comments':
+                    item['state'] = 'Counterparts comments closed'    
+                elif item['review_state'] == 'drafted':
+                    item['state'] = 'Sent to LR'  
+                elif item['review_state'] == 'draft' and item['action'] == 'redraft':
+                    item['state'] = 'Redrafted'
+                elif item['review_state'] == 'pending' and item['action'] == 'approve-question':
+                    item['state'] = 'Sent to MSA'   
+                elif item['review_state'] == 'pending-answer' and item['action'] == 'asign-answered':
+                    item['state'] = 'Sent to MSE' 
+                elif item['review_state'] == 'pending-answer-validation':
+                    item['state'] = 'Sent to MSA'                 
+                elif item['review_state'] == 'pending-answer' and item['action'] == 'redraft-msa':
+                    item['state'] = 'Asked to redraft from MSA to MSE' 
+                elif item['review_state'] == 'answered' and item['action'] == 'answer':
+                    item['state'] = 'Sent to LR' 
+                elif item['review_state'] == 'validate-answer':
+                    item['state'] = 'Sent to SE' 
+                elif item['review_state'] == 'recalled-msa':
+                    item['state'] = 'Recalled by MSA' 
+                elif item['review_state'] == 'recalled-lr':
+                    item['state'] = 'Recalled by LR'                                          
+                elif item['review_state'] == 'answered' and item['action'] == 'answer-to-lr':
+                    item['state'] = 'Answered by LR' 
+                elif item['review_state'] == 'closed':
+                    item['state'] = 'Closed question'  
+                else:
+                    item['state'] = '*' + item['review_state'] + '*'
+                item['object'] = 'question'
+                item['author'] = self.get_author_name(item['actor'])
+                item['role'] = item['actor']
+
+            history = list(observation_history) + list(question_history)
+
+        history.sort(key=lambda x: x["time"], reverse=False)
+        return history 
 
 # View class
 # The view will automatically use a similarly named template in
