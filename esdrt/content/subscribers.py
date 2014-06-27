@@ -1,6 +1,7 @@
 from Acquisition import aq_parent
 from DateTime import DateTime
 from esdrt.content.question import IQuestion
+from esdrt.content.observation import IObservation
 from five import grok
 from plone import api
 from Products.CMFCore.interfaces import IActionSucceededEvent
@@ -57,13 +58,18 @@ def question_transition(question, event):
             api.content.transition(obj=comment, transition='retract')
             return
 
-    if event.action == 'reopen':
-        parent = aq_parent(event.object)
-        with api.env.adopt_roles(['Manager']):
-            api.content.transition(obj=parent, transition='reopen')
-
-
     if api.content.get_state(obj=event.object) == 'closed':
         parent = aq_parent(event.object)
         with api.env.adopt_roles(['Manager']):
             api.content.transition(obj=parent, transition='request-close')
+
+
+@grok.subscribe(IObservation, IActionSucceededEvent)
+def question_transition(observation, event):
+    if event.action == 'reopen':
+        import pdb; pdb.set_trace()
+        with api.env.adopt_roles(roles=['Manager']):
+            qs = [q for q in observation.values() if q.portal_type == 'Question']
+            q = qs[0]
+            api.content.transition(obj=q, transition='reopen')
+
