@@ -7,38 +7,47 @@
       <!-- -*- extra stuff goes here -*- -->
        <permission
           id="esdrt.content.AddReviewFolder"
-	  title="esdrt.content: Add ReviewFolder"
-	  />       
+    title="esdrt.content: Add ReviewFolder"
+    />
 
 
        <permission
           id="esdrt.content.AddESDRTFile"
-	  title="esdrt.content: Add ESDRTFile"
-	  />
+    title="esdrt.content: Add ESDRTFile"
+    />
 
 
        <permission
           id="esdrt.content.AddCommentAnswer"
-	  title="esdrt.content: Add CommentAnswer"
-	  />
+    title="esdrt.content: Add CommentAnswer"
+    />
+
+       <permission
+          id="esdrt.content.EditCommentAnswer"
+    title="esdrt.content: Edit CommentAnswer"
+    />
 
 
        <permission
           id="esdrt.content.AddComment"
-	  title="esdrt.content: Add Comment"
-	  />
+    title="esdrt.content: Add Comment"
+    />
 
+       <permission
+          id="esdrt.content.EditComment"
+    title="esdrt.content: Edit Comment"
+    />
 
        <permission
           id="esdrt.content.AddQuestion"
-	  title="esdrt.content: Add Question"
-	  />
+    title="esdrt.content: Add Question"
+    />
 
 
        <permission
           id="esdrt.content.AddObservation"
-	  title="esdrt.content: Add Observation"
-	  />
+    title="esdrt.content: Add Observation"
+    />
 
 
 
