@@ -303,9 +303,10 @@
 	content: "\f017";
 }
 #workflowTable td{
-	min-width:166px;
+	min-width:196px;
 	color:gray;
 	position: relative;
+	vertical-align: top;
 }
 #workflowTable tr td:last-child {
 	color:black;
