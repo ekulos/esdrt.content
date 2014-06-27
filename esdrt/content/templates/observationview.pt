@@ -54,18 +54,14 @@
       </div>
       <div class="row">
         <div class="cell position-0 width-4 value">
-          <a href=""
-            tal:attributes="href string:${context/absolute_url}"
-            tal:content="context/id">
+          <span tal:content="context/id">
              UK-WAS-13-001
-          </a>
+          </span>
         </div>
         <div class="cell position-4 width-13 value">
-          <a href=""
-            tal:attributes="href string:${context/absolute_url}"
-            tal:content="context/title">
+          <span tal:content="context/title">
              Title
-          </a>
+          </span>
         </div>
       </div>
       <div class="row">
@@ -152,7 +148,7 @@
       </div>
       <div class="row showObservationDetailsRow">
         <div class="cell position-0 width-16">
-          <a href="#" id="showObservationDetails">[+]</a>
+          <a href="#" id="showObservationDetails">[-]</a>
         </div>
       </div>
     </div>
@@ -170,6 +166,36 @@
     </span>
   </div>
 
+  <div class="esdDiv">
+    <div class="row">
+      <div class="cell position-0 width-16" style="overflow-x:auto">
+        <table style="table-layout: fixed" id="workflowTable">
+          <tr>
+            <tal:item tal:repeat="item context/myHistory">   
+              <td 
+                tal:condition="python:not(item['review_state'] == 'pending' and item['object'] ==  'observation')"
+                define="toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                  <span class="border"></span>
+                  <span class="eea-icon eea-icon-lg wfPoint"></span><br/>
+                  <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                  <span tal:content="item/role"></span><br/>
+                  <span 
+                    tal:condition="context/is_secretariat"
+                    tal:content="item/author"></span>
+                  <br tal:condition="context/is_secretariat"/>
+                  <span class="eea-icon eea-icon-lg wfStep"><!-- --></span>
+                  <span tal:content="item/state"></span><br/>
+                  <span class="eea-icon eea-icon-lg wfTime"><!-- --></span>
+                  <span tal:attributes="title python:toLocalizedTime(item['time'], True)" class="datetimeWF">
+                    <span tal:replace="item/time"></span>
+                  </span><br/>
+              </td>                                                        
+            </tal:item>
+          </tr>
+        </table>
+      </div>
+    </div>  
+  </div>
 
   <div class="edit actions" tal:condition="view/can_edit">
       <a href=""
@@ -284,7 +310,8 @@
           <span tal:replace="structure view/add_question_form" />
         </div>
 
-       </div>
+
+      </div>
       <div class="eea-tabs-panel" tal:condition="view/isManager"
         tal:content="structure context/technical_corrections/output|nothing">
       </div>
