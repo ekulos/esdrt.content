@@ -57,6 +57,12 @@ def question_transition(question, event):
             api.content.transition(obj=comment, transition='retract')
             return
 
+    if event.action == 'reopen':
+        parent = aq_parent(event.object)
+        with api.env.adopt_roles(['Manager']):
+            api.content.transition(obj=parent, transition='reopen')
+
+
     if api.content.get_state(obj=event.object) == 'closed':
         parent = aq_parent(event.object)
         with api.env.adopt_roles(['Manager']):
