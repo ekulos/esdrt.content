@@ -15,6 +15,7 @@ def upgrade(context, logger=None):
     content_types(context, logger)
     discussion_settings(context, logger)
     set_versioning(context, logger)
+    css_and_js(context, logger)
     logger.info('Upgrade steps executed')
 
 
@@ -93,3 +94,9 @@ def set_versioning(context, logger):
                     policy_id)
 
     portal_repository.setVersionableContentTypes(versionable_types)
+
+
+def css_and_js(context, logger):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runImportStepFromProfile(PROFILE_ID, 'jsregistry')
+    logger.info('Reload JS')
