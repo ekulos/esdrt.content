@@ -48,7 +48,7 @@ class Comment(dexterity.Container):
 
     def can_add_files(self):
         sm = getSecurityManager()
-        return sm.checkPermission('esdrt.content: Add ESDRT File', self)
+        return sm.checkPermission('esdrt.content: Add ESDRTFile', self)
 
     def get_files(self):
         items = self.values()
