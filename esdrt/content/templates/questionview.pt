@@ -71,7 +71,7 @@
             formselector: '#edit',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref,
-            closeselector: '[name="form.button.Cancel"]',
+            closeselector: '[name="form.buttons.cancel"]',
             width:'50%'
           }
         );
@@ -79,15 +79,13 @@
         $('.edit').prepOverlay({
             subtype: 'ajax',
             filter: common_content_filter,
-            formselector: '#edit',
+            formselector: '#zc\\.page\\.browser_form',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref,
-            closeselector: '[name="form.button.Cancel"]',
+            closeselector: '[name="form.buttons.cancel"]',
             width:'50%'
-          }
-        );
-
         });
+    });
 
       </script>
     </metal:js>
@@ -143,11 +141,11 @@
 
   <div class="changes" tal:condition="python:question.getObject().can_edit()">
 
-         <p tal:condition="not:view/history" i18n:translate="no_history">
+         <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
            This object has no revision information.
          </p>
 
-         <tal:block condition="view/history">
+         <tal:block condition="view/history|nothing">
 
            <form id="versionSelector"
                  action="#"
