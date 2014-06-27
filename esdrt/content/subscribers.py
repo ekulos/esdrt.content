@@ -67,7 +67,6 @@ def question_transition(question, event):
 @grok.subscribe(IObservation, IActionSucceededEvent)
 def question_transition(observation, event):
     if event.action == 'reopen':
-        import pdb; pdb.set_trace()
         with api.env.adopt_roles(roles=['Manager']):
             qs = [q for q in observation.values() if q.portal_type == 'Question']
             if qs:
