@@ -179,9 +179,10 @@
                   <span class="eea-icon eea-icon-lg wfPoint"></span><br/>
                   <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
                   <span tal:content="item/role"></span><br/>
-                  <span 
+                  <a 
                     tal:condition="context/is_secretariat"
-                    tal:content="item/author"></span>
+                    tal:attributes="href python:'http://www.eionet.europa.eu/directory/user?uid='+item['actor']"
+                    tal:content="item/author"></a>
                   <br tal:condition="context/is_secretariat"/>
                   <span class="eea-icon eea-icon-lg wfStep"><!-- --></span>
                   <span tal:content="item/state"></span><br/>
