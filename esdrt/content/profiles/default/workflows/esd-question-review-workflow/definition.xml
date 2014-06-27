@@ -529,9 +529,8 @@
   </guard>
  </transition>
  <transition transition_id="reopen" title="Reopen" new_state="draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=reopen" category="workflow" icon="">Reopen</action>
+  
   <guard>
-   <guard-role>Manager</guard-role>
   </guard>
  </transition>
  <transition transition_id="request-for-counterpart-comments" title="Request Comments" new_state="counterpart-comments" trigger="USER" before_script="" after_script="">
