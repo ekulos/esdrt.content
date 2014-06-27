@@ -1,5 +1,3 @@
-from zope.i18n import translate
-from zope.app.container.interfaces import IObjectAddedEvent
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -17,12 +15,18 @@ from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
+from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
 from time import time
+from z3c.form import button
 from z3c.form import field
+from z3c.form.form import Form
+from zope.app.container.interfaces import IObjectAddedEvent
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
-from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
+from zope.i18n import translate
+from zope.interface import alsoProvides
+
 
 class IQuestion(form.Schema, IImageScaleTraversable):
     """
@@ -159,11 +163,18 @@ class QuestionView(grok.View):
 
     def actions(self):
         context = aq_inner(self.context)
-        menu_items = getMenu(
+        parent = aq_parent(context)
+        question_menu_items = getMenu(
             'plone_contentmenu_workflow',
             context,
             self.request
             )
+        observation_menu_items = getMenu(
+            'plone_contentmenu_workflow',
+            parent,
+            self.request
+            )
+        menu_items = question_menu_items + observation_menu_items
         return [mitem for mitem in menu_items if not hidden(mitem)]
 
     def get_user_name(self, userid, question=None):
@@ -291,6 +302,19 @@ class QuestionView(grok.View):
         state = api.content.get_state(self.context)
         return state in ['draft', 'counterpart-comments', 'drafted']
 
+    def add_comment_form(self):
+        from plone.z3cform.interfaces import IWrappedForm
+        form_instance = AddCommentForm(self.context, self.request)
+        alsoProvides(form_instance, IWrappedForm)
+        return form_instance()
+
+    def add_answer_form(self):
+        from plone.z3cform.interfaces import IWrappedForm
+        form_instance = AddAnswerForm(self.context, self.request)
+        alsoProvides(form_instance, IWrappedForm)
+        return form_instance()
+
+
 class AddForm(dexterity.AddForm):
     grok.name('esdrt.content.question')
     grok.context(IQuestion)
@@ -341,3 +365,43 @@ def add_question(context, event):
     with api.env.adopt_roles(roles=['Manager']):
         if api.content.get_state(obj=observation) == 'draft':
             api.content.transition(obj=observation, transition='approve')
+
+
+class AddCommentForm(Form):
+
+    ignoreContext = True
+    fields = field.Fields(IComment).select('text')
+
+    @button.buttonAndHandler(_('Add question'))
+    def create_question(self, action):
+        context = aq_inner(self.context)
+        id = str(int(time()))
+        item_id = context.invokeFactory(
+                type_name='Comment',
+                id=id,
+        )
+        text = self.request.form.get('form.widgets.text', '')
+        comment = context.get(item_id)
+        comment.text = RichTextValue(text, 'text/html', 'text/html')
+
+        return self.request.response.redirect(context.absolute_url())
+
+
+class AddAnswerForm(Form):
+
+    ignoreContext = True
+    fields = field.Fields(IComment).select('text')
+
+    @button.buttonAndHandler(_('Add answer'))
+    def create_question(self, action):
+        context = aq_inner(self.context)
+        id = str(int(time()))
+        item_id = context.invokeFactory(
+                type_name='CommentAnswer',
+                id=id,
+        )
+        text = self.request.form.get('form.widgets.text', '')
+        comment = context.get(item_id)
+        comment.text = RichTextValue(text, 'text/html', 'text/html')
+
+        return self.request.response.redirect(context.absolute_url())

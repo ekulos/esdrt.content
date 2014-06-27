@@ -85,6 +85,27 @@
             closeselector: '[name="form.buttons.cancel"]',
             width:'50%'
         });
+
+        $('#edit-observation-link').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#zc\\.page\\.browser_form',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.buttons.cancel"]',
+            width:'50%'
+        });
+
+        $('#add-comment-link').click(function(e){
+          e.preventDefault();
+          $('#comment-add-form').toggle();
+        });
+
+        $('#add-answer-link').click(function(e){
+          e.preventDefault();
+          $('#answer-add-form').toggle();
+        });
+
     });
 
       </script>
@@ -290,6 +311,7 @@
 
     <div class="actions" tal:condition="view/can_add_comment">
       <a href="./++add++Comment"
+        id="add-comment-link"
         tal:attributes="href string:${here/absolute_url}/++add++Comment"
         class="standardButton">
           Reply (Add comment)
@@ -297,11 +319,33 @@
     </div>
     <div class="actions" tal:condition="view/can_add_answer">
       <a href="./++add++CommentAnswer"
+        id="add-answer-link"
         tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
         class="standardButton">
           Reply (Add comment answer)
       </a>
     </div>
+    <div class="actions"
+      tal:define="observation view/observation;
+                  context nocall:observation"
+      tal:condition="context/can_edit">
+      <a href="./edit"
+        id="edit-observation-link"
+        tal:attributes="href string:${context/absolute_url}/edit"
+        class="standardButton">
+          Edit observation
+      </a>
+    </div>
+
+    <div id="comment-add-form" style="display: none" tal:condition="view/can_add_comment">
+      <span tal:replace="structure view/add_comment_form" />
+    </div>
+
+    <div id="answer-add-form" style="display: none" tal:condition="view/can_add_answer">
+      <span tal:replace="structure view/add_answer_form" />
+    </div>
+
+
   </div>
 
 

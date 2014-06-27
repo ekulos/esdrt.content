@@ -178,6 +178,24 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=False
     )
 
+    form.read_permission(closing_reason='cmf.ManagePortal')
+    form.write_permission(closing_reason='cmf.ManagePortal')
+    closing_reason = schema.Choice(
+        title=_(u'Closing reason'),
+        vocabulary='esdrt.content.closingreasons',
+        required=False,
+
+    )
+
+    form.read_permission(closing_comments='cmf.ManagePortal')
+    form.write_permission(closing_comments='cmf.ManagePortal')
+    closing_comments = RichText(
+        title=_(u'Closing comments'),
+        required=False,
+    )
+
+
+
 
 @form.validator(field=IObservation['ghg_estimations'])
 def check_ghg_estimations(value):
@@ -300,7 +318,9 @@ class Observation(dexterity.Container):
         return False
 
     def wf_location(self):
-        if self.get_status() != 'pending':
+        if self.get_status() == 'closed':
+            return 'Closed'
+        elif self.get_status() != 'pending':
             return 'Review Expert'
         else:
             questions = self.values()
@@ -353,6 +373,10 @@ class Observation(dexterity.Container):
             return 'reporting'
         else:
             return 'open'
+
+    def can_edit(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('Modify portal content', self)
 
 # View class
 # The view will automatically use a similarly named template in
@@ -468,7 +492,7 @@ class ObservationView(grok.View):
 
     def can_edit(self):
         sm = getSecurityManager()
-        return sm.checkPermission('Modify portal content', self)
+        return sm.checkPermission('Modify portal content', self.context)
 
     def subscription_options(self):
         actions = []

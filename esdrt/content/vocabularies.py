@@ -163,3 +163,26 @@ class CRFCode(object):
 
 grok.global_utility(CRFCode,
     name=u"esdrt.content.crf_code")
+
+
+CLOSING_REASONS = [
+    ('reason1', 'Reason 1'),
+    ('reason2', 'Reason 2'),
+    ('reason3', 'Reason 3'),
+    ('reason4', 'Reason 4'),
+]
+
+
+class ClosingReasons(object):
+    grok.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        terms = []
+        for key, value in CLOSING_REASONS:
+            # create a term - the arguments are the value, the token, and
+            # the title (optional)
+            terms.append(SimpleVocabulary.createTerm(key, key, value))
+        return SimpleVocabulary(terms)
+
+grok.global_utility(ClosingReasons,
+    name=u"esdrt.content.closingreasons")

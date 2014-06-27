@@ -1,3 +1,4 @@
+from plone.app.textfield import RichText
 from Acquisition import aq_inner
 from esdrt.content import MessageFactory as _
 from esdrt.content.question import IQuestion
@@ -9,8 +10,41 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 from z3c.form import field
+from z3c.form.form import Form
 from zope import schema
 from zope.interface import Interface
+
+
+class IObservationClosingReasonForm(Interface):
+
+    reason = schema.Choice(
+        title=_(u'Closing reason'),
+        vocabulary='esdrt.content.closingreasons',
+        required=True,
+    )
+
+    comments = RichText(
+        title=_(u'Enter comments if you want'),
+        required=False,
+    )
+
+
+class ObservationClosingReasonForm(Form):
+    fields = field.Fields(IObservationClosingReasonForm)
+    label = _(u'Close observation')
+    description = _(u'Check the reason for closing this observation')
+    ignoreContext = True
+
+    @button.buttonAndHandler(u'Close observation')
+    def close_observation(self, action):
+        reason = self.request.get('reason')
+        comments = self.request.get('comments')
+        with api.env.adopt_roles(['Manager']):
+            self.context.closing_reason = reason
+            self.context.closing_comments = comments
+        return self.context.content_status_modify(
+            workflow_action='close-observation',
+        )
 
 
 class IAssignCounterPartForm(Interface):
