@@ -127,7 +127,6 @@
 
 
   </metal:content-core>
-
   <div id="qa" class="eea-tabs-panels" tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
     <span
       class="questionTitle"
@@ -161,7 +160,8 @@
       </div>
 
   <div class="changes" tal:condition="python:question.getObject().can_edit()">
-
+    <a href="#" id="toggleQuestionHistory">Hide question history</a>
+      <div id="questionHistory">
          <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
            This object has no revision information.
          </p>
@@ -251,7 +251,7 @@
            </tal:changes>
          </tal:block>
 
-
+    </div>
    </div>
 
    <h3 tal:condition="python:question.getObject().can_edit()">Current text of the question</h3>
@@ -273,13 +273,13 @@
         </div>
       </div>
 
-
-      <div id="comment-discussion"
-        tal:condition="view/can_see_comments"
-        tal:define="context python:question.getObject()"
-        tal:content="structure provider:esdrt.content.commentmanager">
-
-      </div>
+      <tal:block tal:condition="view/can_see_comments">
+        <a href="#" id="toggleComments">Hide question comments</a>
+        <div id="comment-discussion"
+          tal:define="context python:question.getObject()"
+          tal:content="structure provider:esdrt.content.commentmanager">
+        </div>
+      </tal:block>
       <div class="actions" tal:condition="repeat/question/end">
         <a href=""
           tal:define="question_obj question/getObject"
@@ -347,8 +347,6 @@
 
 
   </div>
-
-
 </metal:main>
 
 </body>
