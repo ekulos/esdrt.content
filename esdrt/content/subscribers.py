@@ -60,7 +60,7 @@ def question_transition(question, event):
 
     if api.content.get_state(obj=event.object) == 'closed':
         parent = aq_parent(event.object)
-        with api.env.adopt_roles(['Manager']):
+        with api.env.adopt_roles(roles=['Manager']):
             api.content.transition(obj=parent, transition='request-close')
 
 
@@ -70,6 +70,7 @@ def question_transition(observation, event):
         import pdb; pdb.set_trace()
         with api.env.adopt_roles(roles=['Manager']):
             qs = [q for q in observation.values() if q.portal_type == 'Question']
-            q = qs[0]
-            api.content.transition(obj=q, transition='reopen')
+            if qs:
+                q = qs[0]
+                api.content.transition(obj=q, transition='reopen')
 
