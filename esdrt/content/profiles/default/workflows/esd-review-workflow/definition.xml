@@ -152,18 +152,15 @@
   </guard>
  </transition>
  <transition transition_id="close-observation" title="Close Observation" new_state="closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=close-observation" category="workflow" icon="">Close Observation</action>
+  <action url="%(content_url)s/observation_close?workflow_action=close-observation" category="workflow" icon="">Close Observation</action>
   <guard>
-   <guard-role>LeadReviewer</guard-role>
    <guard-role>SectorExpertReviewer</guard-role>
   </guard>
  </transition>
  <transition transition_id="reopen" title="Reopen" new_state="pending" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=reopen" category="workflow" icon="">Reopen</action>
   <guard>
-   <guard-role>LeadReviewer</guard-role>
    <guard-role>SectorExpertReviewer</guard-role>
-   <guard-role>Manager</guard-role>
   </guard>
  </transition>
  <transition transition_id="request-close" title="Start Reporting" new_state="close-requested" trigger="USER" before_script="" after_script="">

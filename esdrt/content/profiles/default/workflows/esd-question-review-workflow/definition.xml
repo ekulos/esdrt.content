@@ -6,18 +6,20 @@
    </guard>
  </instance-creation-conditions>
  <permission>Access contents information</permission>
+ <permission>CMFEditions: Access previous versions</permission>
+ <permission>CMFEditions: Save new version</permission>
  <permission>Modify portal content</permission>
+ <permission>Reply to item</permission>
  <permission>View</permission>
  <permission>esdrt.content: Add Comment</permission>
  <permission>esdrt.content: Add CommentAnswer</permission>
  <permission>esdrt.content: Add ESDRTFile</permission>
- <permission>Reply to item</permission>
- <permission>CMFEditions: Access previous versions</permission>
- <permission>CMFEditions: Save new version</permission>
+ <permission>esdrt.content: Edit Comment</permission>
+ <permission>esdrt.content: Edit CommentAnswer</permission>
  <state state_id="answered" title="Answered">
+  <exit-transition transition_id="recall-msa"/>
   <exit-transition transition_id="validate-answer-msa"/>
   <exit-transition transition_id="ask-validation"/>
-  <exit-transition transition_id="recall-msa"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -47,6 +49,10 @@
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
  </state>
  <state state_id="closed" title="Closed">
@@ -76,11 +82,14 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
-   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
  </state>
  <state state_id="counterpart-comments" title="Counterpart comments">
@@ -117,12 +126,15 @@
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
   </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
+  </permission-map>
  </state>
  <state state_id="draft" title="Draft">
-  <exit-transition transition_id="close"/>
-  <exit-transition transition_id="close-lr"/>
-  <exit-transition transition_id="request-for-counterpart-comments"/>
   <exit-transition transition_id="send-to-lr"/>
+  <exit-transition transition_id="request-for-counterpart-comments"/>
+  <exit-transition transition_id="close"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
@@ -155,12 +167,17 @@
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
  </state>
  <state state_id="drafted" title="Drafted">
+  <exit-transition transition_id="redraft"/>
   <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="close-lr"/>
-  <exit-transition transition_id="redraft"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
@@ -192,6 +209,11 @@
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
    <permission-role>LeadReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
  </state>
  <state state_id="pending" title="Pending">
@@ -206,8 +228,10 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
+   <permission-role>MSAuthority</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>MSAuthority</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
@@ -226,6 +250,11 @@
    <permission-role>MSAuthority</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
    <permission-role>MSAuthority</permission-role>
   </permission-map>
  </state>
@@ -239,8 +268,11 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
@@ -260,6 +292,12 @@
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -275,8 +313,11 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>MSAuthority</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
@@ -294,9 +335,18 @@
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>Manager</permission-role>
   </permission-map>
  </state>
  <state state_id="recalled-lr" title="Recalled (LR)">
+  <exit-transition transition_id="redraft"/>
   <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="close-lr"/>
   <permission-map name="Access contents information" acquired="False">
@@ -309,7 +359,6 @@
   <permission-map name="CMFEditions: Save new version" acquired="False">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
@@ -325,9 +374,15 @@
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
   </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
+  </permission-map>
  </state>
  <state state_id="recalled-msa" title="Recalled (MSA)">
   <exit-transition transition_id="answer"/>
+  <exit-transition transition_id="redraft-msa"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -353,6 +408,14 @@
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>Manager</permission-role>
   </permission-map>
  </state>
  <state state_id="validate-answer" title="Validate Answer">
@@ -384,6 +447,10 @@
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
  </state>
  <transition transition_id="answer" title="Send Answer to LR" new_state="answered" trigger="USER" before_script="" after_script="">

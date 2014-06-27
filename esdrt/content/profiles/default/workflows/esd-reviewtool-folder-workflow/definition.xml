@@ -2,10 +2,10 @@
 <dc-workflow workflow_id="esd-reviewtool-folder-workflow" title="ESD ReviewTool Workflow" description="" state_variable="review_state" initial_state="private" manager_bypass="True">
  <permission>Access contents information</permission>
  <permission>Change portal events</permission>
+ <permission>Delete objects</permission>
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <permission>esdrt.content: Add Observation</permission>
- <permission>Delete objects</permission>
  <state state_id="ongoing-review" title="Ongoing Review">
   <exit-transition transition_id="end-review"/>
   <exit-transition transition_id="reject"/>
