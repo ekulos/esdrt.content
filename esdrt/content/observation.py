@@ -385,17 +385,24 @@ class Observation(dexterity.Container):
     def myHistory(self):
         observation_history = self.workflow_history['esd-review-workflow']
         for item in observation_history:
+            item['role'] = item['actor']
             if item['review_state'] == 'draft':
                 item['state'] = 'Draft observation'
+                item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
             elif item['review_state'] == 'closed':
                 item['state'] = 'Closed observation'
+                item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
             elif item['review_state'] == 'close-requested':
                 item['state'] = 'Reporting observation'
+                item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
+            elif item['review_state'] == 'pending' and item['action'] == "reopen":
+                item['state'] = 'Reopened observation'
+                item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])                
             else:
                 item['state'] = '*' + item['review_state'] + '*'
             item['object'] = 'observation'
             item['author'] = self.get_author_name(item['actor'])
-            item['role'] = item['actor']
+            
 
         history = list(observation_history)
         questions = self.values()
@@ -405,41 +412,67 @@ class Observation(dexterity.Container):
             
             question_history = question.workflow_history['esd-question-review-workflow']
             for item in question_history:
+                item['role'] = item['actor']
                 if item['review_state'] == 'draft' and item['action'] == None:
                     item['state'] = 'Draft question'
+                    item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
+                elif item['review_state'] == 'draft' and item['action'] == "reopen":
+                    item['state'] = 'Reopened'                   
                 elif item['review_state'] == 'counterpart-comments':
-                    item['state'] = 'Requested counterparts comments'                     
+                    item['state'] = 'Requested counterparts comments' 
+                    item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
                 elif item['review_state'] == 'draft' and item['action'] =='send-comments':
-                    item['state'] = 'Counterparts comments closed'    
+                    item['state'] = 'Counterparts comments closed'  
+                    item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])  
                 elif item['review_state'] == 'drafted':
                     item['state'] = 'Sent to LR'  
+                    item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()]) 
                 elif item['review_state'] == 'draft' and item['action'] == 'redraft':
                     item['state'] = 'Redrafted'
+                    item['role'] = " ".join([self.country_value(), "Lead reviewer"])
                 elif item['review_state'] == 'pending' and item['action'] == 'approve-question':
-                    item['state'] = 'Sent to MSA'   
+                    item['state'] = 'Sent to MSA'
+                    item['role'] = " ".join([self.country_value(), "Lead reviewer"]) 
                 elif item['review_state'] == 'pending-answer' and item['action'] == 'asign-answered':
                     item['state'] = 'Sent to MSE' 
+                    item['role'] = " ".join([self.country_value(), "authority"])
                 elif item['review_state'] == 'pending-answer-validation':
-                    item['state'] = 'Sent to MSA'                 
+                    item['state'] = 'Sent to MSA'     
+                    item['role'] = " ".join([self.country_value(), "expert"])           
                 elif item['review_state'] == 'pending-answer' and item['action'] == 'redraft-msa':
                     item['state'] = 'Asked to redraft from MSA to MSE' 
+                    item['role'] = " ".join([self.country_value(), "authority"])
                 elif item['review_state'] == 'answered' and item['action'] == 'answer':
                     item['state'] = 'Sent to LR' 
+                    item['role'] = " ".join([self.country_value(), "authority"])
                 elif item['review_state'] == 'validate-answer':
                     item['state'] = 'Sent to SE' 
+                    item['role'] = " ".join([self.country_value(), "Lead reviewer"])
                 elif item['review_state'] == 'recalled-msa':
                     item['state'] = 'Recalled by MSA' 
+                    item['role'] = " ".join([self.country_value(), "authority"])
                 elif item['review_state'] == 'recalled-lr':
-                    item['state'] = 'Recalled by LR'                                          
+                    item['state'] = 'Recalled by LR'  
+                    item['role'] = " ".join([self.country_value(), "Lead reviewer"])                                    
                 elif item['review_state'] == 'answered' and item['action'] == 'answer-to-lr':
-                    item['state'] = 'Answered by LR' 
+                    item['state'] = 'Answered by MSA' 
+                    item['role'] = " ".join([self.country_value(), "authority"])
                 elif item['review_state'] == 'closed':
-                    item['state'] = 'Closed question'  
+                    item['state'] = 'Closed question' 
+                    if item['action'] == 'close-lr':
+                        item['role'] = " ".join([self.country_value(), "Lead reviewer"])
+                    elif item['action'] == 'validate-answer-msa':
+                        item['role'] = " ".join([self.country_value(), "Lead reviewer"])
+                    elif item['action'] == 'validate-answer':
+                        item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])     
+                    elif item['action'] == 'validate-answer':   
+                        item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
                 else:
                     item['state'] = '*' + item['review_state'] + '*'
+                    item['role'] = item['actor']
                 item['object'] = 'question'
                 item['author'] = self.get_author_name(item['actor'])
-                item['role'] = item['actor']
+                
 
             history = list(observation_history) + list(question_history)
 

@@ -173,7 +173,7 @@
           <tr>
             <tal:item tal:repeat="item context/myHistory">   
               <td 
-                tal:condition="python:not(item['review_state'] == 'pending' and item['object'] ==  'observation')"
+                tal:condition="python:not(item['review_state'] == 'pending' and item['object'] ==  'observation' and item['action'] == 'approve')"
                 define="toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                   <span class="border"></span>
                   <span class="eea-icon eea-icon-lg wfPoint"></span><br/>
