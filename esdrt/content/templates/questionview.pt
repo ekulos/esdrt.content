@@ -264,6 +264,7 @@
           <p>
           <span class="eea-icon eea-icon-lg attachment"></span>
           <span class="eea-icon eea-icon-lg confidential"
+            title="Confidential file (Only available for people taking part in the review process)"
             tal:condition="file/confidential"></span>
           <a href="" tal:attributes="href string:${file/absolute_url}/@@download/file"
             tal:content="file/file/filename">
