@@ -263,6 +263,8 @@
         <div class="file" tal:repeat="file python:question.getObject().get_files()">
           <p>
           <span class="eea-icon eea-icon-lg attachment"></span>
+          <span class="eea-icon eea-icon-lg confidential"
+            tal:condition="file/confidential"></span>
           <a href="" tal:attributes="href string:${file/absolute_url}/@@download/file"
             tal:content="file/file/filename">
           </a>

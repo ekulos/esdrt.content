@@ -324,3 +324,6 @@
 .attachment:before{
 	content: "\f0c6";
 }
+.confidential:before {
+	content: "\f023";
+}
