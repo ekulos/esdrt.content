@@ -303,13 +303,13 @@
 	content: "\f017";
 }
 #workflowTable td{
-	min-width:196px;
-	color:gray;
+	min-width: 195px;
+	color: gray;
 	position: relative;
 	vertical-align: top;
 }
 #workflowTable tr td:last-child {
-	color:black;
+	color: black;
 }
 #workflowTable tr td .border{
 	border-top: 1px solid gray;
@@ -320,4 +320,7 @@
 }
 #workflowTable tr td:last-child .border{
 	border: none;
+}
+.attachment:before{
+	content: "\f0c6";
 }

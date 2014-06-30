@@ -262,6 +262,7 @@
         Files:
         <div class="file" tal:repeat="file python:question.getObject().get_files()">
           <p>
+          <span class="eea-icon eea-icon-lg attachment"></span>
           <a href="" tal:attributes="href string:${file/absolute_url}/@@download/file"
             tal:content="file/file/filename">
           </a>
