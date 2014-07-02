@@ -4,6 +4,8 @@ Changelog
 1.5 (2014-07-02)
 -----------------------
 
+- Change notification handling: do it on group-membership basis [erral]
+
 - Fix permission checks to allow file upload [erral]
 
 - Visualization improvements [msantamaria]
