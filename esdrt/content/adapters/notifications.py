@@ -1,6 +1,10 @@
 from Acquisition import aq_parent
 from collective.contentrules.mailadapter.interfaces import IRecipientsResolver
 from esdrt.content.observation import IObservation
+from esdrt.content.question import PENDING_STATUS_NAME
+from esdrt.content.question import OPEN_STATUS_NAME
+from esdrt.content.question import DRAFT_STATUS_NAME
+from esdrt.content.question import CLOSED_STATUS_NAME
 from esdrt.content.question import IQuestion
 from esdrt.content.subscriptions.interfaces import INotificationSubscriptions
 from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
@@ -31,6 +35,7 @@ class NotificationReceivers(object):
         context = self.context
         wtool = getToolByName(context, 'portal_workflow')
         actors = []
+
         # 1. Get all involved users
         with api.env.adopt_roles(['Manager']):
             info = wtool.getInfoFor(context, 'review_history',
@@ -82,12 +87,46 @@ class QuestionNotificationReceivers(object):
         context = self.context
         wtool = getToolByName(context, 'portal_workflow')
         actors = []
-        # 1. Get all involved users
+        last_actor = None
+
+        # 0. Get groups users
+        #   ReviewExperts
+        #   LeadReviewers
+        #   MSAuthority
+        #   MSExperts
+        country = context.country.lower()
+        sector = context.ghg_source_sectors
+        sre_groupname = 'extranet-esd-reviewexperts-%s-%s' % (sector, country)
+        lr_groupname = 'extranet-esd-leadreviewers-%s' % country
+        msa_groupname = 'extranet-esd-ms-authorities-%s' % country
+        mse_groupname = 'extranet-esd-ms-experts-%s' % country
+
+        sres = [u.getId() for u in api.user.get_users(groupname=sre_groupname)]
+        lrs = [u.getId() for u in api.user.get_users(groupname=lr_groupname)]
+        msas = [u.getId() for u in api.user.get_users(groupname=msa_groupname)]
+        mses = [u.getId() for u in api.user.get_users(groupname=mse_groupname)]
+
+        if context.get_status() in PENDING_STATUS_NAME:
+            actors.extend(sres)
+            actors.extend(lrs)
+        elif context.get_status() in OPEN_STATUS_NAME:
+            actors.extend(msas)
+            actors.extend(mses)
+        elif context.get_status() in DRAFT_STATUS_NAME:
+            actors.extend(sres)
+            actors.extend(lrs)
+        elif context.get_status() in CLOSED_STATUS_NAME:
+            actors.extend(lrs)
+            actors.extend(msas)
+
+        # 1. Remove the actor doing last change
         with api.env.adopt_roles(['Manager']):
             info = wtool.getInfoFor(context, 'review_history',
                 wf_id='esd-question-review-workflow'
             )
-            actors = [inf['actor'] for inf in info]
+            #actors = [inf['actor'] for inf in info]
+            info.sort(lambda x, y: cmp(x['time'], y['time']))
+            last_actor = info[-1].get('actor')
 
         # 2. Explicit subscribed users
         actors.extend(INotificationSubscriptions(context).get())
@@ -96,8 +135,10 @@ class QuestionNotificationReceivers(object):
         items = []
         putils = getToolByName(context, "plone_utils")
         for actor in set(actors):
-            # 3. remove unsubsribed users
-            if actor and actor not in unsubscribed_users:
+            # 3. remove unsubscribed users and the last actor
+            if actor and \
+                actor not in unsubscribed_users \
+                    and actor != last_actor:
                 user = api.user.get(username=actor)
                 if user is not None:
                     email = user.getProperty('email')
