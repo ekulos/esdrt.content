@@ -355,8 +355,10 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
@@ -373,6 +375,7 @@
   <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Edit Comment" acquired="False">
    <permission-role>LeadReviewer</permission-role>
