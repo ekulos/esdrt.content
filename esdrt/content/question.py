@@ -382,6 +382,10 @@ class AddCommentForm(Form):
 
         return self.request.response.redirect(context.absolute_url())
 
+    def updateActions(self):
+        super(AddCommentForm, self).updateActions()
+        self.actions['submit'].addClass('standardButton')
+
 
 class AddAnswerForm(Form):
 
@@ -401,3 +405,7 @@ class AddAnswerForm(Form):
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
         return self.request.response.redirect(context.absolute_url())
+
+    def updateActions(self):
+        super(AddAnswerForm, self).updateActions()
+        self.actions['submit'].addClass('standardButton')
