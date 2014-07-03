@@ -384,7 +384,8 @@ class AddCommentForm(Form):
 
     def updateActions(self):
         super(AddCommentForm, self).updateActions()
-        self.actions['submit'].addClass('standardButton')
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
 
 
 class AddAnswerForm(Form):
@@ -408,4 +409,5 @@ class AddAnswerForm(Form):
 
     def updateActions(self):
         super(AddAnswerForm, self).updateActions()
-        self.actions['submit'].addClass('standardButton')
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
