@@ -56,7 +56,6 @@ class Comment(dexterity.Container):
         return [item for item in items if mtool.checkPermission('View', item)]
 
 
-
 # View class
 # The view will automatically use a similarly named template in
 # templates called commentview.pt .

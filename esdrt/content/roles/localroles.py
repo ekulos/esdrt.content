@@ -40,8 +40,8 @@ class ObservationRoleAdapter(object):
                     roles.append('LeadReviewer')
                 if 'ms-authorities-%s' % country in group:
                     roles.append('MSAuthority')
-                if 'ms-experts-%s' % country in group:
-                    roles.append('MSExpert')
+                # if 'ms-experts-%s' % country in group:
+                #     roles.append('MSExpert')
         return roles
 
     def getAllRoles(self):
@@ -81,8 +81,8 @@ class QuestionRoleAdapter(object):
                         roles.append('LeadReviewer')
                     if 'ms-authorities-%s' % country in group:
                         roles.append('MSAuthority')
-                    if 'ms-experts-%s' % country in group:
-                        roles.append('MSExpert')
+                    # if 'ms-experts-%s' % country in group:
+                    #     roles.append('MSExpert')
         return roles
 
     def getAllRoles(self):
@@ -125,8 +125,8 @@ class CommentRoleAdapter(object):
                             roles.append('LeadReviewer')
                         if 'ms-authorities-%s' % country in group:
                             roles.append('MSAuthority')
-                        if 'ms-experts-%s' % country in group:
-                            roles.append('MSExpert')
+                        # if 'ms-experts-%s' % country in group:
+                        #     roles.append('MSExpert')
 
         return roles
 
@@ -170,8 +170,8 @@ class CommentAnswerRoleAdapter(object):
                             roles.append('LeadReviewer')
                         if 'ms-authorities-%s' % country in group:
                             roles.append('MSAuthority')
-                        if 'ms-experts-%s' % country in group:
-                            roles.append('MSExpert')
+                        # if 'ms-experts-%s' % country in group:
+                        #     roles.append('MSExpert')
 
         return roles
 

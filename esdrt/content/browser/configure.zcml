@@ -15,6 +15,13 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        name="assign_answerer_form"
+        for="*"
+        class=".statechange.AssignAnswererForm"
+        permission="zope2.View"
+        />
+
 <!--     <browser:page
         name="assign_counterpart_name"
         for="*"
@@ -46,7 +53,17 @@
         manager=".interfaces.ICommentDiscussion"
         view="plone.app.layout.globals.interfaces.IViewView"
         class="plone.app.discussion.browser.comments.CommentsViewlet"
-        permission="zope2.View"
+        permission="esdrt.content.ViewCommentDiscussion"
+        />
+
+     <browser:viewlet
+        name="plone.comments"
+        for="..commentanswer.ICommentAnswer"
+        layer="plone.app.discussion.interfaces.IDiscussionLayer"
+        manager=".interfaces.ICommentDiscussion"
+        view="plone.app.layout.globals.interfaces.IViewView"
+        class="plone.app.discussion.browser.comments.CommentsViewlet"
+        permission="esdrt.content.ViewAnswerDiscussion"
         />
 
 

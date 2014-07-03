@@ -298,10 +298,6 @@ class QuestionView(grok.View):
             self.changes = [change for change in changeset.getDiffs()
                           if not change.same]
 
-    def can_see_comments(self):
-        state = api.content.get_state(self.context)
-        return state in ['draft', 'counterpart-comments', 'drafted']
-
     def add_comment_form(self):
         from plone.z3cform.interfaces import IWrappedForm
         form_instance = AddCommentForm(self.context, self.request)

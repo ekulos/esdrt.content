@@ -277,13 +277,15 @@
         </div>
       </div>
 
-      <tal:block tal:condition="view/can_see_comments">
-        <a href="#" id="toggleComments">Hide question comments</a>
-        <div id="comment-discussion"
-          tal:define="context python:question.getObject()"
-          tal:content="structure provider:esdrt.content.commentmanager">
-        </div>
-      </tal:block>
+
+      <div id="comment-discussion-wrapper"
+        tal:define="context python:question.getObject()">
+          <div id="comment-discussion">
+            <a href="#" id="toggleComments">Hide question comments</a>
+            <span tal:replace="structure provider:esdrt.content.commentmanager" />
+          </div>
+      </div>
+
       <div class="actions" tal:condition="repeat/question/end">
         <a href=""
           tal:define="question_obj question/getObject"

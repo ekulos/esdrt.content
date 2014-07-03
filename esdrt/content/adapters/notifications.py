@@ -111,7 +111,8 @@ class QuestionNotificationReceivers(object):
             actors.extend(lrs)
         elif context.get_status() in OPEN_STATUS_NAME:
             actors.extend(msas)
-            actors.extend(mses)
+            if api.content.get_state(context) == 'pending-answer':
+                actors.extend(mses)
         elif context.get_status() in DRAFT_STATUS_NAME:
             actors.extend(sres)
             actors.extend(lrs)
