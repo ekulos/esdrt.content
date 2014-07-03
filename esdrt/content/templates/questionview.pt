@@ -336,7 +336,9 @@
 
         <tal:block tal:repeat="action view/actions">
           <a href=""
-            tal:attributes="href string:${action/action}&amp;comment=${question/getId};"
+            tal:attributes="href string:${action/action}&amp;comment=${question/getId};
+                            id action/extra/id|nothing;
+            "
             class="standardButton"
             tal:content="action/title">
             Action
