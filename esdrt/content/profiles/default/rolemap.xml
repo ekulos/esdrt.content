@@ -40,6 +40,13 @@
       <role name="Site Administrator" />
       <role name="Contributor" />
     </permission>
+    <permission name="esdrt.content: View Comment Discussion" acquire="False">
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
+    <permission name="esdrt.content: View Answer Discussion" acquire="False">
+      <role name="Manager" />
+    </permission>
     <permission name="esdrt.content: Add Question" acquire="False">
       <role name="Manager" />
       <role name="Site Administrator" />

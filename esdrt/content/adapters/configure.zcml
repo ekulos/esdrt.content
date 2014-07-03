@@ -8,9 +8,9 @@
         factory=".reference_number.ReferenceNumberCreator"
     />
 
-    <adapter
+<!--     <adapter
         factory=".notifications.NotificationReceivers"
-    />
+    /> -->
 
     <adapter
         factory=".notifications.QuestionNotificationReceivers"

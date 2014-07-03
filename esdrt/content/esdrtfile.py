@@ -1,3 +1,4 @@
+from AccessControl import getSecurityManager
 from Acquisition import aq_parent
 from esdrt.content import MessageFactory as _
 from five import grok
@@ -41,6 +42,17 @@ class IESDRTFile(form.Schema, IImageScaleTraversable):
 class ESDRTFile(dexterity.Item):
     grok.implements(IESDRTFile)
     # Add your class methods and properties here
+
+    def can_edit(self):
+        sm = getSecurityManager()
+        parent = aq_parent(self)
+        edit = False
+        if parent.portal_type == 'Comment':
+            edit = sm.checkPermission('esdrt.content: Edit Comment', self)
+        elif parent.portal_type == 'CommentAnswer':
+            edit = sm.checkPermission('esdrt.content: Edit CommentAnswer', self)
+
+        return edit or sm.checkPermission('Reply to item', self)
 
 
 class AddForm(dexterity.AddForm):

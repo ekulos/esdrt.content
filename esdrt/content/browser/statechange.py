@@ -1,3 +1,4 @@
+from Acquisition import aq_parent
 from plone.app.textfield import RichText
 from Acquisition import aq_inner
 from esdrt.content import MessageFactory as _
@@ -47,20 +48,82 @@ class ObservationClosingReasonForm(Form):
         )
 
 
-class IAssignCounterPartForm(Interface):
-    counterpart = schema.TextLine(
-        title=_(u'Select the counterpart'),
+class IAssignAnswererForm(Interface):
+    answerers = schema.Choice(
+        title=_(u'Select the answerers'),
+        vocabulary=u'plone.app.vocabularies.Users',
     )
-
-    # comments = schema.Text(
-    #     title=_(u'Enter the comments for your Counterpart'),
-    #     required=True
-    # )
 
     workflow_action = schema.TextLine(
         title=_(u'Workflow action'),
         required=True
     )
+
+
+class IAssignCounterPartForm(Interface):
+    counterpart = schema.TextLine(
+        title=_(u'Select the counterpart'),
+    )
+
+
+    workflow_action = schema.TextLine(
+        title=_(u'Workflow action'),
+        required=True
+    )
+
+
+class AssignAnswererForm(BrowserView):
+
+    index = ViewPageTemplateFile('assign_answerer_form.pt')
+
+    def target_groupname(self):
+        context = aq_inner(self.context)
+        observation = aq_parent(context)
+        country = observation.country.lower()
+        return 'extranet-esd-ms-experts-%s' % country
+
+    def get_counterpart_users(self):
+        groupname = self.target_groupname()
+        current = api.user.get_current()
+        return [u for u in api.user.get_users(groupname=groupname) if current.getId() != u.getId()]
+
+    def __call__(self):
+        """Perform the update and redirect if necessary, or render the page
+        """
+        context = aq_inner(self.context)
+        observation = aq_parent(context)
+        if self.request.form.get('send', None):
+            usernames = self.request.get('answerers', None)
+            if not usernames:
+                status = IStatusMessage(self.request)
+                msg = _(u'You need to select at least one commenter for discussion')
+                status.addStatusMessage(msg, "error")
+                return self.index()
+
+            for username in usernames:
+                user = api.user.get(username=username)
+                groupname = self.target_groupname()
+                if groupname not in user.getGroups():
+                    status = IStatusMessage(self.request)
+                    msg = _(u'Selected user is not valid')
+                    status.addStatusMessage(msg, "error")
+                    return self.index()
+
+            for username in usernames:
+                api.user.grant_roles(username=username,
+                    roles=['MSExpert'],
+                    obj=self.context)
+                api.user.grant_roles(username=username,
+                    roles=['MSExpert'],
+                    obj=observation)
+
+            wf_action = 'assign-answerer'
+            return self.context.content_status_modify(
+                workflow_action=wf_action,
+            )
+
+        else:
+            return self.index()
 
 
 class AssignCounterPartForm(BrowserView):

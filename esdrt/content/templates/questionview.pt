@@ -106,6 +106,25 @@
           $('#answer-add-form').toggle();
         });
 
+        $('.file .delete').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#delete_confirmation',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.button.Cancel"]',
+            width:'50%'
+        });
+
+        $('.file .edit').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#edit',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.button.Cancel"]',
+            width:'50%'
+        });
     });
 
       </script>
@@ -254,7 +273,7 @@
     </div>
    </div>
 
-   <h3 tal:condition="python:question.getObject().can_edit()">Current text of the question</h3>
+      <h3 tal:condition="python:question.getObject().can_edit()">Current text of the question</h3>
       <div tal:content="structure question/text/output|string:">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
       </div>
@@ -273,17 +292,31 @@
                 tal:define="size file/file/getSize;
                             kb python:size/1024">
                 &mdash; <span tal:replace="kb" /> KB</span>
+
+          <a tal:condition="file/can_edit"
+             class="edit"
+             tal:attributes="href string:${file/absolute_url}/edit">
+            Edit
+          </a>
+          <a tal:condition="file/can_edit"
+             class="delete"
+             tal:attributes="href string:${file/absolute_url}/delete_confirmation">
+             Delete
+          </a>
+
           </p>
         </div>
       </div>
 
-      <tal:block tal:condition="view/can_see_comments">
-        <a href="#" id="toggleComments">Hide question comments</a>
-        <div id="comment-discussion"
-          tal:define="context python:question.getObject()"
-          tal:content="structure provider:esdrt.content.commentmanager">
-        </div>
-      </tal:block>
+
+      <div id="comment-discussion-wrapper"
+        tal:define="context python:question.getObject()">
+          <div id="comment-discussion">
+            <a href="#" id="toggleComments">Hide question comments</a>
+            <span tal:replace="structure provider:esdrt.content.commentmanager" />
+          </div>
+      </div>
+
       <div class="actions" tal:condition="repeat/question/end">
         <a href=""
           tal:define="question_obj question/getObject"
@@ -303,7 +336,9 @@
 
         <tal:block tal:repeat="action view/actions">
           <a href=""
-            tal:attributes="href string:${action/action}&amp;comment=${question/getId}"
+            tal:attributes="href string:${action/action}&amp;comment=${question/getId};
+                            id action/extra/id|nothing;
+            "
             class="standardButton"
             tal:content="action/title">
             Action

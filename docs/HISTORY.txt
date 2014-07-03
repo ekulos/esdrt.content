@@ -1,6 +1,22 @@
 Changelog
 =========
 
+1.6 (UNRELEASED)
+---------------------
+
+1.5 (2014-07-02)
+-----------------------
+
+- Change notification handling: do it on group-membership basis [erral]
+
+- Fix permission checks to allow file upload [erral]
+
+- Visualization improvements [msantamaria]
+
+- Workflow changes to modify the counterpart review process [erral]
+
+- Workflow history is shown to see the review process [msantamaria]
+
 1.4 (2014-05-23)
 ----------------------
 

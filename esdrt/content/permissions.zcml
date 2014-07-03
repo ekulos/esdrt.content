@@ -43,6 +43,15 @@
     title="esdrt.content: Add Question"
     />
 
+       <permission
+          id="esdrt.content.ViewCommentDiscussion"
+    title="esdrt.content: View Comment Discussion"
+    />
+
+       <permission
+          id="esdrt.content.ViewAnswerDiscussion"
+    title="esdrt.content: View Answer Discussion"
+    />
 
        <permission
           id="esdrt.content.AddObservation"
