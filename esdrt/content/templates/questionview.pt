@@ -293,12 +293,12 @@
                             kb python:size/1024">
                 &mdash; <span tal:replace="kb" /> KB</span>
 
-          <a tal:condition="python:question.getObject().can_edit()"
+          <a tal:condition="file/can_edit"
              class="edit"
              tal:attributes="href string:${file/absolute_url}/edit">
             Edit
           </a>
-          <a tal:condition="python:question.getObject().can_edit()"
+          <a tal:condition="file/can_edit"
              class="delete"
              tal:attributes="href string:${file/absolute_url}/delete_confirmation">
              Delete

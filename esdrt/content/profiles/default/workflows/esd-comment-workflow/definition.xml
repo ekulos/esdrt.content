@@ -10,9 +10,17 @@
  <permission>Modify portal content</permission>
  <permission>View</permission>
  <permission>esdrt.content: Add ESDRTFile</permission>
+ <permission>esdrt.content: Edit Comment</permission>
+ <permission>Delete objects</permission>
+ <permission>Reply to item</permission>
  <state state_id="initial" title="Initial">
   <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information" acquired="True">
+  </permission-map>
+  <permission-map name="Delete objects" acquired="True">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>ExpertReviewer</permission-role>
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="True">
   </permission-map>
@@ -21,6 +29,8 @@
   <permission-map name="View" acquired="True">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="True">
   </permission-map>
  </state>
  <state state_id="public" title="Published">
@@ -32,6 +42,9 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="Delete objects" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -42,6 +55,8 @@
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
+  <permission-map name="Reply to item" acquired="False">
+  </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -50,6 +65,9 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Edit Comment" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
  </state>
