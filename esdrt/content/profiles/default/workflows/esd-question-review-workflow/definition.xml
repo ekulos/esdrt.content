@@ -442,8 +442,10 @@
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
+   <permission-role>MSAuthority</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
+   <permission-role>MSAuthority</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
