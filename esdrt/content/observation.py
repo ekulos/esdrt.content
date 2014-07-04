@@ -477,6 +477,12 @@ class Observation(dexterity.Container):
         sm = getSecurityManager()
         return sm.checkPermission('Modify portal content', self)
 
+    def get_question(self):
+        questions = self.values()
+
+        if questions:
+            question = questions[0]
+            return question
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
@@ -501,6 +507,15 @@ class AddForm(dexterity.AddForm):
         self.widgets['IDublinCore.description'].mode = interfaces.HIDDEN_MODE
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
+@grok.subscribe(IObservation, IObjectAddedEvent)
+def add_question(context, event):
+    """ When adding a question, go directly to
+        'open' status on the observation
+    """
+    observation = context
+    with api.env.adopt_roles(roles=['Manager']):
+        if api.content.get_state(obj=observation) == 'draft':
+            api.content.transition(obj=observation, transition='approve')
 
 class ObservationView(grok.View):
     grok.context(IObservation)
@@ -643,6 +658,143 @@ class ObservationView(grok.View):
         alsoProvides(form_instance, IWrappedForm)
         return form_instance()
 
+    #Question view
+    def question(self):
+        questions = self.get_questions()
+        if questions:
+            return questions[0].getObject()
+
+    def get_chat(self):
+        sm = getSecurityManager()
+        question = self.question()
+        if question:
+            values = [v for v in question.values() if sm.checkPermission('View', v)]
+            #return question.values()
+            return IContentListing(values)
+
+
+
+    def actions(self):
+        context = aq_inner(self.context)
+        question = self.question()
+        observation_menu_items = getMenu(
+            'plone_contentmenu_workflow',
+            context,
+            self.request
+            )
+        menu_items = observation_menu_items
+        if question:
+            question_menu_items = getMenu(
+                'plone_contentmenu_workflow',
+                question,
+                self.request
+                )
+
+            menu_items = question_menu_items + observation_menu_items
+        return [mitem for mitem in menu_items if not hidden(mitem)]
+
+    def get_user_name(self, userid, question=None):
+        # check users
+        if question is not None:
+            country = self.context.country_value()
+            sector = self.context.ghg_source_sectors_value()
+            if question.portal_type == 'Comment':
+                return ' - '.join([country, sector])
+            elif question.portal_type == 'CommentAnswer':
+                return ' - '.join([country, 'Authority'])
+
+        if userid:
+            user = api.user.get(username=userid)
+            return user.getProperty('fullname', userid)
+        return ''
+
+    def can_add_comment(self):
+        sm = getSecurityManager()
+        question = self.question()
+        if question:
+            permission = sm.checkPermission('esdrt.content: Add Comment', question)
+            questions = [q for q in question.values() if q.portal_type == 'Comment']
+            answers = [q for q in question.values() if q.portal_type == 'CommentAnswer']
+            obs_state = self.context.get_status()
+            return permission and len(questions) == len(answers) and obs_state != 'closed'
+        else:
+            return False
+
+
+    def can_add_answer(self):
+        sm = getSecurityManager()
+        question = self.question()
+        if question:
+            permission = sm.checkPermission('esdrt.content: Add CommentAnswer', question)
+            questions = [q for q in question.values() if q.portal_type == 'Comment']
+            answers = [q for q in question.values() if q.portal_type == 'CommentAnswer']
+            return permission and len(questions) > len(answers)
+        else:
+            return False
+
+    def add_answer_form(self):
+        from plone.z3cform.interfaces import IWrappedForm
+        form_instance = AddAnswerForm(self.context, self.request)
+        alsoProvides(form_instance, IWrappedForm)
+        return form_instance()
+
+    def can_see_comments(self):
+        state = api.content.get_state(self.question())
+        #return state in ['draft', 'counterpart-comments', 'drafted']
+        return state in ['counterpart-comments']
+
+    def add_comment_form(self):
+        from plone.z3cform.interfaces import IWrappedForm
+        form_instance = AddCommentForm(self.context, self.request)
+        alsoProvides(form_instance, IWrappedForm)
+        return form_instance()
+
+    #def update(self):
+    #    question = self.question()
+    #    if question:
+    #        context = question.getFirstComment()
+    #        if context.can_edit():
+    #            history_metadata = self.repo_tool.getHistoryMetadata(context)
+    #            retrieve = history_metadata.retrieve
+    #            getId = history_metadata.getVersionId
+    #            history = self.history = []
+    #            # Count backwards from most recent to least recent
+    #            for i in xrange(history_metadata.getLength(countPurged=False)-1, -1, -1):
+    #                version = retrieve(i, countPurged=False)['metadata'].copy()
+    #                version['version_id'] = getId(i, countPurged=False)
+    #                history.append(version)
+    #            dt = getToolByName(self.context, "portal_diff")
+
+    #            version1 = self.request.get("one", None)
+    #            version2 = self.request.get("two", None)
+
+    #            if version1 is None and version2 is None:
+    #                self.history.sort(lambda x,y: cmp(x.get('version_id', ''), y.get('version_id')), reverse=True)
+    #                version1 = self.history[-1].get('version_id', 'current')
+    #                if len(self.history) > 1:
+    #                    version2 = self.history[-2].get('version_id', 'current')
+    #                else:
+    #                    version2 = 'current'
+    #            elif version1 is None:
+    #                version1 = 'current'
+    #            elif version2 is None:
+    #                version2 = 'current'
+
+    #            self.request.set('one', version1)
+    #            self.request.set('two', version2)
+
+    #            changeset = dt.createChangeSet(
+    #                    self.getVersion(version2),
+    #                    self.getVersion(version1),
+    #                    id1=self.versionTitle(version2),
+    #                    id2=self.versionTitle(version1))
+    #            self.changes = [change for change in changeset.getDiffs()
+    #                          if not change.same]
+    #def get_chat(self):
+    #    question = self.question()
+    #    if question:
+    #        return question.get_questions()
+
 from .comment import IComment
 
 
@@ -679,7 +831,9 @@ class AddQuestionForm(Form):
         comment = question.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
-        return self.request.response.redirect(comment.absolute_url())
+        #return self.request.response.redirect(comment.absolute_url())
+        return self.request.response.redirect(self.context.absolute_url())
+
 
     def updateActions(self):
         super(AddQuestionForm, self).updateActions()
@@ -837,3 +991,40 @@ class ModificationForm(dexterity.EditForm):
 #         obj=context,
 #         roles=['SectorExpertReviewer']
 #     )
+class AddAnswerForm(Form):
+
+    ignoreContext = True
+    fields = field.Fields(IComment).select('text')
+
+    @button.buttonAndHandler(_('Add answer'))
+    def create_question(self, action):
+        context = aq_inner(self.context)
+        id = str(int(time()))
+        item_id = context.invokeFactory(
+                type_name='CommentAnswer',
+                id=id,
+        )
+        text = self.request.form.get('form.widgets.text', '')
+        comment = context.get(item_id)
+        comment.text = RichTextValue(text, 'text/html', 'text/html')
+
+        return self.request.response.redirect(context.absolute_url())
+
+class AddCommentForm(Form):
+
+    ignoreContext = True
+    fields = field.Fields(IComment).select('text')
+
+    @button.buttonAndHandler(_('Add question'))
+    def create_question(self, action):
+        context = aq_inner(self.context.question)
+        id = str(int(time()))
+        item_id = context.invokeFactory(
+                type_name='Comment',
+                id=id,
+        )
+        text = self.request.form.get('form.widgets.text', '')
+        comment = context.get(item_id)
+        comment.text = RichTextValue(text, 'text/html', 'text/html')
+
+        return self.request.response.redirect(context.absolute_url())
