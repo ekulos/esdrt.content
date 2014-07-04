@@ -681,6 +681,10 @@ class AddQuestionForm(Form):
 
         return self.request.response.redirect(comment.absolute_url())
 
+    def updateActions(self):
+        super(AddQuestionForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
 
 
     # def update(self):
