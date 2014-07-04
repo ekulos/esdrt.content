@@ -1,8 +1,3 @@
-from z3c.form.browser import text
-from zope.interface import alsoProvides
-from z3c.form import button
-from plone.app.textfield.value import RichTextValue
-from Products.CMFPlone.utils import safe_unicode
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from collective.z3cform.datagridfield import DataGridFieldFactory
@@ -14,32 +9,34 @@ from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.textfield import RichText
-from plone.dexterity.browser.add import DefaultAddForm
+from plone.app.textfield.value import RichTextValue
 from plone.directives import dexterity
 from plone.directives import form
 from plone.directives.form import default_value
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
+from Products.CMFPlone.utils import safe_unicode
 from Products.statusmessages.interfaces import IStatusMessage
+from time import time
+from types import IntType
+from z3c.form import button
 from z3c.form import field
 from z3c.form import interfaces
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from z3c.form.browser.radio import RadioFieldWidget
-from zope import schema
-from zope.container.interfaces import IObjectAddedEvent
-from zope.lifecycleevent.interfaces import IObjectModifiedEvent
-from zope.browsermenu.menu import getMenu
-from zope.component import getMultiAdapter
-from zope.component import getUtility
-from zope.globalrequest import getRequest
-from zope.i18n import translate
-from zope.schema.interfaces import IVocabularyFactory
-from zope.interface import Invalid
-from types import IntType
-from time import time
-from z3c.form import button
 from z3c.form.form import Form
+from z3c.form.interfaces import ActionExecutionError
+from zope import schema
+from zope.browsermenu.menu import getMenu
+from zope.component import getUtility
+from zope.container.interfaces import IObjectAddedEvent
+from zope.i18n import translate
+from zope.interface import alsoProvides
+from zope.interface import Invalid
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
+from zope.schema.interfaces import IVocabularyFactory
+
 
 import datetime
 
@@ -193,8 +190,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'Closing comments'),
         required=False,
     )
-
-
 
 
 @form.validator(field=IObservation['ghg_estimations'])
@@ -473,7 +468,6 @@ class Observation(dexterity.Container):
                 item['object'] = 'question'
                 item['author'] = self.get_author_name(item['actor'])
 
-
             history = list(observation_history) + list(question_history)
 
         history.sort(key=lambda x: x["time"], reverse=False)
@@ -520,9 +514,9 @@ class ObservationView(grok.View):
             'comments', wf_id='esd-review-workflow')
         actor = wf.getInfoFor(self.context,
             'actor', wf_id='esd-review-workflow')
-        time = wf.getInfoFor(self.context,
+        tim = wf.getInfoFor(self.context,
             'time', wf_id='esd-review-workflow')
-        return {'comments': comments, 'actor': actor, 'time': time}
+        return {'comments': comments, 'actor': actor, 'time': tim}
 
     def isManager(self):
         sm = getSecurityManager()
@@ -531,7 +525,6 @@ class ObservationView(grok.View):
 
     def get_user_name(self, userid):
         # Check users roles
-        user = api.user.get(username=userid)
         country = self.context.country_value()
         sector = self.context.ghg_source_sectors_value()
         return ' - '.join([country, sector])
@@ -660,6 +653,14 @@ class AddQuestionForm(Form):
 
     @button.buttonAndHandler(_('Add question'))
     def create_question(self, action):
+        context = aq_inner(self.context)
+        text = self.request.form.get('form.widgets.text', '')
+        transforms = getToolByName(context, 'portal_transforms')
+        stream = transforms.convertTo('text/plain', text, mimetype='text/html')
+        text = stream.getData().strip()
+        if not text:
+            raise ActionExecutionError(Invalid(u"Question text is empty"))
+
         qs = [item for item in self.context.values() if item.portal_type == 'Question']
         if qs:
             question = qs[0]
@@ -675,11 +676,11 @@ class AddQuestionForm(Form):
                 type_name='Comment',
                 id=id,
         )
-        text = self.request.form.get('form.widgets.text', '')
         comment = question.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
         return self.request.response.redirect(comment.absolute_url())
+
 
 
     # def update(self):
@@ -797,6 +798,7 @@ class ModificationForm(dexterity.EditForm):
         user = api.user.get_current()
         roles = api.user.get_roles(username=user.getId(), obj=self.context)
         fields = []
+        # XXX Needed? Edit rights are controlled by the WF
         if 'SectorExpertReviewer' in roles:
             fields = [f for f in field.Fields(IObservation) if f not in [
                 'country',

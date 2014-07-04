@@ -17,6 +17,7 @@ from z3c.form import field
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.component import createObject
 from zope.component import getUtility
+from zope.interface import Invalid
 
 
 # Interface class; used to define content-type schema.

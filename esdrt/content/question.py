@@ -20,12 +20,14 @@ from time import time
 from z3c.form import button
 from z3c.form import field
 from z3c.form.form import Form
+from z3c.form.interfaces import ActionExecutionError
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import alsoProvides
+from zope.interface import Invalid
 
 
 class IQuestion(form.Schema, IImageScaleTraversable):
@@ -371,12 +373,18 @@ class AddCommentForm(Form):
     @button.buttonAndHandler(_('Add question'))
     def create_question(self, action):
         context = aq_inner(self.context)
+        text = self.request.form.get('form.widgets.text', '')
+        transforms = getToolByName(context, 'portal_transforms')
+        stream = transforms.convertTo('text/plain', text, mimetype='text/html')
+        text = stream.getData().strip()
+        if not text:
+            raise ActionExecutionError(Invalid(u"Question text is empty"))
+
         id = str(int(time()))
         item_id = context.invokeFactory(
                 type_name='Comment',
                 id=id,
         )
-        text = self.request.form.get('form.widgets.text', '')
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
@@ -396,12 +404,18 @@ class AddAnswerForm(Form):
     @button.buttonAndHandler(_('Add answer'))
     def create_question(self, action):
         context = aq_inner(self.context)
+        text = self.request.form.get('form.widgets.text', '')
+        transforms = getToolByName(context, 'portal_transforms')
+        stream = transforms.convertTo('text/plain', text, mimetype='text/html')
+        text = stream.getData().strip()
+        if not text:
+            raise ActionExecutionError(Invalid(u"Answer text is empty"))
+
         id = str(int(time()))
         item_id = context.invokeFactory(
                 type_name='CommentAnswer',
                 id=id,
         )
-        text = self.request.form.get('form.widgets.text', '')
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
