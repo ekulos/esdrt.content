@@ -47,6 +47,10 @@ class Comment(dexterity.Container):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Edit Comment', self)
 
+    def can_delete(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('Delete objects', self)
+
     def can_add_files(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add ESDRTFile', self)
