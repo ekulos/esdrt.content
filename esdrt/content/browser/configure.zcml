@@ -52,7 +52,7 @@
         layer="plone.app.discussion.interfaces.IDiscussionLayer"
         manager=".interfaces.ICommentDiscussion"
         view="plone.app.layout.globals.interfaces.IViewView"
-        class="plone.app.discussion.browser.comments.CommentsViewlet"
+        class=".comments.CommentsViewlet"
         permission="esdrt.content.ViewCommentDiscussion"
         />
 
@@ -62,7 +62,7 @@
         layer="plone.app.discussion.interfaces.IDiscussionLayer"
         manager=".interfaces.ICommentDiscussion"
         view="plone.app.layout.globals.interfaces.IViewView"
-        class="plone.app.discussion.browser.comments.CommentsViewlet"
+        class=".comments.CommentsViewlet"
         permission="esdrt.content.ViewAnswerDiscussion"
         />
 
