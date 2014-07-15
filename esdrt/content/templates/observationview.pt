@@ -24,6 +24,27 @@
         }
         );
 
+        $('.edit').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#zc\\.page\\.browser_form',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.buttons.cancel"]',
+            width:'50%'
+        });
+
+        $('.addfile').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#edit',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.buttons.cancel"]',
+            width:'50%'
+          }
+        );
+
         $('#add-question-link').click(function(e){
           e.preventDefault();
           $('#question-add-form').toggle();
@@ -464,18 +485,18 @@
           <div class="actions" tal:condition="repeat/question/end">
             <a href=""
               tal:define="question_obj question/getObject"
-              tal:condition="question_obj/can_add_files"
-              tal:attributes="href string:${question/getURL}/++add++ESDRTFile"
-              class="standardButton addfile">
-                Add file
+              tal:condition="question_obj/can_edit"
+              tal:attributes="href string:${question/getURL}/edit"
+              class="edit standardButton">
+                Edit Question
             </a>
 
             <a href=""
               tal:define="question_obj question/getObject"
-              tal:condition="question_obj/can_edit"
-              tal:attributes="href string:${question/getURL}/edit"
-              class="edit standardButton">
-                Edit
+              tal:condition="question_obj/can_add_files"
+              tal:attributes="href string:${question/getURL}/++add++ESDRTFile"
+              class="standardButton addfile">
+                Add file
             </a>
 
             <tal:block tal:repeat="action view/actions">
@@ -495,7 +516,7 @@
             id="add-comment-link"
             tal:attributes="href string:${here/absolute_url}/++add++Comment"
             class="standardButton">
-              Reply (Add comment)
+              Add Question
           </a>
         </div>
         <div class="actions" tal:condition="view/can_add_answer">
@@ -503,7 +524,7 @@
             id="add-answer-link"
             tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
             class="standardButton">
-              Reply (Add comment answer)
+              Add Answer
           </a>
         </div>
 
