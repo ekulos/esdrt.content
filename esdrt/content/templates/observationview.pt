@@ -12,7 +12,7 @@
 
     $(document).ready(function(){
 
-        $('#observation-delete').prepOverlay(
+        $('.delete').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
@@ -232,7 +232,7 @@
       <a href="./delete_confirmation"
         id="observation-delete"
         tal:attributes="href string:${here/absolute_url}/delete_confirmation"
-        class="standardButton">
+        class="delete standardButton">
         Delete Observation
       </a>
     </tal:block>
@@ -493,10 +493,18 @@
 
             <a href=""
               tal:define="question_obj question/getObject"
+              tal:condition="question_obj/can_delete"
+              tal:attributes="href string:${question/getURL}/delete_confirmation"
+              class="delete standardButton">
+                Delete Question
+            </a>
+
+            <a href=""
+              tal:define="question_obj question/getObject"
               tal:condition="question_obj/can_add_files"
               tal:attributes="href string:${question/getURL}/++add++ESDRTFile"
               class="standardButton addfile">
-                Add file
+                Upload file
             </a>
 
             <tal:block tal:repeat="action view/actions">
