@@ -506,15 +506,6 @@
               Reply (Add comment answer)
           </a>
         </div>
-        <div class="actions"
-          tal:condition="view/can_edit">
-          <a href="./edit"
-            id="edit-observation-link"
-            tal:attributes="href string:${context/absolute_url}/edit"
-            class="standardButton">
-              Edit observation
-          </a>
-        </div>
 
         <div id="comment-add-form" style="display: none" tal:condition="view/can_add_comment">
           <span tal:replace="structure view/add_comment_form" />
