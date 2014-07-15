@@ -296,12 +296,12 @@
           <a tal:condition="file/can_edit"
              class="edit"
              tal:attributes="href string:${file/absolute_url}/edit">
-            Edit
+            Edit File
           </a>
           <a tal:condition="file/can_edit"
              class="delete"
              tal:attributes="href string:${file/absolute_url}/delete_confirmation">
-             Delete
+             Delete File
           </a>
 
           </p>
@@ -323,7 +323,7 @@
           tal:condition="question_obj/can_add_files"
           tal:attributes="href string:${question/getURL}/++add++ESDRTFile"
           class="standardButton addfile">
-            Add file
+            Upload file
         </a>
 
         <a href=""
@@ -331,7 +331,7 @@
           tal:condition="question_obj/can_edit"
           tal:attributes="href string:${question/getURL}/edit"
           class="edit standardButton">
-            Edit
+            Edit Question
         </a>
 
         <tal:block tal:repeat="action view/actions">
@@ -353,7 +353,7 @@
         id="add-comment-link"
         tal:attributes="href string:${here/absolute_url}/++add++Comment"
         class="standardButton">
-          Reply (Add comment)
+          Add Question
       </a>
     </div>
     <div class="actions" tal:condition="view/can_add_answer">
@@ -361,7 +361,7 @@
         id="add-answer-link"
         tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
         class="standardButton">
-          Reply (Add comment answer)
+          Add Answer
       </a>
     </div>
     <div class="actions"
