@@ -507,6 +507,12 @@ class AddForm(dexterity.AddForm):
         self.widgets['IDublinCore.description'].mode = interfaces.HIDDEN_MODE
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
+    def updateActions(self):
+        super(AddForm, self).updateActions()
+        self.actions['save'].title = u'Save Observation'
+        self.actions['cancel'].title = u'Delete Observation'
+
+
 @grok.subscribe(IObservation, IObjectAddedEvent)
 def add_question(context, event):
     """ When adding a question, go directly to
