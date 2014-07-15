@@ -171,15 +171,15 @@
       <div class="cell position-0 width-16" style="overflow-x:auto">
         <table style="table-layout: fixed" id="workflowTable">
           <tr>
-            <tal:item tal:repeat="item context/myHistory">   
-              <td 
+            <tal:item tal:repeat="item context/myHistory">
+              <td
                 tal:condition="python:not(item['review_state'] == 'pending' and item['object'] ==  'observation' and item['action'] == 'approve')"
                 define="toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                   <span class="border"></span>
                   <span class="eea-icon eea-icon-lg wfPoint"></span><br/>
                   <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
                   <span tal:content="item/role"></span><br/>
-                  <a 
+                  <a
                     tal:condition="context/is_secretariat"
                     tal:attributes="href python:'http://www.eionet.europa.eu/directory/user?uid='+item['actor']"
                     tal:content="item/author"></a>
@@ -190,25 +190,33 @@
                   <span tal:attributes="title python:toLocalizedTime(item['time'], True)" class="datetimeWF">
                     <span tal:replace="item/time"></span>
                   </span><br/>
-              </td>                                                        
+              </td>
             </tal:item>
           </tr>
         </table>
       </div>
-    </div>  
-  </div>
-
-  <div class="edit actions" tal:condition="view/can_edit">
-      <a href=""
-          tal:attributes="href string:${here/absolute_url}/modifications"
-          class="standardButton">
-          Edit
-      </a>
-
+    </div>
   </div>
 
   <div class="actions" tal:define="actions view/get_menu_actions">
-    <tal:block  tal:repeat="action actions">
+    <tal:block condition="view/can_edit">
+      <a href=""
+          tal:attributes="href string:${here/absolute_url}/modifications"
+          class="standardButton">
+          Edit Observation
+      </a>
+    </tal:block>
+
+    <tal:block condition="view/can_delete_observation">
+      <a href="./delete_confirmation"
+        id="observation-delete"
+        tal:attributes="href string:${here/absolute_url}/delete_confirmation"
+        class="standardButton">
+        Delete Observation
+      </a>
+    </tal:block>
+
+    <tal:block tal:repeat="action actions">
         <a href=""
           tal:attributes="href action/action"
           class="standardButton"
@@ -217,14 +225,6 @@
         </a>
     </tal:block>
 
-    <tal:block condition="view/can_delete_observation">
-      <a href="./delete_confirmation"
-        id="observation-delete"
-        tal:attributes="href string:${here/absolute_url}/delete_confirmation"
-        class="standardButton">
-        Delete observation
-      </a>
-    </tal:block>
   </div>
 
   <div class="subscription actions" tal:define="actions view/subscription_options"

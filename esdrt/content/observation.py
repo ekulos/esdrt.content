@@ -599,7 +599,7 @@ class ObservationView(grok.View):
         )
 
     def can_delete_observation(self):
-        is_draft = api.content.get_state(self.context) == 'draft'
+        is_draft = api.content.get_state(self.context) == 'pending'
         questions = len([q for q in self.context.values() if q.portal_type == 'Question'])
 
         return is_draft and not questions

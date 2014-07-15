@@ -107,21 +107,21 @@
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>Site Administrator</permission-role>
+   <permission-role>Owner</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>Site Administrator</permission-role>
+   <permission-role>Owner</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -130,12 +130,10 @@
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
-   <permission-role>Site Administrator</permission-role>
+   <permission-role>Owner</permission-role>
   </permission-map>
  </state>
  <transition transition_id="approve" title="Open" new_state="pending" trigger="USER" before_script="" after_script="">
