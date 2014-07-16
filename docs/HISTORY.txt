@@ -1,8 +1,17 @@
 Changelog
 =========
 
-1.6 (UNRELEASED)
+1.6 (2014-07-16)
 ---------------------
+
+- Changed workflow to have MSAuthorities to answer the questions [erral]
+
+- Provide discussion box for MSAuthorities and MSExperts [erral]
+
+- Added conclusion drafting and discussion workflow [erral]
+
+- Improved button and workflow labeling [erral]
+
 
 1.5 (2014-07-02)
 -----------------------
