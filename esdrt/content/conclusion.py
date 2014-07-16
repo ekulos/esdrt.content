@@ -6,6 +6,7 @@ from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from five import grok
 from plone import api
+from plone.app.dexterity.behaviors.discussion import IAllowDiscussion
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
@@ -14,55 +15,79 @@ from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from time import time
 from z3c.form import field
+from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
+from zope.globalrequest import getRequest
 
 
-# Interface class; used to define content-type schema.
-class ICommentAnswer(form.Schema, IImageScaleTraversable):
+class IConclusion(form.Schema, IImageScaleTraversable):
     """
-    Answer for Questions
+    Conclusions of this observation
     """
-    # If you want a schema-defined interface, delete the form.model
-    # line below and delete the matching file in the models sub-directory.
-    # If you want a model-based interface, edit
-    # models/comment.xml to define the content type
-    # and add directives here as necessary.
+
     text = RichText(
         title=_(u'Text'),
         required=True,
         )
+
+HIDDEN_ACTIONS = [
+    '/content_status_history',
+    '/placeful_workflow_configuration',
+]
+
+
+def hidden(menuitem):
+    for action in HIDDEN_ACTIONS:
+        if menuitem.get('action').endswith(action):
+            return True
+    return False
 
 
 # Custom content-type class; objects created for this content type will
 # be instances of this class. Use this class to add content-type specific
 # methods and properties. Put methods that are mainly useful for rendering
 # in separate view classes.
-class CommentAnswer(dexterity.Container):
-    grok.implements(ICommentAnswer)
+class Conclusion(dexterity.Container):
+    grok.implements(IConclusion)
     # Add your class methods and properties here
 
     def can_edit(self):
         sm = getSecurityManager()
-        return sm.checkPermission('esdrt.content: Edit CommentAnswer', self)
+        return sm.checkPermission('Modify portal content', self)
+
+    def can_delete(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('Delete objects', self)
 
     def can_add_files(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add ESDRTFile', self)
+
+    def get_actions(self):
+        parent = aq_parent(self)
+        request = getRequest()
+        question_menu_items = getMenu(
+            'plone_contentmenu_workflow',
+            self,
+            request
+            )
+        observation_menu_items = getMenu(
+            'plone_contentmenu_workflow',
+            parent,
+            request
+            )
+        menu_items = question_menu_items + observation_menu_items
+        return [mitem for mitem in menu_items if not hidden(mitem)]
 
     def get_files(self):
         items = self.values()
         mtool = api.portal.get_tool('portal_membership')
         return [item for item in items if mtool.checkPermission('View', item)]
 
-    def can_delete(self):
-        sm = getSecurityManager()
-        return sm.checkPermission('Delete objects', self)
-
-
 # View class
 # The view will automatically use a similarly named template in
-# templates called commentanswerview.pt .
+# templates called conclusionview.pt .
 # Template filenames should be all lower case.
 # The view will render when you request a content object with this
 # interface with "/@@view" appended unless specified otherwise
@@ -71,27 +96,29 @@ class CommentAnswer(dexterity.Container):
 grok.templatedir('templates')
 
 
-class CommentAnswerView(grok.View):
-    grok.context(ICommentAnswer)
+class ConclusionView(grok.View):
+    grok.context(IConclusion)
     grok.require('zope2.View')
     grok.name('view')
 
     def render(self):
         context = aq_inner(self.context)
         parent = aq_parent(context)
-        url = '%s#%s' % (parent.absolute_url(), context.getId())
+        url = '%s#tab-conclusions' % parent.absolute_url()
 
         return self.request.response.redirect(url)
 
 
+
+
 class AddForm(dexterity.AddForm):
-    grok.name('esdrt.content.commentanswer')
-    grok.context(ICommentAnswer)
-    grok.require('esdrt.content.AddCommentAnswer')
+    grok.name('esdrt.content.conclusion')
+    grok.context(IConclusion)
+    grok.require('esdrt.content.AddConclusion')
 
     def updateFields(self):
         super(AddForm, self).updateFields()
-        self.fields = field.Fields(ICommentAnswer).select('text')
+        self.fields = field.Fields(IConclusion).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
     def create(self, data={}):
@@ -107,22 +134,22 @@ class AddForm(dexterity.AddForm):
         # depending on tools
         if IAcquirer.providedBy(content):
             content = content.__of__(container)
-
         id = str(int(time()))
         content.title = id
         content.id = id
         text = self.request.form.get('form.widgets.text', '')
         content.text = RichTextValue(text, 'text/html', 'text/html')
-
+        adapted = IAllowDiscussion(content)
+        adapted.allow_discussion = False
         return aq_base(content)
 
 
 class EditForm(dexterity.EditForm):
     grok.name('edit')
-    grok.context(ICommentAnswer)
-    grok.require('esdrt.content.EditCommentAnswer')
+    grok.context(IConclusion)
+    grok.require('cmf.ModifyPortalContent')
 
     def updateFields(self):
         super(EditForm, self).updateFields()
-        self.fields = field.Fields(ICommentAnswer).select('text')
+        self.fields = field.Fields(IConclusion).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']

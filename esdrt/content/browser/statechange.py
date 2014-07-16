@@ -60,18 +60,6 @@ class IAssignAnswererForm(Interface):
     )
 
 
-class IAssignCounterPartForm(Interface):
-    counterpart = schema.TextLine(
-        title=_(u'Select the counterpart'),
-    )
-
-
-    workflow_action = schema.TextLine(
-        title=_(u'Workflow action'),
-        required=True
-    )
-
-
 class AssignAnswererForm(BrowserView):
 
     index = ViewPageTemplateFile('assign_answerer_form.pt')
@@ -126,9 +114,20 @@ class AssignAnswererForm(BrowserView):
             return self.index()
 
 
+class IAssignCounterPartForm(Interface):
+    counterpart = schema.TextLine(
+        title=_(u'Select the counterpart'),
+    )
+
+    workflow_action = schema.TextLine(
+        title=_(u'Workflow action'),
+        required=True
+    )
+
+
 class AssignCounterPartForm(BrowserView):
 
-    index = ViewPageTemplateFile('assing_counterpart_form.pt')
+    index = ViewPageTemplateFile('assign_counterpart_form.pt')
     # macro_wrapper = ViewPageTemplateFile('macro_wrapper.pt')
 
     def target_groupname(self):
@@ -182,27 +181,57 @@ class AssignCounterPartForm(BrowserView):
             return self.index()
 
 
-class ISendCounterPartComments(Interface):
-    comments = schema.Text(
-        title=_(u'Enter the comments'),
-        required=True
+class IAssignConclusionReviewerForm(Interface):
+    reviewers = schema.Choice(
+        title=_(u'Select the conclusion reviewers'),
+        vocabulary=u'plone.app.vocabularies.Users',
     )
 
 
-class SendCounterPartComments(form.Form):
-    grok.context(IQuestion)
-    grok.name('send_counterpart_comments')
-    grok.require('cmf.ModifyPortalContent')
+class AssignConclusionReviewerForm(BrowserView):
 
-    fields = field.Fields(ISendCounterPartComments)
-    label = _(u'Send comments')
-    ignoreContext = True
+    index = ViewPageTemplateFile('assign_conclusion_reviewer_form.pt')
 
-    @button.buttonAndHandler(u'Send comments')
-    def send_comments(self, action):
-        wf_action = 'send-comments'
-        wf_comments = self.request.get('form.widgets.comments')
-        return self.context.content_status_modify(
-            workflow_action=wf_action,
-            comment=wf_comments
-        )
+    def target_groupname(self):
+        context = aq_inner(self.context)
+        country = context.country.lower()
+        sector = context.ghg_source_sectors
+        return 'extranet-esd-reviewexperts-%s-%s' % (sector, country)
+
+    def get_counterpart_users(self):
+        groupname = self.target_groupname()
+        current = api.user.get_current()
+        return [u for u in api.user.get_users(groupname=groupname) if current.getId() != u.getId()]
+
+    def __call__(self):
+        """Perform the update and redirect if necessary, or render the page
+        """
+        if self.request.form.get('send', None):
+            usernames = self.request.get('reviewers', None)
+            if not usernames:
+                status = IStatusMessage(self.request)
+                msg = _(u'You need to select at least one reviewer for conclusions')
+                status.addStatusMessage(msg, "error")
+                return self.index()
+
+            for username in usernames:
+                user = api.user.get(username=username)
+                groupname = self.target_groupname()
+                if groupname not in user.getGroups():
+                    status = IStatusMessage(self.request)
+                    msg = _(u'Selected user is not valid')
+                    status.addStatusMessage(msg, "error")
+                    return self.index()
+
+            for username in usernames:
+                api.user.grant_roles(username=username,
+                    roles=['ConclusionReviewer'],
+                    obj=self.context)
+
+            wf_action = 'request-comments'
+            return self.context.content_status_modify(
+                workflow_action=wf_action,
+            )
+
+        else:
+            return self.index()

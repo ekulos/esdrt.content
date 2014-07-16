@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+
+</head>
+
+<body>
+<metal:main fill-slot="main"
+     tal:define="context_state context/@@plone_context_state">
+
+    <h1 class="documentFirstHeading">
+        Request for comments
+    </h1>
+
+    <div class="documentDescription">
+        You can select which users will comment on this conclusions
+    </div>
+
+    <div tal:replace="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
+
+    <div id="content-core">
+
+        <tal:block condition="not:view/get_counterpart_users">
+          Sorry: there are no experts for this country.
+          Please, contact the EEA Secretariat for further assistance.
+
+        </tal:block>
+
+
+        <tal:block condition="view/get_counterpart_users">
+          <form method="post"
+                tal:attributes="action string:${context/absolute_url}/@@assign_conclusion_reviewer_form">
+
+              <input type="hidden" name="form.submitted:boolean" value="True" />
+            <div id="user-group-sharing-container">
+
+              <div class="field" tal:repeat="member view/get_counterpart_users">
+                <label tal:attributes="for member/getId">
+                  <input type="checkbox"
+                    name="reviewers:list"
+                    id=""
+                    tal:attributes="value member/getId; id member/getId;" />
+                    <span tal:content="python:member.getProperty('fullname', member.getId())"></span>
+                </label>
+              </div>
+            </div>
+
+            <input class="standalone" type="submit" name="send" value="Send"/>
+
+            <input tal:replace="structure context/@@authenticator/authenticator" />
+
+          </form>
+
+        </tal:block>
+      </div>
+</metal:main>
+</body>
+</html>

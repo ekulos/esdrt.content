@@ -6,6 +6,12 @@
 
       <!-- -*- extra stuff goes here -*- -->
        <permission
+          id="esdrt.content.AddConclusion"
+	  title="esdrt.content: Add Conclusion"
+	  />
+
+
+       <permission
           id="esdrt.content.AddReviewFolder"
     title="esdrt.content: Add ReviewFolder"
     />
@@ -51,6 +57,11 @@
        <permission
           id="esdrt.content.ViewAnswerDiscussion"
     title="esdrt.content: View Answer Discussion"
+    />
+
+       <permission
+          id="esdrt.content.ViewConclusionDiscussion"
+    title="esdrt.content: View Conclusion Discussion"
     />
 
        <permission

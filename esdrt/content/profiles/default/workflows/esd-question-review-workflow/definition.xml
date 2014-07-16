@@ -21,7 +21,6 @@
  <state state_id="answered" title="Answered">
   <exit-transition transition_id="recall-msa"/>
   <exit-transition transition_id="validate-answer-msa"/>
-  <exit-transition transition_id="ask-validation"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -108,10 +107,10 @@
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
+   <permission-role>Owner</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
-   <permission-role>SectorExpertReviewer</permission-role>
+   <permission-role>Owner</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>Manager</permission-role>
@@ -122,13 +121,13 @@
   <permission-map name="Reply to item" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
+   <permission-role>Owner</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
+   <permission-role>Owner</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
@@ -145,6 +144,7 @@
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
+   <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
  </state>
@@ -198,9 +198,9 @@
   </permission-map>
  </state>
  <state state_id="drafted" title="Drafted">
-  <exit-transition transition_id="redraft"/>
   <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="close-lr"/>
+  <exit-transition transition_id="recall-sre"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
@@ -477,54 +477,15 @@
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
   </permission-map>
  </state>
- <state state_id="validate-answer" title="Validate Answer">
-  <exit-transition transition_id="validate-answer"/>
-  <permission-map name="Access contents information" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>
-   <permission-role>Manager</permission-role>
-  </permission-map>
-  <permission-map name="CMFEditions: Access previous versions" acquired="False">
-  </permission-map>
-  <permission-map name="CMFEditions: Save new version" acquired="False">
-  </permission-map>
-  <permission-map name="Modify portal content" acquired="False">
-  </permission-map>
-  <permission-map name="Reply to item" acquired="False">
-  </permission-map>
-  <permission-map name="View" acquired="False">
-   <permission-role>ExpertReviewer</permission-role>
-   <permission-role>LeadReviewer</permission-role>
-   <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>
-   <permission-role>Manager</permission-role>
-  </permission-map>
-  <permission-map name="esdrt.content: Add Comment" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: Add CommentAnswer" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: Edit Comment" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
-  </permission-map>
-  <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
-  </permission-map>
- </state>
- <transition transition_id="answer-to-lr" title="Answer to LR" new_state="answered" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=answer-to-lr" category="workflow" icon="">Answer to LR</action>
+ <transition transition_id="answer-to-lr" title="Submit Answer" new_state="answered" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=answer-to-lr" category="workflow" icon="">Submit Answer</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
    <guard-expression>object/one_pending_answer</guard-expression>
   </guard>
  </transition>
- <transition transition_id="approve-question" title="Send to MS" new_state="pending" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=approve-question" category="workflow" icon="">Send to MS</action>
+ <transition transition_id="approve-question" title="Aprove question and send" new_state="pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve-question" category="workflow" icon="">Aprove question and send</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
@@ -536,12 +497,6 @@
    <guard-expression>object/has_answers</guard-expression>
   </guard>
  </transition>
- <transition transition_id="ask-validation" title="Forward Answer to SE" new_state="validate-answer" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=ask-validation" category="workflow" icon="">Forward Answer to SE</action>
-  <guard>
-   <guard-role>LeadReviewer</guard-role>
-  </guard>
- </transition>
  <transition transition_id="assign-answerer" title="Request Comments" new_state="pending-answer" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/assign_answerer_form?workflow_action=assign-answerer" category="workflow" icon="">Request Comments</action>
   <guard>
@@ -549,14 +504,14 @@
    <guard-expression>object/one_pending_answer</guard-expression>
   </guard>
  </transition>
- <transition transition_id="close" title="Close Question (SRE)" new_state="closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Solve Question</action>
+ <transition transition_id="close" title="Finish Observation" new_state="closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Finish Observation</action>
   <guard>
-   <guard-role>SectorExpertReviewer</guard-role>
+   <guard-role>Owner</guard-role>
   </guard>
  </transition>
- <transition transition_id="close-lr" title="Close Question (LR)" new_state="closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=close-lr" category="workflow" icon="">Solve Question</action>
+ <transition transition_id="close-lr" title="Finish Observation" new_state="closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=close-lr" category="workflow" icon="">Finish Observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
@@ -568,9 +523,15 @@
   </guard>
  </transition>
  <transition transition_id="recall-question-lr" title="Recall Question" new_state="recalled-lr" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=recall-question-lr" category="workflow" icon="">Recall Question </action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=recall-question-lr" category="workflow" icon="">Recall Question</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="recall-sre" title="Recall Question" new_state="draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=recall" category="workflow" icon="">Recall Question</action>
+  <guard>
+   <guard-role>Owner</guard-role>
   </guard>
  </transition>
  <transition transition_id="redraft" title="Ask SE to redraft" new_state="draft" trigger="USER" before_script="" after_script="">
@@ -597,22 +558,17 @@
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
- <transition transition_id="send-to-lr" title="Send to LR" new_state="drafted" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=send-to-lr" category="workflow" icon="">Send to LR</action>
+ <transition transition_id="send-to-lr" title="Send Question for Approval" new_state="drafted" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=send-to-lr" category="workflow" icon="">Send Question for Approval</action>
   <guard>
    <guard-role>Owner</guard-role>
    <guard-expression>python:object.unanswered_questions()</guard-expression>
   </guard>
  </transition>
- <transition transition_id="validate-answer" title="Solve Question (SRE)" new_state="closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer" category="workflow" icon="">Solve Question</action>
+ <transition transition_id="validate-answer-msa" title="Acknowledge Answer" new_state="closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer-msa" category="workflow" icon="">Acknowledge Answer</action>
   <guard>
-   <guard-role>SectorExpertReviewer</guard-role>
-  </guard>
- </transition>
- <transition transition_id="validate-answer-msa" title="Solve Question (LR)" new_state="closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer-msa" category="workflow" icon="">Solve Question</action>
-  <guard>
+   <guard-role>Owner</guard-role>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>

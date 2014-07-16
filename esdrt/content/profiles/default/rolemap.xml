@@ -7,9 +7,15 @@
     <role name="MSAuthority"/>
     <role name="CounterPart"/>
     <role name="SectorExpertReviewer"/>
+    <role name="ConclusionReviewer"/>
   </roles>
   <permissions>
     <!-- -*- extra stuff goes here -*- -->
+    <permission name="esdrt.content: Add Conclusion" acquire="False">
+      <role name="Manager" />
+      <role name="Site Administrator" />
+      <role name="Contributor" />
+    </permission>
     <permission name="esdrt.content: Add ReviewFolder" acquire="False">
       <role name="Manager" />
       <role name="Site Administrator" />

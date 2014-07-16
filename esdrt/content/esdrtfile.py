@@ -51,7 +51,8 @@ class ESDRTFile(dexterity.Item):
             edit = sm.checkPermission('esdrt.content: Edit Comment', self)
         elif parent.portal_type == 'CommentAnswer':
             edit = sm.checkPermission('esdrt.content: Edit CommentAnswer', self)
-
+        elif parent.portal_type == 'Conclusion':
+            edit = sm.checkPermission('Modify portal content-type', self)
         return edit or sm.checkPermission('Reply to item', self)
 
 

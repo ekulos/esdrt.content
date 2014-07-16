@@ -1,7 +1,8 @@
 from Acquisition import aq_parent
 from DateTime import DateTime
-from esdrt.content.question import IQuestion
+from esdrt.content.conclusion import IConclusion
 from esdrt.content.observation import IObservation
+from esdrt.content.question import IQuestion
 from five import grok
 from plone import api
 from Products.CMFCore.interfaces import IActionSucceededEvent
@@ -61,11 +62,11 @@ def question_transition(question, event):
     if api.content.get_state(obj=event.object) == 'closed':
         parent = aq_parent(event.object)
         with api.env.adopt_roles(roles=['Manager']):
-            api.content.transition(obj=parent, transition='request-close')
+            api.content.transition(obj=parent, transition='draft-conclusions')
 
 
 @grok.subscribe(IObservation, IActionSucceededEvent)
-def question_transition(observation, event):
+def observation_transition(observation, event):
     if event.action == 'reopen':
         with api.env.adopt_roles(roles=['Manager']):
             qs = [q for q in observation.values() if q.portal_type == 'Question']
@@ -73,3 +74,34 @@ def question_transition(observation, event):
                 q = qs[0]
                 api.content.transition(obj=q, transition='reopen')
 
+    elif event.action == 'request-comments':
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='request-comments')
+
+    elif event.action == 'finish-comments':
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='redraft')
+
+    elif event.action == 'request-close':
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='publish')
+
+    elif event.action == 'deny-closure':
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='redraft')

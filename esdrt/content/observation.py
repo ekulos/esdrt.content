@@ -1,3 +1,4 @@
+from plone.z3cform.interfaces import IWrappedForm
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from collective.z3cform.datagridfield import DataGridFieldFactory
@@ -36,7 +37,8 @@ from zope.interface import alsoProvides
 from zope.interface import Invalid
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
-
+from .comment import IComment
+from .conclusion import IConclusion
 
 import datetime
 
@@ -342,7 +344,7 @@ class Observation(dexterity.Container):
         elif self.get_status() == 'closed':
             return 'Closed observation'
         elif self.get_status() == 'close-requested':
-            return 'Reporting observation'
+            return 'Conclusion drafting'
         else:
             questions = self.values()
             if questions:
@@ -360,12 +362,13 @@ class Observation(dexterity.Container):
                     return 'Closed question'
 
     def observation_status(self):
-        if self.get_status() == 'draft':
+        status = self.get_status()
+        if status == 'draft':
             return 'draft'
-        elif self.get_status() == 'closed':
+        elif status == 'closed':
             return 'closed'
-        elif self.get_status() == 'close-requested':
-            return 'reporting'
+        elif status == 'close-requested':
+            return 'conclusions'
         else:
             return 'open'
 
@@ -374,8 +377,10 @@ class Observation(dexterity.Container):
         return 'Manager' in user.getRoles()
 
     def get_author_name(self, userid):
-        user = api.user.get(userid)
-        return user.getProperty('fullname', userid)
+        if userid:
+            user = api.user.get(username=userid)
+            return user.getProperty('fullname', userid)
+        return userid
 
     def myHistory(self):
         observation_history = self.workflow_history['esd-review-workflow']
@@ -387,8 +392,11 @@ class Observation(dexterity.Container):
             elif item['review_state'] == 'closed':
                 item['state'] = 'Closed observation'
                 item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
-            elif item['review_state'] == 'close-requested':
-                item['state'] = 'Reporting observation'
+            elif item['review_state'] in ['conclusions', 'close-requested']:
+                item['state'] = 'Conclusion drafting'
+                item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
+            elif item['review_state'] in ['conclusion-discussion']:
+                item['state'] = 'Conclusion discussion'
                 item['role'] = " - ".join([self.country_value(), self.ghg_source_sectors_value()])
             elif item['review_state'] == 'pending' and item['action'] == "reopen":
                 item['state'] = 'Reopened observation'
@@ -397,7 +405,6 @@ class Observation(dexterity.Container):
                 item['state'] = '*' + item['review_state'] + '*'
             item['object'] = 'observation'
             item['author'] = self.get_author_name(item['actor'])
-
 
         history = list(observation_history)
         questions = self.values()
@@ -453,7 +460,7 @@ class Observation(dexterity.Container):
                     item['state'] = 'Answered by MSA'
                     item['role'] = " ".join([self.country_value(), "authority"])
                 elif item['review_state'] == 'closed':
-                    item['state'] = 'Closed question'
+                    item['state'] = 'Question Acknowledged'
                     if item['action'] == 'close-lr':
                         item['role'] = " ".join([self.country_value(), "Lead reviewer"])
                     elif item['action'] == 'validate-answer-msa':
@@ -478,7 +485,7 @@ class Observation(dexterity.Container):
         return sm.checkPermission('Modify portal content', self)
 
     def get_question(self):
-        questions = self.values()
+        questions = [q for q in self.values() if q.portal_type == 'Question']
 
         if questions:
             question = questions[0]
@@ -522,6 +529,7 @@ def add_question(context, event):
     with api.env.adopt_roles(roles=['Manager']):
         if api.content.get_state(obj=observation) == 'draft':
             api.content.transition(obj=observation, transition='approve')
+
 
 class ObservationView(grok.View):
     grok.context(IObservation)
@@ -613,6 +621,18 @@ class ObservationView(grok.View):
         sm = getSecurityManager()
         return sm.checkPermission('Modify portal content', self.context)
 
+    def get_conclusion(self):
+        conclusions = [c for c in self.context.values() if c.portal_type == 'Conclusion']
+        if conclusions:
+            return conclusions[0]
+
+        return None
+
+    def can_add_conclusion(self):
+        sm = getSecurityManager()
+        conclusion = self.get_conclusion()
+        return sm.checkPermission('esdrt.content: Add Conclusion', self.context) and not conclusion
+
     def subscription_options(self):
         actions = []
         # actions.append(
@@ -676,9 +696,7 @@ class ObservationView(grok.View):
         if question:
             values = [v for v in question.values() if sm.checkPermission('View', v)]
             #return question.values()
-            return IContentListing(values)
-
-
+            return values
 
     def actions(self):
         context = aq_inner(self.context)
@@ -726,7 +744,6 @@ class ObservationView(grok.View):
         else:
             return False
 
-
     def can_add_answer(self):
         sm = getSecurityManager()
         question = self.question()
@@ -739,7 +756,6 @@ class ObservationView(grok.View):
             return False
 
     def add_answer_form(self):
-        from plone.z3cform.interfaces import IWrappedForm
         form_instance = AddAnswerForm(self.context, self.request)
         alsoProvides(form_instance, IWrappedForm)
         return form_instance()
@@ -750,8 +766,12 @@ class ObservationView(grok.View):
         return state in ['counterpart-comments']
 
     def add_comment_form(self):
-        from plone.z3cform.interfaces import IWrappedForm
         form_instance = AddCommentForm(self.context, self.request)
+        alsoProvides(form_instance, IWrappedForm)
+        return form_instance()
+
+    def add_conclusion_form(self):
+        form_instance = AddConclusionForm(self.context, self.request)
         alsoProvides(form_instance, IWrappedForm)
         return form_instance()
 
@@ -801,7 +821,7 @@ class ObservationView(grok.View):
     #    if question:
     #        return question.get_questions()
 
-from .comment import IComment
+
 
 
 class AddQuestionForm(Form):
@@ -839,7 +859,6 @@ class AddQuestionForm(Form):
 
         #return self.request.response.redirect(comment.absolute_url())
         return self.request.response.redirect(self.context.absolute_url())
-
 
     def updateActions(self):
         super(AddQuestionForm, self).updateActions()
@@ -1004,7 +1023,12 @@ class AddAnswerForm(Form):
 
     @button.buttonAndHandler(_('Add answer'))
     def create_question(self, action):
-        context = aq_inner(self.context)
+        observation = aq_inner(self.context)
+        questions = [q for q in observation.values() if q.portal_type == 'Question']
+        if questions:
+            context = questions[0]
+        else:
+            raise
         id = str(int(time()))
         item_id = context.invokeFactory(
                 type_name='CommentAnswer',
@@ -1015,6 +1039,7 @@ class AddAnswerForm(Form):
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
         return self.request.response.redirect(context.absolute_url())
+
 
 class AddCommentForm(Form):
 
@@ -1027,6 +1052,25 @@ class AddCommentForm(Form):
         id = str(int(time()))
         item_id = context.invokeFactory(
                 type_name='Comment',
+                id=id,
+        )
+        text = self.request.form.get('form.widgets.text', '')
+        comment = context.get(item_id)
+        comment.text = RichTextValue(text, 'text/html', 'text/html')
+
+        return self.request.response.redirect(context.absolute_url())
+
+
+class AddConclusionForm(Form):
+    ignoreContext = True
+    fields = field.Fields(IConclusion).select('text')
+
+    @button.buttonAndHandler(_('Add conclusion'))
+    def create_conclusion(self, action):
+        context = aq_inner(self.context)
+        id = str(int(time()))
+        item_id = context.invokeFactory(
+                type_name='Conclusion',
                 id=id,
         )
         text = self.request.form.get('form.widgets.text', '')

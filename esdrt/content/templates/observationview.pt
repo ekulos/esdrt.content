@@ -51,6 +51,41 @@
         });
 
 
+        $('#add-answer-link').click(function(e){
+          e.preventDefault();
+          $('#answer-add-form').toggle();
+        });
+
+        $('#add-conclusion-link').click(function(e){
+          e.preventDefault();
+          $('#conclusion-add-form').toggle();
+        });
+
+        $('.file .delete').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#delete_confirmation',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.button.Cancel"]',
+            width:'50%'
+        });
+
+        $('.file .edit').prepOverlay({
+            subtype: 'ajax',
+            filter: common_content_filter,
+            formselector: '#edit',
+            noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
+            redirect: $.plonepopups.redirectbasehref,
+            closeselector: '[name="form.button.Cancel"]',
+            width:'50%'
+        });
+
+
+
+
+
+
     });
 
 
@@ -220,31 +255,6 @@
   </div>
 
   <div class="actions" tal:define="actions view/get_menu_actions">
-    <tal:block condition="view/can_edit">
-      <a href=""
-          tal:attributes="href string:${here/absolute_url}/modifications"
-          class="standardButton">
-          Edit Observation
-      </a>
-    </tal:block>
-
-    <tal:block condition="view/can_delete_observation">
-      <a href="./delete_confirmation"
-        id="observation-delete"
-        tal:attributes="href string:${here/absolute_url}/delete_confirmation"
-        class="delete standardButton">
-        Delete Observation
-      </a>
-    </tal:block>
-
-    <tal:block tal:repeat="action actions">
-        <a href=""
-          tal:attributes="href action/action"
-          class="standardButton"
-          tal:content="action/title">
-          Action
-        </a>
-    </tal:block>
 
   </div>
 
@@ -261,206 +271,26 @@
     </tal:block>
   </div>
 
-    <ul class="eea-tabs" tal:condition="python: view.isManager() or view.get_questions()">
-      <li>Question chat room</li>
-      <li tal:condition="view/isManager" style="width: 150px;">Technical corrections</li>
-    </ul>
-    <div class="eea-tabs-panels">
-      <div class="eea-tabs-panel questions">
-        <div class="row" tal:condition="view/get_questions">
-          <div class="cell position-0 width-7 esdLabel">Question</div>
-          <div class="cell position-7 width-2 esdLabel">Author</div>
-          <div class="cell position-9 width-1 esdLabel">Status</div>
-          <div class="cell position-10 width-3 esdLabel">Sent to MS</div>
-          <div class="cell position-13 width-3 esdLabel">Last update</div>
+  <ul class="eea-tabs" tal:condition="view/get_questions">
+    <li tal:define="conclusion view/get_conclusion"
+      tal:condition="nocall:conclusion"
+      >Conclusions</li>
+    <li>Question chat room</li>
+  </ul>
+
+  <div class="eea-tabs-panels">
+    <div class="eea-tabs-panel conclusions"
+        tal:define="conclusion view/get_conclusion"
+        tal:condition="nocall:conclusion">
+      <div class="row">
+        <div id="conclusions"
+          tal:content="structure conclusion/text/output|nothing">
+          Content
         </div>
-        <tal:question repeat="question_item view/get_questions">
-          <tal:block
-              tal:define="question question_item/getObject;
-                          first_comment question/getFirstComment;
-                          cropText nocall:view/@@plone/cropText;
-                          toLocalizedTime nocall:here/@@plone/toLocalizedTime;
-                        "
-              >
-            <tal:comment condition="nocall:question">
-              <div class="row">
-                <div class="cell position-0 width-7">
-                  <a href=""
-                    tal:attributes="href first_comment/absolute_url"
-                    tal:content="first_comment/@@text-transform/text/text/plain">
-                    Text of the question
-                  </a>
-                </div>
-                <div class="cell position-7 width-2">
-                  <span tal:replace="python:view.get_user_name(question.Creator())">
-                    Mikel
-                  </span>
-                </div>
-                <div class="cell position-9 width-1">
-                  <span tal:replace="question/get_status">
-                    Pending
-                  </span>
-                </div>
-                <div class="cell position-10 width-3">
-                  <tal:effective condition="first_comment/effective_date">
-                    <span tal:replace="python:toLocalizedTime(first_comment.EffectiveDate(), True)">
-                      2014-01-01
-                    </span>
-                  </tal:effective>
-                  <tal:noteffective condition="not:first_comment/effective_date">
-                    Not sent to MS yet.
-                  </tal:noteffective>
-                </div>
-                <div class="cell position-13 width-3">
-                  <span tal:replace="python:toLocalizedTime(question.modified(), True)">
-                    2014-01-01
-                  </span>
-                </div>
-              </div>
-            </tal:comment>
-          </tal:block>
-        </tal:question>
-        <div class="actions" tal:condition="view/can_add_question">
-          <a id="add-question-link"
-            tal:attributes="href string:${here/absolute_url}/++add++Question"
-            class="standardButton">
-            Add new question
-          </a>
-        </div>
-
-        <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">
-          <span tal:replace="structure view/add_question_form" />
-        </div>
-        <div class="question" tal:repeat="question view/get_chat"
-              tal:attributes="id question/getId;
-                              class string:question ${question/portal_type/lower};
-              ">
-          <tal:block tal:define="portalType question/portal_type/lower"
-            tal:condition="python:portalType == 'comment'">
-            <div class="arrow-right-border"></div>
-            <div class="arrow-right"></div>
-          </tal:block>
-          <tal:block tal:define="portalType question/portal_type/lower"
-            tal:condition="python:portalType == 'commentanswer'">
-            <div class="arrow-left-border"></div>
-            <div class="arrow-left"></div>
-          </tal:block>
-          <div class="from">
-            <span class="esdLabel">from</span>
-            <span class="value" tal:content="python:view.get_user_name(question.Creator(), question)">John Smith</span>
-            <span class="messageDate">
-              <tal:effective condition="question/effective_date">
-                Sent on: <span tal:content="python:toLocalizedTime(question.EffectiveDate(), True)">11/12/2013 12:00</span>
-              </tal:effective>
-              <tal:noteffective condition="not:question/effective_date">
-                Created on: <span tal:content="python:toLocalizedTime(question.created(), True)">11/12/2013 12:00</span>
-              </tal:noteffective>
-           </span>
-          </div>
-
-      <div class="changes" tal:condition="python:question.getObject().can_edit()">
-        <a href="#" id="toggleQuestionHistory">Hide question history</a>
-          <div id="questionHistory">
-             <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
-               This object has no revision information.
-             </p>
-
-             <tal:block condition="view/history|nothing">
-
-               <form id="versionSelector"
-                     action="#"
-                     tal:attributes="action pps/current_page_url"
-                     tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                                 pps here/@@plone_context_state
-                     ">
-                 <fieldset>
-                   <legend i18n:translate="legend_revisions">Revisions</legend>
-                   <label for="two"><span tal:omit-tag="" i18n:translate="">First revision</span>
-                     <select id="two" name="two" tal:define="rev request/form/two|string:current">
-                       <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
-                       <option tal:repeat="version view/history"
-                               tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
-                               i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
-                               (<span tal:replace="version/sys_metadata/review_state"/> <span tal:replace="version/sys_metadata/principal"/> <tal:date i18n:name="date" content="python:toLocalizedTime(version['sys_metadata']['timestamp'])">1975-12-24</tal:date>)</option>
-                     </select>
-                   </label>
-
-                   <label for="one"><span tal:omit-tag="" i18n:translate="">Second revision</span>
-                     <select id="one" name="one" tal:define="rev request/one|string:current">
-                       <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
-                       <option tal:repeat="version view/history"
-                               tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
-                               i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
-                               (<span tal:replace="version/sys_metadata/review_state"/> <span tal:replace="version/sys_metadata/principal"/> <tal:date i18n:name="date" content="python:toLocalizedTime(version['sys_metadata']['timestamp'])">1975-12-24</tal:date>)</option>
-                     </select>
-                   </label>
-                 </fieldset>
-
-                 <noscript>
-                   <input type="submit" i18n:attributes="value label_update" value="Update"/>
-                 </noscript>
-               </form>
-
-               <div metal:use-macro="here/diff_legend/macros/diff_legend" />
-
-               <p tal:condition="not:view/changes" i18n:translate="">
-                 There are no changes between the selected revisions.
-               </p>
-
-               <tal:changes condition="view/changes">
-                 <form method="post" action="">
-                   <label for="diffstyle" class="jsOnly" style="display: none" i18n:translate="">Show differences</label>
-                   <ul class="radioRow" id="diffTypeSelector">
-                     <li>
-                       <input id="diffstylevisual" type="radio" name="diffstyle" value="visual" checked="checked" />
-                       <label for="diffstylevisual" i18n:translate="">inline</label>
-                     </li>
-                     <li>
-                       <input id="diffstylecode" type="radio" name="diffstyle" value="code" />
-                       <label for="diffstylecode" i18n:translate="">as code</label>
-                     </li>
-                   </ul>
-                 </form>
-
-                 <fieldset class="diff" tal:repeat="diff view/changes">
-                   <legend tal:content="diff/label">Body text</legend>
-
-                   <div class="fieldDiff inline-diff" tal:condition="exists:diff/inline_diff"
-                        tal:content="structure python:diff.inline_diff()">
-                     Inline changes
-                   </div>
-
-                   <p class="fieldDiff inline-diff" tal:condition="not:exists:diff/inline_diff" i18n:translate="">
-                     This field has no inline difference view.
-                   </p>
-
-                   <div class="fieldDiff code-diff" style="display: none">
-                     <pre tal:condition="exists:diff/html_diff" tal:content="structure python:diff.html_diff(wrapcolumn=80)">
-                       HTML formatted differences
-                     </pre>
-
-                     <pre class="fieldDiff code-diff" tal:condition="python:not exists('diff/html_diff') and exists('diff/ndiff')" tal:content="diff/ndiff">
-                       ndiff formatted differences
-                     </pre>
-                     <p class="fieldDiff" tal:condition="python:not exists('diff/html_diff') and not exists('diff/ndiff')">
-                       This field has no code difference view.
-                     </p>
-                   </div>
-                 </fieldset>
-               </tal:changes>
-             </tal:block>
-
-        </div>
-       </div>
-
-       <h3 tal:condition="python:question.getObject().can_edit()">Current text of the question</h3>
-          <div tal:content="structure question/text/output|string:">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </div>
-          <div class="files" tal:condition="python:question.getObject().get_files()">
-            Files:
-            <div class="file" tal:repeat="file python:question.getObject().get_files()">
-              <p>
+        <div class="files" tal:condition="conclusion/get_files">
+          Files:
+          <div class="file" tal:repeat="file conclusion/get_files">
+            <p>
               <span class="eea-icon eea-icon-lg attachment"></span>
               <span class="eea-icon eea-icon-lg confidential"
                 title="Confidential file (Only available for people taking part in the review process)"
@@ -472,90 +302,362 @@
                     tal:define="size file/file/getSize;
                                 kb python:size/1024">
                     &mdash; <span tal:replace="kb" /> KB</span>
-              </p>
-            </div>
+              <a tal:condition="file/can_edit"
+                 class="edit"
+                 tal:attributes="href string:${file/absolute_url}/edit">
+                Edit File
+              </a>
+              <a tal:condition="file/can_edit"
+                 class="delete"
+                 tal:attributes="href string:${file/absolute_url}/delete_confirmation">
+                 Delete File
+              </a>
+            </p>
           </div>
-          <tal:block tal:condition="view/can_see_comments">
-            <a href="#" id="toggleComments">Hide question comments</a>
-            <div id="comment-discussion"
-              tal:define="context python:question.getObject()"
-              tal:content="structure provider:esdrt.content.commentmanager">
+        </div>
+
+
+        <div id="comment-discussion-wrapper"
+          tal:define="context nocall:conclusion">
+            <div id="comment-discussion">
+              <a href="#" id="toggleComments">Hide question comments</a>
+              <span tal:content="structure provider:esdrt.content.commentmanager" />
             </div>
-          </tal:block>
-          <div class="actions" tal:condition="repeat/question/end">
-            <a href=""
-              tal:define="question_obj question/getObject"
-              tal:condition="question_obj/can_edit"
-              tal:attributes="href string:${question/getURL}/edit"
-              class="edit standardButton">
-                Edit Question
-            </a>
-
-            <a href=""
-              tal:define="question_obj question/getObject"
-              tal:condition="question_obj/can_delete"
-              tal:attributes="href string:${question/getURL}/delete_confirmation"
-              class="delete standardButton">
-                Delete Question
-            </a>
-
-            <a href=""
-              tal:define="question_obj question/getObject"
-              tal:condition="question_obj/can_add_files"
-              tal:attributes="href string:${question/getURL}/++add++ESDRTFile"
-              class="standardButton addfile">
-                Upload file
-            </a>
-
-            <tal:block tal:repeat="action view/actions">
+        </div>
+        <div class="actions">
+          <a href=""
+            tal:condition="conclusion/can_edit"
+            tal:attributes="href string:${conclusion/absolute_url}/edit"
+            class="edit standardButton">
+            Edit Conclusion
+          </a>
+          <a href=""
+            tal:condition="conclusion/can_add_files"
+            tal:attributes="href string:${conclusion/absolute_url}/++add++ESDRTFile"
+            class="addfile standardButton">
+            Upload File
+          </a>
+          <tal:block tal:repeat="action conclusion/get_actions">
               <a href=""
-                tal:attributes="href string:${action/action}&amp;comment=${question/getId}"
+                tal:attributes="href action/action"
                 class="standardButton"
                 tal:content="action/title">
                 Action
               </a>
+          </tal:block>
+        </div>
+      </div>
+    </div>
+    <div class="eea-tabs-panel questions">
+      <div class="row" tal:condition="view/get_questions">
+        <div class="cell position-0 width-7 esdLabel">Question</div>
+        <div class="cell position-7 width-2 esdLabel">Author</div>
+        <div class="cell position-9 width-1 esdLabel">Status</div>
+        <div class="cell position-10 width-3 esdLabel">Sent to MS</div>
+        <div class="cell position-13 width-3 esdLabel">Last update</div>
+      </div>
+      <tal:question repeat="question_item view/get_questions">
+        <tal:block
+            tal:define="question question_item/getObject;
+                        first_comment question/getFirstComment;
+                        cropText nocall:view/@@plone/cropText;
+                        toLocalizedTime nocall:here/@@plone/toLocalizedTime;
+                      "
+            >
+          <tal:comment condition="nocall:question">
+            <div class="row">
+              <div class="cell position-0 width-7">
+                <a href=""
+                  tal:attributes="href first_comment/absolute_url"
+                  tal:content="first_comment/@@text-transform/text/text/plain">
+                  Text of the question
+                </a>
+              </div>
+              <div class="cell position-7 width-2">
+                <span tal:replace="python:view.get_user_name(question.Creator())">
+                  Mikel
+                </span>
+              </div>
+              <div class="cell position-9 width-1">
+                <span tal:replace="question/get_status">
+                  Pending
+                </span>
+              </div>
+              <div class="cell position-10 width-3">
+                <tal:effective condition="first_comment/effective_date">
+                  <span tal:replace="python:toLocalizedTime(first_comment.EffectiveDate(), True)">
+                    2014-01-01
+                  </span>
+                </tal:effective>
+                <tal:noteffective condition="not:first_comment/effective_date">
+                  Not sent to MS yet.
+                </tal:noteffective>
+              </div>
+              <div class="cell position-13 width-3">
+                <span tal:replace="python:toLocalizedTime(question.modified(), True)">
+                  2014-01-01
+                </span>
+              </div>
+            </div>
+          </tal:comment>
+        </tal:block>
+      </tal:question>
+
+      <div class="actions" tal:condition="view/can_add_question">
+        <a id="add-question-link"
+          tal:attributes="href string:${here/absolute_url}/++add++Question"
+          class="standardButton">
+          Add new question
+        </a>
+      </div>
+
+      <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">
+        <span tal:replace="structure view/add_question_form"></span>
+      </div>
+      <div class="question" tal:repeat="question view/get_chat" tal:attributes="id question/getId; class string:question ${question/portal_type/lower};">
+        <tal:block tal:define="portalType question/portal_type/lower"
+          tal:condition="python:portalType == 'comment'">
+          <div class="arrow-right-border"></div>
+          <div class="arrow-right"></div>
+        </tal:block>
+        <tal:block tal:define="portalType question/portal_type/lower"
+          tal:condition="python:portalType == 'commentanswer'">
+          <div class="arrow-left-border"></div>
+          <div class="arrow-left"></div>
+        </tal:block>
+        <div class="from">
+          <span class="esdLabel">from</span>
+          <span class="value" tal:content="python:view.get_user_name(question.Creator(), question)">John Smith</span>
+          <span class="messageDate">
+            <tal:effective condition="question/effective_date">
+              Sent on: <span tal:content="python:toLocalizedTime(question.EffectiveDate(), True)">11/12/2013 12:00</span>
+            </tal:effective>
+            <tal:noteffective condition="not:question/effective_date">
+              Created on: <span tal:content="python:toLocalizedTime(question.created(), True)">11/12/2013 12:00</span>
+            </tal:noteffective>
+         </span>
+        </div>
+        <div class="changes" tal:condition="question/can_edit">
+          <a href="#" id="toggleQuestionHistory">Hide question history</a>
+          <div id="questionHistory">
+            <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
+              This object has no revision information.
+            </p>
+            <tal:block condition="view/history|nothing">
+              <form id="versionSelector"
+                    action="#"
+                    tal:attributes="action pps/current_page_url"
+                    tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                 pps here/@@plone_context_state
+                    ">
+                <fieldset>
+                  <legend i18n:translate="legend_revisions">
+                    Revisions
+                  </legend>
+                  <label for="two">
+                    <span tal:omit-tag="" i18n:translate="">First revision</span>
+                    <select id="two" name="two" tal:define="rev request/form/two|string:current">
+                       <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
+                       <option tal:repeat="version view/history"
+                               tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
+                               i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
+                               (<span tal:replace="version/sys_metadata/review_state"/> <span tal:replace="version/sys_metadata/principal"/> <tal:date i18n:name="date" content="python:toLocalizedTime(version['sys_metadata']['timestamp'])">1975-12-24</tal:date>)</option>
+                    </select>
+                  </label>
+                  <label for="one">
+                    <span tal:omit-tag="" i18n:translate="">Second revision</span>
+                    <select id="one" name="one" tal:define="rev request/one|string:current">
+                       <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
+                       <option tal:repeat="version view/history"
+                               tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
+                               i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
+                               (<span tal:replace="version/sys_metadata/review_state"/> <span tal:replace="version/sys_metadata/principal"/> <tal:date i18n:name="date" content="python:toLocalizedTime(version['sys_metadata']['timestamp'])">1975-12-24</tal:date>)</option>
+                    </select>
+                  </label>
+                </fieldset>
+
+                <noscript>
+                  <input type="submit" i18n:attributes="value label_update" value="Update"/>
+                </noscript>
+              </form>
+              <div metal:use-macro="here/diff_legend/macros/diff_legend"></div>
+
+              <p tal:condition="not:view/changes" i18n:translate="">
+                There are no changes between the selected revisions.
+              </p>
+
+              <tal:changes condition="view/changes">
+                <form method="post" action="">
+                  <label for="diffstyle" class="jsOnly" style="display: none" i18n:translate="">Show differences</label>
+                  <ul class="radioRow" id="diffTypeSelector">
+                    <li>
+                      <input id="diffstylevisual" type="radio" name="diffstyle" value="visual" checked="checked" />
+                      <label for="diffstylevisual" i18n:translate="">inline</label>
+                    </li>
+                    <li>
+                      <input id="diffstylecode" type="radio" name="diffstyle" value="code" />
+                      <label for="diffstylecode" i18n:translate="">as code</label>
+                    </li>
+                  </ul>
+                </form>
+
+                <fieldset class="diff" tal:repeat="diff view/changes">
+                  <legend tal:content="diff/label">Body text</legend>
+
+                  <div class="fieldDiff inline-diff" tal:condition="exists:diff/inline_diff"
+                      tal:content="structure python:diff.inline_diff()">
+                    Inline changes
+                  </div>
+
+                  <p class="fieldDiff inline-diff" tal:condition="not:exists:diff/inline_diff" i18n:translate="">
+                   This field has no inline difference view.
+                  </p>
+
+                  <div class="fieldDiff code-diff" style="display: none">
+                    <pre tal:condition="exists:diff/html_diff" tal:content="structure python:diff.html_diff(wrapcolumn=80)">
+                     HTML formatted differences
+                    </pre>
+
+                    <pre class="fieldDiff code-diff" tal:condition="python:not exists('diff/html_diff') and exists('diff/ndiff')" tal:content="diff/ndiff">
+                     ndiff formatted differences
+                    </pre>
+                    <p class="fieldDiff" tal:condition="python:not exists('diff/html_diff') and not exists('diff/ndiff')">
+                     This field has no code difference view.
+                    </p>
+                  </div>
+                </fieldset>
+              </tal:changes>
             </tal:block>
           </div>
         </div>
+        <h3 tal:condition="question/can_edit">Current text</h3>
+        <div tal:content="structure question/text/output|string:">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+        <div class="files" tal:condition="question/get_files">
+          Files:
+          <div class="file" tal:repeat="file question/get_files">
+            <p>
+              <span class="eea-icon eea-icon-lg attachment"></span>
+              <span class="eea-icon eea-icon-lg confidential"
+                title="Confidential file (Only available for people taking part in the review process)"
+                tal:condition="file/confidential"></span>
+              <a href="" tal:attributes="href string:${file/absolute_url}/@@download/file"
+                tal:content="file/file/filename">
+              </a>
+              <span class="discreet"
+                    tal:define="size file/file/getSize;
+                                kb python:size/1024">
+                    &mdash; <span tal:replace="kb" /> KB</span>
+              <a tal:condition="file/can_edit"
+                 class="edit"
+                 tal:attributes="href string:${file/absolute_url}/edit">
+                Edit File
+              </a>
+              <a tal:condition="file/can_edit"
+                 class="delete"
+                 tal:attributes="href string:${file/absolute_url}/delete_confirmation">
+                 Delete File
+              </a>
+            </p>
+          </div>
+        </div>
+        <div id="comment-discussion-wrapper"
+          tal:define="context nocall:question">
+            <div id="comment-discussion">
+              <a href="#" id="toggleComments">Hide question comments</a>
+              <span tal:content="structure provider:esdrt.content.commentmanager" />
+            </div>
+        </div>
+        <div class="actions" tal:condition="repeat/question/end">
+          <tal:block condition="view/can_edit">
+            <a href=""
+                tal:attributes="href string:${here/absolute_url}/modifications"
+                class="standardButton">
+                Edit Observation
+            </a>
+          </tal:block>
 
+          <tal:block condition="view/can_delete_observation">
+            <a href="./delete_confirmation"
+              id="observation-delete"
+              tal:attributes="href string:${here/absolute_url}/delete_confirmation"
+              class="delete standardButton">
+              Delete Observation
+            </a>
+          </tal:block>
 
-        <div class="actions" tal:condition="view/can_add_comment">
-          <a href="./++add++Comment"
-            id="add-comment-link"
-            tal:attributes="href string:${here/absolute_url}/++add++Comment"
+          <a href=""
+            tal:condition="view/can_add_conclusion"
+            id="add-conclusion-link"
+            tal:attributes="href string:${here/absolute_url}/++add++Conclusion"
             class="standardButton">
-              Add Question
+            Add Conclusions
           </a>
-        </div>
-        <div class="actions" tal:condition="view/can_add_answer">
-          <a href="./++add++CommentAnswer"
-            id="add-answer-link"
-            tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
-            class="standardButton">
-              Add Answer
+
+          <a href=""
+                tal:condition="question/can_edit"
+                tal:attributes="href string:${question/absolute_url}/edit"
+                class="edit standardButton">
+                  Edit
           </a>
-        </div>
 
-        <div id="comment-add-form" style="display: none" tal:condition="view/can_add_comment">
-          <span tal:replace="structure view/add_comment_form" />
-        </div>
+          <a href=""
+                tal:condition="question/can_delete"
+                tal:attributes="href string:${question/absolute_url}/delete_confirmation"
+                class="delete standardButton">
+                  Delete
+          </a>
 
-        <div id="answer-add-form" style="display: none" tal:condition="view/can_add_answer">
-          <span tal:replace="structure view/add_answer_form" />
-        </div>
+          <a href=""
+                tal:condition="question/can_add_files"
+                tal:attributes="href string:${question/absolute_url}/++add++ESDRTFile"
+                class="standardButton addfile">
+                  Upload file
+          </a>
 
+          <tal:block tal:repeat="action view/actions">
+            <a href=""
+              tal:attributes="href string:${action/action}&amp;comment=${question/getId}"
+              class="standardButton"
+              tal:content="action/title">
+              Action
+            </a>
+          </tal:block>
+        </div>
       </div>
-      <div class="eea-tabs-panel" tal:condition="view/isManager"
-        tal:content="structure context/technical_corrections/output|nothing">
+      <div class="actions" tal:condition="view/can_add_comment">
+        <a href="./++add++Comment"
+          id="add-comment-link"
+          tal:attributes="href string:${here/absolute_url}/++add++Comment"
+          class="standardButton">
+            Create Question
+        </a>
+      </div>
+      <div class="actions" tal:condition="view/can_add_answer">
+        <a href="./++add++CommentAnswer"
+          id="add-answer-link"
+          tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
+          class="standardButton">
+            Create Answer
+        </a>
+      </div>
+
+      <div id="comment-add-form" style="display: none" tal:condition="view/can_add_comment">
+        <span tal:replace="structure view/add_comment_form" />
+      </div>
+
+      <div id="answer-add-form" style="display: none" tal:condition="view/can_add_answer">
+        <span tal:replace="structure view/add_answer_form" />
+      </div>
+
+      <div id="conclusion-add-form" style="display: none" tal:condition="view/can_add_conclusion">
+        <span tal:replace="structure view/add_conclusion_form" />
       </div>
     </div>
-
-
+  </div>
   </metal:content-core>
 </metal:main>
-
-
-
 </body>
 </html>
 
