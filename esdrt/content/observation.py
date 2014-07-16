@@ -583,7 +583,8 @@ class ObservationView(grok.View):
         return getToolByName(self.context, "portal_repository")
 
     def getVersion(self, version):
-        context = aq_inner(self.context)
+        question = self.question()
+        context = question.getFirstComment()
         if version == "current":
             return context
         else:
@@ -775,47 +776,47 @@ class ObservationView(grok.View):
         alsoProvides(form_instance, IWrappedForm)
         return form_instance()
 
-    #def update(self):
-    #    question = self.question()
-    #    if question:
-    #        context = question.getFirstComment()
-    #        if context.can_edit():
-    #            history_metadata = self.repo_tool.getHistoryMetadata(context)
-    #            retrieve = history_metadata.retrieve
-    #            getId = history_metadata.getVersionId
-    #            history = self.history = []
-    #            # Count backwards from most recent to least recent
-    #            for i in xrange(history_metadata.getLength(countPurged=False)-1, -1, -1):
-    #                version = retrieve(i, countPurged=False)['metadata'].copy()
-    #                version['version_id'] = getId(i, countPurged=False)
-    #                history.append(version)
-    #            dt = getToolByName(self.context, "portal_diff")
+    def update(self):
+        question = self.question()
+        if question:
+            context = question.getFirstComment()
+            if context.can_edit():
+                history_metadata = self.repo_tool.getHistoryMetadata(context)
+                retrieve = history_metadata.retrieve
+                getId = history_metadata.getVersionId
+                history = self.history = []
+                # Count backwards from most recent to least recent
+                for i in xrange(history_metadata.getLength(countPurged=False)-1, -1, -1):
+                    version = retrieve(i, countPurged=False)['metadata'].copy()
+                    version['version_id'] = getId(i, countPurged=False)
+                    history.append(version)
+                dt = getToolByName(self.context, "portal_diff")
 
-    #            version1 = self.request.get("one", None)
-    #            version2 = self.request.get("two", None)
+                version1 = self.request.get("one", None)
+                version2 = self.request.get("two", None)
 
-    #            if version1 is None and version2 is None:
-    #                self.history.sort(lambda x,y: cmp(x.get('version_id', ''), y.get('version_id')), reverse=True)
-    #                version1 = self.history[-1].get('version_id', 'current')
-    #                if len(self.history) > 1:
-    #                    version2 = self.history[-2].get('version_id', 'current')
-    #                else:
-    #                    version2 = 'current'
-    #            elif version1 is None:
-    #                version1 = 'current'
-    #            elif version2 is None:
-    #                version2 = 'current'
+                if version1 is None and version2 is None:
+                    self.history.sort(lambda x,y: cmp(x.get('version_id', ''), y.get('version_id')), reverse=True)
+                    version1 = self.history[-1].get('version_id', 'current')
+                    if len(self.history) > 1:
+                        version2 = self.history[-2].get('version_id', 'current')
+                    else:
+                        version2 = 'current'
+                elif version1 is None:
+                    version1 = 'current'
+                elif version2 is None:
+                    version2 = 'current'
 
-    #            self.request.set('one', version1)
-    #            self.request.set('two', version2)
+                self.request.set('one', version1)
+                self.request.set('two', version2)
 
-    #            changeset = dt.createChangeSet(
-    #                    self.getVersion(version2),
-    #                    self.getVersion(version1),
-    #                    id1=self.versionTitle(version2),
-    #                    id2=self.versionTitle(version1))
-    #            self.changes = [change for change in changeset.getDiffs()
-    #                          if not change.same]
+                changeset = dt.createChangeSet(
+                        self.getVersion(version2),
+                        self.getVersion(version1),
+                        id1=self.versionTitle(version2),
+                        id2=self.versionTitle(version1))
+                self.changes = [change for change in changeset.getDiffs()
+                              if not change.same]
     #def get_chat(self):
     #    question = self.question()
     #    if question:

@@ -6,11 +6,52 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="esdrt.content">
 
+  <tal:block metal:fill-slot="style_slot">
+    <link rel="stylesheet" type="text/css" href="compare.css"
+          tal:attributes="href string:${portal_url}/compare.css"/>
+  </tal:block>
+
 
   <tal:block metal:fill-slot="javascript_head_slot">
     <script type="text/javascript">
 
     $(document).ready(function(){
+
+        update_display = function() {
+            var style = $(this).attr('value');
+            if (! this.checked) {
+                return;
+            }
+
+            $(".fieldDiff").hide();
+
+            if (style=="visual") {
+                $(".inline-diff").show();
+            }
+            else {
+                $(".code-diff").show();
+            }
+        }
+
+        $(".jsOnly").show();
+        version_set = function(){
+          $("#versionSelector select").change(function(){
+            $('#versionSelector').submit();
+          });
+
+          $("#diffTypeSelector input").click(update_display);
+          $("#diffTypeSelector input").each(update_display);
+
+          $('#versionSelector').submit(function(e){
+            e.preventDefault();
+            var data = $(this).serializeArray();
+            url = $(this).attr('action');
+            $('.changes').load(url + ' .changes >*', data=data, function(){
+              version_set();
+          });
+          });
+        }
+        version_set();
 
         $('.delete').prepOverlay(
         {
