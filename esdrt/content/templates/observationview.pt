@@ -176,7 +176,17 @@
         <div class="cell position-13 width-3" tal:content="context/wf_location">Year of emission</div>
       </div>
     </div>
-    <div class="esdDiv observationDetailsRow">
+
+    <div>
+      <div class="row collapsiblePanelTitle collapsed" data-panel="observation-details">
+        <div class="cell position-0 width-16">
+          Observation details
+          <span class="eea-icon eea-icon-right"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="esdDiv observation-details" style="display:none">
       <table class="estTable">
         <thead>
           <tr>
@@ -220,39 +230,34 @@
         </tbody>
       </table>
     </div>
-    <div class="esdDiv">
-      <div class="row observationDetailsRow">
+    <div class="esdDiv observation-details" style="display:none">
+      <div class="row">
         <div class="cell position-0 width-8 esdLabel">GHG source category</div>
         <div class="cell position-8 width-4 esdLabel">CRF code</div>
         <div class="cell position-12 width-4 esdLabel">Parameter</div>
       </div>
-      <div class="row observationDetailsRow">
+      <div class="row">
         <div class="cell position-0 width-8" tal:content="context/ghg_source_category_value">GHG source category</div>
         <div class="cell position-8 width-4" tal:content="context/crf_code_value">CRF code</div>
         <div class="cell position-12 width-4" tal:content="context/parameter_value">Parameter</div>
       </div>
-      <div class="row observationDetailsRow">
+      <div class="row">
         <div class="cell position-0 width-4 esdLabel">Review Year</div>
         <div class="cell position-4 width-4 esdLabel">Key category</div>
         <div class="cell position-8 width-4 esdLabel">Status flag</div>
         <div class="cell position-12 width-4 esdLabel">Last update</div>
       </div>
-      <div class="row observationDetailsRow">
+      <div class="row">
         <div class="cell position-0 width-4" tal:content="context/review_year">Year</div>
         <div class="cell position-4 width-4" tal:content="context/ghg_source_sectors_value">Key category</div>
         <div class="cell position-8 width-4" tal:content="context/highlight_value">Status flag</div>
         <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.ModificationDate())">Last update</div>
       </div>
-      <div class="row showObservationDetailsRow">
-        <div class="cell position-0 width-16">
-          <a href="#" id="showObservationDetails">[-]</a>
-        </div>
-      </div>
     </div>
   </metal:observation>
 
 
-  <div class="esdDiv description"
+  <div class="esdDiv description observation-details" style="display:none"
     tal:condition="view/show_description">
     <div class="esdLabel">
       Description
@@ -263,7 +268,16 @@
     </span>
   </div>
 
-  <div class="esdDiv">
+  <div>
+    <div class="row collapsiblePanelTitle collapsed" data-panel="observation-worflow">
+      <div class="cell position-0 width-16">
+        Observation workflow
+        <span class="eea-icon eea-icon-right"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="esdDiv observation-worflow" style="display:none">
     <div class="row">
       <div class="cell position-0 width-16" style="overflow-x:auto">
         <table style="table-layout: fixed" id="workflowTable">

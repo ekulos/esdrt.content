@@ -327,3 +327,20 @@
 .confidential:before {
 	content: "\f023";
 }
+.collapsiblePanelTitle {
+	background-color:#2c8da2; 
+	line-height:30px; 
+	color:white; 
+	cursor:pointer; 
+	margin-top:10px;
+	font-weight: bold;
+}
+.collapsiblePanelTitle.collapsed {
+	margin-bottom: 10px;
+}
+.collapsiblePanelTitle .eea-icon-right:before {
+	content: "\f078";
+}
+.collapsiblePanelTitle.collapsed .eea-icon-right:before {
+	content: "\f053";
+}
