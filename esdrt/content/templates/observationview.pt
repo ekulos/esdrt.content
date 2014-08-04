@@ -464,6 +464,22 @@
           class="standardButton">
           Add new question
         </a>
+        <tal:block condition="view/can_edit">
+          <a href=""
+              tal:attributes="href string:${here/absolute_url}/modifications"
+              class="standardButton">
+              Edit Observation
+          </a>
+        </tal:block>         
+        <tal:block condition="view/can_delete_observation">
+          <a href="./delete_confirmation"
+            id="observation-delete"
+            tal:attributes="href string:${here/absolute_url}/delete_confirmation"
+            class="standardButton">
+            Delete Observation
+          </a>
+        </tal:block>         
+
       </div>
 
       <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">
@@ -493,8 +509,8 @@
          </span>
         </div>
         <div class="changes" tal:condition="question/can_edit">
-          <a href="#" id="toggleQuestionHistory">Hide question history</a>
-          <div id="questionHistory">
+          <a href="#" id="toggleQuestionHistory">Show question history</a>
+          <div id="questionHistory" style="display:none">
             <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
               This object has no revision information.
             </p>
@@ -625,13 +641,13 @@
             </div>
         </div>
         <div class="actions" tal:condition="repeat/question/end">
-          <tal:block condition="view/can_edit">
+          <!--tal:block condition="view/can_edit">
             <a href=""
                 tal:attributes="href string:${here/absolute_url}/modifications"
                 class="standardButton">
                 Edit Observation
             </a>
-          </tal:block>
+          </tal:block-->
 
           <tal:block condition="view/can_delete_observation">
             <a href="./delete_confirmation"
@@ -654,14 +670,14 @@
                 tal:condition="question/can_edit"
                 tal:attributes="href string:${question/absolute_url}/edit"
                 class="edit standardButton">
-                  Edit
+                  Edit question
           </a>
 
           <a href=""
                 tal:condition="question/can_delete"
                 tal:attributes="href string:${question/absolute_url}/delete_confirmation"
                 class="delete standardButton">
-                  Delete
+                  Delete question
           </a>
 
           <a href=""
