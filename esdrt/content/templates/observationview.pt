@@ -376,7 +376,7 @@
           tal:define="context nocall:conclusion">
             <div>
               <a href="#" id="toggleComments">Hide question comments</a>
-              <span  id="comment-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
+              <div  id="comment-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
             </div>
         </div>
         <div class="actions">
