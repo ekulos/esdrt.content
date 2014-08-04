@@ -374,9 +374,9 @@
 
         <div id="comment-discussion-wrapper"
           tal:define="context nocall:conclusion">
-            <div id="comment-discussion">
+            <div>
               <a href="#" id="toggleComments">Hide question comments</a>
-              <span tal:content="structure provider:esdrt.content.commentmanager" />
+              <span  id="comment-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
             </div>
         </div>
         <div class="actions">
@@ -635,9 +635,9 @@
         </div>
         <div id="comment-discussion-wrapper"
           tal:define="context nocall:question">
-            <div id="comment-discussion">
+            <div>
               <a href="#" id="toggleComments">Hide question comments</a>
-              <span tal:content="structure provider:esdrt.content.commentmanager" />
+              <span  id="comment-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
             </div>
         </div>
         <div class="actions" tal:condition="repeat/question/end">
