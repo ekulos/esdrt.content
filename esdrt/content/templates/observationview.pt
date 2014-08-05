@@ -462,7 +462,7 @@
         <a id="add-question-link"
           tal:attributes="href string:${here/absolute_url}/++add++Question"
           class="standardButton">
-          Add new question
+          Add draft question
         </a>
         <tal:block condition="view/can_edit">
           <a href=""
@@ -479,7 +479,12 @@
             Delete Observation
           </a>
         </tal:block>         
-
+        <a href="./content_status_modify?workflow_action=close"
+          id="observation-finish"
+          tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=close"
+          class="standardButton">
+          Finish Observation
+        </a>
       </div>
 
       <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">
