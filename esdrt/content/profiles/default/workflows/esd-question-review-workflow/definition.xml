@@ -529,7 +529,7 @@
   </guard>
  </transition>
  <transition transition_id="recall-sre" title="Recall Question" new_state="draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=recall" category="workflow" icon="">Recall Question</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=recall-sre" category="workflow" icon="">Recall Question</action>
   <guard>
    <guard-role>Owner</guard-role>
   </guard>
