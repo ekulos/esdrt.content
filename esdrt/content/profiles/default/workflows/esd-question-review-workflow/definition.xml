@@ -484,8 +484,8 @@
    <guard-expression>object/one_pending_answer</guard-expression>
   </guard>
  </transition>
- <transition transition_id="approve-question" title="Aprove question and send" new_state="pending" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=approve-question" category="workflow" icon="">Aprove question and send</action>
+ <transition transition_id="approve-question" title="Approve question and send" new_state="pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=approve-question" category="workflow" icon="">Approve question and send</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
