@@ -707,7 +707,7 @@
           id="add-comment-link"
           tal:attributes="href string:${here/absolute_url}/++add++Comment"
           class="standardButton">
-            Create Question
+            Add follow up question
         </a>
       </div>
       <div class="actions" tal:condition="view/can_add_answer">
