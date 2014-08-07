@@ -1,13 +1,7 @@
 Changelog
 =========
 
-1.8 (unreleased)
-----------------
-
-- Nothing changed yet.
-
-
-1.7 (2014-08-06)
+1.7 (unreleased)
 ----------------
 
 - Update workflow and labeling according to decision tree [MikelS]
