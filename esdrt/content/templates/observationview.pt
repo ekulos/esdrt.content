@@ -53,7 +53,7 @@
         }
         version_set();
 
-        $('.delete').prepOverlay(
+        $('.deleteButton').prepOverlay(
         {
             subtype: 'ajax',
             filter: common_content_filter,
@@ -102,7 +102,7 @@
           $('#conclusion-add-form').toggle();
         });
 
-        $('.file .delete').prepOverlay({
+        $('.file .deleteButton').prepOverlay({
             subtype: 'ajax',
             filter: common_content_filter,
             formselector: '#delete_confirmation',
@@ -363,7 +363,7 @@
                 Edit File
               </a>
               <a tal:condition="file/can_edit"
-                 class="delete"
+                 class="deleteButton"
                  tal:attributes="href string:${file/absolute_url}/delete_confirmation">
                  Delete File
               </a>
@@ -462,7 +462,7 @@
         <a id="add-question-link"
           tal:attributes="href string:${here/absolute_url}/++add++Question"
           class="standardButton">
-          Add draft question
+          Add question
         </a>
         <tal:block condition="view/can_edit">
           <a href=""
@@ -631,7 +631,7 @@
                 Edit File
               </a>
               <a tal:condition="file/can_edit"
-                 class="delete"
+                 class="deleteButton"
                  tal:attributes="href string:${file/absolute_url}/delete_confirmation">
                  Delete File
               </a>
@@ -658,7 +658,7 @@
             <a href="./delete_confirmation"
               id="observation-delete"
               tal:attributes="href string:${here/absolute_url}/delete_confirmation"
-              class="delete standardButton">
+              class="deleteButton standardButton">
               Delete Observation
             </a>
           </tal:block>
@@ -681,7 +681,7 @@
           <a href=""
                 tal:condition="question/can_delete"
                 tal:attributes="href string:${question/absolute_url}/delete_confirmation"
-                class="delete standardButton">
+                class="deleteButton standardButton">
                   Delete question
           </a>
 

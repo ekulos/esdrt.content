@@ -830,7 +830,7 @@ class AddQuestionForm(Form):
     ignoreContext = True
     fields = field.Fields(IComment).select('text')
 
-    @button.buttonAndHandler(_('Add question'))
+    @button.buttonAndHandler(_('Save question'))
     def create_question(self, action):
         context = aq_inner(self.context)
         text = self.request.form.get('form.widgets.text', '')
