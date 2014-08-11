@@ -7,6 +7,11 @@
   <javascript
     id="++resource++esdrt.content/moment.min.js"
     cacheable="True" compression="None" cookable="False"
+    enabled="True" expression=""  inline="False"/>       
+
+  <javascript
+    id="++resource++esdrt.content/chosen.jquery.js"
+    cacheable="True" compression="None" cookable="False"
     enabled="True" expression=""  inline="False"/>               
 </object>
 
