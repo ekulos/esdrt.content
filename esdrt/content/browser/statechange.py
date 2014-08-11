@@ -137,39 +137,45 @@ class AssignCounterPartForm(BrowserView):
         return 'extranet-esd-reviewexperts-%s-%s' % (sector, country)
 
     def get_counterpart_users(self):
-        groupname = self.target_groupname()
+        #groupname = self.target_groupname()
         current = api.user.get_current()
-        return [u for u in api.user.get_users(groupname=groupname) if current.getId() != u.getId()]
+        #return [u for u in api.user.get_users(groupname=groupname) if current.getId() != u.getId()]
+        users = []
+        for u in api.user.get_users():
+            if current.getId() != u.getId():
+                roles = api.user.get_roles(username=u.getId())
+                if 'SectorExpertReviewer' in roles or 'LeadReviewer' in roles:
+                    users.append(u)
+        return users
+
+
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
         """
         if self.request.form.get('send', None):
-            username = self.request.get('counterpart', None)
+            counterparts = self.request.get('counterparts', None)
             #comments = self.request.get('comments', None)
-            if username is None:
+            if counterparts is None:
                 status = IStatusMessage(self.request)
                 msg = _(u'You need to select one counterpart')
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
-            user = api.user.get(username=username)
-            groupname = self.target_groupname()
-            if groupname not in user.getGroups():
-                status = IStatusMessage(self.request)
-                msg = _(u'Selected user is not valid')
-                status.addStatusMessage(msg, "error")
-                return self.index()
-
+            if isinstance(counterparts, basestring):
+                api.user.grant_roles(username=counterparts,
+                    roles=['CounterPart'],
+                    obj=self.context)
+            else:
+                for username in counterparts:
+                    api.user.grant_roles(username=username,
+                        roles=['CounterPart'],
+                        obj=self.context)         
             # if not comments:
             #     status = IStatusMessage(self.request)
             #     msg = _(u'You need to enter some comments for your counterpart')
             #     status.addStatusMessage(msg, "error")
             #     return self.index()
-
-            api.user.grant_roles(username=username,
-                roles=['CounterPart'],
-                obj=self.context)
             wf_action = 'request-for-counterpart-comments'
             #wf_comments = self.request.get('comments')
             return self.context.content_status_modify(

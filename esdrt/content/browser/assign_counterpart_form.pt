@@ -18,8 +18,7 @@
 
     <div class="documentDescription"
        i18n:translate="description_assign_counterpart">
-        You can select which users can be your counterpart
-        (only users from the same sector and country of the observation)
+        Select which users will be your counterparts
     </div>
 
     <div tal:replace="structure provider:plone.abovecontentbody" tal:condition="not:ajax_load" />
@@ -27,7 +26,7 @@
     <div id="content-core">
 
         <tal:block condition="not:view/get_counterpart_users">
-          Sorry: there are no experts for this country and sector.
+          Sorry: there are no experts.
           Please, contact the EEA Secretariat for further assistance.
 
         </tal:block>
@@ -40,7 +39,7 @@
               <input type="hidden" name="form.submitted:boolean" value="True" />
             <div id="user-group-sharing-container">
 
-              <div class="field" tal:repeat="member view/get_counterpart_users">
+              <!--div class="field" tal:repeat="member view/get_counterpart_users">
                 <label tal:attributes="for member/getId">
                   <input type="radio"
                     name="counterpart"
@@ -48,7 +47,14 @@
                     tal:attributes="value member/getId; id member/getId;" />
                     <span tal:content="python:member.getProperty('fullname', member.getId())"></span>
                 </label>
-              </div>
+              </div-->
+              <select multiple="multiple" name="counterparts">
+                <option
+                  tal:repeat="member view/get_counterpart_users"
+                  tal:content="python:member.getProperty('fullname', member.getId())"
+                  tal:attributes="value member/getId;">
+                </option>
+              </select>
             </div>
 
             <div class="comments" tal:replace="nothing">
