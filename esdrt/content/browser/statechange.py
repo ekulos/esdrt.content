@@ -158,7 +158,7 @@ class AssignCounterPartForm(BrowserView):
             #comments = self.request.get('comments', None)
             if counterparts is None:
                 status = IStatusMessage(self.request)
-                msg = _(u'You need to select one counterpart')
+                msg = _(u'You need to select at least one counterpart')
                 status.addStatusMessage(msg, "error")
                 return self.index()
 

@@ -6,7 +6,13 @@
 <head>
 
 </head>
-
+  <tal:block metal:fill-slot="javascript_head_slot">
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $(".chosen-select").chosen({width: "100%"});
+      });
+    </script>
+  </tal:block>
 <body>
 <metal:main fill-slot="main"
      tal:define="context_state context/@@plone_context_state">
@@ -48,7 +54,8 @@
                     <span tal:content="python:member.getProperty('fullname', member.getId())"></span>
                 </label>
               </div-->
-              <select multiple="multiple" name="counterparts">
+              <select multiple="multiple" name="counterparts" class="chosen-select"
+                data-placeholder="Click here or type the name to select counterparts">
                 <option
                   tal:repeat="member view/get_counterpart_users"
                   tal:content="python:member.getProperty('fullname', member.getId())"
@@ -75,7 +82,7 @@
               <textarea name="comments" rows="8" cols="20" id="assign_comment"></textarea>
 
             </div>
-
+            <p></p>
               <input class="standalone" type="submit" name="send" value="Send"/>
                 <input tal:replace="structure context/@@authenticator/authenticator" />
 
