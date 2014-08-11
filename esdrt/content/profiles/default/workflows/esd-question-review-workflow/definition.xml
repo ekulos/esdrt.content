@@ -562,7 +562,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=send-to-lr" category="workflow" icon="">Send Question for Approval</action>
   <guard>
    <guard-role>Owner</guard-role>
-   <guard-expression>python:object.unanswered_questions()</guard-expression>
+   <guard-expression>python:object.can_be_sent_to_lr()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="validate-answer-msa" title="Acknowledge Answer" new_state="closed" trigger="USER" before_script="" after_script="">
