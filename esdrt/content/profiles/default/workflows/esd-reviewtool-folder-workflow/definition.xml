@@ -43,7 +43,6 @@
   </permission-map>
   <permission-map name="esdrt.content: Add Observation" acquired="False">
    <permission-role>ExpertReviewer</permission-role>
-   <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
   </permission-map>
  </state>
