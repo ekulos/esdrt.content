@@ -120,6 +120,19 @@ class Question(dexterity.Container):
                 if item['review_state'] == 'counterpart-comments':
                     return True
 
+    def can_request_comments(self):
+        items = self.values()
+        questions = [q for q in items if q.portal_type == 'Comment']
+        answers = [q for q in items if q.portal_type == 'CommentAnswer']
+
+        if (len(questions) > len(answers)):
+            last_question = questions[-1]
+            question_history = self.workflow_history['esd-question-review-workflow']
+            for item in question_history:
+                if item['review_state'] == 'counterpart-comments':
+                    return False
+            return True
+
     def unanswered_questions(self):
         items = self.values()
         questions = [q for q in items if q.portal_type == 'Comment']

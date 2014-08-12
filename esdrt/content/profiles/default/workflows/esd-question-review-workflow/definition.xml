@@ -549,7 +549,7 @@
   <action url="%(content_url)s/assign_counterpart_form?workflow_action=request-for-counterpart-comments" category="workflow" icon="">Request Comments</action>
   <guard>
    <guard-role>Owner</guard-role>
-   <guard-expression>python:object.unanswered_questions()</guard-expression>
+   <guard-expression>python:object.can_request_comments()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="send-comments" title="End comments and redraft" new_state="draft" trigger="USER" before_script="" after_script="">
