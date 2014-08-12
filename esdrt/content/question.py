@@ -167,7 +167,12 @@ class Question(dexterity.Container):
             return answer.Creator() == user.getId()
         else:
             return False
-
+    def can_see_comment_discussion(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: View Comment Discussion', self)
+    def can_see_answer_discussion(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: View Answer Discussion', self)        
 # View class
 # The view will automatically use a similarly named template in
 # templates called questionview.pt .

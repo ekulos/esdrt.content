@@ -375,8 +375,8 @@
         <div id="comment-discussion-wrapper"
           tal:define="context nocall:conclusion">
             <div>
-              <a href="#" id="toggleComments">Hide question comments</a>
-              <div  id="comment-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
+              <a href="#" id="toggleConclussionComments">Hide question comments</a>
+              <div  id="conlusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none"/>
             </div>
         </div>
         <div class="actions">
@@ -640,9 +640,15 @@
         </div>
         <div id="comment-discussion-wrapper"
           tal:define="context nocall:question">
-            <div>
-              <a href="#" id="toggleComments">Hide question comments</a>
-              <div  id="comment-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
+            <div tal:define="portalType question/portal_type/lower">
+              <tal:block tal:condition="python:portalType == 'comment' and question.can_see_comment_discussion()">
+                <a href="#" id="toggleQuestionComments">Show question comments</a>
+                <div id="question-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
+              </tal:block>              
+              <tal:block tal:condition="python:portalType == 'commentanswer' and question.can_see_answer_discussion()">
+                <a href="#" id="toggleReplyComments">Show reply comments</a>
+                <div id="reply-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
+              </tal:block>
             </div>
         </div>
         <div class="actions" tal:condition="repeat/question/end">
