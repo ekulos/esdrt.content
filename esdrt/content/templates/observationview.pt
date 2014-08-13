@@ -173,7 +173,7 @@
         <div class="cell position-6 width-2" tal:content="context/ghg_source_sectors_value">Sector</div>
         <div class="cell position-8 width-2" tal:content="context/gas_value">Gas</div>
         <div class="cell position-10 width-3" tal:content="context/year">Year of emission</div>
-        <div class="cell position-13 width-3" tal:content="context/wf_location">Year of emission</div>
+        <div class="cell position-13 width-3" tal:content="context/wf_location">Review expert</div>
       </div>
     </div>
 
@@ -500,7 +500,7 @@
           <div class="arrow-left-border"></div>
           <div class="arrow-left"></div>
         </tal:block>
-        <div class="from">
+        <div class="from"  tal:define="portalType question/portal_type/lower">
           <span class="esdLabel">from</span>
           <span class="value" tal:condition="python:portalType == 'comment'">Sector review expert</span>
           <span class="value" tal:condition="python:portalType == 'commentanswer'">Member state authority</span>
