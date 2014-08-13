@@ -97,6 +97,12 @@
           $('#answer-add-form').toggle();
         });
 
+
+        $('#no-answer-link').click(function(e){
+          e.preventDefault();
+          $("#no-answer-add-form form .formControls input").click();
+        });
+
         $('#add-conclusion-link').click(function(e){
           e.preventDefault();
           $('#conclusion-add-form').toggle();
@@ -678,19 +684,37 @@
             Add Conclusions
           </a>
 
-          <a href=""
-                tal:condition="question/can_edit"
-                tal:attributes="href string:${question/absolute_url}/edit"
-                class="edit standardButton">
-                  Edit question
-          </a>
+          <tal:block  tal:define="portalType question/portal_type/lower"
+            tal:condition="python:portalType == 'comment'">
+            <a href=""
+                  tal:condition="question/can_edit"
+                  tal:attributes="href string:${question/absolute_url}/edit"
+                  class="edit standardButton">
+                    Edit question
+            </a>
+            <a href=""
+                  tal:condition="question/can_delete"
+                  tal:attributes="href string:${question/absolute_url}/delete_confirmation"
+                  class="deleteButton standardButton">
+                    Delete question
+            </a>
+          </tal:block>
 
-          <a href=""
-                tal:condition="question/can_delete"
-                tal:attributes="href string:${question/absolute_url}/delete_confirmation"
-                class="deleteButton standardButton">
-                  Delete question
-          </a>
+          <tal:block  tal:define="portalType question/portal_type/lower"
+            tal:condition="python:portalType == 'commentanswer'">
+            <a href=""
+                  tal:condition="question/can_edit"
+                  tal:attributes="href string:${question/absolute_url}/edit"
+                  class="edit standardButton">
+                    Edit answer
+            </a>
+            <a href=""
+                  tal:condition="question/can_delete"
+                  tal:attributes="href string:${question/absolute_url}/delete_confirmation"
+                  class="deleteButton standardButton">
+                    Delete answer
+            </a>
+          </tal:block>
 
           <a href=""
                 tal:condition="question/can_add_files"
@@ -724,6 +748,12 @@
           class="standardButton">
             Create Answer
         </a>
+        <a 
+          id="no-answer-link"
+          tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
+          class="standardButton">
+            No draft answer available so far
+        </a>        
       </div>
 
       <div id="comment-add-form" style="display: none" tal:condition="view/can_add_comment">
@@ -732,6 +762,10 @@
 
       <div id="answer-add-form" style="display: none" tal:condition="view/can_add_answer">
         <span tal:replace="structure view/add_answer_form" />
+      </div>
+
+      <div id="no-answer-add-form" style="display: none" tal:condition="view/can_add_answer">
+        <span tal:replace="structure view/add_no_answer_form" />
       </div>
 
       <div id="conclusion-add-form" style="display: none" tal:condition="view/can_add_conclusion">
