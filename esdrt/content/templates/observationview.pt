@@ -251,7 +251,7 @@
         <div class="cell position-0 width-4" tal:content="context/review_year">Year</div>
         <div class="cell position-4 width-4" tal:content="context/ghg_source_sectors_value">Key category</div>
         <div class="cell position-8 width-4" tal:content="context/highlight_value">Status flag</div>
-        <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.ModificationDate())">Last update</div>
+        <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.modified(), True)">Last update</div>
       </div>
     </div>
   </metal:observation>
