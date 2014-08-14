@@ -394,38 +394,38 @@ class Observation(dexterity.Container):
             item['author'] = self.get_author_name(item['actor'])            
             if item['review_state'] == 'draft':
                 item['state'] = 'Draft observation'
-                item['role'] = "Sector review expert"
+                item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'pending' and item['action'] == "approve":
                 item['state'] = 'Pending'
                 #Do not add
             elif item['review_state'] == 'pending' and item['action'] == "reopen":
                 item['state'] = 'Observation reopened'
-                item['role'] = "Sector review expert"
+                item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'closed':
                 item['state'] = 'Closed observation'
-                item['role'] = "Sector review expert"
+                item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'close-requested':
                 item['state'] = 'Closure requested'
-                item['role'] = "Sector review expert"
+                item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'conclusions' and item['action'] == "deny-closure":
                 item['state'] = 'Observation closure denied'
-                item['role'] = "Sector review expert"
+                item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] in ['conclusion-discussion']:
                 item['state'] = 'Conclusion comments requested'
-                item['role'] = "Sector review expert"
+                item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'conclusion' and item['action'] == "finish-comments":
                 item['state'] = 'Conclusion comments closed'
-                item['role'] = "Sector review expert"
+                item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'conclusion' and item['action'] == "draft-conclusions":
                 item['state'] = 'Conclusion drafting'
-                item['role'] = "Sector review expert"
+                item['role'] = "Review expert"
                 observation_wf.append(item)
             else:
                 item['state'] = '*' + item['review_state'] + '*'
@@ -444,19 +444,19 @@ class Observation(dexterity.Container):
                 item['author'] = self.get_author_name(item['actor'])                
                 if item['review_state'] == 'draft' and item['action'] == None:
                     item['state'] = 'Draft question'
-                    item['role'] = "Sector review expert"
+                    item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'counterpart-comments':
                     item['state'] = 'Requested counterparts comments'
-                    item['role'] = "Sector review expert"
+                    item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'draft' and item['action'] =='send-comments':
                     item['state'] = 'Counterparts comments closed'
-                    item['role'] = "Sector review expert"
+                    item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'drafted':
                     item['state'] = 'Sent to LR'
-                    item['role'] = "Sector review expert"
+                    item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'draft' and item['action'] =='recall-sre':
                     item['state'] = 'Question recalled'
@@ -486,7 +486,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Member state authority"  
                     question_wf.append(item)                  
                 elif item['action'] == 'validate-answer-msa':
-                    item['state'] = 'Sector review expert'
+                    item['state'] = 'Review expert'
                     item['role'] = "Answer acknowledged" 
                     question_wf.append(item)
                 elif item['review_state'] == 'draft' and item['action'] == "reopen":
