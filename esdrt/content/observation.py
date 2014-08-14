@@ -460,7 +460,7 @@ class Observation(dexterity.Container):
                     question_wf.append(item)
                 elif item['review_state'] == 'draft' and item['action'] =='recall-sre':
                     item['state'] = 'Question recalled'
-                    item['role'] = "Sector review expert"
+                    item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'pending' and item['action'] == 'approve-question':
                     item['state'] = 'Question approved and sent to MSA'
