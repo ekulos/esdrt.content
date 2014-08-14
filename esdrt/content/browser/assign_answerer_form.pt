@@ -6,7 +6,13 @@
 <head>
 
 </head>
-
+  <tal:block metal:fill-slot="javascript_head_slot">
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $(".chosen-select").chosen({width: "100%"});
+      });
+    </script>
+  </tal:block>
 <body>
 <metal:main fill-slot="main"
      tal:define="context_state context/@@plone_context_state">
@@ -37,7 +43,7 @@
               <input type="hidden" name="form.submitted:boolean" value="True" />
             <div id="user-group-sharing-container">
 
-              <div class="field" tal:repeat="member view/get_counterpart_users">
+              <!--div class="field" tal:repeat="member view/get_counterpart_users">
                 <label tal:attributes="for member/getId">
                   <input type="checkbox"
                     name="answerers:list"
@@ -45,7 +51,15 @@
                     tal:attributes="value member/getId; id member/getId;" />
                     <span tal:content="python:member.getProperty('fullname', member.getId())"></span>
                 </label>
-              </div>
+              </div-->
+              <select multiple="multiple" name="answerers:list" class="chosen-select"
+                data-placeholder="Click here or type the name to select counterparts">
+                <option
+                  tal:repeat="member view/get_counterpart_users"
+                  tal:content="python:member.getProperty('fullname', member.getId())"
+                  tal:attributes="value member/getId;">
+                </option>
+              </select>              
             </div>
 
             <input class="standalone" type="submit" name="send" value="Send"/>
