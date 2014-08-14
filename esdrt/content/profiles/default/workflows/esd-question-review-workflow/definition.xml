@@ -569,7 +569,6 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=validate-answer-msa" category="workflow" icon="">Acknowledge Answer</action>
   <guard>
    <guard-role>Owner</guard-role>
-   <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
