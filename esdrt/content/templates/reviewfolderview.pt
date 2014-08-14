@@ -31,10 +31,10 @@
         <thead>
           <tr>
             <th colspan="7"  tal:condition="not: view/is_secretariat">
-              Ref. Number / Observation
+              Observation
             </th>
             <th colspan="8"  tal:condition="view/is_secretariat">
-              Ref. Number / Observation
+              Observation
             </th>
           </tr>
           <tr>
@@ -57,7 +57,7 @@
               Modification date
             </th>
             <th>
-              Workflow
+              Progress
             </th>
             <th tal:condition="view/is_secretariat">
               Author
