@@ -389,13 +389,13 @@
             tal:condition="conclusion/can_edit"
             tal:attributes="href string:${conclusion/absolute_url}/edit"
             class="edit standardButton">
-            Edit Conclusion
+            Edit conclusion
           </a>
           <a href=""
             tal:condition="conclusion/can_add_files"
             tal:attributes="href string:${conclusion/absolute_url}/++add++ESDRTFile"
             class="addfile standardButton">
-            Upload File
+            Upload file
           </a>
           <tal:block tal:repeat="action conclusion/get_actions">
               <a href=""
@@ -473,22 +473,22 @@
           <a href=""
               tal:attributes="href string:${here/absolute_url}/modifications"
               class="standardButton">
-              Edit Observation
+              Edit observation
           </a>
         </tal:block>         
         <tal:block condition="view/can_delete_observation">
           <a href="./delete_confirmation"
             id="observation-delete"
             tal:attributes="href string:${here/absolute_url}/delete_confirmation"
-            class="standardButton">
-            Delete Observation
+            class="standardButton deleteButton">
+            Delete observation
           </a>
         </tal:block>         
         <a href="./content_status_modify?workflow_action=close"
           id="observation-finish"
           tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=close"
           class="standardButton">
-          Finish Observation
+          Finish observation
         </a>
       </div>
 
@@ -672,7 +672,7 @@
               id="observation-delete"
               tal:attributes="href string:${here/absolute_url}/delete_confirmation"
               class="deleteButton standardButton">
-              Delete Observation
+              Delete observation
             </a>
           </tal:block>
 
@@ -681,7 +681,7 @@
             id="add-conclusion-link"
             tal:attributes="href string:${here/absolute_url}/++add++Conclusion"
             class="standardButton">
-            Add Conclusions
+            Add conclusions
           </a>
 
           <tal:block  tal:define="portalType question/portal_type/lower"
@@ -746,7 +746,7 @@
           id="add-answer-link"
           tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
           class="standardButton">
-            Create Answer
+            Create answer
         </a>
         <a 
           id="no-answer-link"
