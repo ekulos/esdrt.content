@@ -275,7 +275,7 @@
   </div>
 
   <div>
-    <div class="row collapsiblePanelTitle collapsed" data-panel="observation-worflow">
+    <div class="row collapsiblePanelTitle collapsed" data-panel="observation-workflow">
       <div class="cell position-0 width-16">
         Observation workflow
         <span class="eea-icon eea-icon-right"></span>
@@ -283,7 +283,7 @@
     </div>
   </div>
 
-  <div class="esdDiv observation-worflow" style="display:none">
+  <div class="esdDiv observation-workflow" style="display:none">
     <div class="row">
       <div class="cell position-0 width-16" style="overflow-x:auto">
         <table style="table-layout: fixed" id="workflowTable">
