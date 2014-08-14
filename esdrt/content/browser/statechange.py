@@ -88,7 +88,7 @@ class AssignAnswererForm(BrowserView):
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
-            for username in usernames:
+            if isinstance(usernames, basestring):
                 user = api.user.get(username=username)
                 groupname = self.target_groupname()
                 if groupname not in user.getGroups():
@@ -97,13 +97,29 @@ class AssignAnswererForm(BrowserView):
                     status.addStatusMessage(msg, "error")
                     return self.index()
 
-            for username in usernames:
                 api.user.grant_roles(username=username,
                     roles=['MSExpert'],
                     obj=self.context)
                 api.user.grant_roles(username=username,
                     roles=['MSExpert'],
                     obj=observation)
+            else:
+                for username in usernames:
+                    user = api.user.get(username=username)
+                    groupname = self.target_groupname()
+                    if groupname not in user.getGroups():
+                        status = IStatusMessage(self.request)
+                        msg = _(u'Selected user is not valid')
+                        status.addStatusMessage(msg, "error")
+                        return self.index()
+
+                for username in usernames:
+                    api.user.grant_roles(username=username,
+                        roles=['MSExpert'],
+                        obj=self.context)
+                    api.user.grant_roles(username=username,
+                        roles=['MSExpert'],
+                        obj=observation)
 
             wf_action = 'assign-answerer'
             return self.context.content_status_modify(
