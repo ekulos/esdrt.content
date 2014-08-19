@@ -16,11 +16,11 @@ from zope import schema
 from zope.interface import Interface
 
 
-class IObservationClosingReasonForm(Interface):
+class IFinishObservationReasonForm(Interface):
 
     reason = schema.Choice(
         title=_(u'Closing reason'),
-        vocabulary='esdrt.content.closingreasons',
+        vocabulary='esdrt.content.finishobservationreasons',
         required=True,
     )
 
@@ -30,14 +30,14 @@ class IObservationClosingReasonForm(Interface):
     )
 
 
-class ObservationClosingReasonForm(Form):
-    fields = field.Fields(IObservationClosingReasonForm)
-    label = _(u'Close observation')
-    description = _(u'Check the reason for closing this observation')
+class FinishObservationReasonForm(Form):
+    fields = field.Fields(IFinishObservationReasonForm)
+    label = _(u'Finish observation')
+    description = _(u'Check the reason for requesting the closure of this observation')
     ignoreContext = True
 
-    @button.buttonAndHandler(u'Close observation')
-    def close_observation(self, action):
+    @button.buttonAndHandler(u'Finish observation')
+    def finish_observation(self, action):
         reason = self.request.get('reason')
         comments = self.request.get('comments')
         with api.env.adopt_roles(['Manager']):

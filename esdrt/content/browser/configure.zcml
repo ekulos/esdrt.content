@@ -31,9 +31,9 @@
 
 
     <browser:page
-        name="observation_close"
+        name="request-finish-observation"
         for="..observation.IObservation"
-        class=".statechange.ObservationClosingReasonForm"
+        class=".statechange.FinishObservationReasonForm"
         permission="zope2.View"
         />
 
