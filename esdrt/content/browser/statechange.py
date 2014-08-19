@@ -146,25 +146,20 @@ class AssignCounterPartForm(BrowserView):
     index = ViewPageTemplateFile('assign_counterpart_form.pt')
     # macro_wrapper = ViewPageTemplateFile('macro_wrapper.pt')
 
-    def target_groupname(self):
+    def target_groupnames(self):
         context = aq_inner(self.context)
-        country = context.country.lower()
-        sector = context.ghg_source_sectors
-        return 'extranet-esd-reviewexperts-%s-%s' % (sector, country)
+        return ['extranet-esd-reviewexperts', 'extranet-esd-leadreviewers']
 
     def get_counterpart_users(self):
-        #groupname = self.target_groupname()
         current = api.user.get_current()
-        #return [u for u in api.user.get_users(groupname=groupname) if current.getId() != u.getId()]
+        current_id = current.getId()
+
         users = []
-        for u in api.user.get_users():
-            if current.getId() != u.getId():
-                roles = api.user.get_roles(username=u.getId())
-                if 'SectorExpertReviewer' in roles or 'LeadReviewer' in roles:
-                    users.append(u)
+        for groupname in self.target_groupnames():
+            data = [u for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+            users.extend(data)
+
         return users
-
-
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
@@ -186,7 +181,7 @@ class AssignCounterPartForm(BrowserView):
                 for username in counterparts:
                     api.user.grant_roles(username=username,
                         roles=['CounterPart'],
-                        obj=self.context)         
+                        obj=self.context)
             # if not comments:
             #     status = IStatusMessage(self.request)
             #     msg = _(u'You need to enter some comments for your counterpart')
