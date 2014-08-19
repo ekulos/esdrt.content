@@ -200,3 +200,22 @@ class FinishObservationReasons(object):
 
 grok.global_utility(FinishObservationReasons,
     name=u"esdrt.content.finishobservationreasons")
+
+
+class FinishObservationDenyReasons(object):
+    grok.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        pvoc = getToolByName(context, 'portal_vocabularies')
+        voc = pvoc.getVocabularyByName('finish_observation_deny_reasons')
+        terms = []
+        if voc is not None:
+            for key, value in voc.getVocabularyLines():
+                # create a term - the arguments are the value, the token, and
+                # the title (optional)
+                terms.append(SimpleVocabulary.createTerm(key, key, value))
+        return SimpleVocabulary(terms)
+
+
+grok.global_utility(FinishObservationDenyReasons,
+    name=u"esdrt.content.finishobservationdenyreasons")

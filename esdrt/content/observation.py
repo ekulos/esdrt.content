@@ -179,7 +179,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     form.write_permission(closing_reason='cmf.ManagePortal')
     closing_reason = schema.Choice(
-        title=_(u'Closing reason'),
+        title=_(u'Finish request reason'),
         vocabulary='esdrt.content.finishobservationreasons',
         required=False,
 
@@ -187,7 +187,21 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     form.write_permission(closing_comments='cmf.ManagePortal')
     closing_comments = RichText(
-        title=_(u'Closing comments'),
+        title=_(u'Finish request comments'),
+        required=False,
+    )
+
+    form.write_permission(closing_reason='cmf.ManagePortal')
+    closing_deny_reason = schema.Choice(
+        title=_(u'Finish deny reason'),
+        vocabulary='esdrt.content.finishobservationdenyreasons',
+        required=False,
+
+    )
+
+    form.write_permission(closing_comments='cmf.ManagePortal')
+    closing_deny_comments = RichText(
+        title=_(u'Finish deny comments'),
         required=False,
     )
 
@@ -293,6 +307,12 @@ class Observation(dexterity.Container):
         return self._vocabulary_value('esdrt.content.finishobservationreasons',
             self.closing_reason
         )
+
+    def finish_deny_reason_value(self):
+        return self._vocabulary_value('esdrt.content.finishobservationdenyreasons',
+            self.closing_deny_reason
+        )
+
 
     def _vocabulary_value(self, vocabulary, term):
         vocab_factory = getUtility(IVocabularyFactory, name=vocabulary)

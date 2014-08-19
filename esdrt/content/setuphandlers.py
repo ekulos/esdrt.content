@@ -46,6 +46,10 @@ VOCABULARIES = [
      'title': 'Finish Observation Reasons',
      'filename': 'finish_observation_reasons.csv',
     },
+    {'id': 'finish_observation_deny_reasons',
+     'title': 'Finish Observation Deny Reasons',
+     'filename': 'finish_observation_deny_reasons.csv',
+    },
 ]
 
 
