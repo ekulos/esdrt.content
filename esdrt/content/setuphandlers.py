@@ -38,6 +38,10 @@ VOCABULARIES = [
      'title': 'Parameter',
      'filename': 'parameter.csv',
     },
+    {'id': 'observation_closing_reasons',
+     'title': 'Observation Closing Reasons',
+     'filename': 'observation_closing_reasons.csv',
+    },
 
 ]
 

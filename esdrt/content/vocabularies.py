@@ -177,11 +177,14 @@ class ClosingReasons(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
+        pvoc = getToolByName(context, 'portal_vocabularies')
+        voc = pvoc.getVocabularyByName('observation_closing_reasons')
         terms = []
-        for key, value in CLOSING_REASONS:
-            # create a term - the arguments are the value, the token, and
-            # the title (optional)
-            terms.append(SimpleVocabulary.createTerm(key, key, value))
+        if voc is not None:
+            for key, value in voc.getVocabularyLines():
+                # create a term - the arguments are the value, the token, and
+                # the title (optional)
+                terms.append(SimpleVocabulary.createTerm(key, key, value))
         return SimpleVocabulary(terms)
 
 grok.global_utility(ClosingReasons,
