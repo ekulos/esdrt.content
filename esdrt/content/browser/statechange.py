@@ -45,13 +45,18 @@ class FinishObservationReasonForm(Form):
             workflow_action='request-close',
         )
 
+    def updateActions(self):
+        super(FinishObservationReasonForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
 
 
 class IDenyFinishObservationReasonForm(Interface):
 
     reason = schema.Choice(
         title=_(u'Denying reason'),
-        vocabulary='esdrt.content.finishobservationdentreasons',
+        vocabulary='esdrt.content.finishobservationdenyreasons',
         required=True,
     )
 
@@ -77,6 +82,13 @@ class DenyFinishObservationReasonForm(Form):
         return self.context.content_status_modify(
             workflow_action='deny-closure',
         )
+
+    def updateActions(self):
+        super(DenyFinishObservationReasonForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
+
 
 
 class IAssignAnswererForm(Interface):
@@ -160,6 +172,11 @@ class AssignAnswererForm(BrowserView):
         else:
             return self.index()
 
+    def updateActions(self):
+        super(AssignAnswererForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
 
 class IAssignCounterPartForm(Interface):
     counterpart = schema.TextLine(
@@ -228,6 +245,11 @@ class AssignCounterPartForm(BrowserView):
         else:
             return self.index()
 
+    def updateActions(self):
+        super(AssignCounterPartForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
 
 class IAssignConclusionReviewerForm(Interface):
     reviewers = schema.Choice(
@@ -283,3 +305,8 @@ class AssignConclusionReviewerForm(BrowserView):
 
         else:
             return self.index()
+
+    def updateActions(self):
+        super(AssignConclusionReviewerForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
