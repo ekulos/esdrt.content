@@ -5,8 +5,8 @@
  <permission>Modify portal content</permission>
  <permission>Sharing page: Delegate roles</permission>
  <permission>View</permission>
- <permission>esdrt.content: Add Question</permission>
  <permission>esdrt.content: Add Conclusion</permission>
+ <permission>esdrt.content: Add Question</permission>
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
  <permission>esdrt.content: View Conclusion Discussion</permission>
@@ -262,14 +262,14 @@
    <guard-role>SectorExpertReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="close" title="Close Observation" new_state="closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Close Observation</action>
+ <transition transition_id="close" title="Confirm finishing observation" new_state="closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Confirm finishing observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="deny-closure" title="Deny-closure" new_state="conclusions" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=deny-closure" category="workflow" icon="">Deny Closure</action>
+ <transition transition_id="deny-closure" title="Deny finishing observation" new_state="conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/deny-finish-observation?workflow_action=deny-closure" category="workflow" icon="">Deny finishing observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
@@ -288,14 +288,14 @@
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
- <transition transition_id="reopen" title="Reopen Observation" new_state="pending" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=reopen" category="workflow" icon="">Reopen Observation</action>
+ <transition transition_id="reopen" title="Reopen Q&amp;A Chat" new_state="pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=reopen" category="workflow" icon="">Reopen Q&amp;A Chat</action>
   <guard>
    <guard-role>SectorExpertReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="request-close" title="Request Observation Close" new_state="close-requested" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=request-close" category="workflow" icon="">Request Observation Close</action>
+ <transition transition_id="request-close" title="Finish Observation" new_state="close-requested" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/request-finish-observation?workflow_action=request-close" category="workflow" icon="">Finish Observation</action>
   <guard>
    <guard-role>Owner</guard-role>
   </guard>
