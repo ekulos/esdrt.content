@@ -348,9 +348,12 @@
         tal:define="conclusion view/get_conclusion"
         tal:condition="nocall:conclusion">
       <div class="row">
-        <div id="conclusions"
-          tal:content="structure conclusion/text/output|nothing">
+        <div id="conclusions">
+          <strong>Reason:</strong> <span tal:replace="conclusion/reason_value" /><br/>
+          <div tal:replace="structure conclusion/text/output|nothing">
           Content
+          </div>
+
         </div>
         <div class="files" tal:condition="conclusion/get_files">
           Files:
