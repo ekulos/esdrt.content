@@ -346,7 +346,7 @@ class Observation(dexterity.Container):
         elif self.get_status() == 'close-requested':
             return 'Closure requested'
         elif self.get_status() in ['conclusions', 'conclusion-discussion']:
-            return 'Conclusion drafting'            
+            return 'Conclusion drafting'
         else:
             questions = self.values()
             if questions:
@@ -391,7 +391,7 @@ class Observation(dexterity.Container):
         for item in observation_history:
             item['role'] = item['actor']
             item['object'] = 'observation'
-            item['author'] = self.get_author_name(item['actor'])            
+            item['author'] = self.get_author_name(item['actor'])
             if item['review_state'] == 'draft':
                 item['state'] = 'Draft observation'
                 item['role'] = "Review expert"
@@ -441,7 +441,7 @@ class Observation(dexterity.Container):
             for item in question_history:
                 item['role'] = item['actor']
                 item['object'] = 'question'
-                item['author'] = self.get_author_name(item['actor'])                
+                item['author'] = self.get_author_name(item['actor'])
                 if item['review_state'] == 'draft' and item['action'] == None:
                     item['state'] = 'Draft question'
                     item['role'] = "Review expert"
@@ -465,7 +465,7 @@ class Observation(dexterity.Container):
                 elif item['review_state'] == 'pending' and item['action'] == 'approve-question':
                     item['state'] = 'Question approved and sent to MSA'
                     item['role'] = "Lead reviewer"
-                    question_wf.append(item)                    
+                    question_wf.append(item)
                 elif item['review_state'] == 'recalled-lr':
                     item['state'] = 'Question recalled'
                     item['role'] = "Lead reviewer"
@@ -483,11 +483,11 @@ class Observation(dexterity.Container):
                     question_wf.append(item)
                 elif item['review_state'] == 'answered':
                     item['state'] = 'Answer sent'
-                    item['role'] = "Member state authority"  
-                    question_wf.append(item)                  
+                    item['role'] = "Member state authority"
+                    question_wf.append(item)
                 elif item['action'] == 'validate-answer-msa':
                     item['state'] = 'Review expert'
-                    item['role'] = "Answer acknowledged" 
+                    item['role'] = "Answer acknowledged"
                     question_wf.append(item)
                 elif item['review_state'] == 'draft' and item['action'] == "reopen":
                     item['state'] = 'Reopened'
@@ -1019,6 +1019,9 @@ class ModificationForm(dexterity.EditForm):
                 'country',
                 'crf_code',
                 'review_year',
+                'technical_corrections',
+                'closing_comments',
+                'closing_reason'
                 ]]
         elif 'LeadReviewer' in roles:
             fields = ['text']
