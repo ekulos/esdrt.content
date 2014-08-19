@@ -1107,7 +1107,13 @@ class AddCommentForm(Form):
 
     @button.buttonAndHandler(_('Add question'))
     def create_question(self, action):
-        context = aq_inner(self.context.question)
+        observation = aq_inner(self.context)
+        questions = [q for q in observation.values() if q.portal_type == 'Question']
+        if questions:
+            context = questions[0]
+        else:
+            raise
+
         id = str(int(time()))
         item_id = context.invokeFactory(
                 type_name='Comment',

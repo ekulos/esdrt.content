@@ -91,6 +91,11 @@
           $('#question-add-form').toggle();
         });
 
+        $('#add-comment-link').click(function(e){
+          e.preventDefault();
+          $('#comment-add-form').toggle();
+        });
+
 
         $('#add-answer-link').click(function(e){
           e.preventDefault();
@@ -475,7 +480,7 @@
               class="standardButton">
               Edit observation
           </a>
-        </tal:block>         
+        </tal:block>
         <tal:block condition="view/can_delete_observation">
           <a href="./delete_confirmation"
             id="observation-delete"
@@ -483,7 +488,7 @@
             class="standardButton deleteButton">
             Delete observation
           </a>
-        </tal:block>         
+        </tal:block>
         <a href="./content_status_modify?workflow_action=close"
           id="observation-finish"
           tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=close"
@@ -651,7 +656,7 @@
               <tal:block tal:condition="python:portalType == 'comment' and question.can_see_comment_discussion()">
                 <a href="#" id="toggleQuestionComments">Show question comments</a>
                 <div id="question-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
-              </tal:block>              
+              </tal:block>
               <tal:block tal:condition="python:portalType == 'commentanswer' and question.can_see_answer_discussion()">
                 <a href="#" id="toggleReplyComments">Show reply comments</a>
                 <div id="reply-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
@@ -748,12 +753,12 @@
           class="standardButton">
             Create answer
         </a>
-        <a 
+        <a
           id="no-answer-link"
           tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
           class="standardButton">
             No draft answer available so far
-        </a>        
+        </a>
       </div>
 
       <div id="comment-add-form" style="display: none" tal:condition="view/can_add_comment">
