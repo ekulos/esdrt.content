@@ -15,16 +15,25 @@ from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from time import time
 from z3c.form import field
+from zope import schema
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
 from zope.globalrequest import getRequest
+from zope.schema.interfaces import IVocabularyFactory
 
 
 class IConclusion(form.Schema, IImageScaleTraversable):
     """
     Conclusions of this observation
     """
+
+    closing_reason = schema.Choice(
+        title=_(u'Conclusion'),
+        vocabulary='esdrt.content.conclusionreasons',
+        required=True,
+
+    )
 
     text = RichText(
         title=_(u'Text'),
@@ -51,6 +60,20 @@ def hidden(menuitem):
 class Conclusion(dexterity.Container):
     grok.implements(IConclusion)
     # Add your class methods and properties here
+
+    def reason_value(self):
+        return self._vocabulary_value('esdrt.content.conclusionreasons',
+            self.closing_reason
+        )
+
+    def _vocabulary_value(self, vocabulary, term):
+        vocab_factory = getUtility(IVocabularyFactory, name=vocabulary)
+        vocabulary = vocab_factory(self)
+        try:
+            value = vocabulary.getTerm(term)
+            return value.title
+        except LookupError:
+            return u''
 
     def can_edit(self):
         sm = getSecurityManager()
@@ -139,6 +162,8 @@ class AddForm(dexterity.AddForm):
         content.id = id
         text = self.request.form.get('form.widgets.text', '')
         content.text = RichTextValue(text, 'text/html', 'text/html')
+        reason = self.request.form.get('form.widgets.closing_reason')
+        content.closing_reason = reason[0]
         adapted = IAllowDiscussion(content)
         adapted.allow_discussion = False
         return aq_base(content)
@@ -151,5 +176,5 @@ class EditForm(dexterity.EditForm):
 
     def updateFields(self):
         super(EditForm, self).updateFields()
-        self.fields = field.Fields(IConclusion).select('text')
+        self.fields = field.Fields(IConclusion).select('text', 'closing_reason')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
