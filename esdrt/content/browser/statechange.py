@@ -19,7 +19,7 @@ from zope.interface import Interface
 class IFinishObservationReasonForm(Interface):
 
     reason = schema.Choice(
-        title=_(u'Closing reason'),
+        title=_(u'Finishing reason'),
         vocabulary='esdrt.content.finishobservationreasons',
         required=True,
     )
@@ -44,7 +44,7 @@ class FinishObservationReasonForm(Form):
             self.context.closing_reason = reason
             self.context.closing_comments = comments
         return self.context.content_status_modify(
-            workflow_action='close-observation',
+            workflow_action='request-close',
         )
 
 
