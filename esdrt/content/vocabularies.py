@@ -165,20 +165,12 @@ grok.global_utility(CRFCode,
     name=u"esdrt.content.crf_code")
 
 
-CLOSING_REASONS = [
-    ('reason1', 'Reason 1'),
-    ('reason2', 'Reason 2'),
-    ('reason3', 'Reason 3'),
-    ('reason4', 'Reason 4'),
-]
-
-
-class ClosingReasons(object):
+class Conclusions(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
         pvoc = getToolByName(context, 'portal_vocabularies')
-        voc = pvoc.getVocabularyByName('observation_closing_reasons')
+        voc = pvoc.getVocabularyByName('observation_conclusion_reasons')
         terms = []
         if voc is not None:
             for key, value in voc.getVocabularyLines():
@@ -187,5 +179,24 @@ class ClosingReasons(object):
                 terms.append(SimpleVocabulary.createTerm(key, key, value))
         return SimpleVocabulary(terms)
 
-grok.global_utility(ClosingReasons,
-    name=u"esdrt.content.closingreasons")
+grok.global_utility(Conclusions,
+    name=u"esdrt.content.conclusionreasons")
+
+
+class FinishObservationReasons(object):
+    grok.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        pvoc = getToolByName(context, 'portal_vocabularies')
+        voc = pvoc.getVocabularyByName('finish_observation_reasons')
+        terms = []
+        if voc is not None:
+            for key, value in voc.getVocabularyLines():
+                # create a term - the arguments are the value, the token, and
+                # the title (optional)
+                terms.append(SimpleVocabulary.createTerm(key, key, value))
+        return SimpleVocabulary(terms)
+
+
+grok.global_utility(FinishObservationReasons,
+    name=u"esdrt.content.finishobservationreasons")

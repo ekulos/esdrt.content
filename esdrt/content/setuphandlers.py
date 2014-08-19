@@ -38,11 +38,14 @@ VOCABULARIES = [
      'title': 'Parameter',
      'filename': 'parameter.csv',
     },
-    {'id': 'observation_closing_reasons',
-     'title': 'Observation Closing Reasons',
-     'filename': 'observation_closing_reasons.csv',
+    {'id': 'conclusion_reasons',
+     'title': 'Conclusion Reasons',
+     'filename': 'conclusion_reasons.csv',
     },
-
+    {'id': 'finish_observation_reasons',
+     'title': 'Finish Observation Reasons',
+     'filename': 'finish_observation_reasons.csv',
+    },
 ]
 
 

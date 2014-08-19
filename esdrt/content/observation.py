@@ -181,7 +181,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
     form.write_permission(closing_reason='cmf.ManagePortal')
     closing_reason = schema.Choice(
         title=_(u'Closing reason'),
-        vocabulary='esdrt.content.closingreasons',
+        vocabulary='esdrt.content.finishobservationreasons',
         required=False,
 
     )
@@ -1128,7 +1128,7 @@ class AddCommentForm(Form):
 
 class AddConclusionForm(Form):
     ignoreContext = True
-    fields = field.Fields(IConclusion).select('text')
+    fields = field.Fields(IConclusion).select('text', 'closing_reason')
 
     @button.buttonAndHandler(_('Add conclusion'))
     def create_conclusion(self, action):
@@ -1141,5 +1141,7 @@ class AddConclusionForm(Form):
         text = self.request.form.get('form.widgets.text', '')
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
+        reason = self.request.form.get('form.widgets.closing_reason')
+        comment.closing_reason = reason[0]
 
         return self.request.response.redirect(context.absolute_url())
