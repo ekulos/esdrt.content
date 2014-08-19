@@ -567,6 +567,9 @@ class AddForm(dexterity.AddForm):
         self.actions['save'].title = u'Save Observation'
         self.actions['cancel'].title = u'Delete Observation'
 
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
 
 @grok.subscribe(IObservation, IObjectAddedEvent)
 def add_question(context, event):
