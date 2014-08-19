@@ -37,6 +37,13 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        name="deny-finish-observation"
+        for="..observation.IObservation"
+        class=".statechange.DenyFinishObservationReasonForm"
+        permission="zope2.View"
+        />
+
     <browser:viewletManager
         name="esdrt.content.commentmanager"
         provides=".interfaces.ICommentDiscussion"

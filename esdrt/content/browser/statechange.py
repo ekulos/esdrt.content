@@ -46,6 +46,39 @@ class FinishObservationReasonForm(Form):
         )
 
 
+
+class IDenyFinishObservationReasonForm(Interface):
+
+    reason = schema.Choice(
+        title=_(u'Denying reason'),
+        vocabulary='esdrt.content.finishobservationdentreasons',
+        required=True,
+    )
+
+    comments = RichText(
+        title=_(u'Enter comments if you want'),
+        required=False,
+    )
+
+
+class DenyFinishObservationReasonForm(Form):
+    fields = field.Fields(IDenyFinishObservationReasonForm)
+    label = _(u'Deny finish observation')
+    description = _(u'Check the reason for denying the finishing of this observation')
+    ignoreContext = True
+
+    @button.buttonAndHandler(u'Deny finishing observation')
+    def finish_observation(self, action):
+        reason = self.request.get('form.widgets.reason')[0]
+        comments = self.request.get('form.widgets.comments')
+        with api.env.adopt_roles(['Manager']):
+            self.context.closing_deny_reason = reason
+            self.context.closing_deny_comments = RichTextValue(comments, 'text/html', 'text/html')
+        return self.context.content_status_modify(
+            workflow_action='deny-closure',
+        )
+
+
 class IAssignAnswererForm(Interface):
     answerers = schema.Choice(
         title=_(u'Select the answerers'),
