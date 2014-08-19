@@ -191,7 +191,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=False,
     )
 
-    form.write_permission(closing_reason='cmf.ManagePortal')
+    form.write_permission(closing_deny_reason='cmf.ManagePortal')
     closing_deny_reason = schema.Choice(
         title=_(u'Finish deny reason'),
         vocabulary='esdrt.content.finishobservationdenyreasons',
@@ -199,7 +199,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     )
 
-    form.write_permission(closing_comments='cmf.ManagePortal')
+    form.write_permission(closing_deny_comments='cmf.ManagePortal')
     closing_deny_comments = RichText(
         title=_(u'Finish deny comments'),
         required=False,
