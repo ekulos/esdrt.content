@@ -1,11 +1,9 @@
-from Acquisition import aq_parent
-from plone.app.textfield import RichText
 from Acquisition import aq_inner
+from Acquisition import aq_parent
 from esdrt.content import MessageFactory as _
-from esdrt.content.question import IQuestion
-from five import grok
 from plone import api
-from plone.directives import form
+from plone.app.textfield import RichText
+from plone.app.textfield.value import RichTextValue
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
@@ -38,11 +36,11 @@ class FinishObservationReasonForm(Form):
 
     @button.buttonAndHandler(u'Finish observation')
     def finish_observation(self, action):
-        reason = self.request.get('reason')
-        comments = self.request.get('comments')
+        reason = self.request.get('form.widgets.reason')[0]
+        comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):
             self.context.closing_reason = reason
-            self.context.closing_comments = comments
+            self.context.closing_comments = RichTextValue(comments, 'text/html', 'text/html')
         return self.context.content_status_modify(
             workflow_action='request-close',
         )

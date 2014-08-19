@@ -170,7 +170,7 @@ class Conclusions(object):
 
     def __call__(self, context):
         pvoc = getToolByName(context, 'portal_vocabularies')
-        voc = pvoc.getVocabularyByName('observation_conclusion_reasons')
+        voc = pvoc.getVocabularyByName('conclusion_reasons')
         terms = []
         if voc is not None:
             for key, value in voc.getVocabularyLines():

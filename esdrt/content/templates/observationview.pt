@@ -337,6 +337,9 @@
   </div>
 
   <ul class="eea-tabs" tal:condition="view/get_questions">
+    <li tal:condition="python:context.get_status() == 'close-requested'">
+      Finish observation
+    </li>
     <li tal:define="conclusion view/get_conclusion"
       tal:condition="nocall:conclusion"
       >Conclusions</li>
@@ -344,6 +347,25 @@
   </ul>
 
   <div class="eea-tabs-panels">
+    <div class="eea-tabs-panel finish-observation"
+      tal:condition="python:context.get_status() == 'close-requested'">
+        <strong>Observation Finish Requested</strong><br/>
+        <strong>Reason:</strong> <span tal:replace="context/finish_reason_value" />
+        <br />
+        <div tal:replace="structure context/closing_comments/output|nothing">
+          Content
+        </div>
+      <div class="actions">
+        <tal:block tal:repeat="action view/actions">
+          <a href=""
+            tal:attributes="href action/action"
+            class="standardButton"
+            tal:content="action/title">
+            Action
+          </a>
+        </tal:block>
+      </div>
+    </div>
     <div class="eea-tabs-panel conclusions"
         tal:define="conclusion view/get_conclusion"
         tal:condition="nocall:conclusion">
@@ -353,7 +375,6 @@
           <div tal:replace="structure conclusion/text/output|nothing">
           Content
           </div>
-
         </div>
         <div class="files" tal:condition="conclusion/get_files">
           Files:
