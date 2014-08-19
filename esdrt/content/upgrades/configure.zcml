@@ -91,4 +91,14 @@
          handler=".11_12.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 13."
+         description="Reload workflows and content-type configuration"
+         source="12"
+         destination="13"
+         handler=".12_13.upgrade"
+         profile="esdrt.content:default" />
+
+
+
 </configure>
