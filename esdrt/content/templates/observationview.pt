@@ -355,6 +355,16 @@
         <div tal:replace="structure context/closing_comments/output|nothing">
           Content
         </div>
+
+        <div class="finish-denied" tal:condition="python:context.closing_deny_reason != u''">
+          <strong>Previous finishing denying reason</strong><br />
+          <strong>Reason:</strong> <span tal:replace="context/finish_deny_reason_value" /><br/>
+          <div tal:replace="structure context/closing_deny_comments/output|nothing">
+          Content
+          </div>
+        </div>
+
+
       <div class="actions">
         <tal:block tal:repeat="action view/actions">
           <a href=""
@@ -376,6 +386,15 @@
           Content
           </div>
         </div>
+
+        <div class="finish-denied" tal:condition="python:context.closing_deny_reason != u''">
+          <strong>Observation Finishing denied</strong><br />
+          <strong>Reason:</strong> <span tal:replace="context/finish_deny_reason_value" /><br/>
+          <div tal:replace="structure context/closing_deny_comments/output|nothing">
+          Content
+          </div>
+        </div>
+
         <div class="files" tal:condition="conclusion/get_files">
           Files:
           <div class="file" tal:repeat="file conclusion/get_files">
