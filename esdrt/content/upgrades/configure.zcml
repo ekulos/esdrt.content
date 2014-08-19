@@ -99,6 +99,12 @@
          handler=".12_13.upgrade"
          profile="esdrt.content:default" />
 
-
+    <genericsetup:upgradeStep
+         title="Upgrade to 14."
+         description="Reload css, js and vocabularies"
+         source="13"
+         destination="14"
+         handler=".13_14.upgrade"
+         profile="esdrt.content:default" />
 
 </configure>
