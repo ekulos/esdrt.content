@@ -1,11 +1,17 @@
 Changelog
 =========
 
-1.9 (unreleased)
+1.9 (2014-08-20)
 ----------------
 
+- Provide a reason selection and comment box for requesting finishing observation and denying finishing observation [erral]
+
+- Added reason selection to conclusions [erral]
+
 - Fix tickets #20623, #20620, #20612, #20636, #20617, #20599, #20645, #20642, #20629, #20624 [MikelS]
+
 - Every RE and LR can be counterparts [MikelS]
+
 - Observation cannot be sent to LR without requestion comments form counterparts [MikelS]
 
 
