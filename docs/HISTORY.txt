@@ -4,7 +4,9 @@ Changelog
 1.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix tickets #20623, #20620, #20612, #20636, #20617, #20599, #20645, #20642, #20629, #20624 [MikelS]
+- Every RE and LR can be counterparts [MikelS]
+- Observation cannot be sent to LR without requestion comments form counterparts [MikelS]
 
 
 1.8 (2014-08-07)
