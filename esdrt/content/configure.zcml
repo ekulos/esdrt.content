@@ -29,6 +29,14 @@
       directory="static"
       />
 
+  <!-- Comment Extender -->
+  <adapter
+    factory=".commentextender.CommentExtenderFactory"
+    provides=".commentextender.ICommentExtenderFields" />
+  <adapter
+    factory=".commentextender.CommentExtender"
+    provides="plone.z3cform.fieldsets.interfaces.IFormExtender" />
+
   <!-- -*- extra stuff goes here -*- -->
   <adapter name="Country" factory=".indexers.observation_country" />
   <adapter name="CRF_Code" factory=".indexers.observation_crf_code" />

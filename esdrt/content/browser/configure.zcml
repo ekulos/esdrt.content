@@ -83,4 +83,12 @@
         />
 
 
+    <browser:page
+        name="download"
+        for="plone.app.discussion.interfaces.IComment"
+        class=".attachmentdownload.Download"
+        permission="zope2.View"
+        />
+
+
 </configure>
