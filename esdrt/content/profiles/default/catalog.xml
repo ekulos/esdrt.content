@@ -14,7 +14,7 @@
  </index>
 
  <index name="GHG_Source_Sectors" meta_type="FieldIndex">
-  <indexed_attr value="GH_Source_Sectors"/>
+  <indexed_attr value="GHG_Source_Sectors"/>
  </index>
 
  <index name="Status_Flag" meta_type="FieldIndex">
@@ -23,6 +23,7 @@
 
  <column value="observation_status" />
  <column value="country" />
+ <column value="ghg_source_sectors" />
 
 
 </object>
