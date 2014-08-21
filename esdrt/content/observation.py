@@ -260,6 +260,16 @@ class Observation(dexterity.Container):
     grok.implements(IObservation)
     # Add your class methods and properties here
 
+    def get_crf_code(self):
+        """ stupid method to avoid name-clashes with the existing
+        vocabularies when cataloging """
+        return self.crf_code
+
+    def get_ghg_source_sectors(self):
+        """ stupid method to avoid name-clashes with the existing
+        vocabularies when cataloging """
+        return self.ghg_source_sectors
+
     def country_value(self):
         return self._vocabulary_value('esdrt.content.eea_member_states',
             self.country

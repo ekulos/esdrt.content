@@ -21,9 +21,20 @@
   <indexed_attr value="Status_Flag"/>
  </index>
 
+ <index name="crf_code" meta_type="FieldIndex">
+  <indexed_attr value="CRF_Code"/>
+ </index>
+
+ <index name="ghg_source_sectors" meta_type="FieldIndex">
+  <indexed_attr value="GHG_Source_Sectors"/>
+ </index>
+
+
  <column value="observation_status" />
  <column value="country" />
- <column value="ghg_source_sectors" />
+ <column value="get_ghg_source_sectors" />
+ <column value="get_status" />
+ <column value="get_crf_code" />
 
 
 </object>

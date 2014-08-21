@@ -18,6 +18,7 @@ class StatisticsView(grok.View):
 
     def update(self):
         self.observations = self.get_all_observations()
+        self.questions = self.get_all_questions()
 
     def get_all_observations(self):
         catalog = getToolByName(self.context, 'portal_catalog')
@@ -28,8 +29,23 @@ class StatisticsView(grok.View):
         for brain in brains:
             item = dict(
                 country=brain.country,
+                status=brain.get_status,
+                sector=brain.get_ghg_source_sectors,
+            )
+            data.append(item)
+        return data
+
+    def get_all_questions(self):
+        catalog = getToolByName(self.context, 'portal_catalog')
+        brains = catalog.unrestrictedSearchResults(
+            portal_type='Question'
+        )
+        data = []
+        for brain in brains:
+            item = dict(
+                country=brain.country,
                 status=brain.observation_status,
-                sector=brain.ghg_source_sectors,
+                sector=brain.get_ghg_source_sectors,
             )
             data.append(item)
         return data
@@ -84,3 +100,41 @@ class StatisticsView(grok.View):
         ret = copy.copy(reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), copy.copy(items)))
         ret[key] = 'Sum'
         return ret
+
+    def question_status_per_country(self):
+        return self._generic_question(
+            key='country',
+            value='status',
+            vocabulary='esdrt.content.eea_member_states'
+        )
+
+    def question_status_per_sector(self):
+        return self._generic_question(
+            key='sector',
+            value='status',
+            vocabulary='esdrt.content.ghg_source_sectors'
+        )
+
+    def _generic_question(self, key, value, vocabulary):
+        data = []
+        items = {}
+        for gkey, question in itertools.groupby(self.questions, lambda x: x.get(key)):
+            val = items.get(gkey, [])
+            val.extend([o.get(value) for o in question])
+            items[gkey] = val
+
+        for gkey, values in items.items():
+            item = dict(
+                open=values.count('open'),
+                draft=values.count('draft'),
+                closed=values.count('closed'),
+                conclusion=values.count('conclusion'),
+            )
+            val = sum(item.values())
+            item['sum'] = val
+            item[key] = gkey
+            data.append(item)
+
+        datasum = self.calculate_sum(data, key)
+        data.append(datasum)
+        return data
