@@ -4,6 +4,9 @@ from five import grok
 from zope.component import getUtility
 from zope.schema.interfaces import IVocabularyFactory
 
+import itertools
+import copy
+
 
 grok.templatedir('templates')
 
@@ -13,50 +16,71 @@ class StatisticsView(grok.View):
     grok.name('statistics')
     grok.require('zope2.View')
 
-    def get_countries(self):
-        factory = getUtility(IVocabularyFactory,
-            'esdrt.content.eea_member_states'
-        )
-        vocabulary = factory(self.context)
-        return sorted([k for k, v in vocabulary.by_token.items()])
+    def update(self):
+        self.observations = self.get_all_observations()
 
-    def observation_status_per_country(self):
-        data = []
-        observations = self.get_observations()
-        for country in self.get_countries():
-            item = observations.get(country, {})
-            item['country'] = country
-            data.append(item)
-
-        data.append(self.calculate_sum(data))
-        return data
-
-    def sum_observation(self, data, country, status):
-        val = data.get(country, {}).get(status, 0)
-        val += 1
-        data.setdefault(country, {})
-        data[country][status] = val
-        return data
-
-    def get_observations(self):
-        data = {}
+    def get_all_observations(self):
         catalog = getToolByName(self.context, 'portal_catalog')
         brains = catalog.unrestrictedSearchResults(
             portal_type='Observation'
         )
+        data = []
         for brain in brains:
-            data = self.sum_observation(
-                data,
-                brain.country,
-                brain.observation_status
+            item = dict(
+                country=brain.country,
+                status=brain.observation_status,
+                sector=brain.ghg_source_sectors,
             )
-
-        for k, v in data.items():
-            data[k]['sum'] = sum(v.values())
-
+            data.append(item)
         return data
 
-    def calculate_sum(self, items):
-        ret = reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), items)
-        ret['country'] = 'Sum'
+    def get_vocabulary_values(self, name):
+        try:
+            factory = getUtility(IVocabularyFactory, name)
+            vocabulary = factory(self.context)
+            return sorted([k for k, v in vocabulary.by_token.items()])
+        except:
+            return []
+
+    def observation_status_per_country(self):
+        return self._generic_observation(
+            key='country',
+            value='status',
+            vocabulary='esdrt.content.eea_member_states'
+        )
+
+    def observation_status_per_sector(self):
+        return self._generic_observation(
+            key='sector',
+            value='status',
+            vocabulary='esdrt.content.ghg_source_sectors'
+        )
+
+    def _generic_observation(self, key='country', value='status', vocabulary=''):
+        data = []
+        items = {}
+        for gkey, observation in itertools.groupby(self.observations, lambda x: x.get(key)):
+            val = items.get(gkey, [])
+            val.extend([o.get(value) for o in observation])
+            items[gkey] = val
+
+        for gkey, values in items.items():
+            item = dict(
+                open=values.count('open'),
+                draft=values.count('draft'),
+                closed=values.count('closed'),
+                conclusion=values.count('conclusion'),
+            )
+            val = sum(item.values())
+            item['sum'] = val
+            item[key] = gkey
+            data.append(item)
+
+        datasum = self.calculate_sum(data, key)
+        data.append(datasum)
+        return data
+
+    def calculate_sum(self, items, key):
+        ret = copy.copy(reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), copy.copy(items)))
+        ret[key] = 'Sum'
         return ret
