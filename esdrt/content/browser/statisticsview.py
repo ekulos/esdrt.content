@@ -31,6 +31,7 @@ class StatisticsView(grok.View):
                 country=brain.country,
                 status=brain.get_status,
                 sector=brain.get_ghg_source_sectors,
+                highlight=brain.get_highlight,
             )
             data.append(item)
         return data
@@ -62,44 +63,46 @@ class StatisticsView(grok.View):
         return self._generic_observation(
             key='country',
             value='status',
-            vocabulary='esdrt.content.eea_member_states'
+            vals=['open', 'draft', 'closed', 'conclusion']
         )
 
     def observation_status_per_sector(self):
         return self._generic_observation(
             key='sector',
             value='status',
-            vocabulary='esdrt.content.ghg_source_sectors'
+            vals=['open', 'draft', 'closed', 'conclusion']
         )
 
-    def _generic_observation(self, key='country', value='status', vocabulary=''):
+    def _generic_observation(self, key='country', value='status', vals=[], obs_filter=None):
         data = []
         items = {}
-        for gkey, observation in itertools.groupby(self.observations, lambda x: x.get(key)):
+        observations = filter(obs_filter, self.observations)
+        for gkey, observation in itertools.groupby(observations, lambda x: x.get(key)):
             val = items.get(gkey, [])
             val.extend([o.get(value) for o in observation])
             items[gkey] = val
 
         for gkey, values in items.items():
-            item = dict(
-                open=values.count('open'),
-                draft=values.count('draft'),
-                closed=values.count('closed'),
-                conclusion=values.count('conclusion'),
-            )
+            item = {}
+            for val in vals:
+                item[val] = values.count(val)
+
             val = sum(item.values())
             item['sum'] = val
             item[key] = gkey
             data.append(item)
 
         datasum = self.calculate_sum(data, key)
-        data.append(datasum)
+        if datasum is not None:
+            data.append(datasum)
         return data
 
     def calculate_sum(self, items, key):
-        ret = copy.copy(reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), copy.copy(items)))
-        ret[key] = 'Sum'
-        return ret
+        if items:
+            ret = copy.copy(reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), copy.copy(items)))
+            ret[key] = 'Sum'
+            return ret
+        return None
 
     def question_status_per_country(self):
         return self._generic_question(
@@ -138,3 +141,31 @@ class StatisticsView(grok.View):
         datasum = self.calculate_sum(data, key)
         data.append(datasum)
         return data
+
+    def get_sectors(self):
+        return self.get_vocabulary_values('esdrt.content.ghg_source_sectors')
+
+    def observation_highlights_pgf(self):
+        return self._generic_observation(
+            key='country',
+            value='sector',
+            vals=self.get_sectors(),
+            obs_filter=lambda x: 'pgf' in x.get('highlight', []),
+        )
+
+    def observation_highlights_psi(self):
+        return self._generic_observation(
+            key='country',
+            value='sector',
+            vals=self.get_sectors(),
+            obs_filter=lambda x: 'psi' in x.get('highlight', []),
+        )
+
+    def observation_highlights_ptc(self):
+        return self._generic_observation(
+            key='country',
+            value='sector',
+            vals=self.get_sectors(),
+            obs_filter=lambda x: 'ptc' in x.get('highlight', []),
+        )
+

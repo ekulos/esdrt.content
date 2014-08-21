@@ -35,6 +35,7 @@
  <column value="get_ghg_source_sectors" />
  <column value="get_status" />
  <column value="get_crf_code" />
+ <column value="get_highlight" />
 
 
 </object>

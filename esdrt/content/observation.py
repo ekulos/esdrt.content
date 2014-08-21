@@ -270,6 +270,11 @@ class Observation(dexterity.Container):
         vocabularies when cataloging """
         return self.ghg_source_sectors
 
+    def get_highlight(self):
+        """ stupid method to avoid name-clashes with the existing
+        vocabularies when cataloging """
+        return self.highlight
+
     def country_value(self):
         return self._vocabulary_value('esdrt.content.eea_member_states',
             self.country

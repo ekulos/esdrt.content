@@ -108,6 +108,75 @@
       </tbody>
     </table>
 
+    <p>How many observations will potentially require gap filling (initial checks)?</p>
+
+    <table class="listing">
+      <thead>
+        <tr>
+          <th>Potential gap-filling</th>
+          <tal:sectors repeat="sector view/get_sectors">
+            <th tal:content="sector">1A</th>
+          </tal:sectors>
+          <th>Sum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="country view/observation_highlights_pgf">
+          <td tal:content="country/country">Sector</td>
+          <tal:sectors repeat="sector view/get_sectors">
+            <td tal:content="country/?sector">1A</td>
+          </tal:sectors>
+          <td tal:content="country/sum|string:0">Sum</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>How many observations will potentially be significant issues (step 1 annual review)?</p>
+
+    <table class="listing">
+      <thead>
+        <tr>
+          <th>Potential significant issues</th>
+          <tal:sectors repeat="sector view/get_sectors">
+            <th tal:content="sector">1A</th>
+          </tal:sectors>
+          <th>Sum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="country view/observation_highlights_psi">
+          <td tal:content="country/country">Sector</td>
+          <tal:sectors repeat="sector view/get_sectors">
+            <td tal:content="country/?sector">1A</td>
+          </tal:sectors>
+          <td tal:content="country/sum|string:0">Sum</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>How many observations will potentially be technical corrections (step 2 annual review and comprehensive review)?</p>
+
+    <table class="listing">
+      <thead>
+        <tr>
+          <th>Potential technical corrections</th>
+          <tal:sectors repeat="sector view/get_sectors">
+            <th tal:content="sector">1A</th>
+          </tal:sectors>
+          <th>Sum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="country view/observation_highlights_ptc">
+          <td tal:content="country/country">Sector</td>
+          <tal:sectors repeat="sector view/get_sectors">
+            <td tal:content="country/?sector">1A</td>
+          </tal:sectors>
+          <td tal:content="country/sum|string:0">Sum</td>
+        </tr>
+      </tbody>
+    </table>
+
     </metal:content-core>
   </metal:main>
 
