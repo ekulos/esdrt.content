@@ -1,9 +1,9 @@
+from Products.CMFCore.utils import getToolByName
 from esdrt.content.reviewfolder import IReviewFolder
 from five import grok
 from zope.component import getUtility
 from zope.schema.interfaces import IVocabularyFactory
 
-import random
 
 grok.templatedir('templates')
 
@@ -22,30 +22,41 @@ class StatisticsView(grok.View):
 
     def observation_status(self):
         data = []
+        observations = self.get_observations()
         for country in self.get_countries():
-            item = self.get_observation_status_per_country(country)
+            item = observations.get(country, {})
+            item['country'] = country
             data.append(item)
 
         data.append(self.calculate_sum(data))
         return data
 
-    def get_observation_status_per_country(self, country):
-        draft = random.randint(0, 10)
-        open = random.randint(0, 10)
-        conclusion = random.randint(0, 10)
-        finished = random.randint(0, 10)
-        item = dict(
-            country=country,
-            draft=draft,
-            open=open,
-            conclusion=conclusion,
-            finished=finished,
-            sum=draft + open + conclusion + finished,
+    def sum_observation(self, data, country, status):
+        val = data.get(country, {}).get(status, 0)
+        val += 1
+        data.setdefault(country, {})
+        data[country][status] = val
+        return data
+
+    def get_observations(self):
+        data = {}
+        catalog = getToolByName(self.context, 'portal_catalog')
+        brains = catalog.unrestrictedSearchResults(
+            portal_type='Observation'
         )
-        return item
+        for brain in brains:
+            data = self.sum_observation(
+                data,
+                brain.country,
+                brain.observation_status
+            )
+
+        for k, v in data.items():
+            data[k]['sum'] = sum(v.values())
+
+        return data
 
     def calculate_sum(self, items):
-        ret = reduce(lambda x, y: dict((k, v + y[k]) for k, v in x.iteritems()), items)
+        ret = reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), items)
         ret['country'] = 'Sum'
         return ret
-

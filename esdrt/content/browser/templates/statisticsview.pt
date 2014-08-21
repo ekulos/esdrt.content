@@ -28,11 +28,11 @@
       <tbody>
         <tr tal:repeat="country view/observation_status">
           <td tal:content="country/country">Country</td>
-          <td tal:content="country/draft">Draft</td>
-          <td tal:content="country/open">Open</td>
-          <td tal:content="country/conclusion">Conclusion</td>
-          <td tal:content="country/finished">Finished</td>
-          <td tal:content="country/sum">Sum</td>
+          <td tal:content="country/draft|string:0">Draft</td>
+          <td tal:content="country/open|string:0">Open</td>
+          <td tal:content="country/conclusion|string:0">Conclusion</td>
+          <td tal:content="country/closed|string:0">Finished</td>
+          <td tal:content="country/sum|string:0">Sum</td>
         </tr>
       </tbody>
     </table>
