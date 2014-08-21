@@ -21,4 +21,8 @@
   <indexed_attr value="Status_Flag"/>
  </index>
 
+ <column value="observation_status" />
+ <column value="country" />
+
+
 </object>

@@ -107,4 +107,13 @@
          handler=".13_14.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 15."
+         description="Catalog metadata"
+         source="14"
+         destination="15"
+         handler=".14_15.upgrade"
+         profile="esdrt.content:default" />
+
+
 </configure>
