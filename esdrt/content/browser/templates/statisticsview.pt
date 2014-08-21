@@ -26,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr tal:repeat="country view/observation_status">
+        <tr tal:repeat="country view/observation_status_per_country">
           <td tal:content="country/country">Country</td>
           <td tal:content="country/draft|string:0">Draft</td>
           <td tal:content="country/open|string:0">Open</td>

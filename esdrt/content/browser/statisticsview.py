@@ -20,7 +20,7 @@ class StatisticsView(grok.View):
         vocabulary = factory(self.context)
         return sorted([k for k, v in vocabulary.by_token.items()])
 
-    def observation_status(self):
+    def observation_status_per_country(self):
         data = []
         observations = self.get_observations()
         for country in self.get_countries():
