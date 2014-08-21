@@ -10,7 +10,32 @@
   <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core">
 
-    Hi there!
+    <h2>Today's Summary</h2>
+
+    <p>Observations: How many observations are still drafts, open in conclusion state and finished?</p>
+
+    <table class="listing">
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Draft</th>
+          <th>Open</th>
+          <th>Conclusion</th>
+          <th>Finished</th>
+          <th>Sum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="country view/observation_status">
+          <td tal:content="country/country">Country</td>
+          <td tal:content="country/draft">Draft</td>
+          <td tal:content="country/open">Open</td>
+          <td tal:content="country/conclusion">Conclusion</td>
+          <td tal:content="country/finished">Finished</td>
+          <td tal:content="country/sum">Sum</td>
+        </tr>
+      </tbody>
+    </table>
 
 
 
