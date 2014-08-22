@@ -1083,17 +1083,12 @@ class ModificationForm(dexterity.EditForm):
             self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
 
 
-# @grok.subscribe(IObservation, IObjectAddedEvent)
-# def add_observation(context, event):
-#     request = getRequest()
-#     pps = getMultiAdapter((context, request), name='plone_portal_state')
-#     member = pps.member()
-#     member_id = member.getId()
-#     api.user.grant_roles(
-#         username=member_id,
-#         obj=context,
-#         roles=['SectorExpertReviewer']
-#     )
+    def updateActions(self):
+        super(ModificationForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
+
 class AddAnswerForm(Form):
 
     ignoreContext = True
@@ -1117,6 +1112,11 @@ class AddAnswerForm(Form):
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
         return self.request.response.redirect(context.absolute_url())
+
+    def updateActions(self):
+        super(AddAnswerForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
 
 class AddNoAnswerForm(Form):
 
@@ -1143,6 +1143,12 @@ class AddNoAnswerForm(Form):
 
         return self.request.response.redirect(context.absolute_url() + "/assign_answerer_form?workflow_action=assign-answerer")
 
+    def updateActions(self):
+        super(AddNoAnswerForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
+
 class AddCommentForm(Form):
 
     ignoreContext = True
@@ -1168,6 +1174,11 @@ class AddCommentForm(Form):
 
         return self.request.response.redirect(context.absolute_url())
 
+    def updateActions(self):
+        super(AddCommentForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
 
 class AddConclusionForm(Form):
     ignoreContext = True
@@ -1188,3 +1199,8 @@ class AddConclusionForm(Form):
         comment.closing_reason = reason[0]
 
         return self.request.response.redirect(context.absolute_url())
+
+    def updateActions(self):
+        super(AddConclusionForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
