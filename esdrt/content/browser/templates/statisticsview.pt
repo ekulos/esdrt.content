@@ -20,7 +20,7 @@
           <th>Country</th>
           <th>Draft</th>
           <th>Open</th>
-          <th>Conclusion</th>
+          <th>Conclusions</th>
           <th>Finished</th>
           <th>Sum</th>
         </tr>
@@ -43,7 +43,7 @@
           <th>Sector</th>
           <th>Draft</th>
           <th>Open</th>
-          <th>Conclusion</th>
+          <th>Conclusions</th>
           <th>Finished</th>
           <th>Sum</th>
         </tr>
@@ -68,7 +68,7 @@
           <th>Country</th>
           <th>Draft</th>
           <th>Open</th>
-          <th>Conclusion</th>
+          <th>Conclusions</th>
           <th>Finished</th>
           <th>Sum</th>
         </tr>
@@ -91,7 +91,7 @@
           <th>Sector</th>
           <th>Draft</th>
           <th>Open</th>
-          <th>Conclusion</th>
+          <th>Conclusions</th>
           <th>Finished</th>
           <th>Sum</th>
         </tr>
