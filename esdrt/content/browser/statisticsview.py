@@ -62,7 +62,7 @@ class StatisticsView(grok.View):
         except:
             return []
 
-    def _generic_getter(self, items, key, value, columns=[], obs_filter=None):
+    def _generic_getter(self, items, key, value, columns=[], filter_fun=None):
         """
          Generic function to get items for later rendering.
          Parameters:
@@ -77,8 +77,8 @@ class StatisticsView(grok.View):
         """
         data = []
         items = {}
-        # Get the observations, filtered if needed
-        filted_items = filter(obs_filter, items)
+        # Get the items, filtered if needed
+        filted_items = filter(filter_fun, items)
         # Set sorting and grouping key into a function
         getkey = operator.itemgetter(key)
         filted_items.sort(key=getkey)
@@ -107,7 +107,7 @@ class StatisticsView(grok.View):
 
         return data
 
-    def _generic_observation(self, key, value, columns=[], obs_filter=None):
+    def _generic_observation(self, key, value, columns=[], filter_fun=None):
         return self._generic_getter(
             self.observations,
             key,
@@ -116,7 +116,7 @@ class StatisticsView(grok.View):
             obs_filter,
         )
 
-    def _generic_question(self, key, value, columns=[], obs_filter=None):
+    def _generic_question(self, key, value, columns=[], filter_fun=None):
         return self._generic_getter(
             self.questions,
             key,
@@ -168,7 +168,7 @@ class StatisticsView(grok.View):
             key='country',
             value='sector',
             columns=self.get_sectors(),
-            obs_filter=lambda x: 'pgf' in x.get('highlight', []),
+            filter_fun=lambda x: 'pgf' in x.get('highlight', []),
         )
 
     def observation_highlights_psi(self):
@@ -176,7 +176,7 @@ class StatisticsView(grok.View):
             key='country',
             value='sector',
             columns=self.get_sectors(),
-            obs_filter=lambda x: 'psi' in x.get('highlight', []),
+            filter_fun=lambda x: 'psi' in x.get('highlight', []),
         )
 
     def observation_highlights_ptc(self):
@@ -184,5 +184,5 @@ class StatisticsView(grok.View):
             key='country',
             value='sector',
             columns=self.get_sectors(),
-            obs_filter=lambda x: 'ptc' in x.get('highlight', []),
+            filter_fun=lambda x: 'ptc' in x.get('highlight', []),
         )
