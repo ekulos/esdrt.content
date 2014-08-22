@@ -105,7 +105,7 @@ class IAssignAnswererForm(Interface):
 
 class AssignAnswererForm(BrowserView):
 
-    index = ViewPageTemplateFile('assign_answerer_form.pt')
+    index = ViewPageTemplateFile('templates/assign_answerer_form.pt')
 
     def target_groupname(self):
         context = aq_inner(self.context)
@@ -191,11 +191,9 @@ class IAssignCounterPartForm(Interface):
 
 class AssignCounterPartForm(BrowserView):
 
-    index = ViewPageTemplateFile('assign_counterpart_form.pt')
-    # macro_wrapper = ViewPageTemplateFile('macro_wrapper.pt')
+    index = ViewPageTemplateFile('templates/assign_counterpart_form.pt')
 
     def target_groupnames(self):
-        context = aq_inner(self.context)
         return ['extranet-esd-reviewexperts', 'extranet-esd-leadreviewers']
 
     def get_counterpart_users(self):
@@ -260,7 +258,7 @@ class IAssignConclusionReviewerForm(Interface):
 
 class AssignConclusionReviewerForm(BrowserView):
 
-    index = ViewPageTemplateFile('assign_conclusion_reviewer_form.pt')
+    index = ViewPageTemplateFile('templates/assign_conclusion_reviewer_form.pt')
 
     def target_groupname(self):
         context = aq_inner(self.context)
