@@ -111,7 +111,7 @@ class StatisticsView(grok.View):
             key,
             value,
             columns,
-            obs_filter,
+            filter_fun,
         )
 
     def _generic_question(self, key, value, columns=[], filter_fun=None):
@@ -120,7 +120,7 @@ class StatisticsView(grok.View):
             key,
             value,
             columns,
-            obs_filter,
+            filter_fun,
         )
 
     def calculate_sum(self, items, key):
