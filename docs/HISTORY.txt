@@ -4,6 +4,8 @@ Changelog
 1.10 (UNRELEASED)
 ------------------
 
+- Users to be on the dropdown list of the conclusion reviers are the same as the ones to be in the counterpart selection form [erral]
+
 - First version of Secretariat Statistics [erral]
 
 - MSAuthorities can copy the files from the comments of MSExperts to the answer [erral]
