@@ -130,7 +130,6 @@ class StatisticsView(grok.View):
             filter_fun,
         )
 
-
     def get_sectors(self):
         return self.get_vocabulary_values('esdrt.content.ghg_source_sectors')
 
