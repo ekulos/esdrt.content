@@ -260,16 +260,20 @@ class AssignConclusionReviewerForm(BrowserView):
 
     index = ViewPageTemplateFile('templates/assign_conclusion_reviewer_form.pt')
 
-    def target_groupname(self):
-        context = aq_inner(self.context)
-        country = context.country.lower()
-        sector = context.ghg_source_sectors
-        return 'extranet-esd-reviewexperts-%s-%s' % (sector, country)
+    def target_groupnames(self):
+        return ['extranet-esd-reviewexperts', 'extranet-esd-leadreviewers']
 
     def get_counterpart_users(self):
-        groupname = self.target_groupname()
         current = api.user.get_current()
-        return [u for u in api.user.get_users(groupname=groupname) if current.getId() != u.getId()]
+        current_id = current.getId()
+
+        users = []
+        for groupname in self.target_groupnames():
+            data = [u for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+            users.extend(data)
+
+        return users
+
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
