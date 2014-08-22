@@ -6,6 +6,7 @@ from zope.schema.interfaces import IVocabularyFactory
 
 import itertools
 import copy
+import operator
 
 
 grok.templatedir('templates')
@@ -65,38 +66,59 @@ class StatisticsView(grok.View):
         return self._generic_observation(
             key='country',
             value='status',
-            vals=['open', 'draft', 'closed', 'conclusion']
+            columns=['open', 'draft', 'closed', 'conclusions']
         )
 
     def observation_status_per_sector(self):
         return self._generic_observation(
             key='sector',
             value='status',
-            vals=['open', 'draft', 'closed', 'conclusion']
+            columns=['open', 'draft', 'closed', 'conclusions']
         )
 
-    def _generic_observation(self, key='country', value='status', vals=[], obs_filter=None):
+    def _generic_observation(self, key, value, columns=[], obs_filter=None):
+        """
+         Generic function to get observations for later rendering.
+         Parameters:
+          - Key: name of the field that will be shown in files
+          - Value: name of the field that will be counted
+          - Columns: values of the 'value' field that will be counted and shown
+          - obs_filter: a function returning if a given observation should be
+                        included on the count or not.
+
+         NOTE: the values for 'key' and 'value', should be prepared for each
+               observations at the 'get_all_observations' method above.
+        """
         data = []
         items = {}
+        # Get the observations, filtered if needed
         observations = filter(obs_filter, self.observations)
-        for gkey, observation in itertools.groupby(observations, lambda x: x.get(key)):
+        # Set sorting and grouping key into a function
+        getkey = operator.itemgetter(key)
+        observations.sort(key=getkey)
+        # get observations grouped by the value of the key
+        for gkey, observation in itertools.groupby(observations, key=getkey):
             val = items.get(gkey, [])
             val.extend([o.get(value) for o in observation])
             items[gkey] = val
 
+        # Count how many observations are per-each of the columns
         for gkey, values in items.items():
             item = {}
-            for val in vals:
-                item[val] = values.count(val)
+            for column in columns:
+                item[column] = values.count(column)
 
+            # Calculate the sum
             val = sum(item.values())
             item['sum'] = val
             item[key] = gkey
             data.append(item)
 
+        # Calculate the final sum
         datasum = self.calculate_sum(data, key)
         if datasum is not None:
             data.append(datasum)
+
         return data
 
     def calculate_sum(self, items, key):
@@ -133,7 +155,7 @@ class StatisticsView(grok.View):
                 open=values.count('open'),
                 draft=values.count('draft'),
                 closed=values.count('closed'),
-                conclusion=values.count('conclusion'),
+                conclusions=values.count('conclusions'),
             )
             val = sum(item.values())
             item['sum'] = val
@@ -151,7 +173,7 @@ class StatisticsView(grok.View):
         return self._generic_observation(
             key='country',
             value='sector',
-            vals=self.get_sectors(),
+            columns=self.get_sectors(),
             obs_filter=lambda x: 'pgf' in x.get('highlight', []),
         )
 
@@ -159,7 +181,7 @@ class StatisticsView(grok.View):
         return self._generic_observation(
             key='country',
             value='sector',
-            vals=self.get_sectors(),
+            columns=self.get_sectors(),
             obs_filter=lambda x: 'psi' in x.get('highlight', []),
         )
 
@@ -167,7 +189,7 @@ class StatisticsView(grok.View):
         return self._generic_observation(
             key='country',
             value='sector',
-            vals=self.get_sectors(),
+            columns=self.get_sectors(),
             obs_filter=lambda x: 'ptc' in x.get('highlight', []),
         )
 
