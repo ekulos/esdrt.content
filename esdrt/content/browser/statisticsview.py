@@ -62,23 +62,9 @@ class StatisticsView(grok.View):
         except:
             return []
 
-    def observation_status_per_country(self):
-        return self._generic_observation(
-            key='country',
-            value='status',
-            columns=['open', 'draft', 'closed', 'conclusions']
-        )
-
-    def observation_status_per_sector(self):
-        return self._generic_observation(
-            key='sector',
-            value='status',
-            columns=['open', 'draft', 'closed', 'conclusions']
-        )
-
-    def _generic_observation(self, key, value, columns=[], obs_filter=None):
+    def _generic_getter(self, items, key, value, columns=[], obs_filter=None):
         """
-         Generic function to get observations for later rendering.
+         Generic function to get items for later rendering.
          Parameters:
           - Key: name of the field that will be shown in files
           - Value: name of the field that will be counted
@@ -92,14 +78,14 @@ class StatisticsView(grok.View):
         data = []
         items = {}
         # Get the observations, filtered if needed
-        observations = filter(obs_filter, self.observations)
+        filted_items = filter(obs_filter, items)
         # Set sorting and grouping key into a function
         getkey = operator.itemgetter(key)
-        observations.sort(key=getkey)
+        filted_items.sort(key=getkey)
         # get observations grouped by the value of the key
-        for gkey, observation in itertools.groupby(observations, key=getkey):
+        for gkey, item in itertools.groupby(filted_items, key=getkey):
             val = items.get(gkey, [])
-            val.extend([o.get(value) for o in observation])
+            val.extend([o.get(value) for o in item])
             items[gkey] = val
 
         # Count how many observations are per-each of the columns
@@ -121,6 +107,24 @@ class StatisticsView(grok.View):
 
         return data
 
+    def _generic_observation(self, key, value, columns=[], obs_filter=None):
+        return self._generic_getter(
+            self.observations,
+            key,
+            value,
+            columns,
+            obs_filter,
+        )
+
+    def _generic_question(self, key, value, columns=[], obs_filter=None):
+        return self._generic_getter(
+            self.questions,
+            key,
+            value,
+            columns,
+            obs_filter,
+        )
+
     def calculate_sum(self, items, key):
         if items:
             ret = copy.copy(reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), copy.copy(items)))
@@ -128,46 +132,36 @@ class StatisticsView(grok.View):
             return ret
         return None
 
+    def get_sectors(self):
+        return self.get_vocabulary_values('esdrt.content.ghg_source_sectors')
+
+    def observation_status_per_country(self):
+        return self._generic_observation(
+            key='country',
+            value='status',
+            columns=['open', 'draft', 'closed', 'conclusions']
+        )
+
+    def observation_status_per_sector(self):
+        return self._generic_observation(
+            key='sector',
+            value='status',
+            columns=['open', 'draft', 'closed', 'conclusions']
+        )
+
     def question_status_per_country(self):
         return self._generic_question(
             key='country',
             value='status',
-            vocabulary='esdrt.content.eea_member_states'
+            columns='esdrt.content.eea_member_states'
         )
 
     def question_status_per_sector(self):
         return self._generic_question(
             key='sector',
             value='status',
-            vocabulary='esdrt.content.ghg_source_sectors'
+            columns='esdrt.content.ghg_source_sectors'
         )
-
-    def _generic_question(self, key, value, vocabulary):
-        data = []
-        items = {}
-        for gkey, question in itertools.groupby(self.questions, lambda x: x.get(key)):
-            val = items.get(gkey, [])
-            val.extend([o.get(value) for o in question])
-            items[gkey] = val
-
-        for gkey, values in items.items():
-            item = dict(
-                open=values.count('open'),
-                draft=values.count('draft'),
-                closed=values.count('closed'),
-                conclusions=values.count('conclusions'),
-            )
-            val = sum(item.values())
-            item['sum'] = val
-            item[key] = gkey
-            data.append(item)
-
-        datasum = self.calculate_sum(data, key)
-        data.append(datasum)
-        return data
-
-    def get_sectors(self):
-        return self.get_vocabulary_values('esdrt.content.ghg_source_sectors')
 
     def observation_highlights_pgf(self):
         return self._generic_observation(
@@ -192,4 +186,3 @@ class StatisticsView(grok.View):
             columns=self.get_sectors(),
             obs_filter=lambda x: 'ptc' in x.get('highlight', []),
         )
-
