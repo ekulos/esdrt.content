@@ -4,6 +4,11 @@ Changelog
 1.10 (UNRELEASED)
 ------------------
 
+- First version of Secretariat Statistics [erral]
+
+- MSAuthorities can copy the files from the comments of MSExperts to the answer [erral]
+
+- MSExperts can add files to their comments [erral]
 
 
 1.9 (2014-08-20)
