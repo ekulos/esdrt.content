@@ -23,13 +23,14 @@ class StatisticsView(grok.View):
     def get_all_observations(self):
         catalog = getToolByName(self.context, 'portal_catalog')
         brains = catalog.unrestrictedSearchResults(
-            portal_type='Observation'
+            portal_type='Observation',
+            path='/'.join(self.context.getPhysicalPath())
         )
         data = []
         for brain in brains:
             item = dict(
                 country=brain.country,
-                status=brain.get_status,
+                status=brain.observation_status,
                 sector=brain.get_ghg_source_sectors,
                 highlight=brain.get_highlight,
             )
@@ -39,7 +40,8 @@ class StatisticsView(grok.View):
     def get_all_questions(self):
         catalog = getToolByName(self.context, 'portal_catalog')
         brains = catalog.unrestrictedSearchResults(
-            portal_type='Question'
+            portal_type='Question',
+            path='/'.join(self.context.getPhysicalPath())
         )
         data = []
         for brain in brains:
