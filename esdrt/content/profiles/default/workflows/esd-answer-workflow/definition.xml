@@ -33,6 +33,8 @@
    <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
   </permission-map>
+  <permission-map name="Reply to item" acquired="True">
+  </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -40,8 +42,6 @@
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
    <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>
-   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
    <permission-role>MSAuthority</permission-role>
