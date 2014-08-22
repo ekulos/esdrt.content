@@ -407,7 +407,7 @@ class Observation(dexterity.Container):
             return 'draft'
         elif status == 'closed':
             return 'closed'
-        elif status == 'close-requested':
+        elif status in ['close-requested', 'conclusions', 'conclusion-discussion']:
             return 'conclusions'
         else:
             return 'open'
@@ -852,7 +852,10 @@ class ObservationView(grok.View):
         if question:
             context = question.getFirstComment()
             if context.can_edit():
-                history_metadata = self.repo_tool.getHistoryMetadata(context)
+                try:
+                    history_metadata = self.repo_tool.getHistoryMetadata(context)
+                except:
+                    history_metadata = None
                 if history_metadata:
                     retrieve = history_metadata.retrieve
                     getId = history_metadata.getVersionId
