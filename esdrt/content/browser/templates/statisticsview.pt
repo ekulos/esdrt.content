@@ -30,7 +30,7 @@
           <td tal:content="country/country|string:Sum">Country</td>
           <td tal:content="country/draft|string:0">Draft</td>
           <td tal:content="country/open|string:0">Open</td>
-          <td tal:content="country/conclusion|string:0">Conclusion</td>
+          <td tal:content="country/conclusions|string:0">Conclusion</td>
           <td tal:content="country/closed|string:0">Finished</td>
           <td tal:content="country/sum|string:0">Sum</td>
         </tr>
@@ -53,7 +53,7 @@
           <td tal:content="country/sector">Sector</td>
           <td tal:content="country/draft|string:0">Draft</td>
           <td tal:content="country/open|string:0">Open</td>
-          <td tal:content="country/conclusion|string:0">Conclusion</td>
+          <td tal:content="country/conclusions|string:0">Conclusion</td>
           <td tal:content="country/closed|string:0">Finished</td>
           <td tal:content="country/sum|string:0">Sum</td>
         </tr>
@@ -78,7 +78,7 @@
           <td tal:content="country/country">Country</td>
           <td tal:content="country/draft|string:0">Draft</td>
           <td tal:content="country/open|string:0">Open</td>
-          <td tal:content="country/conclusion|string:0">Conclusion</td>
+          <td tal:content="country/conclusions|string:0">Conclusion</td>
           <td tal:content="country/closed|string:0">Finished</td>
           <td tal:content="country/sum|string:0">Sum</td>
         </tr>
@@ -101,7 +101,7 @@
           <td tal:content="country/sector">Sector</td>
           <td tal:content="country/draft|string:0">Draft</td>
           <td tal:content="country/open|string:0">Open</td>
-          <td tal:content="country/conclusion|string:0">Conclusion</td>
+          <td tal:content="country/conclusions|string:0">Conclusion</td>
           <td tal:content="country/closed|string:0">Finished</td>
           <td tal:content="country/sum|string:0">Sum</td>
         </tr>
