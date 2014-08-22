@@ -105,6 +105,13 @@ class StatisticsView(grok.View):
 
         return data
 
+    def calculate_sum(self, items, key):
+        if items:
+            ret = copy.copy(reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), copy.copy(items)))
+            ret[key] = 'Sum'
+            return ret
+        return None
+
     def _generic_observation(self, key, value, columns=[], filter_fun=None):
         return self._generic_getter(
             self.observations,
@@ -123,12 +130,6 @@ class StatisticsView(grok.View):
             filter_fun,
         )
 
-    def calculate_sum(self, items, key):
-        if items:
-            ret = copy.copy(reduce(lambda x, y: dict((k, v + (y and y.get(k, 0) or 0)) for k, v in x.iteritems()), copy.copy(items)))
-            ret[key] = 'Sum'
-            return ret
-        return None
 
     def get_sectors(self):
         return self.get_vocabulary_values('esdrt.content.ghg_source_sectors')
