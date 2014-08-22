@@ -72,8 +72,6 @@ class StatisticsView(grok.View):
           - obs_filter: a function returning if a given observation should be
                         included on the count or not.
 
-         NOTE: the values for 'key' and 'value', should be prepared for each
-               observations at the 'get_all_observations' method above.
         """
         data = []
         items = {}
