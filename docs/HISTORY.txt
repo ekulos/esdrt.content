@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.10 (UNRELEASED)
+1.10 (2014-08-25)
 ------------------
 
 - Users to be on the dropdown list of the conclusion reviers are the same as the ones to be in the counterpart selection form [erral]
