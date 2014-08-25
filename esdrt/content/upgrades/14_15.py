@@ -32,7 +32,7 @@ def install_workflow(context, logger):
         'esd-conclusion-workflow',
         'esd-file-workflow',
         'esd-question-review-workflow',
-        'esd-reviewtool-folder-workflow'
+        'esd-reviewtool-folder-workflow',
         'esd-review-workflow',
         ])
     setup.runImportStepFromProfile(PROFILE_ID, 'rolemap')
