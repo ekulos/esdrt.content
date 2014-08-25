@@ -29,8 +29,8 @@ def install_workflow(context, logger):
     wtool.manage_delObjects([
         'esd-answer-workflow',
         'esd-comment-workflow',
-        'esd-conclusion-workflow'
-        'esd-file-workflow'
+        'esd-conclusion-workflow',
+        'esd-file-workflow',
         'esd-question-review-workflow',
         'esd-reviewtool-folder-workflow'
         'esd-review-workflow',
