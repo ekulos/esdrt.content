@@ -62,7 +62,7 @@ class StatisticsView(grok.View):
         except:
             return []
 
-    def _generic_getter(self, items, key, value, columns=[], filter_fun=None):
+    def _generic_getter(self, objs, key, value, columns=[], filter_fun=None):
         """
          Generic function to get items for later rendering.
          Parameters:
@@ -76,7 +76,7 @@ class StatisticsView(grok.View):
         data = []
         items = {}
         # Get the items, filtered if needed
-        filted_items = filter(filter_fun, items)
+        filted_items = filter(filter_fun, objs)
         # Set sorting and grouping key into a function
         getkey = operator.itemgetter(key)
         filted_items.sort(key=getkey)
