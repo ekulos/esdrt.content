@@ -4,6 +4,7 @@ Changelog
 1.11 (UNRELEASED)
 ------------------
 
+- Add link to go to phase 2 [erral]
 
 1.10.3 (2014-08-25)
 -------------------
