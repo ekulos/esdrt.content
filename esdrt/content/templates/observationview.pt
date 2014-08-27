@@ -534,7 +534,7 @@
         </tal:block>
         <a href="./content_status_modify?workflow_action=close"
           id="observation-finish"
-          tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=close"
+          tal:attributes="href string:${here/absolute_url}/request-finish-observation?workflow_action=request-close"
           class="standardButton">
           Finish observation
         </a>
