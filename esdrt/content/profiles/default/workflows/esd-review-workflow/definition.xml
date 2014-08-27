@@ -11,8 +11,9 @@
  <permission>esdrt.content: View Comment Discussion</permission>
  <permission>esdrt.content: View Conclusion Discussion</permission>
  <state state_id="close-requested" title="Close requested">
-  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="send-to-team-2"/>
   <exit-transition transition_id="deny-closure"/>
+  <exit-transition transition_id="close"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -29,8 +30,6 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
   </permission-map>
-  <permission-map name="Reply to item" acquired="False">
-  </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
@@ -42,6 +41,12 @@
   <permission-map name="esdrt.content: Add Conclusion" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: View Answer Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Comment Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
   </permission-map>
  </state>
  <state state_id="closed" title="Closed">
@@ -175,7 +180,7 @@
   </permission-map>
  </state>
  <state state_id="draft" title="Draft">
-  <exit-transition transition_id="close"/>
+  <exit-transition transition_id="request-close"/>
   <exit-transition transition_id="approve"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>Manager</permission-role>
@@ -188,8 +193,6 @@
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
-  </permission-map>
-  <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
    <permission-role>Manager</permission-role>
@@ -205,8 +208,15 @@
    <permission-role>Manager</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
+  <permission-map name="esdrt.content: View Answer Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Comment Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
+  </permission-map>
  </state>
  <state state_id="pending" title="Pending question">
+  <exit-transition transition_id="request-close"/>
   <exit-transition transition_id="draft-conclusions"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
@@ -253,6 +263,59 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="pending-question-2" title="Pending Question Phase 2">
+  <exit-transition transition_id="draft-conclusions"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="Sharing page: Delegate roles" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Add Question" acquired="False">
+   <permission-role>Owner</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>SectorExpertReviewer</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
   </permission-map>
  </state>
  <transition transition_id="approve" title="Open" new_state="pending" trigger="USER" before_script="" after_script="">
@@ -306,6 +369,12 @@
    <guard-role>Owner</guard-role>
    <guard-role>SectorExpertReviewer</guard-role>
    <guard-expression>here/@@view/get_conclusion</guard-expression>
+  </guard>
+ </transition>
+ <transition transition_id="send-to-team-2" title="Hand over to Team 2" new_state="pending-question-2" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=send-to-team-2" category="workflow" icon="">Hand over to Team 2</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="reviewer_queue" title="">
