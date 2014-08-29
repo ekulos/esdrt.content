@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.11 (UNRELEASED)
+1.11 (2014-08-29)
 ------------------
 
 - Add link to go to phase 2 [erral]
