@@ -532,12 +532,12 @@
             Delete observation
           </a>
         </tal:block>
-        <a href="./content_status_modify?workflow_action=close"
+<!--         <a href="./content_status_modify?workflow_action=close"
           id="observation-finish"
           tal:attributes="href string:${here/absolute_url}/request-finish-observation?workflow_action=request-close"
           class="standardButton">
           Finish observation
-        </a>
+        </a> -->
       </div>
 
       <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">

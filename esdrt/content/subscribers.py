@@ -62,7 +62,8 @@ def question_transition(question, event):
     if api.content.get_state(obj=event.object) == 'closed':
         parent = aq_parent(event.object)
         with api.env.adopt_roles(roles=['Manager']):
-            api.content.transition(obj=parent, transition='draft-conclusions')
+            if api.content.get_state(parent) != 'conclusions':
+                api.content.transition(obj=parent, transition='draft-conclusions')
 
 
 @grok.subscribe(IObservation, IActionSucceededEvent)
@@ -105,3 +106,12 @@ def observation_transition(observation, event):
                 conclusion = conclusions[0]
                 api.content.transition(obj=conclusion,
                     transition='redraft')
+
+    elif event.action == 'draft-conclusions':
+        with api.env.adopt_roles(roles=['Manager']):
+            questions = [c for c in observation.values() if c.portal_type == 'Question']
+            if questions:
+                question = questions[0]
+                if api.content.get_state(question) != 'closed':
+                    api.content.transition(obj=question,
+                        transition='close')

@@ -341,6 +341,19 @@ class Observation(dexterity.Container):
     def get_status(self):
         return api.content.get_state(self)
 
+    def can_draft_conclusions(self):
+        questions = [v for v in self.values() if v.portal_type == 'Question']
+        if len(questions) > 0:
+            q = questions[0]
+            return api.content.get_state(q) in [
+                'draft',
+                'drafted',
+                'recalled-lr',
+                'closed',
+            ]
+        return False
+
+
     def can_close(self):
         if self.get_status() == 'pending':
             questions = [v for v in self.values() if v.portal_type == 'Question']

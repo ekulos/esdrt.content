@@ -505,13 +505,13 @@
   </guard>
  </transition>
  <transition transition_id="close" title="Finish Observation" new_state="closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">Finish Observation</action>
+  
   <guard>
    <guard-role>Owner</guard-role>
   </guard>
  </transition>
  <transition transition_id="close-lr" title="Finish Observation" new_state="closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=close-lr" category="workflow" icon="">Finish Observation</action>
+  
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
