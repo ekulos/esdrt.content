@@ -4,6 +4,8 @@ Changelog
 1.12 (UNRELEASED)
 -----------------
 
+- Fix Finish Observation actions [erral]
+
 1.11 (2014-08-29)
 ------------------
 
