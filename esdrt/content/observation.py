@@ -351,7 +351,8 @@ class Observation(dexterity.Container):
                 'recalled-lr',
                 'closed',
             ]
-        return False
+        else:
+            return True
 
 
     def can_close(self):
