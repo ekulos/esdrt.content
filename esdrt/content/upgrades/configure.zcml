@@ -123,4 +123,12 @@
          handler=".15_16.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 17."
+         description="Workflow definition"
+         source="16"
+         destination="17"
+         handler=".16_17.upgrade"
+         profile="esdrt.content:default" />
+
 </configure>
