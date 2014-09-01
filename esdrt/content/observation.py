@@ -437,7 +437,7 @@ class Observation(dexterity.Container):
         return userid
 
     def myHistory(self):
-        observation_history = self.workflow_history['esd-review-workflow']
+        observation_history = self.workflow_history.get('esd-review-workflow', [])
         observation_wf = []
         question_wf = []
         for item in observation_history:
@@ -489,7 +489,7 @@ class Observation(dexterity.Container):
         if questions:
             question = questions[0]
 
-            question_history = question.workflow_history['esd-question-review-workflow']
+            question_history = question.workflow_history.get('esd-question-review-workflow', [])
             for item in question_history:
                 item['role'] = item['actor']
                 item['object'] = 'question'
