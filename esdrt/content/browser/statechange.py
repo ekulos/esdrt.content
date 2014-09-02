@@ -116,7 +116,8 @@ class AssignAnswererForm(BrowserView):
     def get_counterpart_users(self):
         groupname = self.target_groupname()
         current = api.user.get_current()
-        return [u for u in api.user.get_users(groupname=groupname) if current.getId() != u.getId()]
+        current_id = current.getId()
+        return [u for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
@@ -132,7 +133,7 @@ class AssignAnswererForm(BrowserView):
                 return self.index()
 
             if isinstance(usernames, basestring):
-                user = api.user.get(username=username)
+                user = api.user.get(username=usernames)
                 groupname = self.target_groupname()
                 if groupname not in user.getGroups():
                     status = IStatusMessage(self.request)
@@ -140,10 +141,10 @@ class AssignAnswererForm(BrowserView):
                     status.addStatusMessage(msg, "error")
                     return self.index()
 
-                api.user.grant_roles(username=username,
+                api.user.grant_roles(username=usernames,
                     roles=['MSExpert'],
                     obj=self.context)
-                api.user.grant_roles(username=username,
+                api.user.grant_roles(username=usernames,
                     roles=['MSExpert'],
                     obj=observation)
             else:
@@ -201,8 +202,12 @@ class AssignCounterPartForm(BrowserView):
         current_id = current.getId()
 
         users = []
+
+        def isCP(u):
+            return 'CounterPart' in api.user.get_roles(user=u, obj=self.context)
+
         for groupname in self.target_groupnames():
-            data = [u for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+            data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
             users.extend(data)
 
         return users
@@ -218,6 +223,13 @@ class AssignCounterPartForm(BrowserView):
                 msg = _(u'You need to select at least one counterpart')
                 status.addStatusMessage(msg, "error")
                 return self.index()
+
+            for user, cp in self.get_counterpart_users():
+                if cp:
+                    api.user.revoke_roles(user=user,
+                        obj=self.context,
+                        roles=['CounterPart']
+                    )
 
             if isinstance(counterparts, basestring):
                 api.user.grant_roles(username=counterparts,

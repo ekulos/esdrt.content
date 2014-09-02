@@ -45,19 +45,6 @@
               <input type="hidden" name="form.submitted:boolean" value="True" />
             <div id="user-group-sharing-container">
 
-<!--
-              <div class="field" tal:repeat="member view/get_counterpart_users">
-                <label tal:attributes="for python:member[0].getId()">
-                  <input type="checkbox"
-                    name="reviewers:list"
-                    id=""
-                    tal:attributes="value python:member[0].getId();
-                                    id python:member[0].getId();
-                                    checked python:member[1] and 'checked' or None" />
-                    <span tal:content="python:member[0].getProperty('fullname', member[0].getId())"></span>
-                </label>
-              </div>
--->
 
               <select multiple="multiple" name="counterparts:list" class="chosen-select"
                 data-placeholder="Click here or type the name to select counterparts">

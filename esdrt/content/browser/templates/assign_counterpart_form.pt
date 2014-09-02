@@ -45,22 +45,15 @@
               <input type="hidden" name="form.submitted:boolean" value="True" />
             <div id="user-group-sharing-container">
 
-              <!--div class="field" tal:repeat="member view/get_counterpart_users">
-                <label tal:attributes="for member/getId">
-                  <input type="radio"
-                    name="counterpart"
-                    id=""
-                    tal:attributes="value member/getId; id member/getId;" />
-                    <span tal:content="python:member.getProperty('fullname', member.getId())"></span>
-                </label>
-              </div-->
               <select multiple="multiple" name="counterparts" class="chosen-select"
                 data-placeholder="Click here or type the name to select counterparts">
                 <option
                   tal:repeat="member view/get_counterpart_users"
-                  tal:content="python:member.getProperty('fullname', member.getId())"
-                  tal:attributes="value member/getId;">
+                  tal:content="python:member[0].getProperty('fullname', member[0].getId())"
+                  tal:attributes="value python:member[0].getId();
+                                  selected python:member[1] and 'selected' or None;">
                 </option>
+
               </select>
             </div>
 
@@ -83,7 +76,7 @@
 
             </div>
             <p></p>
-              <input class="standalone" type="submit" name="send" value="Send"/>
+              <input class="standalone standardButton" type="submit" name="send" value="Send"/>
                 <input tal:replace="structure context/@@authenticator/authenticator" />
 
           </form>
