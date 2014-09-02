@@ -38,6 +38,7 @@ from zope.interface import Invalid
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
 from .comment import IComment
+from .commentanswer import ICommentAnswer
 from .conclusion import IConclusion
 
 import datetime
@@ -912,8 +913,6 @@ class ObservationView(grok.View):
     #        return question.get_questions()
 
 
-
-
 class AddQuestionForm(Form):
 
     ignoreContext = True
@@ -1099,7 +1098,6 @@ class ModificationForm(dexterity.EditForm):
         if 'highlight' in fields:
             self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
 
-
     def updateActions(self):
         super(ModificationForm, self).updateActions()
         for k in self.actions.keys():
@@ -1109,22 +1107,27 @@ class ModificationForm(dexterity.EditForm):
 class AddAnswerForm(Form):
 
     ignoreContext = True
-    fields = field.Fields(IComment).select('text')
+    fields = field.Fields(ICommentAnswer).select('text')
 
     @button.buttonAndHandler(_('Save answer'))
-    def create_question(self, action):
+    def add_answer(self, action):
+        text = self.request.form.get('form.widgets.text', '')
+        transforms = getToolByName(self.context, 'portal_transforms')
+        stream = transforms.convertTo('text/plain', text, mimetype='text/html')
+        text = stream.getData().strip()
+        if not text:
+            raise ActionExecutionError(Invalid(u"Answer text is empty"))
         observation = aq_inner(self.context)
         questions = [q for q in observation.values() if q.portal_type == 'Question']
         if questions:
             context = questions[0]
         else:
-            raise
+            raise ActionExecutionError(Invalid(u"Invalid context"))
         id = str(int(time()))
         item_id = context.invokeFactory(
                 type_name='CommentAnswer',
                 id=id,
         )
-        text = self.request.form.get('form.widgets.text', '')
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
@@ -1135,13 +1138,14 @@ class AddAnswerForm(Form):
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
 
+
 class AddNoAnswerForm(Form):
 
     ignoreContext = True
-    fields = field.Fields(IComment).select('text')
+    fields = field.Fields(ICommentAnswer).omit('text')
 
     @button.buttonAndHandler(_('Save no answer'))
-    def create_question(self, action):
+    def add_no_answer(self, action):
         observation = aq_inner(self.context)
         questions = [q for q in observation.values() if q.portal_type == 'Question']
         if questions:
@@ -1153,8 +1157,7 @@ class AddNoAnswerForm(Form):
                 type_name='CommentAnswer',
                 id=id,
         )
-        #text = self.request.form.get('form.widgets.text', '')
-        text = 'No draft answer available so far'
+        text = u'No draft answer available so far'
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 

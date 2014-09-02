@@ -806,12 +806,7 @@
           class="standardButton">
             Create answer
         </a>
-        <a
-          id="no-answer-link"
-          tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
-          class="standardButton">
-            No draft answer available so far
-        </a>
+
       </div>
 
       <div id="comment-add-form" style="display: none" tal:condition="view/can_add_comment">
@@ -822,9 +817,6 @@
         <span tal:replace="structure view/add_answer_form" />
       </div>
 
-      <div id="no-answer-add-form" style="display: none" tal:condition="view/can_add_answer">
-        <span tal:replace="structure view/add_no_answer_form" />
-      </div>
 
       <div id="conclusion-add-form" style="display: none" tal:condition="view/can_add_conclusion">
         <span tal:replace="structure view/add_conclusion_form" />
