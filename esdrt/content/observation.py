@@ -11,6 +11,7 @@ from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
+from plone.app.dexterity.behaviors.discussion import IAllowDiscussion
 from plone.directives import dexterity
 from plone.directives import form
 from plone.directives.form import default_value
@@ -1217,6 +1218,8 @@ class AddConclusionForm(Form):
         comment.text = RichTextValue(text, 'text/html', 'text/html')
         reason = self.request.form.get('form.widgets.closing_reason')
         comment.closing_reason = reason[0]
+        adapted = IAllowDiscussion(comment)
+        adapted.allow_discussion = True
 
         return self.request.response.redirect(context.absolute_url())
 

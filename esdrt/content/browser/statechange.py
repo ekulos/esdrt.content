@@ -268,36 +268,37 @@ class AssignConclusionReviewerForm(BrowserView):
         current_id = current.getId()
 
         users = []
+
+        def isCP(u):
+            return 'CounterPart' in api.user.get_roles(user=u, obj=self.context)
+
         for groupname in self.target_groupnames():
-            data = [u for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+            data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
             users.extend(data)
 
         return users
-
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
         """
         if self.request.form.get('send', None):
-            usernames = self.request.get('reviewers', None)
+            usernames = self.request.form.get('counterparts', None)
             if not usernames:
                 status = IStatusMessage(self.request)
                 msg = _(u'You need to select at least one reviewer for conclusions')
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
-            for username in usernames:
-                user = api.user.get(username=username)
-                groupname = self.target_groupname()
-                if groupname not in user.getGroups():
-                    status = IStatusMessage(self.request)
-                    msg = _(u'Selected user is not valid')
-                    status.addStatusMessage(msg, "error")
-                    return self.index()
+            for user, cp in self.get_counterpart_users():
+                if cp:
+                    api.user.revoke_roles(user=user,
+                        obj=self.context,
+                        roles=['CounterPart']
+                    )
 
             for username in usernames:
                 api.user.grant_roles(username=username,
-                    roles=['ConclusionReviewer'],
+                    roles=['CounterPart'],
                     obj=self.context)
 
             wf_action = 'request-comments'

@@ -132,8 +132,6 @@ class ConclusionView(grok.View):
         return self.request.response.redirect(url)
 
 
-
-
 class AddForm(dexterity.AddForm):
     grok.name('esdrt.content.conclusion')
     grok.context(IConclusion)
@@ -165,7 +163,7 @@ class AddForm(dexterity.AddForm):
         reason = self.request.form.get('form.widgets.closing_reason')
         content.closing_reason = reason[0]
         adapted = IAllowDiscussion(content)
-        adapted.allow_discussion = False
+        adapted.allow_discussion = True
         return aq_base(content)
 
 

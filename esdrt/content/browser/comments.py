@@ -7,6 +7,9 @@ class CommentForm(BaseForm):
     def updateActions(self):
         super(CommentForm, self).updateActions()
         self.actions['comment'].title = u'Save Comment'
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
 
 
 class CommentsViewlet(BaseViewlet):

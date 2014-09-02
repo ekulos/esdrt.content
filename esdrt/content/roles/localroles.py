@@ -5,6 +5,7 @@ from esdrt.content.comment import IComment
 from esdrt.content.commentanswer import ICommentAnswer
 from esdrt.content.observation import IObservation
 from esdrt.content.question import IQuestion
+from esdrt.content.conclusion import IConclusion
 from Products.CMFCore.utils import getToolByName
 from zope.component import adapts
 from zope.interface import implements
@@ -173,6 +174,47 @@ class CommentAnswerRoleAdapter(object):
                         # if 'ms-experts-%s' % country in group:
                         #     roles.append('MSExpert')
 
+        return roles
+
+    def getAllRoles(self):
+        """Returns all the local roles assigned in this context:
+        (principal_id, [role1, role2])"""
+        return []
+
+
+class ConclusionRoleAdapter(object):
+    implements(ILocalRoleProvider)
+    adapts(IConclusion)
+
+    def __init__(self, context):
+        self.context = context
+
+    def getRoles(self, principal_id):
+        """Returns the roles for the given principal in context.
+
+        This function is additional besides other ILocalRoleProvider plug-ins.
+
+        @param context: Any Plone object
+        @param principal_id: User login id
+        """
+        observation = aq_parent(aq_inner(self.context))
+        roles = []
+        if IObservation.providedBy(observation):
+            country = observation.country.lower()
+            sector = observation.ghg_source_sectors
+            mtool = getToolByName(observation, 'portal_membership')
+            member = mtool.getMemberById(principal_id)
+            if member is not None:
+                groups = member.getGroups()
+                for group in groups:
+                    if 'reviewexperts-%s-%s' % (sector, country) in group:
+                        roles.append('SectorExpertReviewer')
+                    if 'leadreviewers-%s' % country in group:
+                        roles.append('LeadReviewer')
+                    if 'ms-authorities-%s' % country in group:
+                        roles.append('MSAuthority')
+                    # if 'ms-experts-%s' % country in group:
+                    #     roles.append('MSExpert')
         return roles
 
     def getAllRoles(self):

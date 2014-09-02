@@ -24,5 +24,10 @@
       name="answer_role_adapter"
       />
 
+  <adapter
+      factory=".localroles.ConclusionRoleAdapter"
+      name="conclusion_role_adapter"
+      />
+
 
 </configure>
