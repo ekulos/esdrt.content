@@ -403,7 +403,6 @@
   </permission-map>
  </state>
  <state state_id="recalled-lr" title="Recalled (LR)">
-  <exit-transition transition_id="redraft"/>
   <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="close-lr"/>
   <permission-map name="Access contents information" acquired="False">
