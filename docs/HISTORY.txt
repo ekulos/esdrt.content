@@ -1,7 +1,12 @@
 Changelog
 =========
 
-1.13 (2014-09-01)
+1.13.1 (2014-09-02)
+-----------------------
+
+- Missing profile upgrade [erral]
+
+1.13 (2014-09-02)
 ------------------
 
 - Several bugfixes [erral]
