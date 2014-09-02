@@ -18,6 +18,7 @@
  <permission>esdrt.content: Edit CommentAnswer</permission>
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
+ <permission>Delete objects</permission>
  <state state_id="answered" title="Answered">
   <exit-transition transition_id="recall-msa"/>
   <exit-transition transition_id="validate-answer-msa"/>
@@ -32,6 +33,8 @@
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Delete objects" acquired="False">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
@@ -114,6 +117,8 @@
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Delete objects" acquired="False">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
@@ -198,9 +203,9 @@
   </permission-map>
  </state>
  <state state_id="drafted" title="Drafted">
+  <exit-transition transition_id="recall-sre"/>
   <exit-transition transition_id="approve-question"/>
   <exit-transition transition_id="close-lr"/>
-  <exit-transition transition_id="recall-sre"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
@@ -213,6 +218,8 @@
   <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Delete objects" acquired="False">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -263,6 +270,8 @@
   <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>MSAuthority</permission-role>
   </permission-map>
+  <permission-map name="Delete objects" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
@@ -306,6 +315,8 @@
    <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
+  </permission-map>
+  <permission-map name="Delete objects" acquired="False">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
@@ -359,6 +370,8 @@
   <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>MSAuthority</permission-role>
   </permission-map>
+  <permission-map name="Delete objects" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
@@ -404,6 +417,8 @@
   <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>LeadReviewer</permission-role>
   </permission-map>
+  <permission-map name="Delete objects" acquired="False">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
@@ -446,6 +461,8 @@
   </permission-map>
   <permission-map name="CMFEditions: Save new version" acquired="False">
    <permission-role>MSAuthority</permission-role>
+  </permission-map>
+  <permission-map name="Delete objects" acquired="False">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
