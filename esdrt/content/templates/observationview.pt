@@ -351,14 +351,17 @@
       tal:condition="python:context.get_status() == 'close-requested'">
         <strong>Observation Finish Requested</strong><br/>
         <strong>Reason:</strong> <span tal:replace="context/finish_reason_value" />
-        <br />
+        <br/>
+        <strong>Comments:</strong>
         <div tal:replace="structure context/closing_comments/output|nothing">
           Content
         </div>
 
-        <div class="finish-denied" tal:condition="python:context.closing_deny_reason != u''">
+        <div class="finish-denied" tal:condition="context/closing_deny_reason|nothing">
           <strong>Previous finishing denying reason</strong><br />
           <strong>Reason:</strong> <span tal:replace="context/finish_deny_reason_value" /><br/>
+          <br/>
+          <strong>Comments:</strong>
           <div tal:replace="structure context/closing_deny_comments/output|nothing">
           Content
           </div>
@@ -381,16 +384,19 @@
         tal:condition="nocall:conclusion">
       <div class="row">
         <div id="conclusions">
-          <strong>Reason:</strong> <span tal:replace="conclusion/reason_value" /><br/>
-          <div tal:replace="structure conclusion/text/output|nothing">
+          <strong>Conclusions: </strong><br/>
+          <strong>Reason:</strong> <span tal:replace="conclusion/reason_value" />
+          <br/>
+          <strong>Comments:</strong><div tal:replace="structure conclusion/text/output|nothing">
           Content
           </div>
         </div>
 
-        <div class="finish-denied" tal:condition="python:context.closing_deny_reason != u''">
+        <div class="finish-denied" tal:condition="context/closing_deny_reason|nothing">
           <strong>Observation Finishing denied</strong><br />
-          <strong>Reason:</strong> <span tal:replace="context/finish_deny_reason_value" /><br/>
-          <div tal:replace="structure context/closing_deny_comments/output|nothing">
+          <strong>Reason:</strong> <span tal:replace="context/finish_deny_reason_value" />
+          <br/>
+          <strong>Comments:</strong><div tal:replace="structure context/closing_deny_comments/output|nothing">
           Content
           </div>
         </div>
@@ -425,11 +431,11 @@
         </div>
 
 
-        <div id="comment-discussion-wrapper"
+        <div id="conclusion-discussion-wrapper"
           tal:define="context nocall:conclusion">
             <div>
-              <a href="#" id="toggleConclussionComments">Hide question comments</a>
-              <div  id="conlusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none"/>
+              <a href="#" id="toggleConclussionComments">Show conclusion comments</a>
+              <div id="conlusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none"/>
             </div>
         </div>
         <div class="actions">
@@ -544,7 +550,7 @@
         </tal:block>
         <a href="./content_status_modify?workflow_action=close"
           id="observation-finish"
-          tal:attributes="href string:${here/absolute_url}/request-finish-observation?workflow_action=request-close"
+          tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=draft-conclusions"
           class="standardButton">
           Finish observation
         </a>

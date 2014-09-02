@@ -64,8 +64,6 @@
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Conclusion Discussion" acquired="False">
    <permission-role>ConclusionReviewer</permission-role>
@@ -77,8 +75,8 @@
   </permission-map>
  </state>
  <state state_id="draft" title="Draft">
-  <exit-transition transition_id="publish"/>
   <exit-transition transition_id="request-comments"/>
+  <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Owner</permission-role>
@@ -91,8 +89,7 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Owner</permission-role>
   </permission-map>
-  <permission-map name="Modify portal content" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
+  <permission-map name="Modify portal content" acquired="True">
    <permission-role>Owner</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
@@ -101,8 +98,7 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Owner</permission-role>
   </permission-map>
-  <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
    <permission-role>Owner</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Conclusion Discussion" acquired="False">
@@ -129,8 +125,7 @@
    <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
-  <permission-map name="Modify portal content" acquired="False">
-   <permission-role>LeadReviewer</permission-role>
+  <permission-map name="Modify portal content" acquired="True">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
@@ -142,7 +137,7 @@
    <permission-role>Owner</permission-role>
    <permission-role>SectorExpertReviewer</permission-role>
   </permission-map>
-  <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Conclusion Discussion" acquired="False">
