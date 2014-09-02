@@ -22,7 +22,7 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
    <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>MSAuthority</permission-role>
