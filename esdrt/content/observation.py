@@ -407,7 +407,7 @@ class Observation(dexterity.Container):
             return ['Observation finish requested', "observationIcon"]
         elif self.get_status() == 'conclusions':
             return ["Conclusion ongoing", "conclusionIcon"]
-        elif self.get_status() == 'Conclusion drafting':
+        elif self.get_status() == 'conclusion-discussion':
             return ["Counterparts comments requested", "conclusionIcon"]
         else:
             questions = self.values()
