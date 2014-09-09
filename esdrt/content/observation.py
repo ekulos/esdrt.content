@@ -369,53 +369,68 @@ class Observation(dexterity.Container):
         return False
 
     def wf_location(self):
-        if self.get_status() == 'closed':
-            return 'Closed'
-        elif self.get_status() != 'pending':
-            return 'Review Expert'
+        if self.get_status() == 'draft':
+            return 'Review expert'
+        elif self.get_status() == 'closed':
+            return 'Lead reviewer'
+        elif self.get_status() == 'conclusions':
+            return 'Review expert'
+        elif self.get_status() == 'conclusion-discussion':
+            return 'Counterpart'  
+        if self.get_status() == 'close-requested':
+            return 'Review expert'                      
         else:
             questions = self.values()
             if questions:
                 question = questions[0]
                 state = api.content.get_state(question)
-                if state in ['draft', 'validate-answer', 'closed']:
-                    return 'Review Expert'
+                if state in ['draft', 'closed']:
+                    return 'Review expert'
                 elif state in ['counterpart-comments']:
-                    return 'CounterPart'
-                elif state in ['drafted', 'recalled-lr', 'answered']:
-                    return 'Lead Reviewer'
-                elif state in ['pending',
+                    return 'Counterpart'
+                elif state in ['drafted', 'recalled-lr']:
+                    return 'Lead reviewer'
+                elif state in ['pending', 'answered',
                     'pending-answer-validation', 'recalled-msa']:
-                    return 'MS Authority'
+                    return 'Member state authority'
                 elif state in ['pending-answer']:
-                    return 'MS Expert'
-
-            return 'Review Expert'
+                    return 'Member state expert'
+            else:
+                return 'Review expert'
 
     def wf_status(self):
         if self.get_status() == 'draft':
-            return 'Draft observation'
+            return ['Observation created', "observationIcon"]
         elif self.get_status() == 'closed':
-            return 'Closed observation'
+            return ['Observation finished', "observationIcon"]
         elif self.get_status() == 'close-requested':
-            return 'Closure requested'
-        elif self.get_status() in ['conclusions', 'conclusion-discussion']:
-            return 'Conclusion drafting'
+            return ['Observation finish requested', "observationIcon"]
+        elif self.get_status() == 'conclusions':
+            return ["Conclusion ongoing", "conclusionIcon"]
+        elif self.get_status() == 'Conclusion drafting':
+            return ["Counterparts comments requested", "conclusionIcon"]
         else:
             questions = self.values()
             if questions:
-                question = questions[0]
+                question = questions[-1]
                 state = api.content.get_state(question)
-                if state in ['answered']:
-                    return 'Pending question'
+                if state == 'draft':
+                    return ["Question drafted", "questionIcon"]
+                elif state == 'counterpart-comments':
+                    return ["Counterpart's comments requested", "questionIcon"]
+
+                elif state in ['answered']:
+                    return ['Pending question', "questionIcon"]
                 elif state in ['pending', 'pending-answer', 'pending-answer-validation',
                     'validate-answer', 'recalled-msa']:
-                    return 'Open question'
+                    return ['Open question', "questionIcon"]
                 elif state in ['draft', 'counterpart-comments',
                     'drafted', 'recalled-lr']:
-                    return 'Draft question'
+                    return ['Draft question', "questionIcon"]
                 elif state in ['closed']:
-                    return 'Closed question'
+                    return ['Closed question', "questionIcon"]
+            else:
+                return ['Observation created', "observationIcon"]
 
     def observation_status(self):
         status = self.get_status()
@@ -423,8 +438,10 @@ class Observation(dexterity.Container):
             return 'draft'
         elif status == 'closed':
             return 'closed'
-        elif status in ['close-requested', 'conclusions', 'conclusion-discussion']:
-            return 'conclusions'
+        elif status == 'close-requested':
+            return 'open'
+        elif status in ['conclusions', 'conclusion-discussion']:
+            return 'conclusion'
         else:
             return 'open'
 
@@ -569,6 +586,18 @@ class Observation(dexterity.Container):
         if questions:
             question = questions[0]
             return question
+
+    def observation_question_status(self):
+        if self.get_status() != 'pending':
+            return self.get_status()
+        else:
+            questions = self.values()
+            if questions:
+                question = questions[-1]
+                state = api.content.get_state(question)
+                return state
+            else:
+                return ""          
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .

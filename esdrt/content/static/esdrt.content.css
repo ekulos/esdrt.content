@@ -12,7 +12,7 @@
 .esdDiv {
 	overflow: hidden;
 	margin-top: 4px;
-	background-color: #FAEFE1;
+	background-color: #F5F5F5;
 	padding: 8px;
 }
 .esdLabel{
@@ -54,17 +54,21 @@
 .estTable th{
 	cursor: auto !important;
 	text-align: center;
-	background-color: #005e7d;
-	color: #fff;
+	background-color: #DADADA;
+	color: #000;
 	padding: 4px;
 	width: 9%;
+	font-weight: normal !important;
 }
 .estTable th:first-child{
 	width: 37%;
 	text-align: left;
 }
 .estTable td{
-	padding: 4px;
+	padding: 10px 6px;
+}
+.estTable td:first-child {
+	font-style: italic;
 }
 .estTable tbody tr:nth-child(odd) {
 	background: #eee;
@@ -226,15 +230,24 @@
 .observationList th.desc:after{
 	content: '▲';
 }
-.observationList tbody tr:nth-child(even){
-	border-bottom: 2px solid gray;
+.observationList tbody tr{
+	border-bottom: 1px solid lightgray;
+	border-left: 1px solid lightgray;
+	border-right: 1px solid lightgray;
 }
-.observationList tbody tr.hover{	
+.observationList tbody tr:hover{	
 	background-color: #EEEEEE;
 	cursor: pointer;
 }
+.observationList th{
+	vertical-align: middle !important;
+	border: 0px !important;
+}
 .observationList td{
-	padding: 4px;
+	padding: 8px;
+	border-right: 0px !important;
+	background-color: white !important;
+	vertical-align: middle !important;
 }
 
 .observationRefCell{
@@ -243,7 +256,6 @@
 	font-size: 14px;
 }
 .statusCell {
-	vertical-align: middle !important;
 	text-align: center;
 }
 .statusCell span{
@@ -260,35 +272,36 @@
 	background-color: #CB7801;
 	color: white;
 }
-.statusCell span.reporting{
+.statusCell span.conclussion{
 	background-color: #5cb85c;
 	color: white;
 }
-.statusCell span.closed{
+.statusCell span.finished{
 	background-color: #DADADA;
 	color: #999999;
 }
-.countryCell{
-	vertical-align: middle !important;
-	text-align: center;
-}
-.sectorCell{
-	vertical-align: middle !important;
-	text-align: center;	
-}
 .gasCell{
-	vertical-align: middle !important;
 	text-align: center;
 	font-weight: bold;
 }
 .yearCell{
 	text-align: center;
+	vertical-align: middle;
 }
 .wfRole:before{
 	content: "\f007";
 }
 .wfStep:before{
 	content: "\f044";
+}
+.observationIcon:before{
+	content: "\f0f6";
+}
+.questionIcon:before{
+	content: "\f0e6";
+}
+.conclusionIcon:before{
+	content: "\f00c";
 }
 .clickableRow{
 	cursor: pointer !important;
@@ -328,9 +341,9 @@
 	content: "\f023";
 }
 .collapsiblePanelTitle {
-	background-color:#2c8da2; 
+	/**background-color:#2c8da2; */
 	line-height:30px; 
-	color:white; 
+	/**color:white; */
 	cursor:pointer; 
 	margin-top:10px;
 	font-weight: bold;
@@ -338,9 +351,93 @@
 .collapsiblePanelTitle.collapsed {
 	margin-bottom: 10px;
 }
-.collapsiblePanelTitle .eea-icon-right:before {
+.collapsiblePanelTitle .eea-icon-left:before {
 	content: "\f078";
+	color:#2c8da2;
 }
-.collapsiblePanelTitle.collapsed .eea-icon-right:before {
-	content: "\f053";
+.collapsiblePanelTitle.collapsed .eea-icon-left:before {
+	content: "\f054";
+	color:#2c8da2;
+}
+#tabs {
+	/**border: 1px solid #DEDEDE;
+    height: 205px;*/
+    position: relative;
+	overflow: hidden;
+}
+.tabs {
+	overflow: hidden;  
+	//*-webkit-box-shadow: 0 1px 0 #FFF inset; -moz-box-shadow: 0 1px 0 #FFF inset; 
+	//box-shadow: 0 1px 0 #FFF inset;*/
+	background-color: #FBFBFB;
+}
+.tabs>div {
+	display: block; 
+	float: left; 
+	font: 15px/35px Arial, Helvetica, Sans-serif; 
+	padding: 0 10px; 
+	color: #999; 
+	text-shadow: 0 1px 0 #FFF;
+	position: relative;
+	overflow: hidden;
+	/**background: #e1e1e1; 
+	background: -moz-linear-gradient(center top , #f2f2f2, #e1e1e1); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f2f2), color-stop(100%,#e1e1e1)); */
+	border-top: 6px solid transparent;
+}
+.tabs>div.active{
+	border-top: 6px solid #4489A0;
+	background-color: #F3F3F3;
+	box-shadow: 6px 0 15px -4px rgba(31, 73, 125, 0.8), -6px 0 15px -4px rgba(31, 73, 125, 0.8);
+}
+.tabs>div:first-child{
+	margin-left: 10px;
+}
+.tabs div a{
+	border-bottom: 0px !important;
+}
+.tabs div a.overview:before{
+	content: "\f06e";
+	font-size: 30px;
+	color: black;
+}
+.tabs a.inbox:before{
+	content: "\f01c";
+	font-size: 30px;
+	color: black;
+}
+#filters .row{
+	background-color: #F3F3F3;
+}
+#filters .row:first-child{
+	padding: 14px 0;
+}
+#observations{
+	background-color: #F3F3F3;
+	padding: 0px 10px;
+	overflow: hidden;
+	padding-top: 10px !important;
+}
+ul.eea-tabs{
+	background-color: #FBFBFB !important;
+	padding-left: 5px !important;
+}
+#visual-portal-wrapper ul.eea-tabs {
+	border-radius: 0px;
+}
+#visual-portal-wrapper ul.eea-tabs li:first-child > a {
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+}
+#visual-portal-wrapper ul.eea-tabs a, #visual-portal-wrapper ul.eea-tabs a {
+	border-top: 6px solid transparent;
+}
+#visual-portal-wrapper ul.eea-tabs a.current {
+	border-top: 6px solid #4489A0;
+	box-shadow: 6px 0 15px -4px rgba(31, 73, 125, 0.8), -6px 0 15px -4px rgba(31, 73, 125, 0.8);
+}
+#visual-portal-wrapper ul.eea-tabs li, #visual-portal-wrapper ul.eea-tabs a {
+	color: #427597;
+	text-shadow: none;
 }

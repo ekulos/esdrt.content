@@ -157,47 +157,50 @@
     tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
     <div class="esdDiv">
       <div class="row">
-        <div class="cell position-0 width-4 esdLabel">Ref. Number</div>
-        <div class="cell position-4 width-13 esdLabel">Observation</div>
+        <div class="cell position-0 width-1">
+          <i class="eea-icon eea-icon-4x observation"></i>
+        </div>         
+        <div class="cell position-1 width-4 esdLabel">Ref. Number</div>
+        <div class="cell position-5 width-13 esdLabel">Observation</div>
       </div>
-      <div class="row">
-        <div class="cell position-0 width-4 value">
+      <div class="row">      
+        <div class="cell position-1 width-4 value">
           <span tal:content="context/id">
              UK-WAS-13-001
           </span>
         </div>
-        <div class="cell position-4 width-13 value">
+        <div class="cell position-5 width-13 value">
           <span tal:content="context/title">
              Title
           </span>
         </div>
       </div>
       <div class="row">
-        <div class="cell position-4 width-2 esdLabel">Country</div>
-        <div class="cell position-6 width-2 esdLabel">Sector</div>
-        <div class="cell position-8 width-2 esdLabel">Gas</div>
-        <div class="cell position-10 width-3 esdLabel">Inventory year</div>
-        <div class="cell position-13 width-3 esdLabel">WF Location</div>
+        <div class="cell position-1 width-2 esdLabel">Country</div>
+        <div class="cell position-3 width-2 esdLabel">Sector</div>
+        <div class="cell position-5 width-2 esdLabel">Gas</div>
+        <div class="cell position-7 width-3 esdLabel">Inventory year</div>
+        <div class="cell position-10 width-3 esdLabel">WF Location</div>
       </div>
       <div class="row">
-        <div class="cell position-4 width-2" tal:content="context/country_value">Country</div>
-        <div class="cell position-6 width-2" tal:content="context/ghg_source_sectors_value">Sector</div>
-        <div class="cell position-8 width-2" tal:content="context/gas_value">Gas</div>
-        <div class="cell position-10 width-3" tal:content="context/year">Year of emission</div>
-        <div class="cell position-13 width-3" tal:content="context/wf_location">Review expert</div>
+        <div class="cell position-1 width-2" tal:content="context/country_value">Country</div>
+        <div class="cell position-3 width-2" tal:content="context/ghg_source_sectors_value">Sector</div>
+        <div class="cell position-5 width-2" tal:content="context/gas_value">Gas</div>
+        <div class="cell position-7 width-3" tal:content="context/year">Year of emission</div>
+        <div class="cell position-10 width-3" tal:content="context/wf_location">Review expert</div>
       </div>
     </div>
 
     <div>
-      <div class="row collapsiblePanelTitle collapsed" data-panel="observation-details">
+      <div class="row collapsiblePanelTitle" data-panel="observation-details">
         <div class="cell position-0 width-16">
           Observation details
-          <span class="eea-icon eea-icon-right"></span>
+          <span class="eea-icon eea-icon-left"></span>
         </div>
       </div>
     </div>
 
-    <div class="esdDiv observation-details" style="display:none">
+    <div class="esdDiv observation-details">
       <table class="estTable">
         <thead>
           <tr>
@@ -282,11 +285,22 @@
   <div>
     <div class="row collapsiblePanelTitle collapsed" data-panel="observation-workflow">
       <div class="cell position-0 width-16">
-        Observation workflow
-        <span class="eea-icon eea-icon-right"></span>
+        Observation history
+        <span class="eea-icon eea-icon-left"></span>
       </div>
     </div>
   </div>
+
+  <!--ul class="eea-tabs" tal:condition="view/get_questions">
+    <li style="width:200px;max-width:200px">Observation history</li>
+    <li style="width:150px;max-width:150px">Workflow</li>
+  </ul>
+
+  <div class="eea-tabs-panels" style="overflow:hidden">
+    <div class="eea-tabs-panel workflow">
+      aafsdsf
+    </div>
+  </div-->
 
   <div class="esdDiv observation-workflow" style="display:none">
     <div class="row">
@@ -337,16 +351,18 @@
   </div>
 
   <ul class="eea-tabs" tal:condition="view/get_questions">
-    <li tal:condition="python:context.get_status() == 'close-requested'">
+    <li style="width:150px;max-width:150px"
+      tal:condition="python:context.get_status() == 'close-requested'">
       Finish observation
     </li>
-    <li tal:define="conclusion view/get_conclusion"
+    <li style="width:150px;max-width:150px"
+      tal:define="conclusion view/get_conclusion"
       tal:condition="nocall:conclusion"
-      >Conclusions</li>
-    <li>Question chat room</li>
+      >Conclusions</li>      
+    <li style="width:200px;max-width:200px">Question chat room</li>
   </ul>
 
-  <div class="eea-tabs-panels">
+  <div class="eea-tabs-panels" style="overflow:hidden">
     <div class="eea-tabs-panel finish-observation"
       tal:condition="python:context.get_status() == 'close-requested'">
         <strong>Observation Finish Requested</strong><br/>
@@ -434,8 +450,13 @@
         <div id="conclusion-discussion-wrapper"
           tal:define="context nocall:conclusion">
             <div>
-              <a href="#" id="toggleConclussionComments">Show conclusion comments</a>
-              <div id="conlusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none"/>
+              <div class="row collapsiblePanelTitle collapsed" data-panel="conclusion-discussion">
+                <div class="cell position-0 width-16">
+                  Conclusion comments
+                  <span class="eea-icon eea-icon-left"></span>
+                </div>
+              </div>              
+              <div id="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none"/>
             </div>
         </div>
         <div class="actions">
@@ -584,9 +605,46 @@
             </tal:noteffective>
          </span>
         </div>
+        <h3 tal:condition="question/can_edit">Current text</h3>
+        <div tal:content="structure question/text/output|string:">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+        <div class="files" tal:condition="question/get_files">
+          Files:
+          <div class="file" tal:repeat="file question/get_files">
+            <p>
+              <span class="eea-icon eea-icon-lg attachment"></span>
+              <span class="eea-icon eea-icon-lg confidential"
+                title="Confidential file (Only available for people taking part in the review process)"
+                tal:condition="file/confidential"></span>
+              <a href="" tal:attributes="href string:${file/absolute_url}/@@download/file"
+                tal:content="file/file/filename">
+              </a>
+              <span class="discreet"
+                    tal:define="size file/file/getSize;
+                                kb python:size/1024">
+                    &mdash; <span tal:replace="kb" /> KB</span>
+              <a tal:condition="file/can_edit"
+                 class="edit"
+                 tal:attributes="href string:${file/absolute_url}/edit">
+                Edit File
+              </a>
+              <a tal:condition="file/can_edit"
+                 class="deleteButton"
+                 tal:attributes="href string:${file/absolute_url}/delete_confirmation">
+                 Delete File
+              </a>
+            </p>
+          </div>
+        </div>
         <div class="changes" tal:condition="question/can_edit">
-          <a href="#" id="toggleQuestionHistory">Show question history</a>
-          <div id="questionHistory" style="display:none">
+          <div class="row collapsiblePanelTitle collapsed" data-panel="question-history">
+            <div class="cell position-0 width-16">
+              Question history
+              <span class="eea-icon eea-icon-left"></span>
+            </div>
+          </div>
+          <div class="question-history" style="display:none">
             <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
               This object has no revision information.
             </p>
@@ -676,51 +734,29 @@
               </tal:changes>
             </tal:block>
           </div>
-        </div>
-        <h3 tal:condition="question/can_edit">Current text</h3>
-        <div tal:content="structure question/text/output|string:">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </div>
-        <div class="files" tal:condition="question/get_files">
-          Files:
-          <div class="file" tal:repeat="file question/get_files">
-            <p>
-              <span class="eea-icon eea-icon-lg attachment"></span>
-              <span class="eea-icon eea-icon-lg confidential"
-                title="Confidential file (Only available for people taking part in the review process)"
-                tal:condition="file/confidential"></span>
-              <a href="" tal:attributes="href string:${file/absolute_url}/@@download/file"
-                tal:content="file/file/filename">
-              </a>
-              <span class="discreet"
-                    tal:define="size file/file/getSize;
-                                kb python:size/1024">
-                    &mdash; <span tal:replace="kb" /> KB</span>
-              <a tal:condition="file/can_edit"
-                 class="edit"
-                 tal:attributes="href string:${file/absolute_url}/edit">
-                Edit File
-              </a>
-              <a tal:condition="file/can_edit"
-                 class="deleteButton"
-                 tal:attributes="href string:${file/absolute_url}/delete_confirmation">
-                 Delete File
-              </a>
-            </p>
-          </div>
-        </div>
+        </div>        
         <div id="comment-discussion-wrapper"
           tal:define="context nocall:question">
-            <div tal:define="portalType question/portal_type/lower">
+            <tal:block tal:define="portalType question/portal_type/lower">
               <tal:block tal:condition="python:portalType == 'comment' and question.can_see_comment_discussion()">
-                <a href="#" id="toggleQuestionComments">Show question comments</a>
-                <div id="question-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
+                <div class="row collapsiblePanelTitle collapsed" data-panel="question-comments">
+                  <div class="cell position-0 width-16">
+                    Question comments
+                    <span class="eea-icon eea-icon-left"></span>
+                  </div>
+                </div>
+                <div class="question-comments" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
               </tal:block>
               <tal:block tal:condition="python:portalType == 'commentanswer' and question.can_see_answer_discussion()">
-                <a href="#" id="toggleReplyComments">Show reply comments</a>
-                <div id="reply-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
+                <div class="row collapsiblePanelTitle collapsed" data-panel="answer-comments">
+                  <div class="cell position-0 width-16">
+                    Answer comments
+                    <span class="eea-icon eea-icon-left"></span>
+                  </div>
+                </div>                
+                <div class="answer-comments" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
               </tal:block>
-            </div>
+            </tal:block>
         </div>
         <div class="actions" tal:condition="repeat/question/end">
           <!--tal:block condition="view/can_edit">
