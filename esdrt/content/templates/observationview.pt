@@ -484,60 +484,6 @@
       </div>
     </div>
     <div class="eea-tabs-panel questions">
-      <div class="row" tal:condition="view/get_questions">
-        <div class="cell position-0 width-7 esdLabel">Question</div>
-        <div class="cell position-7 width-2 esdLabel">Author</div>
-        <div class="cell position-9 width-1 esdLabel">Status</div>
-        <div class="cell position-10 width-3 esdLabel">Sent to MS</div>
-        <div class="cell position-13 width-3 esdLabel">Last update</div>
-      </div>
-      <tal:question repeat="question_item view/get_questions">
-        <tal:block
-            tal:define="question question_item/getObject;
-                        first_comment question/getFirstComment;
-                        cropText nocall:view/@@plone/cropText;
-                        toLocalizedTime nocall:here/@@plone/toLocalizedTime;
-                      "
-            >
-          <tal:comment condition="nocall:question">
-            <div class="row">
-              <div class="cell position-0 width-7">
-                <a href=""
-                  tal:attributes="href first_comment/absolute_url"
-                  tal:content="first_comment/@@text-transform/text/text/plain">
-                  Text of the question
-                </a>
-              </div>
-              <div class="cell position-7 width-2">
-                <span tal:replace="python:view.get_user_name(question.Creator())">
-                  Mikel
-                </span>
-              </div>
-              <div class="cell position-9 width-1">
-                <span tal:replace="question/get_status">
-                  Pending
-                </span>
-              </div>
-              <div class="cell position-10 width-3">
-                <tal:effective condition="first_comment/effective_date">
-                  <span tal:replace="python:toLocalizedTime(first_comment.EffectiveDate(), True)">
-                    2014-01-01
-                  </span>
-                </tal:effective>
-                <tal:noteffective condition="not:first_comment/effective_date">
-                  Not sent to MS yet.
-                </tal:noteffective>
-              </div>
-              <div class="cell position-13 width-3">
-                <span tal:replace="python:toLocalizedTime(question.modified(), True)">
-                  2014-01-01
-                </span>
-              </div>
-            </div>
-          </tal:comment>
-        </tal:block>
-      </tal:question>
-
       <div class="actions"
         tal:condition="python:not view.get_questions() and view.can_add_conclusion()">
         <a href=""
