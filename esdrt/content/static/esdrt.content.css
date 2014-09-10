@@ -152,10 +152,10 @@
 	font-size: 13px !important;
 }
 .question.comment{
-	margin-right:10px;
+	margin-left:30px;
 }
 .question.commentanswer{
-	margin-left:10px	
+	margin-right:30px	
 }
 .question div{
 	padding: 5px;
