@@ -192,7 +192,7 @@
     </div>
 
     <div>
-      <div class="row collapsiblePanelTitle" data-panel="observation-details">
+      <div class="row collapsiblePanelTitle collapsed" data-panel="observation-details">
         <div class="cell position-0 width-16">
           Observation details
           <span class="eea-icon eea-icon-left"></span>
@@ -200,7 +200,7 @@
       </div>
     </div>
 
-    <div class="esdDiv observation-details">
+    <div class="esdDiv observation-details" style="display:none">
       <table class="estTable">
         <thead>
           <tr>
