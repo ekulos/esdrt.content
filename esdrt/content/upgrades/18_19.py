@@ -1,5 +1,5 @@
 from Products.CMFCore.utils import getToolByName
-
+from plone import api
 
 PROFILE_ID = 'profile-esdrt.content:default'
 
@@ -9,8 +9,17 @@ def upgrade(context, logger=None):
         from logging import getLogger
         logger = getLogger('esdrt.content.upgrades.18_19')
 
+    remove_roles(context, logger)
     install_workflow(context, logger)
     logger.info('Upgrade steps executed')
+
+
+def remove_roles(context, logger):
+    portal = api.portal.get()
+    portal._delRoles(
+        ['ExpertReviewer', 'SectorExpertReviewer', 'ConclusionReviewer']
+    )
+    logger.info('Roles deleted')
 
 
 def install_workflow(context, logger):
