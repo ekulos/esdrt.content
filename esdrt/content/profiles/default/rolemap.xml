@@ -1,13 +1,7 @@
 <?xml version="1.0"?>
 <rolemap>
   <roles>
-<!--     <role name="ExpertReviewer"/>
-    <role name="LeadReviewer"/>
-    <role name="MSExpert"/>
-    <role name="MSAuthority"/>
-    <role name="CounterPart"/>
-    <role name="SectorExpertReviewer"/>
-    <role name="ConclusionReviewer"/> -->
+
     <role name="CounterPart" />
     <role name="MSAuthority"/>
     <role name="MSExpert"/>
