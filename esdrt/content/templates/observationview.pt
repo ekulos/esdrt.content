@@ -181,6 +181,22 @@
         <div class="cell position-5 width-2 esdLabel">Gas</div>
         <div class="cell position-7 width-3 esdLabel">Inventory year</div>
         <div class="cell position-10 width-3 esdLabel">WF Location</div>
+        <div class="cell position-13 width-3">
+          <table class="progressbar progress100">
+            <tr>
+              <td id="progress0">&nbsp;</td>
+              <td id="progress25"></td>
+              <td id="progress75"></td>
+              <td id="progress100"></td>
+            </tr>
+            <tr>
+              <td>0%</td>
+              <td></td>
+              <td></td>
+              <td style="text-align:right">100%</td>
+            </tr>            
+          </table>
+        </div>        
       </div>
       <div class="row">
         <div class="cell position-1 width-2" tal:content="context/country_value">Country</div>

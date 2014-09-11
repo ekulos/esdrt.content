@@ -441,3 +441,34 @@ ul.eea-tabs{
 	color: #427597;
 	text-shadow: none;
 }
+.progressbar{
+	width: 80%;
+	position: absolute;
+}
+.progressbar tr:first-child td{
+	background-color: #EBEBEB;
+	width: 25%;
+	border: 1px solid #F5F5F5;
+}
+.progressbar.progress0 tr:first-child td#progress0,
+.progressbar.progress25 tr:first-child td#progress0,
+.progressbar.progress75 tr:first-child td#progress0,
+.progressbar.progress100 tr:first-child td#progress0{
+	background-color: #A8DFFA;
+}
+.progressbar.progress25 tr:first-child td#progress25,
+.progressbar.progress75 tr:first-child td#progress25,
+.progressbar.progress100 tr:first-child td#progress25{
+	background-color: #74B7D6;
+}
+.progressbar.progress75 tr:first-child td#progress75,
+.progressbar.progress100 tr:first-child td#progress75{
+	background-color: #5FA5C6;
+}
+.progressbar.progress100 tr:first-child td#progress100{
+	background-color: #458EB1;
+}
+.progressbar td{
+	color: #918C86;
+	font-size: 75%;	
+}
