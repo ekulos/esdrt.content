@@ -35,14 +35,16 @@ class ObservationRoleAdapter(object):
         if member is not None:
             groups = member.getGroups()
             for group in groups:
-                if 'reviewexperts-%s-%s' % (sector, country) in group:
-                    roles.append('SectorExpertReviewer')
-                if 'leadreviewers-%s' % country in group:
+                if 'extranet-esd-ghginv-sr-%s-%s' % (sector, country) in group:
+                    roles.append('ReviewerPhase1')
+                if 'extranet-esd-ghginv-qualityexpert-%s' % sector in group:
+                    roles.append('QualityExpert')
+                if 'extranet-esd-esdreview-reviewexp-%s-%s' % (sector, country) in group:
+                    roles.append('ReviewerPhase2')
+                if 'extranet-esd-esdreview-leadreview-%s' % country in group:
                     roles.append('LeadReviewer')
-                if 'ms-authorities-%s' % country in group:
+                if 'extranet-esd-countries-msa-%s' % country in group:
                     roles.append('MSAuthority')
-                # if 'ms-experts-%s' % country in group:
-                #     roles.append('MSExpert')
         return roles
 
     def getAllRoles(self):
@@ -76,14 +78,16 @@ class QuestionRoleAdapter(object):
             if member is not None:
                 groups = member.getGroups()
                 for group in groups:
-                    if 'reviewexperts-%s-%s' % (sector, country) in group:
-                        roles.append('SectorExpertReviewer')
-                    if 'leadreviewers-%s' % country in group:
+                    if 'extranet-esd-ghginv-sr-%s-%s' % (sector, country) in group:
+                        roles.append('ReviewerPhase1')
+                    if 'extranet-esd-ghginv-qualityexpert-%s' % sector in group:
+                        roles.append('QualityExpert')
+                    if 'extranet-esd-esdreview-reviewexp-%s-%s' % (sector, country) in group:
+                        roles.append('ReviewerPhase2')
+                    if 'extranet-esd-esdreview-leadreview-%s' % country in group:
                         roles.append('LeadReviewer')
-                    if 'ms-authorities-%s' % country in group:
+                    if 'extranet-esd-countries-msa-%s' % country in group:
                         roles.append('MSAuthority')
-                    # if 'ms-experts-%s' % country in group:
-                    #     roles.append('MSExpert')
         return roles
 
     def getAllRoles(self):
@@ -120,14 +124,16 @@ class CommentRoleAdapter(object):
                 if member is not None:
                     groups = member.getGroups()
                     for group in groups:
-                        if 'reviewexperts-%s-%s' % (sector, country) in group:
-                            roles.append('SectorExpertReviewer')
-                        if 'leadreviewers-%s' % country in group:
+                        if 'extranet-esd-ghginv-sr-%s-%s' % (sector, country) in group:
+                            roles.append('ReviewerPhase1')
+                        if 'extranet-esd-ghginv-qualityexpert-%s' % sector in group:
+                            roles.append('QualityExpert')
+                        if 'extranet-esd-esdreview-reviewexp-%s-%s' % (sector, country) in group:
+                            roles.append('ReviewerPhase2')
+                        if 'extranet-esd-esdreview-leadreview-%s' % country in group:
                             roles.append('LeadReviewer')
-                        if 'ms-authorities-%s' % country in group:
+                        if 'extranet-esd-countries-msa-%s' % country in group:
                             roles.append('MSAuthority')
-                        # if 'ms-experts-%s' % country in group:
-                        #     roles.append('MSExpert')
 
         return roles
 
@@ -165,14 +171,16 @@ class CommentAnswerRoleAdapter(object):
                 if member is not None:
                     groups = member.getGroups()
                     for group in groups:
-                        if 'reviewexperts-%s-%s' % (sector, country) in group:
-                            roles.append('SectorExpertReviewer')
-                        if 'leadreviewers-%s' % country in group:
+                        if 'extranet-esd-ghginv-sr-%s-%s' % (sector, country) in group:
+                            roles.append('ReviewerPhase1')
+                        if 'extranet-esd-ghginv-qualityexpert-%s' % sector in group:
+                            roles.append('QualityExpert')
+                        if 'extranet-esd-esdreview-reviewexp-%s-%s' % (sector, country) in group:
+                            roles.append('ReviewerPhase2')
+                        if 'extranet-esd-esdreview-leadreview-%s' % country in group:
                             roles.append('LeadReviewer')
-                        if 'ms-authorities-%s' % country in group:
+                        if 'extranet-esd-countries-msa-%s' % country in group:
                             roles.append('MSAuthority')
-                        # if 'ms-experts-%s' % country in group:
-                        #     roles.append('MSExpert')
 
         return roles
 
@@ -207,14 +215,16 @@ class ConclusionRoleAdapter(object):
             if member is not None:
                 groups = member.getGroups()
                 for group in groups:
-                    if 'reviewexperts-%s-%s' % (sector, country) in group:
-                        roles.append('SectorExpertReviewer')
-                    if 'leadreviewers-%s' % country in group:
+                    if 'extranet-esd-ghginv-sr-%s-%s' % (sector, country) in group:
+                        roles.append('ReviewerPhase1')
+                    if 'extranet-esd-ghginv-qualityexpert-%s' % sector in group:
+                        roles.append('QualityExpert')
+                    if 'extranet-esd-esdreview-reviewexp-%s-%s' % (sector, country) in group:
+                        roles.append('ReviewerPhase2')
+                    if 'extranet-esd-esdreview-leadreview-%s' % country in group:
                         roles.append('LeadReviewer')
-                    if 'ms-authorities-%s' % country in group:
+                    if 'extranet-esd-countries-msa-%s' % country in group:
                         roles.append('MSAuthority')
-                    # if 'ms-experts-%s' % country in group:
-                    #     roles.append('MSExpert')
         return roles
 
     def getAllRoles(self):
