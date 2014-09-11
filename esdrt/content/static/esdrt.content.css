@@ -424,22 +424,26 @@ ul.eea-tabs{
 }
 #visual-portal-wrapper ul.eea-tabs {
 	border-radius: 0px;
+	-webkit-border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
 }
 #visual-portal-wrapper ul.eea-tabs li:first-child > a {
-	border-radius: 0px;
-	-webkit-border-radius: 0px;
-	-moz-border-radius: 0px;
+	border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
 }
-#visual-portal-wrapper ul.eea-tabs a, #visual-portal-wrapper ul.eea-tabs a {
-	border-top: 6px solid transparent;
+#visual-portal-wrapper ul.eea-tabs a {
+	border-top: 6px solid transparent !important;
 }
 #visual-portal-wrapper ul.eea-tabs a.current {
 	border-top: 6px solid #4489A0;
 	box-shadow: 6px 0 15px -4px rgba(31, 73, 125, 0.8), -6px 0 15px -4px rgba(31, 73, 125, 0.8);
 }
-#visual-portal-wrapper ul.eea-tabs li, #visual-portal-wrapper ul.eea-tabs a {
-	color: #427597;
-	text-shadow: none;
+#visual-portal-wrapper ul.eea-tabs li, 
+#visual-portal-wrapper ul.eea-tabs a,
+#visual-portal-wrapper ul.eea-tabs a:hover {
+	color: #427597 !important;
+	text-shadow: none !important;
 }
 .progressbar{
 	width: 80%;
