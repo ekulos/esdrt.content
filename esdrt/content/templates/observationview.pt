@@ -368,9 +368,7 @@
 
   <ul class="eea-tabs" tal:condition="view/get_questions">
     <li style="width:150px;max-width:150px"
-      tal:condition="python:context.get_status() == 'close-requested'">
-      Finish observation
-    </li>
+      tal:condition="python:context.get_status() == 'close-requested'">Finish observation</li>
     <li style="width:150px;max-width:150px"
       tal:define="conclusion view/get_conclusion"
       tal:condition="nocall:conclusion"
