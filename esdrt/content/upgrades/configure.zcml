@@ -138,4 +138,12 @@
          destination="18"
          handler=".17_18.upgrade"
          profile="esdrt.content:default" />
+
+    <genericsetup:upgradeStep
+         title="Upgrade to 19."
+         description="Workflow definition, Roles, and Permissions"
+         source="18"
+         destination="19"
+         handler=".18_19.upgrade"
+         profile="esdrt.content:default" />
 </configure>
