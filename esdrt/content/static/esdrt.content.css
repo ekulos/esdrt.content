@@ -436,7 +436,7 @@ ul.eea-tabs{
 	border-top: 6px solid transparent !important;
 }
 #visual-portal-wrapper ul.eea-tabs a.current {
-	border-top: 6px solid #4489A0;
+	border-top: 6px solid #4489A0 !important;
 	box-shadow: 6px 0 15px -4px rgba(31, 73, 125, 0.8), -6px 0 15px -4px rgba(31, 73, 125, 0.8);
 }
 #visual-portal-wrapper ul.eea-tabs li, 
