@@ -6,11 +6,11 @@
  <permission>Sharing page: Delegate roles</permission>
  <permission>View</permission>
  <permission>esdrt.content: Add Conclusion</permission>
+ <permission>esdrt.content: Add ESDRTFile</permission>
  <permission>esdrt.content: Add Question</permission>
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
  <permission>esdrt.content: View Conclusion Discussion</permission>
- <permission>esdrt.content: Add ESDRTFile</permission>
  <state state_id="phase1-close-requested" title="Close requested">
   <exit-transition transition_id="phase1-send-to-team-2"/>
   <exit-transition transition_id="phase1-deny-closure"/>
@@ -258,40 +258,279 @@
   <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
   </permission-map>
  </state>
- <state state_id="phase2-pending-question-2" title="Pending Question Phase 2">
-  <exit-transition transition_id="phase1-draft-conclusions"/>
+ <state state_id="phase2-close-requested" title="phase2-close-requested">
+  <exit-transition transition_id="phase2-confirm-finishing-observation"/>
+  <exit-transition transition_id="phase2-deny-finishing-observation"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Sharing page: Delegate roles" acquired="False">
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Add Question" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: View Answer Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Comment Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="phase2-closed" title="phase2-closed">
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Sharing page: Delegate roles" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Add Question" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: View Answer Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Comment Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="phase2-conclusion-discussion" title="phase2-conclusion-discussion">
+  <exit-transition transition_id="phase2-finish-comments"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="False">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="Sharing page: Delegate roles" acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Add Question" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: View Answer Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Comment Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="phase2-conclusions" title="phase2-conclusions">
+  <exit-transition transition_id="phase2-finish-observation"/>
+  <exit-transition transition_id="phase2-reopen-qa-chat"/>
+  <exit-transition transition_id="phase2-request-comments"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="Sharing page: Delegate roles" acquired="False">
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Add Question" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: View Answer Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Comment Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+ </state>
+ <state state_id="phase2-draft" title="phase2-draft">
+  <exit-transition transition_id="phase2-open"/>
+  <exit-transition transition_id="phase2-draft-conclusions"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="List folder contents" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="Modify portal content" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="Sharing page: Delegate roles" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="View" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: Add Question" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="esdrt.content: View Answer Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Comment Discussion" acquired="True">
+  </permission-map>
+  <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
+  </permission-map>
+ </state>
+ <state state_id="phase2-pending" title="phase2-pending">
+  <exit-transition transition_id="phase2-draft-conclusions"/>
+  <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
+   <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
    <permission-role>Manager</permission-role>
-   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Conclusion" acquired="False">
   </permission-map>
+  <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
+  </permission-map>
   <permission-map name="esdrt.content: Add Question" acquired="False">
-   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
    <permission-role>MSAuthority</permission-role>
@@ -299,14 +538,14 @@
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>CounterPart</permission-role>
-   <permission-role>QualityExpert</permission-role>
-   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
   </permission-map>
  </state>
  <transition transition_id="phase1-approve" title="Open" new_state="phase1-pending" trigger="USER" before_script="" after_script="">
-
+  
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase1</guard-role>
@@ -359,10 +598,60 @@
    <guard-expression>here/@@view/get_conclusion</guard-expression>
   </guard>
  </transition>
- <transition transition_id="phase1-send-to-team-2" title="Hand over to Team 2" new_state="phase1-pending-question-2" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase1-send-to-team-2" title="Hand over to Team 2" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=send-to-team-2" category="workflow" icon="">Hand over to Team 2</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-confirm-finishing-observation" title="phase2-confirm-finishing-observation" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=close" category="workflow" icon="">phase2-confirm-finishing-observation</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-deny-finishing-observation" title="phase2-deny-finishing-observation" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/deny-finish-observation?workflow_action=deny-closure" category="workflow" icon="">phase2-deny-finishing-observation</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-draft-conclusions" title="phase2-draft-conclusions" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=draft-conclusions" category="workflow" icon="">phase2-draft-conclusions</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-finish-comments" title="phase2-finish-comments" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=finish-comments" category="workflow" icon="">phase2-finish-comments</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-finish-observation" title="phase2-finish-observation" new_state="phase2-close-requested" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/request-finish-observation?workflow_action=request-close" category="workflow" icon="">phase2-finish-observation</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-open" title="phase2-open" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
+  <action url="" category="" icon="">phase2-open</action>
+  <guard>
+   <guard-role>Manager</guard-role>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-reopen-qa-chat" title="phase2-reopen-qa-chat" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=reopen" category="workflow" icon="">phase2-reopen-qa-chat</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-request-comments" title="phase2-request-comments" new_state="phase2-conclusion-discussion" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/assign_conclusion_reviewer_form?workflow_action=request-comments" category="workflow" icon="">phase2-request-comments</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="reviewer_queue" title="">
@@ -376,7 +665,7 @@
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
-
+   
    <expression>transition/getId|nothing</expression>
   </default>
   <guard>
@@ -385,7 +674,7 @@
  <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
   <description>The ID of the user who performed the previous transition</description>
   <default>
-
+   
    <expression>user/getId</expression>
   </default>
   <guard>
@@ -394,7 +683,7 @@
  <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
-
+   
    <expression>python:state_change.kwargs.get('comment', '')</expression>
   </default>
   <guard>
@@ -403,7 +692,7 @@
  <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
   <description>Provides access to workflow history</description>
   <default>
-
+   
    <expression>state_change/getHistory</expression>
   </default>
   <guard>
@@ -414,7 +703,7 @@
  <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
-
+   
    <expression>state_change/getDateTime</expression>
   </default>
   <guard>
