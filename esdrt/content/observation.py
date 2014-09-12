@@ -112,7 +112,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
     ghg_source_category = schema.Choice(
         title=_(u"CRF category group"),
         vocabulary='esdrt.content.ghg_source_category',
-        required=False,
+        required=True,
     )
 
     ghg_source_sectors = schema.Choice(
