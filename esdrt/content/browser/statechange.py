@@ -111,7 +111,7 @@ class AssignAnswererForm(BrowserView):
         context = aq_inner(self.context)
         observation = aq_parent(context)
         country = observation.country.lower()
-        return 'extranet-esd-ms-experts-%s' % country
+        return 'extranet-esd-countries-msexpert-%s' % country
 
     def get_counterpart_users(self):
         groupname = self.target_groupname()
@@ -195,7 +195,12 @@ class AssignCounterPartForm(BrowserView):
     index = ViewPageTemplateFile('templates/assign_counterpart_form.pt')
 
     def target_groupnames(self):
-        return ['extranet-esd-reviewexperts', 'extranet-esd-leadreviewers']
+        return [
+            'extranet-esd-ghginv-sr',
+            'extranet-esd-ghginv-qualityexpert',
+            'extranet-esd-esdreview-reviewexp',
+            'extranet-esd-esdreview-leadreview',
+        ]
 
     def get_counterpart_users(self):
         current = api.user.get_current()
@@ -273,7 +278,12 @@ class AssignConclusionReviewerForm(BrowserView):
     index = ViewPageTemplateFile('templates/assign_conclusion_reviewer_form.pt')
 
     def target_groupnames(self):
-        return ['extranet-esd-reviewexperts', 'extranet-esd-leadreviewers']
+        return [
+            'extranet-esd-ghginv-sr',
+            'extranet-esd-ghginv-qualityexpert',
+            'extranet-esd-esdreview-reviewexp',
+            'extranet-esd-esdreview-leadreview',
+        ]
 
     def get_counterpart_users(self):
         current = api.user.get_current()
