@@ -1,10 +1,13 @@
-1,Stationary combustion (1A1 1A2 1A4 1A5)
-2,1A3 Transport + 1C CO2 transport and storage
-3,Fugitive emissions (1B1, 1B2)
-4,2A Mineral Products + 2B Chemical Industry + Solvents
-5,2C Metal Production + 2D + 2G + 2H
-6,2E Production of Halocarbons and SF6 + 2F Consumption of Haklocarbons and SF6
-7,3A Enteric Fermentation + 3B Manure Management
-8,3C + 3F Agriculture
-9,5 Waste
-10, 4 LULUCF
+sector1,1A1
+sector2,1A2, 1A4, 1A5
+sector3,1A3
+sector4,1B, 1C
+sector5,2A, 2B
+sector6,2C, 2D, 2H
+sector7,2E, 2F, 2G
+sector8,3A, 3B
+sector9,3C-3J
+sector10,LULUCF
+sector11,5A-5E
+sector12,6
+sector13,Reference approach
