@@ -638,8 +638,8 @@ def add_question(context, event):
     """
     observation = context
     with api.env.adopt_roles(roles=['Manager']):
-        if api.content.get_state(obj=observation) == 'draft':
-            api.content.transition(obj=observation, transition='approve')
+        if api.content.get_state(obj=observation) == 'phase1-draft':
+            api.content.transition(obj=observation, transition='phase1-approve')
 
 
 class ObservationView(grok.View):
