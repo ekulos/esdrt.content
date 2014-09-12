@@ -1,5 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from plone import api
+from esdrt.content.setuphandlers import prepareVocabularies
+
 
 PROFILE_ID = 'profile-esdrt.content:default'
 
@@ -9,9 +11,19 @@ def upgrade(context, logger=None):
         from logging import getLogger
         logger = getLogger('esdrt.content.upgrades.18_19')
 
+    reimport_vocabularies(context, logger)
     remove_roles(context, logger)
     install_workflow(context, logger)
     logger.info('Upgrade steps executed')
+
+
+def reimport_vocabularies(context, logger):
+    atvm = getToolByName(context, 'portal_vocabularies')
+    del atvm['ghg_source_category']
+    del atvm['eea_member_states']
+    psetup = getToolByName(context, 'portal_setup')
+    profile = psetup._getImportContext(PROFILE_ID)
+    prepareVocabularies(context, profile)
 
 
 def remove_roles(context, logger):
