@@ -216,17 +216,17 @@ def check_ghg_estimations(value):
                 raise Invalid(u'Estimation values must be positive numbers')
 
 
-@form.validator(field=IObservation['ghg_source_sectors'])
+@form.validator(field=IObservation['ghg_source_category'])
 def check_sector(value):
     user = api.user.get_current()
     groups = user.getGroups()
     valid = False
     for group in groups:
-        if group.startswith('extranet-esd-reviewexperts-%s-' % value):
+        if group.startswith('extranet-esd-ghginv-sr-%s-' % value):
             valid = True
 
     if not valid:
-        raise Invalid(u'You are not allowed to add observations for this sector')
+        raise Invalid(u'You are not allowed to add observations for this sector category')
 
 
 @form.validator(field=IObservation['country'])
@@ -235,7 +235,7 @@ def check_country(value):
     groups = user.getGroups()
     valid = False
     for group in groups:
-        if group.startswith('extranet-esd-reviewexperts-') and \
+        if group.startswith('extranet-esd-ghginv-sr-') and \
             group.endswith('-%s' % value):
             valid = True
 
@@ -376,9 +376,9 @@ class Observation(dexterity.Container):
         elif self.get_status() == 'conclusions':
             return 'Review expert'
         elif self.get_status() == 'conclusion-discussion':
-            return 'Counterpart'  
+            return 'Counterpart'
         if self.get_status() == 'close-requested':
-            return 'Review expert'                      
+            return 'Review expert'
         else:
             questions = self.values()
             if questions:
@@ -597,7 +597,7 @@ class Observation(dexterity.Container):
                 state = api.content.get_state(question)
                 return state
             else:
-                return ""          
+                return ""
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
@@ -896,7 +896,7 @@ class ObservationView(grok.View):
         question = self.question()
         if question:
             context = question.getFirstComment()
-            if context: 
+            if context:
                 if context.can_edit():
                     try:
                         history_metadata = self.repo_tool.getHistoryMetadata(context)
