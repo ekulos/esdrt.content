@@ -41,9 +41,17 @@ class FinishObservationReasonForm(Form):
         with api.env.adopt_roles(['Manager']):
             self.context.closing_reason = reason
             self.context.closing_comments = RichTextValue(comments, 'text/html', 'text/html')
-        return self.context.content_status_modify(
-            workflow_action='request-close',
-        )
+            if api.content.get_state(self.context) == 'phase1-conclusions':
+                return self.context.content_status_modify(
+                    workflow_action='phase1-request-close',
+                )
+            elif api.content.get_state(self.context) == 'phase2-conclusions':
+                return self.context.content_status_modify(
+                    workflow_action='phase2-finish-observation',
+                )
+
+        self.request.response.redirect(context.absolute_url())
+
 
     def updateActions(self):
         super(FinishObservationReasonForm, self).updateActions()
@@ -79,16 +87,22 @@ class DenyFinishObservationReasonForm(Form):
         with api.env.adopt_roles(['Manager']):
             self.context.closing_deny_reason = reason
             self.context.closing_deny_comments = RichTextValue(comments, 'text/html', 'text/html')
-        return self.context.content_status_modify(
-            workflow_action='deny-closure',
-        )
+            import pdb; pdb.set_trace()
+            if api.content.get_state(self.context) == 'phase1-close-requested':
+                return self.context.content_status_modify(
+                    workflow_action='phase1-deny-closure',
+                )
+            elif api.content.get_state(self.context) == 'phase2-close-requested':
+                return self.context.content_status_modify(
+                    workflow_action='phase2-deny-finishing-observation',
+                )
+
+        return self.response.redirect(self.context.absolute_url())
 
     def updateActions(self):
         super(DenyFinishObservationReasonForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
-
-
 
 
 class IAssignAnswererForm(Interface):
@@ -165,7 +179,7 @@ class AssignAnswererForm(BrowserView):
                         roles=['MSExpert'],
                         obj=observation)
 
-            wf_action = 'assign-answerer'
+            wf_action = 'phase1-assign-answerer'
             return self.context.content_status_modify(
                 workflow_action=wf_action,
             )
@@ -250,7 +264,7 @@ class AssignCounterPartForm(BrowserView):
             #     msg = _(u'You need to enter some comments for your counterpart')
             #     status.addStatusMessage(msg, "error")
             #     return self.index()
-            wf_action = 'request-for-counterpart-comments'
+            wf_action = 'phase1-request-for-counterpart-comments'
             #wf_comments = self.request.get('comments')
             return self.context.content_status_modify(
                 workflow_action=wf_action,
@@ -323,7 +337,7 @@ class AssignConclusionReviewerForm(BrowserView):
                     roles=['CounterPart'],
                     obj=self.context)
 
-            wf_action = 'request-comments'
+            wf_action = 'phase1-request-comments'
             return self.context.content_status_modify(
                 workflow_action=wf_action,
             )

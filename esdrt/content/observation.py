@@ -330,7 +330,6 @@ class Observation(dexterity.Container):
             self.closing_deny_reason
         )
 
-
     def _vocabulary_value(self, vocabulary, term):
         vocab_factory = getUtility(IVocabularyFactory, name=vocabulary)
         vocabulary = vocab_factory(self)
@@ -348,99 +347,104 @@ class Observation(dexterity.Container):
         if len(questions) > 0:
             q = questions[0]
             return api.content.get_state(q) in [
-                'draft',
-                'drafted',
-                'recalled-lr',
-                'closed',
+                'phase1-draft',
+                'phase1-drafted',
+                'phase1-recalled-lr',
+                'phase1-closed',
+                'phase2-draft',
+                'phase2-drafted',
+                'phase2-recalled-lr',
+                'phase2-closed',
             ]
         else:
             return True
 
-
     def can_close(self):
-        if self.get_status() == 'pending':
+        if self.get_status() in ['phase1-pending', 'phase2-pending']:
             questions = [v for v in self.values() if v.portal_type == 'Question']
             if len(questions) > 0:
                 for q in questions:
-                    if api.content.get_state(q) != 'closed':
+                    if api.content.get_state(q) not in ['phase1-closed', 'phase2-closed']:
                         return False
                 return True
 
         return False
 
     def wf_location(self):
-        if self.get_status() == 'draft':
-            return 'Review expert'
-        elif self.get_status() == 'closed':
-            return 'Lead reviewer'
-        elif self.get_status() == 'conclusions':
-            return 'Review expert'
-        elif self.get_status() == 'conclusion-discussion':
+        if self.get_status() == 'phase1-draft':
+            return 'Sector Expert'
+        elif self.get_status() == 'phase1-closed':
+            return 'Quality Expert'
+        elif self.get_status() == 'phase1-conclusions':
+            return 'Sector Expert'
+        elif self.get_status() == 'phase1-conclusion-discussion':
             return 'Counterpart'
-        if self.get_status() == 'close-requested':
-            return 'Review expert'
+        elif self.get_status() == 'phase1-close-requested':
+            return 'Quality Expert'
         else:
             questions = self.values()
             if questions:
                 question = questions[0]
                 state = api.content.get_state(question)
-                if state in ['draft', 'closed']:
-                    return 'Review expert'
-                elif state in ['counterpart-comments']:
+                if state in ['phase1-draft', 'phase1-closed']:
+                    return 'Sector Expert'
+                elif state in ['phase1-counterpart-comments']:
                     return 'Counterpart'
-                elif state in ['drafted', 'recalled-lr']:
-                    return 'Lead reviewer'
-                elif state in ['pending', 'answered',
-                    'pending-answer-validation', 'recalled-msa']:
+                elif state in ['phase1-drafted', 'phase1-recalled-lr']:
+                    return 'Quality Expert'
+                elif state in ['phase1-pending', 'phase1-answered',
+                    'phase1-pending-answer-drafting', 'phase1-recalled-msa']:
                     return 'Member state authority'
-                elif state in ['pending-answer']:
+                elif state in ['phase1-pending-answer']:
                     return 'Member state expert'
             else:
-                return 'Review expert'
+                return 'Sector Expert'
 
     def wf_status(self):
-        if self.get_status() == 'draft':
+        if self.get_status() == 'phase1-draft':
             return ['Observation created', "observationIcon"]
-        elif self.get_status() == 'closed':
+        elif self.get_status() == 'phase1-closed':
             return ['Observation finished', "observationIcon"]
-        elif self.get_status() == 'close-requested':
+        elif self.get_status() == 'phase1-close-requested':
             return ['Observation finish requested', "observationIcon"]
-        elif self.get_status() == 'conclusions':
+        elif self.get_status() == 'phase1-conclusions':
             return ["Conclusion ongoing", "conclusionIcon"]
-        elif self.get_status() == 'conclusion-discussion':
+        elif self.get_status() == 'phase1-conclusion-discussion':
             return ["Counterparts comments requested", "conclusionIcon"]
         else:
             questions = self.values()
             if questions:
                 question = questions[-1]
                 state = api.content.get_state(question)
-                if state == 'draft':
+                if state == 'phase1-raft':
                     return ["Question drafted", "questionIcon"]
-                elif state == 'counterpart-comments':
+                elif state == 'phase1-counterpart-comments':
                     return ["Counterpart's comments requested", "questionIcon"]
 
-                elif state in ['answered']:
+                elif state in ['phase1-answered']:
                     return ['Pending question', "questionIcon"]
-                elif state in ['pending', 'pending-answer', 'pending-answer-validation',
-                    'validate-answer', 'recalled-msa']:
+                elif state in ['phase1-pending', 'phase1-pending-answer', 'phase1-pending-answer-validation',
+                    'phase1-validate-answer', 'phase1-recalled-msa']:
                     return ['Open question', "questionIcon"]
-                elif state in ['draft', 'counterpart-comments',
-                    'drafted', 'recalled-lr']:
+                elif state in ['phase1-draft', 'cphase1-ounterpart-comments',
+                    'phase1-drafted', 'phase1-recalled-lr']:
                     return ['Draft question', "questionIcon"]
-                elif state in ['closed']:
+                elif state in ['phase1-closed']:
                     return ['Closed question', "questionIcon"]
             else:
                 return ['Observation created', "observationIcon"]
 
+        return ['Unknown', 'observationIcon']
+
     def observation_status(self):
         status = self.get_status()
-        if status == 'draft':
+        if status == 'phase1-draft':
             return 'draft'
-        elif status == 'closed':
+        elif status == 'phase1-closed':
             return 'closed'
-        elif status == 'close-requested':
+        elif status == 'phase1-close-requested':
             return 'open'
-        elif status in ['conclusions', 'conclusion-discussion']:
+        elif status in ['phase1-conclusions', 'phase1-conclusion-discussion']:
             return 'conclusion'
         else:
             return 'open'
@@ -852,7 +856,7 @@ class ObservationView(grok.View):
             questions = [q for q in question.values() if q.portal_type == 'Comment']
             answers = [q for q in question.values() if q.portal_type == 'CommentAnswer']
             obs_state = self.context.get_status()
-            return permission and len(questions) == len(answers) and obs_state != 'closed'
+            return permission and len(questions) == len(answers) and obs_state != 'phase1-closed'
         else:
             return False
 
@@ -880,7 +884,7 @@ class ObservationView(grok.View):
     def can_see_comments(self):
         state = api.content.get_state(self.question())
         #return state in ['draft', 'counterpart-comments', 'drafted']
-        return state in ['counterpart-comments']
+        return state in ['phase1-counterpart-comments']
 
     def add_comment_form(self):
         form_instance = AddCommentForm(self.context, self.request)

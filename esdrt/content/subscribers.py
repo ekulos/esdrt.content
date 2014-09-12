@@ -61,7 +61,6 @@ def question_transition(question, event):
                 api.content.transition(obj=parent, transition='phase2-draft-conclusions')
 
 
-
 @grok.subscribe(IObservation, IActionSucceededEvent)
 def observation_transition(observation, event):
     if event.action == 'phase1-reopen':
@@ -128,3 +127,12 @@ def observation_transition(observation, event):
                 if api.content.get_state(question) != 'phase2-closed':
                     api.content.transition(obj=question,
                         transition='phase2-close')
+
+    elif event.action == 'phase1-send-to-team-2':
+        with api.env.adopt_roles(roles=['Manager']):
+            questions = [c for c in observation.values() if c.portal_type == 'Question']
+            if questions:
+                question = questions[0]
+                api.content.transition(obj=question,
+                    transition='phase2-reopen'
+                )

@@ -42,17 +42,17 @@ class IQuestion(form.Schema, IImageScaleTraversable):
 
 PENDING_STATUS_NAMES = ['answered']
 OPEN_STATUS_NAMES = [
-    'pending',
-    'pending-answer',
-    'pending-answer-validation',
-    'validate-answer',
-    'recalled-msa'
+    'phase1-pending',
+    'phase1-pending-answer',
+    'phase1-pending-answer-validation',
+    'phase1-validate-answer',
+    'phase1-recalled-msa'
 ]
 DRAFT_STATUS_NAMES = [
-    'draft',
-    'counterpart-comments',
-    'drafted',
-    'recalled-lr'
+    'phase1-draft',
+    'phase1-counterpart-comments',
+    'phase1-drafted',
+    'phase1-recalled-lr'
 ]
 CLOSED_STATUS_NAMES = ['closed']
 
@@ -117,7 +117,7 @@ class Question(dexterity.Container):
             last_question = questions[-1]
             question_history = self.workflow_history['esd-question-review-workflow']
             for item in question_history:
-                if item['review_state'] == 'counterpart-comments':
+                if item['review_state'] == 'phase1-counterpart-comments':
                     return True
 
     def can_request_comments(self):
@@ -129,7 +129,7 @@ class Question(dexterity.Container):
             last_question = questions[-1]
             question_history = self.workflow_history['esd-question-review-workflow']
             for item in question_history:
-                if item['review_state'] == 'counterpart-comments':
+                if item['review_state'] == 'phase1-counterpart-comments':
                     return False
             return True
 
@@ -153,7 +153,7 @@ class Question(dexterity.Container):
 
     def observation_not_closed(self):
         observation = self.get_observation()
-        return api.content.get_state(observation) == 'pending'
+        return api.content.get_state(observation) in ['phase1-pending', 'phase2-pending']
 
     def already_commented_by_counterpart(self):
         # XXXX
@@ -172,7 +172,7 @@ class Question(dexterity.Container):
         return sm.checkPermission('esdrt.content: View Comment Discussion', self)
     def can_see_answer_discussion(self):
         sm = getSecurityManager()
-        return sm.checkPermission('esdrt.content: View Answer Discussion', self)        
+        return sm.checkPermission('esdrt.content: View Answer Discussion', self)
 # View class
 # The view will automatically use a similarly named template in
 # templates called questionview.pt .
