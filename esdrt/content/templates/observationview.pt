@@ -342,7 +342,8 @@
                     tal:attributes="href python:'http://www.eionet.europa.eu/directory/user?uid='+item['actor']"
                     tal:content="item/author"></a>
                   <br tal:condition="context/is_secretariat"/>
-                  <span class="eea-icon eea-icon-lg wfStep"><!-- --></span>
+                  <span 
+                    tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg wfStep', item['object']])"><!-- --></span>
                   <span tal:content="item/state"></span><br/>
                   <span class="eea-icon eea-icon-lg wfTime"><!-- --></span>
                   <span tal:attributes="title python:toLocalizedTime(item['time'], True)" class="datetimeWF">

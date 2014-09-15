@@ -465,7 +465,7 @@ class Observation(dexterity.Container):
         question_wf = []
         for item in observation_history:
             item['role'] = item['actor']
-            item['object'] = 'observation'
+            item['object'] = 'observationIcon'
             item['author'] = self.get_author_name(item['actor'])
             if item['review_state'] == 'phase1-draft':
                 item['state'] = 'Draft observation'
@@ -493,14 +493,17 @@ class Observation(dexterity.Container):
             elif item['review_state'] == 'phase1-conclusion-discussion':
                 item['state'] = 'Conclusion comments requested'
                 item['role'] = "Sector expert"
+                item['object'] = 'conclusionIcon'
                 observation_wf.append(item)
             elif item['review_state'] == 'phase1-conclusions' and item['action'] == "phase1-finish-comments":
                 item['state'] = 'Conclusion comments closed'
                 item['role'] = "Sector expert"
+                item['object'] = 'conclusionIcon'
                 observation_wf.append(item)
             elif item['review_state'] == 'phase1-conclusions' and item['action'] == "phase1-draft-conclusions":
                 item['state'] = 'Conclusion drafting'
                 item['role'] = "Sector expert"
+                item['object'] = 'conclusionIcon'
                 observation_wf.append(item)
             elif item['review_state'] == 'phase2-draft':
                 item['state'] = 'Draft observation'
@@ -528,14 +531,17 @@ class Observation(dexterity.Container):
             elif item['review_state'] == 'phase2-conclusion-discussion':
                 item['state'] = 'Conclusion comments requested'
                 item['role'] = "Review expert"
+                item['object'] = 'conclusionIcon'
                 observation_wf.append(item)
             elif item['review_state'] == 'phase2-conclusions' and item['action'] == "phase2-finish-comments":
                 item['state'] = 'Conclusion comments closed'
                 item['role'] = "Review expert"
+                item['object'] = 'conclusionIcon'
                 observation_wf.append(item)
             elif item['review_state'] == 'phase2-conclusions' and item['action'] == "phase2-draft-conclusions":
                 item['state'] = 'Conclusion drafting'
                 item['role'] = "Review expert"
+                item['object'] = 'conclusionIcon'
                 observation_wf.append(item)
             else:
                 item['state'] = '*' + item['review_state'] + '*'
@@ -550,7 +556,7 @@ class Observation(dexterity.Container):
             question_history = question.workflow_history.get('esd-question-review-workflow', [])
             for item in question_history:
                 item['role'] = item['actor']
-                item['object'] = 'question'
+                item['object'] = 'questionIcon'
                 item['author'] = self.get_author_name(item['actor'])
                 if item['review_state'] == 'phase1-draft' and item['action'] == None:
                     item['state'] = 'Draft question'
