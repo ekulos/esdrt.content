@@ -372,64 +372,81 @@ class Observation(dexterity.Container):
 
     def wf_location(self):
         if self.get_status() == 'phase1-draft':
-            return 'Sector Expert'
+            return 'Sector expert'
+        elif self.get_status() == 'phase2-draft':
+            return 'Review expert'
         elif self.get_status() == 'phase1-closed':
-            return 'Quality Expert'
+            return 'Quality expert'
+        elif self.get_status() == 'phase2-closed':
+            return 'Lead reviewer'    
         elif self.get_status() == 'phase1-conclusions':
-            return 'Sector Expert'
-        elif self.get_status() == 'phase1-conclusion-discussion':
+            return 'Sector expert'
+        elif self.get_status() == 'phase2-conclusions':
+            return 'Review expert'    
+        elif self.get_status() in ['phase1-conclusion-discussion', 'phase2-conclusion-discussion']:
             return 'Counterpart'
         elif self.get_status() == 'phase1-close-requested':
-            return 'Quality Expert'
+            return 'Quality expert'
+        elif self.get_status() == 'phase2-close-requested':
+            return 'Lead reviewer'            
         else:
             questions = self.values()
             if questions:
                 question = questions[0]
                 state = api.content.get_state(question)
                 if state in ['phase1-draft', 'phase1-closed']:
-                    return 'Sector Expert'
-                elif state in ['phase1-counterpart-comments']:
+                    return 'Sector expert'
+                if state in ['phase2-draft', 'phase2-closed']:
+                    return 'Review expert'    
+                elif state in ['phase1-counterpart-comments', 'phase2-counterpart-comments']:
                     return 'Counterpart'
                 elif state in ['phase1-drafted', 'phase1-recalled-lr']:
                     return 'Quality Expert'
+                elif state in ['phase2-drafted', 'phase2-recalled-lr']:
+                    return 'Lead reviewer'
                 elif state in ['phase1-pending', 'phase1-answered',
-                    'phase1-pending-answer-drafting', 'phase1-recalled-msa']:
+                    'phase1-pending-answer-drafting', 'phase1-recalled-msa',
+                    'phase2-pending', 'phase2-answered',
+                    'phase2-pending-answer-drafting', 'phase2-recalled-msa']:
                     return 'Member state authority'
-                elif state in ['phase1-pending-answer']:
+                elif state in ['phase1-pending-answer', 'phase2-pending-answer']:
                     return 'Member state expert'
             else:
-                return 'Sector Expert'
+                return 'Sector expert'
 
     def wf_status(self):
-        if self.get_status() == 'phase1-draft':
+        if self.get_status() in ['phase1-draft', 'phase2-draft']:
             return ['Observation created', "observationIcon"]
-        elif self.get_status() == 'phase1-closed':
+        elif self.get_status() in ['phase1-closed', 'phase2-closed']:
             return ['Observation finished', "observationIcon"]
-        elif self.get_status() == 'phase1-close-requested':
+        elif self.get_status() in ['phase1-close-requested', 'phase2-close-requested']:
             return ['Observation finish requested', "observationIcon"]
-        elif self.get_status() == 'phase1-conclusions':
+        elif self.get_status() in ['phase1-conclusions', 'phase2-conclusions']:
             return ["Conclusion ongoing", "conclusionIcon"]
-        elif self.get_status() == 'phase1-conclusion-discussion':
+        elif self.get_status() in ['phase1-conclusion-discussion', 'phase2-conclusion-discussion']:
             return ["Counterparts comments requested", "conclusionIcon"]
         else:
             questions = self.values()
             if questions:
                 question = questions[-1]
                 state = api.content.get_state(question)
-                if state == 'phase1-raft':
+                if state in ['phase1-raft', 'phase2-raft']:
                     return ["Question drafted", "questionIcon"]
-                elif state == 'phase1-counterpart-comments':
+                elif state in ['phase1-counterpart-comments', 'phase2-counterpart-comments']:
                     return ["Counterpart's comments requested", "questionIcon"]
-
-                elif state in ['phase1-answered']:
+                elif state in ['phase1-answered', 'phase2-answered']:
                     return ['Pending question', "questionIcon"]
                 elif state in ['phase1-pending', 'phase1-pending-answer', 'phase1-pending-answer-validation',
-                    'phase1-validate-answer', 'phase1-recalled-msa']:
+                    'phase1-validate-answer', 'phase1-recalled-msa', 
+                    'phase2-pending', 'phase2-pending-answer', 'phase2-pending-answer-validation',
+                    'phase2-validate-answer', 'phase2-recalled-msa']:
                     return ['Open question', "questionIcon"]
-                elif state in ['phase1-draft', 'cphase1-ounterpart-comments',
-                    'phase1-drafted', 'phase1-recalled-lr']:
+                elif state in ['phase1-draft', 'phase1-ounterpart-comments',
+                    'phase1-drafted', 'phase1-recalled-lr',
+                    'phase2-draft', 'phase2-ounterpart-comments',
+                    'phase2-drafted', 'phase2-recalled-lr']:
                     return ['Draft question', "questionIcon"]
-                elif state in ['phase1-closed']:
+                elif state in ['phase1-closed', 'phase2-closed']:
                     return ['Closed question', "questionIcon"]
             else:
                 return ['Observation created', "observationIcon"]
