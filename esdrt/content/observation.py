@@ -467,38 +467,73 @@ class Observation(dexterity.Container):
             item['role'] = item['actor']
             item['object'] = 'observation'
             item['author'] = self.get_author_name(item['actor'])
-            if item['review_state'] == 'draft':
+            if item['review_state'] == 'phase1-draft':
+                item['state'] = 'Draft observation'
+                item['role'] = "Sector expert"
+                observation_wf.append(item)
+            elif item['review_state'] == 'phase1-pending' and item['action'] == "phase1-approve":
+                item['state'] = 'Pending'
+                #Do not add
+            elif item['review_state'] == 'phase1-pending' and item['action'] == "phase1-reopen":
+                item['state'] = 'Observation reopened'
+                item['role'] = "Sector expert"
+                observation_wf.append(item)
+            elif item['review_state'] == 'phase1-closed':
+                item['state'] = 'Closed observation'
+                item['role'] = "Sector expert"
+                observation_wf.append(item)
+            elif item['review_state'] == 'phase1-close-requested':
+                item['state'] = 'Closure requested'
+                item['role'] = "Sector expert"
+                observation_wf.append(item)
+            elif item['review_state'] == 'phase1-conclusions' and item['action'] == "phase1-deny-closure":
+                item['state'] = 'Observation closure denied'
+                item['role'] = "Sector expert"
+                observation_wf.append(item)
+            elif item['review_state'] == 'phase1-conclusion-discussion':
+                item['state'] = 'Conclusion comments requested'
+                item['role'] = "Sector expert"
+                observation_wf.append(item)
+            elif item['review_state'] == 'phase1-conclusions' and item['action'] == "phase1-finish-comments":
+                item['state'] = 'Conclusion comments closed'
+                item['role'] = "Sector expert"
+                observation_wf.append(item)
+            elif item['review_state'] == 'phase1-conclusions' and item['action'] == "phase1-draft-conclusions":
+                item['state'] = 'Conclusion drafting'
+                item['role'] = "Sector expert"
+                observation_wf.append(item)
+            elif item['review_state'] == 'phase2-draft':
                 item['state'] = 'Draft observation'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
-            elif item['review_state'] == 'pending' and item['action'] == "approve":
+            elif item['review_state'] == 'phase2-pending' and item['action'] == "phase2-approve":
                 item['state'] = 'Pending'
                 #Do not add
-            elif item['review_state'] == 'pending' and item['action'] == "reopen":
+            elif item['review_state'] == 'phase2-pending' and item['action'] == "phase2-reopen":
                 item['state'] = 'Observation reopened'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
-            elif item['review_state'] == 'closed':
+            elif item['review_state'] == 'phase2-closed':
                 item['state'] = 'Closed observation'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
-            elif item['review_state'] == 'close-requested':
+            elif item['review_state'] == 'phase2-close-requested':
                 item['state'] = 'Closure requested'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
-            elif item['review_state'] == 'conclusions' and item['action'] == "deny-closure":
+            elif item['review_state'] == 'phase2-conclusions' and item['action'] == "phase2-deny-closure":
                 item['state'] = 'Observation closure denied'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
-            elif item['review_state'] in ['conclusion-discussion']:
+            elif item['review_state'] == 'phase2-conclusion-discussion':
                 item['state'] = 'Conclusion comments requested'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
-            elif item['review_state'] == 'conclusion' and item['action'] == "finish-comments":
+            elif item['review_state'] == 'phase2-conclusions' and item['action'] == "phase2-finish-comments":
                 item['state'] = 'Conclusion comments closed'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
-            elif item['review_state'] == 'conclusion' and item['action'] == "draft-conclusions":
+            elif item['review_state'] == 'phase2-conclusions' and item['action'] == "phase2-draft-conclusions":
                 item['state'] = 'Conclusion drafting'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
@@ -517,57 +552,118 @@ class Observation(dexterity.Container):
                 item['role'] = item['actor']
                 item['object'] = 'question'
                 item['author'] = self.get_author_name(item['actor'])
-                if item['review_state'] == 'draft' and item['action'] == None:
+                if item['review_state'] == 'phase1-draft' and item['action'] == None:
                     item['state'] = 'Draft question'
-                    item['role'] = "Review expert"
+                    item['role'] = "Sector expert"
                     question_wf.append(item)
-                elif item['review_state'] == 'counterpart-comments':
+                elif item['review_state'] == 'phase1-counterpart-comments':
                     item['state'] = 'Requested counterparts comments'
-                    item['role'] = "Review expert"
+                    item['role'] = "Sector expert"
                     question_wf.append(item)
-                elif item['review_state'] == 'draft' and item['action'] =='send-comments':
+                elif item['review_state'] == 'phase1-draft' and item['action'] =='phase1-send-comments':
                     item['state'] = 'Counterparts comments closed'
-                    item['role'] = "Review expert"
+                    item['role'] = "Sector expert"
                     question_wf.append(item)
-                elif item['review_state'] == 'drafted':
-                    item['state'] = 'Sent to LR'
-                    item['role'] = "Review expert"
+                elif item['review_state'] == 'phase1-drafted':
+                    item['state'] = 'Sent to Quality expert'
+                    item['role'] = "Sector expert"
                     question_wf.append(item)
-                elif item['review_state'] == 'draft' and item['action'] =='recall-sre':
+                elif item['review_state'] == 'phase1-draft' and item['action'] =='phase1-recall-sre':
                     item['state'] = 'Question recalled'
-                    item['role'] = "Review expert"
+                    item['role'] = "Sector expert"
                     question_wf.append(item)
-                elif item['review_state'] == 'pending' and item['action'] == 'approve-question':
+                elif item['review_state'] == 'phase1-draft' and item['action'] =='phase1-redraft':
+                    item['state'] = 'Question redrafted'
+                    item['role'] = "Quality expert"
+                    question_wf.append(item)                    
+                elif item['review_state'] == 'phase1-pending' and item['action'] == 'phase1-approve-question':
                     item['state'] = 'Question approved and sent to MSA'
-                    item['role'] = "Lead reviewer"
+                    item['role'] = "Quality expert"
                     question_wf.append(item)
-                elif item['review_state'] == 'recalled-lr':
+                elif item['review_state'] == 'phase1-recalled-lr':
                     item['state'] = 'Question recalled'
-                    item['role'] = "Lead reviewer"
-                elif item['review_state'] == 'recalled-msa':
-                    item['state'] = 'Question recalled'
-                    item['role'] = "Question recalled"
-                    question_wf.append(item)
-                elif item['review_state'] == 'pending-answer':
-                    item['state'] = 'Member state expert comments requested'
-                    item['role'] = "Member state authority"
-                    question_wf.append(item)
-                elif item['review_state'] == 'pending-answer-validation':
-                    item['state'] = 'Member state expert comments closed'
-                    item['role'] = "Member state authority"
-                    question_wf.append(item)
-                elif item['review_state'] == 'answered':
+                    item['role'] = "Quality expert"
+                elif item['review_state'] == 'phase1-answered':
                     item['state'] = 'Answer sent'
                     item['role'] = "Member state authority"
                     question_wf.append(item)
-                elif item['action'] == 'validate-answer-msa':
+                elif item['review_state'] == 'phase1-expert-comments':
+                    item['state'] = 'Member state expert comments requested'
+                    item['role'] = "Member state authority"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase1-pending-answer-validation':
+                    item['state'] = 'Member state expert comments closed'
+                    item['role'] = "Member state authority"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase1-recalled-msa':
+                    item['state'] = 'Answer recalled'
+                    item['role'] = "Member state authority"
+                    question_wf.append(item)
+                elif item['action'] == 'phase1-validate-answer-msa':
+                    item['state'] = 'Sector expert'
+                    item['role'] = "Answer acknowledged"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase1-draft' and item['action'] == "phase1-reopen":
+                    item['state'] = 'Reopened'
+                    #Do not add
+                elif item['review_state'] == 'phase1-closed':
+                    item['state'] = 'Closed'
+                    #Do not add
+                elif item['review_state'] == 'phase2-draft' and item['action'] == "phase2-reopen":
+                    item['state'] = 'Draft question'
+                    item['role'] = "Review expert"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase2-counterpart-comments':
+                    item['state'] = 'Requested counterparts comments'
+                    item['role'] = "Review expert"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase2-draft' and item['action'] =='phase2-send-comments':
+                    item['state'] = 'Counterparts comments closed'
+                    item['role'] = "Review expert"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase2-drafted':
+                    item['state'] = 'Sent to LR'
+                    item['role'] = "Review expert"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase2-draft' and item['action'] =='phase2-recall-sre':
+                    item['state'] = 'Question recalled'
+                    item['role'] = "Review expert"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase2-draft' and item['action'] =='phase2-redraft':
+                    item['state'] = 'Question redrafted'
+                    item['role'] = "Review expert"
+                    question_wf.append(item)                    
+                elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
+                    item['state'] = 'Question approved and sent to MSA'
+                    item['role'] = "Lead reviewer"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase2-recalled-lr':
+                    item['state'] = 'Question recalled'
+                    item['role'] = "Lead reviewer"
+                elif item['review_state'] == 'phase2-answered':
+                    item['state'] = 'Answer sent'
+                    item['role'] = "Member state authority"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase1-expert-comments':
+                    item['state'] = 'Member state expert comments requested'
+                    item['role'] = "Member state authority"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase2-pending-answer-validation':
+                    item['state'] = 'Member state expert comments closed'
+                    item['role'] = "Member state authority"
+                    question_wf.append(item)
+                elif item['review_state'] == 'phase2-recalled-msa':
+                    item['state'] = 'Answer recalled'
+                    item['role'] = "Member state authority"
+                    question_wf.append(item)
+                elif item['action'] == 'phase2-validate-answer-msa':
                     item['state'] = 'Review expert'
                     item['role'] = "Answer acknowledged"
                     question_wf.append(item)
-                elif item['review_state'] == 'draft' and item['action'] == "reopen":
+                elif item['review_state'] == 'phase2-draft' and item['action'] == "phase2-reopen":
                     item['state'] = 'Reopened'
                     #Do not add
-                elif item['review_state'] == 'closed':
+                elif item['review_state'] == 'phase2-closed':
                     item['state'] = 'Closed'
                     #Do not add
                 else:
