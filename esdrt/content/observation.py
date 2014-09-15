@@ -455,13 +455,14 @@ class Observation(dexterity.Container):
 
     def observation_status(self):
         status = self.get_status()
-        if status == 'phase1-draft':
+        if status in ['phase1-draft', 'phase2-draft']:
             return 'draft'
-        elif status == 'phase1-closed':
+        elif status in ['phase1-closed', 'phase2-closed']:
             return 'closed'
-        elif status == 'phase1-close-requested':
+        elif status in ['phase1-close-requested', 'phase2-close-requested']:
             return 'open'
-        elif status in ['phase1-conclusions', 'phase1-conclusion-discussion']:
+        elif status in ['phase1-conclusions', 'phase1-conclusion-discussion',
+                        'phase2-conclusions', 'phase2-conclusion-discussion']:
             return 'conclusion'
         else:
             return 'open'
