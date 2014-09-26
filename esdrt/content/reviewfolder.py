@@ -193,7 +193,7 @@ class InboxReviewFolderView(grok.View):
             return items
 
     def get_questions_as_counterpart(self):
-        if self.is_review_expert() or self.is_lead_reviewer():
+        if self.is_review_expert() or self.is_lead_reviewer() or self.is_quality_expert():
             catalog = api.portal.get_tool('portal_catalog')
             path = '/'.join(self.context.getPhysicalPath())
             query = {
@@ -218,7 +218,8 @@ class InboxReviewFolderView(grok.View):
                             roles = api.user.get_roles(username=user.id, obj=obj)
                             with api.env.adopt_user(user=user):
                                 if mtool.checkPermission('View', obj):
-                                    if obj.observation_question_status() == "counterpart-comments" and (user.id == owner._id or "CounterPart" in roles):
+                                    if (obj.observation_question_status() == "phase1-counterpart-comments" or obj.observation_question_status() == "phase2-counterpart-comments") \
+                                    and (user.id == owner._id or "CounterPart" in roles):
                                         items.append(obj)
                         except:
                             pass
@@ -250,7 +251,9 @@ class InboxReviewFolderView(grok.View):
                             owner = obj.getOwner()
                             with api.env.adopt_user(user=user):
                                 if mtool.checkPermission('View', obj):
-                                    if obj.observation_question_status() == 'answered' and user.id == owner._id:
+                                    if (obj.observation_question_status() == 'phase1-answered' or \
+                                        obj.observation_question_status() == 'phase2-answered') \
+                                     and user.id == owner._id:
                                         items.append(obj)
                         except:
                             pass
@@ -258,7 +261,7 @@ class InboxReviewFolderView(grok.View):
             return items            
 
     def get_questions_for_approval(self):
-        if self.is_lead_reviewer():
+        if self.is_lead_reviewer() or self.is_quality_expert():
             catalog = api.portal.get_tool('portal_catalog')
             path = '/'.join(self.context.getPhysicalPath())
             query = {
@@ -281,7 +284,7 @@ class InboxReviewFolderView(grok.View):
                             obj = item.getObject()
                             with api.env.adopt_user(user=user):
                                 if mtool.checkPermission('View', obj):
-                                    if obj.observation_question_status() == 'drafted':
+                                    if (obj.observation_question_status() == 'phase1-drafted' or obj.observation_question_status() == 'phase2-drafted'):
                                         items.append(obj)
                         except:
                             pass
@@ -289,7 +292,7 @@ class InboxReviewFolderView(grok.View):
             return items 
 
     def get_questions_finalisation_requested(self):
-        if self.is_lead_reviewer():
+        if self.is_lead_reviewer() or self.is_quality_expert():
             catalog = api.portal.get_tool('portal_catalog')
             path = '/'.join(self.context.getPhysicalPath())
             query = {
@@ -312,7 +315,7 @@ class InboxReviewFolderView(grok.View):
                             obj = item.getObject()
                             with api.env.adopt_user(user=user):
                                 if mtool.checkPermission('View', obj):
-                                    if obj.observation_question_status() == 'close-requested':
+                                    if (obj.observation_question_status() == 'phase1-close-requested' or obj.observation_question_status() == 'phase2-close-requested'):
                                         items.append(obj)
                         except:
                             pass
@@ -343,7 +346,7 @@ class InboxReviewFolderView(grok.View):
                             obj = item.getObject()
                             with api.env.adopt_user(user=user):
                                 if mtool.checkPermission('View', obj):
-                                    if obj.observation_question_status() == 'pending':
+                                    if (obj.observation_question_status() == 'phase1-pending' or obj.observation_question_status() == 'phase2-pending'):
                                         items.append(obj)
                         except:
                             pass
@@ -379,7 +382,9 @@ class InboxReviewFolderView(grok.View):
                         roles = api.user.get_roles(username=user.id, obj=obj)
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                if obj.observation_question_status() == 'pending-answer' and "MSExpert" in roles:
+                                if (obj.observation_question_status() == 'phase1-pending-answer' \
+                                    or obj.observation_question_status() == 'phase2-pending-answer') \
+                                 and "MSExpert" in roles:
                                     items.append(obj)
                     except:
                         pass
@@ -418,14 +423,22 @@ class InboxReviewFolderView(grok.View):
 
         return sectors      
 
+    @memoize
     def is_review_expert(self):
         user = api.user.get_current()
         return "ExpertReviewer" in user.getRoles()
 
+    @memoize
     def is_lead_reviewer(self):
         user = api.user.get_current()
         return "LeadReviewer" in user.getRoles()
 
+    @memoize
+    def is_quality_expert(self):
+        user = api.user.get_current()
+        return "QualityExpert" in user.getRoles()
+
+    @memoize
     def is_member_state_authority(self):
         user = api.user.get_current()
         return "MSAuthority" in user.getRoles()
