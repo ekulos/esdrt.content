@@ -476,3 +476,49 @@ ul.eea-tabs{
 	color: #918C86;
 	font-size: 75%;	
 }
+#collage .row_1 .block_1 {
+	width: 65% !important;
+}
+#collage .row_1 .block_1 h2{
+	display: none;
+}
+#collage .row_1 .collage-column:nth-child(2){
+	display: none !important;
+}
+#collage .row_1 .block_3 .collage_item_1,
+#collage .row_1 .block_3 .collage_item_2{
+	background-color: #F3F3F3;
+	padding: 5px;
+}
+#collage .row_1 .block_3 .collage_item_1 h2{
+	display: none;
+}
+#collage .row_1 .block_3 .collage_item_2 .reviewerList {
+	height: 254px;
+	overflow: auto;
+}
+#collage .row_1 .block_3 .collage_item_2 .reviewerList table{
+	width: 100%;
+}
+#collage .row_1 .block_3 .collage_item_2 .reviewerList table tr:nth-child(even){
+	border-bottom: 1px solid #E7E7E7;
+}
+#collage .row_1 .block_3 .collage_item_2 .reviewerList table tr td:first-child{
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	width: 15px;
+}
+#collage .row_2 .block_1 table th{
+	background-color: #055B7B;
+	color: white;
+}
+#collage .row_2 .block_1 table tr:nth-child(even){
+	background-color: #F5F5F5;
+}
+#collage .row_2 .block_1 table tr.title{
+	background-color: #E6EEF2;
+	font-weight: bold;
+}
+span.envelope:before{
+	content: "\f0e0";
+}
