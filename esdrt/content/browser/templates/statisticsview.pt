@@ -12,9 +12,16 @@
 
     <h2>Today's Summary</h2>
 
-    <p>Observations: How many observations are still drafts, open in conclusion state and finished?</p>
 
-    <table class="listing">
+    <div class="collapsiblePanelTitle" data-panel="observation_status_per_country">
+      <div>
+        Observations: How many observations are still drafts, open in conclusion state and finished?
+        <span class="eea-icon eea-icon-left"></span>
+      </div>
+    </div>
+    <!--p>Observations: How many observations are still drafts, open in conclusion state and finished?</p-->
+
+    <table class="listing observation_status_per_country">
       <thead>
         <tr>
           <th>Country</th>
@@ -37,7 +44,7 @@
       </tbody>
     </table>
 
-    <table class="listing">
+    <table class="listing observation_status_per_country">
       <thead>
         <tr>
           <th>Sector</th>
@@ -60,9 +67,16 @@
       </tbody>
     </table>
 
-    <p>Q&amp;A: how many questions are in draft, open, pending, acknowledged?</p>
+    <div class="collapsiblePanelTitle" data-panel="question_status_per_country">
+      <div>
+        Q&amp;A: how many questions are in draft, open, pending, acknowledged?
+        <span class="eea-icon eea-icon-left"></span>
+      </div>
+    </div>
 
-    <table class="listing">
+    <!--p>Q&amp;A: how many questions are in draft, open, pending, acknowledged?</p-->
+
+    <table class="listing question_status_per_country">
       <thead>
         <tr>
           <th>Country</th>
@@ -85,7 +99,7 @@
       </tbody>
     </table>
 
-    <table class="listing">
+    <table class="listing question_status_per_country">
       <thead>
         <tr>
           <th>Sector</th>
@@ -108,9 +122,15 @@
       </tbody>
     </table>
 
-    <p>How many observations will potentially require gap filling (initial checks)?</p>
+    <div class="collapsiblePanelTitle" data-panel="observation_highlights_pgf">
+      <div>
+        How many observations will potentially require gap filling (initial checks)?
+        <span class="eea-icon eea-icon-left"></span>
+      </div>
+    </div>
+    <!--p>How many observations will potentially require gap filling (initial checks)?</p-->
 
-    <table class="listing">
+    <table class="listing observation_highlights_pgf">
       <thead>
         <tr>
           <th>Potential gap-filling</th>
@@ -131,9 +151,16 @@
       </tbody>
     </table>
 
-    <p>How many observations will potentially be significant issues (step 1 annual review)?</p>
 
-    <table class="listing">
+    <div class="collapsiblePanelTitle" data-panel="observation_highlights_psi">
+      <div>
+        How many observations will potentially be significant issues (step 1 annual review)?
+        <span class="eea-icon eea-icon-left"></span>
+      </div>
+    </div>
+    <!--p>How many observations will potentially be significant issues (step 1 annual review)?</p-->
+
+    <table class="listing observation_highlights_psi">
       <thead>
         <tr>
           <th>Potential significant issues</th>
@@ -154,9 +181,16 @@
       </tbody>
     </table>
 
-    <p>How many observations will potentially be technical corrections (step 2 annual review and comprehensive review)?</p>
 
-    <table class="listing">
+    <div class="collapsiblePanelTitle" data-panel="observation_highlights_ptc">
+      <div>
+        How many observations will potentially be technical corrections (step 2 annual review and comprehensive review)?
+        <span class="eea-icon eea-icon-left"></span>
+      </div>
+    </div>
+    <!--p>How many observations will potentially be technical corrections (step 2 annual review and comprehensive review)?</p-->
+
+    <table class="listing observation_highlights_ptc">
       <thead>
         <tr>
           <th>Potential technical corrections</th>
