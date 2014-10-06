@@ -29,7 +29,7 @@ class IESDRTFile(form.Schema, IImageScaleTraversable):
     )
 
     confidential = schema.Bool(
-        title=_(u'Is a confidential file?'),
+        title=_(u'Is it a confidential file?'),
         description=_(u'Confidential files are only available for people '
                       u'taking part in the review process')
     )
