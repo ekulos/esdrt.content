@@ -264,13 +264,18 @@ class AssignCounterPartForm(BrowserView):
                     api.user.grant_roles(username=username,
                         roles=['CounterPart'],
                         obj=target)
-            # if not comments:
-            #     status = IStatusMessage(self.request)
-            #     msg = _(u'You need to enter some comments for your counterpart')
-            #     status.addStatusMessage(msg, "error")
-            #     return self.index()
-            wf_action = 'phase1-request-for-counterpart-comments'
-            #wf_comments = self.request.get('comments')
+
+            if api.content.get_state(self.context) == 'phase1-draft':
+                wf_action = 'phase1-request-for-counterpart-comments'
+            elif api.content.get_state(self.context) == 'phase2-draft':
+                wf_action = 'phase2-request-for-counterpart-comments'
+            else:
+                status = IStatusMessage(self.request)
+                msg = _(u'There was an error. Try again please')
+                status.addStatusMessage(msg, "error")
+                url = self.context.absolute_url()
+                return self.request.response.redirect(url)
+
             return self.context.content_status_modify(
                 workflow_action=wf_action,
 
