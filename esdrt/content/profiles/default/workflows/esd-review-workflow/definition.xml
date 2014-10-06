@@ -613,7 +613,7 @@
   </guard>
  </transition>
  <transition transition_id="phase2-confirm-finishing-observation" title="phase2-confirm-finishing-observation" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-close" category="workflow" icon="">phase2-confirm-finishing-observation</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-confirm-finishing-observation" category="workflow" icon="">phase2-confirm-finishing-observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
