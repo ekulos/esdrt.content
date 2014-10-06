@@ -19,6 +19,7 @@ from zope.annotation import factory
 from zope.component import adapts
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from zope import schema
 
 
 class ICommentExtenderFields(Interface):
@@ -26,6 +27,12 @@ class ICommentExtenderFields(Interface):
         title=_(u"Attachment"),
         description=_(u""),
         required=False,
+    )
+
+    confidential = schema.Bool(
+        title=_(u'Is it a confidential file?'),
+        description=_(u'Confidential files are only available for people '
+                      u'taking part in the review process')
     )
 
 
@@ -36,6 +43,7 @@ class CommentExtenderFields(Implicit, Persistent):
 
     security.declareProtected(permissions.View, 'attachment')
     attachment = u""
+    confidential = False
 
 InitializeClass(CommentExtenderFields)
 
@@ -55,3 +63,4 @@ class CommentExtender(extensible.FormExtender):
     def update(self):
         self.add(ICommentExtenderFields, prefix="")
         self.move('attachment', after='text', prefix="")
+        self.move('confidential', after='attachment', prefix="")
