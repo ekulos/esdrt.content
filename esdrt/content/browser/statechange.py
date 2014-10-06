@@ -296,6 +296,9 @@ class AssignConclusionReviewerForm(BrowserView):
 
     index = ViewPageTemplateFile('templates/assign_conclusion_reviewer_form.pt')
 
+    def assignation_target(self):
+        return aq_parent(aq_inner(self.context))
+
     def target_groupnames(self):
         return [
             'extranet-esd-ghginv-sr',
@@ -311,7 +314,8 @@ class AssignConclusionReviewerForm(BrowserView):
         users = []
 
         def isCP(u):
-            return 'CounterPart' in api.user.get_roles(user=u, obj=self.context)
+            target = self.assignation_target()
+            return 'CounterPart' in api.user.get_roles(user=u, obj=target)
 
         for groupname in self.target_groupnames():
             data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
@@ -322,6 +326,7 @@ class AssignConclusionReviewerForm(BrowserView):
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
         """
+        target = self.assignation_target()
         if self.request.form.get('send', None):
             usernames = self.request.form.get('counterparts', None)
             if not usernames:
@@ -333,14 +338,15 @@ class AssignConclusionReviewerForm(BrowserView):
             for user, cp in self.get_counterpart_users():
                 if cp:
                     api.user.revoke_roles(user=user,
-                        obj=self.context,
-                        roles=['CounterPart']
+                        obj=target,
+                        roles=['CounterPart'],
                     )
 
             for username in usernames:
                 api.user.grant_roles(username=username,
+                    obj=target,
                     roles=['CounterPart'],
-                    obj=self.context)
+                )
 
             wf_action = 'phase1-request-comments'
             return self.context.content_status_modify(
