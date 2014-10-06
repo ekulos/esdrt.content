@@ -65,7 +65,6 @@
  </state>
  <state state_id="phase1-closed" title="Closed">
   <exit-transition transition_id="phase1-reopen"/>
-  <exit-transition transition_id="phase2-reopen"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -556,6 +555,7 @@
   </permission-map>
  </state>
  <state state_id="phase2-closed" title="phase2-closed">
+  <exit-transition transition_id="phase2-reopen"/>
  </state>
  <state state_id="phase2-counterpart-comments" title="phase2-counterpart-comments">
   <exit-transition transition_id="phase2-send-comments"/>
