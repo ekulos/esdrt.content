@@ -146,4 +146,12 @@
          destination="19"
          handler=".18_19.upgrade"
          profile="esdrt.content:default" />
+
+    <genericsetup:upgradeStep
+         title="Upgrade to 20."
+         description="Workflow definition, Vocabularies"
+         source="19"
+         destination="20"
+         handler=".19_20.upgrade"
+         profile="esdrt.content:default" />
 </configure>
