@@ -156,21 +156,24 @@
   <metal:observation define-macro="observation-info"
     tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
     <div class="backButton">
-      <a
+      <a href=""
+        tal:define="pcp here/@@plone_context_state;
+                    parent pcp/parent"
+        tal:attributes="href parent/absolute_url"
         class="standardButton">
           <span class="eea-icon"><!-- --></span>
             Back to overview list
       </a>
-    </div>    
+    </div>
     <div class="esdDiv">
       <div class="row">
         <div class="cell position-0 width-1">
           <i class="eea-icon eea-icon-4x observation"></i>
-        </div>         
+        </div>
         <div class="cell position-1 width-4 esdLabel">Ref. Number</div>
         <div class="cell position-5 width-13 esdLabel">Observation</div>
       </div>
-      <div class="row">      
+      <div class="row">
         <div class="cell position-1 width-4 value">
           <span tal:content="context/id">
              UK-WAS-13-001
@@ -201,9 +204,9 @@
               <td></td>
               <td></td>
               <td style="text-align:right">100%</td>
-            </tr>            
+            </tr>
           </table>
-        </div>        
+        </div>
       </div>
       <div class="row">
         <div class="cell position-1 width-2" tal:content="context/country_value">Country</div>
@@ -342,7 +345,7 @@
                     tal:attributes="href python:'http://www.eionet.europa.eu/directory/user?uid='+item['actor']"
                     tal:content="item/author"></a>
                   <br tal:condition="context/is_secretariat"/>
-                  <span 
+                  <span
                     tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg wfStep', item['object']])"><!-- --></span>
                   <span tal:content="item/state"></span><br/>
                   <span class="eea-icon eea-icon-lg wfTime"><!-- --></span>
@@ -380,7 +383,7 @@
     <li style="width:150px;max-width:150px"
       tal:define="conclusion view/get_conclusion"
       tal:condition="nocall:conclusion"
-      >Conclusions</li>      
+      >Conclusions</li>
     <li style="width:200px;max-width:200px">Question chat room</li>
   </ul>
 
@@ -477,7 +480,7 @@
                   Conclusion comments
                   <span class="eea-icon eea-icon-left"></span>
                 </div>
-              </div>              
+              </div>
               <div id="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" style="display:none"/>
             </div>
         </div>
@@ -702,7 +705,7 @@
               </tal:changes>
             </tal:block>
           </div>
-        </div>        
+        </div>
         <div id="comment-discussion-wrapper"
           tal:define="context nocall:question">
             <tal:block tal:define="portalType question/portal_type/lower">
@@ -721,7 +724,7 @@
                     Answer comments
                     <span class="eea-icon eea-icon-left"></span>
                   </div>
-                </div>                
+                </div>
                 <div class="answer-comments" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />
               </tal:block>
             </tal:block>
