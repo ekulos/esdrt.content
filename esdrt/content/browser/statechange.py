@@ -216,6 +216,9 @@ class AssignCounterPartForm(BrowserView):
             'extranet-esd-esdreview-leadreview',
         ]
 
+    def assignation_target(self):
+        return aq_parent(aq_inner(self.context))
+
     def get_counterpart_users(self):
         current = api.user.get_current()
         current_id = current.getId()
@@ -223,7 +226,8 @@ class AssignCounterPartForm(BrowserView):
         users = []
 
         def isCP(u):
-            return 'CounterPart' in api.user.get_roles(user=u, obj=self.context)
+            target = self.assignation_target()
+            return 'CounterPart' in api.user.get_roles(user=u, obj=target)
 
         for groupname in self.target_groupnames():
             data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
@@ -234,6 +238,7 @@ class AssignCounterPartForm(BrowserView):
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
         """
+        target = self.assignation_target()
         if self.request.form.get('send', None):
             counterparts = self.request.get('counterparts', None)
             #comments = self.request.get('comments', None)
@@ -246,19 +251,19 @@ class AssignCounterPartForm(BrowserView):
             for user, cp in self.get_counterpart_users():
                 if cp:
                     api.user.revoke_roles(user=user,
-                        obj=self.context,
-                        roles=['CounterPart']
+                        roles=['CounterPart'],
+                        obj=target,
                     )
 
             if isinstance(counterparts, basestring):
                 api.user.grant_roles(username=counterparts,
                     roles=['CounterPart'],
-                    obj=self.context)
+                    obj=target)
             else:
                 for username in counterparts:
                     api.user.grant_roles(username=username,
                         roles=['CounterPart'],
-                        obj=self.context)
+                        obj=target)
             # if not comments:
             #     status = IStatusMessage(self.request)
             #     msg = _(u'You need to enter some comments for your counterpart')
