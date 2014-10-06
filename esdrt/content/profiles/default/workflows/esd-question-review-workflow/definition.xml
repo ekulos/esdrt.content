@@ -65,6 +65,7 @@
  </state>
  <state state_id="phase1-closed" title="Closed">
   <exit-transition transition_id="phase1-reopen"/>
+  <exit-transition transition_id="phase2-reopen"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -555,7 +556,6 @@
   </permission-map>
  </state>
  <state state_id="phase2-closed" title="phase2-closed">
-  <exit-transition transition_id="phase2-reopen"/>
  </state>
  <state state_id="phase2-counterpart-comments" title="phase2-counterpart-comments">
   <exit-transition transition_id="phase2-send-comments"/>
@@ -1163,7 +1163,7 @@
   </guard>
  </transition>
  <transition transition_id="phase2-reopen" title="phase2-reopen" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase2-reopen" category="workflow" icon="">phase2-reopen</action>
+  <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase2-reopen" category="" icon="">phase2-reopen</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
    <guard-role>Manager</guard-role>
