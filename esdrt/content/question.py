@@ -167,12 +167,15 @@ class Question(dexterity.Container):
             return answer.Creator() == user.getId()
         else:
             return False
+
     def can_see_comment_discussion(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: View Comment Discussion', self)
+
     def can_see_answer_discussion(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: View Answer Discussion', self)
+
 # View class
 # The view will automatically use a similarly named template in
 # templates called questionview.pt .
@@ -246,6 +249,17 @@ class AddForm(dexterity.AddForm):
 #     with api.env.adopt_roles(roles=['Manager']):
 #         if api.content.get_state(obj=observation) == 'draft':
 #             api.content.transition(obj=observation, transition='approve')
+
+@grok.subscribe(IQuestion, IObjectAddedEvent)
+def add_question(context, event):
+    """ When adding a question, go directly to
+        'open' status on the observation
+    """
+    observation = aq_parent(context)
+    review_folder = aq_parent(observation)
+    with api.env.adopt_roles(roles=['Manager']):
+        if api.content.get_state(obj=review_folder) == 'ongoing-review-phase2':
+            api.content.transition(obj=context, transition='go-to-phase2')
 
 
 class AddCommentForm(Form):

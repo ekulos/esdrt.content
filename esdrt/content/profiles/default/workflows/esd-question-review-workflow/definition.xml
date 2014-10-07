@@ -157,9 +157,10 @@
   </permission-map>
  </state>
  <state state_id="phase1-draft" title="Draft">
-  <exit-transition transition_id="phase1-send-to-lr"/>
-  <exit-transition transition_id="phase1-request-for-counterpart-comments"/>
+  <exit-transition transition_id="go-to-phase2"/>
   <exit-transition transition_id="phase1-close"/>
+  <exit-transition transition_id="phase1-request-for-counterpart-comments"/>
+  <exit-transition transition_id="phase1-send-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>QualityExpert</permission-role>
    <permission-role>Manager</permission-role>
@@ -1008,6 +1009,13 @@
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
   </permission-map>
  </state>
+ <transition transition_id="go-to-phase2" title="Go to phase 2" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
+  
+  <guard>
+   <guard-role>Manager</guard-role>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase1-answer-to-lr" title="Submit Answer" new_state="phase1-answered" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=phase1-answer-to-lr" category="workflow" icon="">Submit Answer</action>
   <guard>

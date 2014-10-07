@@ -181,6 +181,7 @@
   </permission-map>
  </state>
  <state state_id="phase1-draft" title="Draft">
+  <exit-transition transition_id="go-to-phase2"/>
   <exit-transition transition_id="phase1-approve"/>
   <exit-transition transition_id="phase1-draft-conclusions"/>
   <permission-map name="Access contents information" acquired="False">
@@ -557,6 +558,13 @@
   <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
   </permission-map>
  </state>
+ <transition transition_id="go-to-phase2" title="Go to phase 2" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
+  
+  <guard>
+   <guard-role>Manager</guard-role>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase1-approve" title="Open" new_state="phase1-pending" trigger="USER" before_script="" after_script="">
   
   <guard>

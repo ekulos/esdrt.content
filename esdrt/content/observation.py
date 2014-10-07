@@ -1,6 +1,9 @@
-from plone.z3cform.interfaces import IWrappedForm
+from .comment import IComment
+from .commentanswer import ICommentAnswer
+from .conclusion import IConclusion
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
+from Acquisition import aq_parent
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
@@ -9,13 +12,14 @@ from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
 from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
+from plone.app.dexterity.behaviors.discussion import IAllowDiscussion
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
-from plone.app.dexterity.behaviors.discussion import IAllowDiscussion
 from plone.directives import dexterity
 from plone.directives import form
 from plone.directives.form import default_value
 from plone.namedfile.interfaces import IImageScaleTraversable
+from plone.z3cform.interfaces import IWrappedForm
 from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
 from Products.CMFPlone.utils import safe_unicode
@@ -38,9 +42,6 @@ from zope.interface import alsoProvides
 from zope.interface import Invalid
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
-from .comment import IComment
-from .commentanswer import ICommentAnswer
-from .conclusion import IConclusion
 
 import datetime
 
@@ -224,6 +225,8 @@ def check_sector(value):
     for group in groups:
         if group.startswith('extranet-esd-ghginv-sr-%s-' % value):
             valid = True
+        if group.startswith('extranet-esd-esdreview-reviewexp-%s-' % value):
+            valid = True
 
     if not valid:
         raise Invalid(u'You are not allowed to add observations for this sector category')
@@ -236,6 +239,9 @@ def check_country(value):
     valid = False
     for group in groups:
         if group.startswith('extranet-esd-ghginv-sr-') and \
+            group.endswith('-%s' % value):
+            valid = True
+        if group.startswith('extranet-esd-esdreview-reviewexp-') and \
             group.endswith('-%s' % value):
             valid = True
 
@@ -378,17 +384,17 @@ class Observation(dexterity.Container):
         elif self.get_status() == 'phase1-closed':
             return 'Quality expert'
         elif self.get_status() == 'phase2-closed':
-            return 'Lead reviewer'    
+            return 'Lead reviewer'
         elif self.get_status() == 'phase1-conclusions':
             return 'Sector expert'
         elif self.get_status() == 'phase2-conclusions':
-            return 'Review expert'    
+            return 'Review expert'
         elif self.get_status() in ['phase1-conclusion-discussion', 'phase2-conclusion-discussion']:
             return 'Counterpart'
         elif self.get_status() == 'phase1-close-requested':
             return 'Quality expert'
         elif self.get_status() == 'phase2-close-requested':
-            return 'Lead reviewer'            
+            return 'Lead reviewer'
         else:
             questions = self.values()
             if questions:
@@ -397,7 +403,7 @@ class Observation(dexterity.Container):
                 if state in ['phase1-draft', 'phase1-closed']:
                     return 'Sector expert'
                 if state in ['phase2-draft', 'phase2-closed']:
-                    return 'Review expert'    
+                    return 'Review expert'
                 elif state in ['phase1-counterpart-comments', 'phase2-counterpart-comments']:
                     return 'Counterpart'
                 elif state in ['phase1-drafted', 'phase1-recalled-lr']:
@@ -437,7 +443,7 @@ class Observation(dexterity.Container):
                 elif state in ['phase1-answered', 'phase2-answered']:
                     return ['Pending question', "questionIcon"]
                 elif state in ['phase1-pending', 'phase1-pending-answer', 'phase1-pending-answer-validation',
-                    'phase1-validate-answer', 'phase1-recalled-msa', 
+                    'phase1-validate-answer', 'phase1-recalled-msa',
                     'phase2-pending', 'phase2-pending-answer', 'phase2-pending-answer-validation',
                     'phase2-validate-answer', 'phase2-recalled-msa']:
                     return ['Open question', "questionIcon"]
@@ -599,7 +605,7 @@ class Observation(dexterity.Container):
                 elif item['review_state'] == 'phase1-draft' and item['action'] =='phase1-redraft':
                     item['state'] = 'Question redrafted'
                     item['role'] = "Quality expert"
-                    question_wf.append(item)                    
+                    question_wf.append(item)
                 elif item['review_state'] == 'phase1-pending' and item['action'] == 'phase1-approve-question':
                     item['state'] = 'Question approved and sent to MSA'
                     item['role'] = "Quality expert"
@@ -656,7 +662,7 @@ class Observation(dexterity.Container):
                 elif item['review_state'] == 'phase2-draft' and item['action'] =='phase2-redraft':
                     item['state'] = 'Question redrafted'
                     item['role'] = "Review expert"
-                    question_wf.append(item)                    
+                    question_wf.append(item)
                 elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
                     item['state'] = 'Question approved and sent to MSA'
                     item['role'] = "Lead reviewer"
@@ -761,8 +767,12 @@ def add_question(context, event):
         'open' status on the observation
     """
     observation = context
+    review_folder = aq_parent(observation)
     with api.env.adopt_roles(roles=['Manager']):
-        if api.content.get_state(obj=observation) == 'phase1-draft':
+        if api.content.get_state(obj=review_folder) == 'ongoing-review-phase2':
+            api.content.transition(obj=observation, transition='go-to-phase2')
+            return
+        elif api.content.get_state(obj=observation) == 'phase1-draft':
             api.content.transition(obj=observation, transition='phase1-approve')
 
 
