@@ -50,14 +50,12 @@ class FinishObservationReasonForm(Form):
                     workflow_action='phase2-finish-observation',
                 )
 
-        self.request.response.redirect(context.absolute_url())
-
+        self.request.response.redirect(self.context.absolute_url())
 
     def updateActions(self):
         super(FinishObservationReasonForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
-
 
 
 class IDenyFinishObservationReasonForm(Interface):
@@ -87,7 +85,6 @@ class DenyFinishObservationReasonForm(Form):
         with api.env.adopt_roles(['Manager']):
             self.context.closing_deny_reason = reason
             self.context.closing_deny_comments = RichTextValue(comments, 'text/html', 'text/html')
-            import pdb; pdb.set_trace()
             if api.content.get_state(self.context) == 'phase1-close-requested':
                 return self.context.content_status_modify(
                     workflow_action='phase1-deny-closure',
@@ -121,6 +118,10 @@ class AssignAnswererForm(BrowserView):
 
     index = ViewPageTemplateFile('templates/assign_answerer_form.pt')
 
+
+    def assignation_target(self):
+        return aq_parent(aq_inner(self.context))
+
     def target_groupname(self):
         context = aq_inner(self.context)
         observation = aq_parent(context)
@@ -131,55 +132,53 @@ class AssignAnswererForm(BrowserView):
         groupname = self.target_groupname()
         current = api.user.get_current()
         current_id = current.getId()
-        return [u for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+
+        def isMSE(u):
+            target = self.assignation_target()
+            return 'MSExpert' in api.user.get_roles(user=u, obj=target)
+
+        return [(u, isMSE(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
         """
-        context = aq_inner(self.context)
-        observation = aq_parent(context)
+        target = self.assignation_target()
         if self.request.form.get('send', None):
-            usernames = self.request.get('answerers', None)
+            usernames = self.request.get('counterparts', None)
             if not usernames:
                 status = IStatusMessage(self.request)
-                msg = _(u'You need to select at least one commenter for discussion')
+                msg = _(u'You need to select at least one exper for discussion')
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
-            if isinstance(usernames, basestring):
-                user = api.user.get(username=usernames)
-                groupname = self.target_groupname()
-                if groupname not in user.getGroups():
-                    status = IStatusMessage(self.request)
-                    msg = _(u'Selected user is not valid')
-                    status.addStatusMessage(msg, "error")
-                    return self.index()
+            for user, cp in self.get_counterpart_users():
+                if cp:
+                    api.user.revoke_roles(user=user,
+                        roles=['MSExpert'],
+                        obj=target,
+                    )
 
+            if isinstance(usernames, basestring):
                 api.user.grant_roles(username=usernames,
                     roles=['MSExpert'],
-                    obj=self.context)
-                api.user.grant_roles(username=usernames,
-                    roles=['MSExpert'],
-                    obj=observation)
+                    obj=target)
             else:
                 for username in usernames:
-                    user = api.user.get(username=username)
-                    groupname = self.target_groupname()
-                    if groupname not in user.getGroups():
-                        status = IStatusMessage(self.request)
-                        msg = _(u'Selected user is not valid')
-                        status.addStatusMessage(msg, "error")
-                        return self.index()
-
-                for username in usernames:
                     api.user.grant_roles(username=username,
                         roles=['MSExpert'],
-                        obj=self.context)
-                    api.user.grant_roles(username=username,
-                        roles=['MSExpert'],
-                        obj=observation)
+                        obj=target)
 
-            wf_action = 'phase1-assign-answerer'
+            if api.content.get_state(self.context) == u'phase1-pending':
+                wf_action = 'phase1-assign-answerer'
+            elif api.content.get_state(self.context) == u'phase2-pending':
+                wf_action = 'phase2-assign-answerer'
+            else:
+                status = IStatusMessage(self.request)
+                msg = _(u'There was an error. Try again please')
+                status.addStatusMessage(msg, "error")
+                url = self.context.absolute_url()
+                return self.request.response.redirect(url)
+
             return self.context.content_status_modify(
                 workflow_action=wf_action,
             )

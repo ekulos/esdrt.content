@@ -52,14 +52,15 @@
                     <span tal:content="python:member.getProperty('fullname', member.getId())"></span>
                 </label>
               </div-->
-              <select multiple="multiple" name="answerers:list" class="chosen-select"
-                data-placeholder="Click here or type the name to select counterparts">
+              <select multiple="multiple" name="counterparts:list" class="chosen-select"
+                data-placeholder="Click here or type the name to select MS Experts">
                 <option
                   tal:repeat="member view/get_counterpart_users"
-                  tal:content="python:member.getProperty('fullname', member.getId())"
-                  tal:attributes="value member/getId;">
+                  tal:content="python:member[0].getProperty('fullname', member[0].getId())"
+                  tal:attributes="value python:member[0].getId();
+                                  selected python:member[1] and 'selected' or None;">
                 </option>
-              </select>              
+              </select>
             </div>
 
             <input class="standalone" type="submit" name="send" value="Send"/>
