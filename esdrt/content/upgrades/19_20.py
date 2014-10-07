@@ -9,7 +9,7 @@ PROFILE_ID = 'profile-esdrt.content:default'
 def upgrade(context, logger=None):
     if logger is None:
         from logging import getLogger
-        logger = getLogger('esdrt.content.upgrades.18_19')
+        logger = getLogger('esdrt.content.upgrades.19_20')
 
     reimport_vocabularies(context, logger)
     install_workflow(context, logger)
