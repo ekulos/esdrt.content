@@ -1,6 +1,22 @@
 Changelog
 =========
 
+1.15 (UNRELEASED)
+---------------------
+
+- Phase 2 workflow fixes [erral]
+
+- Action names [erral]
+
+- Visualization improvements [msantamaria]
+
+
+1.14 (2014-09-10)
+--------------------
+- internal-release
+
+- Phase 2 workflow include [erral]
+
 1.13.1 (2014-09-02)
 -----------------------
 
