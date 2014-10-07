@@ -1110,93 +1110,93 @@
    <guard-role>ReviewerPhase1</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-answer-to-lr" title="phase2-answer-to-lr" new_state="phase2-answered" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-answer-to-lr" category="workflow" icon="">phase2-answer-to-lr</action>
+ <transition transition_id="phase2-answer-to-lr" title="Submit Answer" new_state="phase2-answered" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-answer-to-lr" category="workflow" icon="">Submit Answer</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-approve-question" title="phase2-approve-question" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-approve-question" category="workflow" icon="">phase2-approve-question</action>
+ <transition transition_id="phase2-approve-question" title="Approve question and send" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-approve-question" category="workflow" icon="">Approve question and send</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-ask-answer-aproval" title="phase2-ask-answer-aproval" new_state="phase2-pending-answer-drafting" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-ask-answer-aproval" category="workflow" icon="">phase2-ask-answer-aproval</action>
+ <transition transition_id="phase2-ask-answer-aproval" title="Close comments" new_state="phase2-pending-answer-drafting" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-ask-answer-aproval" category="workflow" icon="">Close comments</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-assign-answerer" title="phase2-assign-answerer" new_state="phase2-expert-comments" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/assign_answerer_form?workflow_action=phase2-assign-answerer" category="workflow" icon="">phase2-assign-answerer</action>
+ <transition transition_id="phase2-assign-answerer" title="Request Comments" new_state="phase2-expert-comments" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/assign_answerer_form?workflow_action=phase2-assign-answerer" category="workflow" icon="">Request Comments</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-close" title="phase2-close" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
-  <action url="" category="" icon="">phase2-close</action>
+ <transition transition_id="phase2-close" title="Finish Observation" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
+  <action url="" category="" icon="">Finish Observation</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-close-lr" title="phase2-close-lr" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
-  <action url="" category="" icon="">phase2-close-lr</action>
+ <transition transition_id="phase2-close-lr" title="Finish Observation" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
+  <action url="" category="" icon="">Finish Observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-recall-msa" title="phase2-recall-msa" new_state="phase2-recalled-msa" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-recall-msa" category="workflow" icon="">phase2-recall-msa</action>
+ <transition transition_id="phase2-recall-msa" title="Recall" new_state="phase2-recalled-msa" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-recall-msa" category="workflow" icon="">Recall</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-recall-question-lr" title="phase2-recall-question-lr" new_state="phase2-recalled-lr" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-recall-question-lr" category="workflow" icon="">phase2-recall-question-lr</action>
+ <transition transition_id="phase2-recall-question-lr" title="Recall Question" new_state="phase2-recalled-lr" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-recall-question-lr" category="workflow" icon="">Recall Question</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-recall-sre" title="phase2-recall-sre" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-recall-sre" category="workflow" icon="">phase2-recall-sre</action>
+ <transition transition_id="phase2-recall-sre" title="Recall Question" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-recall-sre" category="workflow" icon="">Recall Question</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-redraft" title="phase2-redraft" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-redraft" category="workflow" icon="">phase2-redraft</action>
+ <transition transition_id="phase2-redraft" title="Ask SE to redraft" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-redraft" category="workflow" icon="">Ask SE to redraft</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-reopen" title="phase2-reopen" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase2-reopen" category="" icon="">phase2-reopen</action>
+ <transition transition_id="phase2-reopen" title="Reopen" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase2-reopen" category="" icon="">Reopen</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
    <guard-role>Manager</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-request-for-counterpart-comments" title="phase2-request-for-counterpart-comments" new_state="phase2-counterpart-comments" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase2-request-for-counterpart-comments" category="workflow" icon="">phase2-request-for-counterpart-comments</action>
+ <transition transition_id="phase2-request-for-counterpart-comments" title="Request Comments" new_state="phase2-counterpart-comments" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase2-request-for-counterpart-comments" category="workflow" icon="">Request Comments</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-send-comments" title="phase2-send-comments" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-comments" category="workflow" icon="">phase2-send-comments</action>
+ <transition transition_id="phase2-send-comments" title="End comments and redraft " new_state="phase2-draft" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-comments" category="workflow" icon="">End comments and redraft </action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-send-to-lr" title="phase2-send-to-lr" new_state="phase2-drafted" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-to-lr" category="workflow" icon="">phase2-send-to-lr</action>
+ <transition transition_id="phase2-send-to-lr" title=" Send Question for Approval " new_state="phase2-drafted" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-to-lr" category="workflow" icon=""> Send Question for Approval </action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-validate-answer-msa" title="phase2-validate-answer-msa" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-validate-answer-msa" category="workflow" icon="">phase2-validate-answer-msa</action>
+ <transition transition_id="phase2-validate-answer-msa" title="Acknowledge Answer " new_state="phase2-closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-validate-answer-msa" category="workflow" icon="">Acknowledge Answer </action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>

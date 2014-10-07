@@ -625,38 +625,38 @@
    <guard-role>QualityExpert</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-confirm-finishing-observation" title="phase2-confirm-finishing-observation" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase2-confirm-finishing-observation" title="Finish Observation" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=phase2-confirm-finishing-observation" category="workflow" icon="">phase2-confirm-finishing-observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-deny-finishing-observation" title="phase2-deny-finishing-observation" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase2-deny-finishing-observation" title="Deny finishing observation" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/deny-finish-observation?workflow_action=phase2-deny-finishing-observation" category="workflow" icon="">phase2-deny-finishing-observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-draft-conclusions" title="phase2-draft-conclusions" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase2-draft-conclusions" title="Draft conclusions" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=phase2-draft-conclusions" category="workflow" icon="">phase2-draft-conclusions</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-finish-comments" title="phase2-finish-comments" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase2-finish-comments" title="Finish Comments" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=phase2-finish-comments" category="workflow" icon="">phase2-finish-comments</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-finish-observation" title="phase2-finish-observation" new_state="phase2-close-requested" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase2-finish-observation" title="Finish Observation" new_state="phase2-close-requested" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/request-finish-observation?workflow_action=phase2-finish-observation" category="workflow" icon="">phase2-finish-observation</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-open" title="phase2-open" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase2-open" title="Open" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=phase2-open" category="" icon="">phase2-open</action>
   <guard>
    <guard-role>Manager</guard-role>
@@ -664,13 +664,13 @@
    <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-reopen-qa-chat" title="phase2-reopen-qa-chat" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase2-reopen-qa-chat" title="Reopen Q&amp;A Chat" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=phase2-reopen-qa-chat" category="workflow" icon="">phase2-reopen-qa-chat</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-request-comments" title="phase2-request-comments" new_state="phase2-conclusion-discussion" trigger="USER" before_script="" after_script="">
+ <transition transition_id="phase2-request-comments" title="Request comments" new_state="phase2-conclusion-discussion" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/assign_conclusion_reviewer_form?workflow_action=phase2-request-comments" category="workflow" icon="">phase2-request-comments</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
