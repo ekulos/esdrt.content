@@ -624,7 +624,7 @@
   </guard>
  </transition>
  <transition transition_id="phase2-deny-finishing-observation" title="phase2-deny-finishing-observation" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/deny-finish-observation?workflow_action=phase2-deny-closure" category="workflow" icon="">phase2-deny-finishing-observation</action>
+  <action url="%(content_url)s/deny-finish-observation?workflow_action=phase2-deny-finishing-observation" category="workflow" icon="">phase2-deny-finishing-observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
@@ -649,10 +649,11 @@
   </guard>
  </transition>
  <transition transition_id="phase2-open" title="phase2-open" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-open" category="workflow" icon="">phase2-open</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-open" category="" icon="">phase2-open</action>
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase2</guard-role>
+   <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-reopen-qa-chat" title="phase2-reopen-qa-chat" new_state="phase2-pending" trigger="USER" before_script="" after_script="">

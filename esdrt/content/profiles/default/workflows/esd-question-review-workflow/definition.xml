@@ -1115,7 +1115,7 @@
   </guard>
  </transition>
  <transition transition_id="phase2-ask-answer-aproval" title="phase2-ask-answer-aproval" new_state="phase2-pending-answer-drafting" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-ask-answer-approval" category="workflow" icon="">phase2-ask-answer-aproval</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-ask-answer-aproval" category="workflow" icon="">phase2-ask-answer-aproval</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
   </guard>
