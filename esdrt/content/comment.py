@@ -136,7 +136,11 @@ def add_question(context, event):
     question = aq_parent(context)
     observation = aq_parent(question)
     with api.env.adopt_roles(roles=['Manager']):
+        # XXX is this first if needed?
         if api.content.get_state(obj=question) == 'closed' and \
             api.content.get_state(obj=observation) == 'close-requested':
             api.content.transition(obj=observation, transition='reopen')
             api.content.transition(obj=question, transition='reopen')
+
+        if api.content.get_state(observation) == 'phase2-draft':
+            api.content.transition(obj=observation, transition='phase2-open')

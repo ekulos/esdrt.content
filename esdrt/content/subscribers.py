@@ -18,7 +18,11 @@ def question_transition(question, event):
         if comment is not None:
             comment.setEffectiveDate(DateTime())
             api.content.transition(obj=comment, transition='publish')
-            return
+
+    if event.action in ['phase2-approve-question']:
+        observation = aq_parent(question)
+        if api.content.get_state(observation) == 'phase2-draft':
+            api.content.transition(obj=observation, transition='phase2-open')
 
     if event.action in ['phase1-recall-question-lr', 'phase2-recall-question-lr']:
         wf = getToolByName(question, 'portal_workflow')
@@ -27,7 +31,6 @@ def question_transition(question, event):
         comment = question.get(comment_id, None)
         if comment is not None:
             api.content.transition(obj=comment, transition='retract')
-            return
 
     if event.action in ['phase1-answer-to-lr', 'phase2-answer-to-lr']:
         wf = getToolByName(question, 'portal_workflow')
@@ -37,7 +40,6 @@ def question_transition(question, event):
         if comment is not None:
             comment.setEffectiveDate(DateTime())
             api.content.transition(obj=comment, transition='publish')
-            return
 
     if event.action in ['phase1-recall-msa', 'phase2-recall-msa']:
         wf = getToolByName(question, 'portal_workflow')
@@ -46,7 +48,6 @@ def question_transition(question, event):
         comment = question.get(comment_id, None)
         if comment is not None:
             api.content.transition(obj=comment, transition='retract')
-            return
 
     if api.content.get_state(obj=event.object) == 'phase1-closed':
         parent = aq_parent(event.object)
@@ -84,7 +85,6 @@ def observation_transition(observation, event):
                 conclusion = conclusions[0]
                 api.content.transition(obj=conclusion,
                     transition='request-comments')
-
 
     elif event.action in ['phase1-finish-comments', 'phase2-finish-comments']:
         with api.env.adopt_roles(roles=['Manager']):

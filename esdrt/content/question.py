@@ -237,15 +237,15 @@ class AddForm(dexterity.AddForm):
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
 
-@grok.subscribe(IQuestion, IObjectAddedEvent)
-def add_question(context, event):
-    """ When adding a question, go directly to
-        'open' status on the observation
-    """
-    observation = aq_parent(context)
-    with api.env.adopt_roles(roles=['Manager']):
-        if api.content.get_state(obj=observation) == 'draft':
-            api.content.transition(obj=observation, transition='approve')
+# @grok.subscribe(IQuestion, IObjectAddedEvent)
+# def add_question(context, event):
+#     """ When adding a question, go directly to
+#         'open' status on the observation
+#     """
+#     observation = aq_parent(context)
+#     with api.env.adopt_roles(roles=['Manager']):
+#         if api.content.get_state(obj=observation) == 'draft':
+#             api.content.transition(obj=observation, transition='approve')
 
 
 class AddCommentForm(Form):
