@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.15 (UNRELEASED)
+1.15 (2014-10-14)
 ---------------------
 
 - Phase 2 workflow fixes [erral]
