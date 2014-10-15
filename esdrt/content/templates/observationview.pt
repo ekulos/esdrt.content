@@ -227,50 +227,6 @@
     </div>
 
     <div class="esdDiv observation-details" style="display:none">
-      <table class="estTable">
-        <thead>
-          <tr>
-            <th>Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)</th>
-            <th>CO<sub>2</sub></th>
-            <th>CH<sub>4</sub></th>
-            <th>N<sub>2</sub>O</th>
-            <th>NO<sub>x</sub></th>
-            <th>CO</th>
-            <th>NMVOC</th>
-            <th>SO<sub>2</sub></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr tal:repeat="row context/ghg_estimations">
-            <td class="esdesdLabel" tal:content="row/line_title">
-              Original estimate
-            </td>
-            <td style="text-align:center" tal:content="row/co2">
-              10.492,24
-            </td>
-            <td style="text-align:center" tal:content="row/ch4">
-              0,41
-            </td>
-            <td style="text-align:center" tal:content="row/n2o">
-              0,36
-            </td>
-            <td style="text-align:center" tal:content="row/nox">
-              11,36
-            </td>
-            <td style="text-align:center" tal:content="row/co">
-              5,32
-            </td>
-            <td style="text-align:center" tal:content="row/nmvoc">
-              0,95
-            </td>
-            <td style="text-align:center" tal:content="row/so2">
-              2,96
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="esdDiv observation-details" style="display:none">
       <div class="row">
         <div class="cell position-0 width-8 esdLabel">GHG source category</div>
         <div class="cell position-8 width-4 esdLabel">CRF code</div>
