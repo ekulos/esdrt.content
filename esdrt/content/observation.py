@@ -244,7 +244,7 @@ class Observation(dexterity.Container):
     def get_ghg_source_sectors(self):
         """ stupid method to avoid name-clashes with the existing
         vocabularies when cataloging """
-        return self.ghg_source_sectors
+        return self.ghg_source_sectors_value()
 
     def get_highlight(self):
         """ stupid method to avoid name-clashes with the existing
