@@ -188,7 +188,7 @@
       <div class="row">
         <div class="cell position-1 width-2 esdLabel">Country</div>
         <div class="cell position-3 width-2 esdLabel">Sector</div>
-        <div class="cell position-5 width-2 esdLabel">Gas</div>
+        <div class="cell position-5 width-2 esdLabel">Gases</div>
         <div class="cell position-7 width-3 esdLabel">Inventory year</div>
         <div class="cell position-10 width-3 esdLabel">WF Location</div>
         <div class="cell position-13 width-3">

@@ -78,9 +78,12 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=True
     )
 
-    gas = schema.Choice(
+    form.widget(gas=CheckBoxFieldWidget)
+    gas = schema.List(
         title=_(u"Gas"),
-        vocabulary='esdrt.content.gas',
+        value_type=schema.Choice(
+            vocabulary='esdrt.content.gas',
+            ),
         required=True,
     )
 
@@ -171,6 +174,11 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'Finish deny comments'),
         required=False,
     )
+
+@form.validator(field=IObservation['gas'])
+def check_gas(value):
+    if len(value) == 0:
+        raise Invalid(u'You need to select at least one gas')
 
 
 @form.validator(field=IObservation['ghg_source_category'])
@@ -265,9 +273,10 @@ class Observation(dexterity.Container):
         )
 
     def gas_value(self):
-        return self._vocabulary_value('esdrt.content.gas',
-            self.gas
-        )
+        gases = [self._vocabulary_value('esdrt.content.gas',
+            g) for g in self.gas]
+
+        return u', '.join(gases)
 
     def highlight_value(self):
 
@@ -276,6 +285,7 @@ class Observation(dexterity.Container):
         return u', '.join(highlight)
 
     def status_flag_value(self):
+        # XXX
         values = []
         for val in self.status_flag:
             values.append(self._vocabulary_value('esdrt.content.status_flag',
