@@ -14,12 +14,12 @@ def observation_crf_code(context):
 
 @indexer(IObservation)
 def observation_ghg_source_category(context):
-    return context.ghg_source_category
+    return context.ghg_source_category_value()
 
 
 @indexer(IObservation)
 def observation_ghg_source_sectors(context):
-    return context.ghg_source_sectors
+    return context.ghg_source_sectors_value()
 
 
 @indexer(IObservation)
