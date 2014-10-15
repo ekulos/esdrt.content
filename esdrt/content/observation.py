@@ -4,8 +4,6 @@ from .conclusion import IConclusion
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from collective.z3cform.datagridfield import DataGridFieldFactory
-from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
 from esdrt.content.subscriptions.interfaces import INotificationSubscriptions
 from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
@@ -25,7 +23,6 @@ from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
 from Products.CMFPlone.utils import safe_unicode
 from Products.statusmessages.interfaces import IStatusMessage
 from time import time
-from types import IntType
 from z3c.form import button
 from z3c.form import field
 from z3c.form import interfaces
@@ -56,18 +53,6 @@ def hidden(menuitem):
         if menuitem.get('action').endswith(action):
             return True
     return False
-
-
-class ITableRowSchema(form.Schema):
-
-    line_title = schema.TextLine(title=_(u'Title'), required=True)
-    co2 = schema.Int(title=_(u'CO\u2082'), required=False)
-    ch4 = schema.Int(title=_(u'CH\u2084'), required=False)
-    n2o = schema.Int(title=_(u'N\u2082O'), required=False)
-    nox = schema.Int(title=_(u'NO\u2093'), required=False)
-    co = schema.Int(title=_(u'CO'), required=False)
-    nmvoc = schema.Int(title=_(u'NMVOC'), required=False)
-    so2 = schema.Int(title=_(u'SO\u2082'), required=False)
 
 
 # Interface class; used to define content-type schema.
@@ -160,19 +145,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
     #         ),
     # )
 
-    # form.widget(ghg_estimations=DataGridFieldFactory)
-    # ghg_estimations = schema.List(
-    #     title=_(u'GHG estimates [Gg CO2 eq.]'),
-    #     value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
-    #     default=[
-    #         {'line_title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-    #         {'line_title': 'Technical correction proposed by  TERT', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-    #         {'line_title': 'Revised estimate by MS', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-    #         {'line_title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-
-    #     ],
-    # )
-
     form.read_permission(technical_corrections='cmf.ManagePortal')
     form.write_permission(technical_corrections='cmf.ManagePortal')
     technical_corrections = RichText(
@@ -207,14 +179,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'Finish deny comments'),
         required=False,
     )
-
-
-# @form.validator(field=IObservation['ghg_estimations'])
-# def check_ghg_estimations(value):
-#     for item in value:
-#         for val in item.values():
-#             if type(val) is IntType and val < 0:
-#                 raise Invalid(u'Estimation values must be positive numbers')
 
 
 @form.validator(field=IObservation['ghg_source_category'])
