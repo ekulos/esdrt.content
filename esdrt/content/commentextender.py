@@ -3,11 +3,11 @@
         -   https://github.com/tisto/collective.ploneboard/blob/master/src/collective/ploneboard/browser/commentextender.py
         -   http://plone.293351.n2.nabble.com/GSoC-2014-Collective-Ploneboard-Attachment-issue-tp7571746p7571837.html
 """
-from esdrt.content import MessageFactory as _
-from persistent import Persistent
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Acquisition import Implicit
+from esdrt.content import MessageFactory as _
+from persistent import Persistent
 from plone.app.discussion.browser.comments import CommentForm
 from plone.app.discussion.comment import Comment
 from plone.namedfile.field import NamedBlobFile
@@ -15,11 +15,11 @@ from plone.z3cform.fieldsets import extensible
 from Products.CMFCore import permissions
 from z3c.form.field import Fields
 from zope import interface
+from zope import schema
 from zope.annotation import factory
 from zope.component import adapts
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope import schema
 
 
 class ICommentExtenderFields(Interface):
