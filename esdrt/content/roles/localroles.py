@@ -28,7 +28,7 @@ class ObservationRoleAdapter(object):
         """
         context = aq_inner(self.context)
         country = context.country.lower()
-        sector = context.ghg_source_category
+        sector = context.ghg_source_category_value()
         mtool = getToolByName(context, 'portal_membership')
         roles = []
         member = mtool.getMemberById(principal_id)
@@ -72,7 +72,7 @@ class QuestionRoleAdapter(object):
         roles = []
         if IObservation.providedBy(observation):
             country = observation.country.lower()
-            sector = observation.ghg_source_category
+            sector = observation.ghg_source_category_value()
             mtool = getToolByName(observation, 'portal_membership')
             member = mtool.getMemberById(principal_id)
             if member is not None:
@@ -118,7 +118,7 @@ class CommentRoleAdapter(object):
             observation = aq_parent(question)
             if IObservation.providedBy(observation):
                 country = observation.country.lower()
-                sector = observation.ghg_source_category
+                sector = observation.ghg_source_category_value()
                 mtool = getToolByName(comment, 'portal_membership')
                 member = mtool.getMemberById(principal_id)
                 if member is not None:
@@ -165,7 +165,7 @@ class CommentAnswerRoleAdapter(object):
             observation = aq_parent(question)
             if IObservation.providedBy(observation):
                 country = observation.country.lower()
-                sector = observation.ghg_source_category
+                sector = observation.ghg_source_category_value()
                 mtool = getToolByName(commentanswer, 'portal_membership')
                 member = mtool.getMemberById(principal_id)
                 if member is not None:
@@ -209,7 +209,7 @@ class ConclusionRoleAdapter(object):
         roles = []
         if IObservation.providedBy(observation):
             country = observation.country.lower()
-            sector = observation.ghg_source_category
+            sector = observation.ghg_source_category_value()
             mtool = getToolByName(observation, 'portal_membership')
             member = mtool.getMemberById(principal_id)
             if member is not None:
