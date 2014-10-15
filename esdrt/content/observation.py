@@ -98,17 +98,17 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=False,
     )
 
-    ghg_source_category = schema.Choice(
-        title=_(u"CRF category group"),
-        vocabulary='esdrt.content.ghg_source_category',
-        required=True,
-    )
+    # ghg_source_category = schema.Choice(
+    #     title=_(u"CRF category group"),
+    #     vocabulary='esdrt.content.ghg_source_category',
+    #     required=True,
+    # )
 
-    ghg_source_sectors = schema.Choice(
-        title=_(u"CRF Sector"),
-        vocabulary='esdrt.content.ghg_source_sectors',
-        required=True,
-    )
+    # ghg_source_sectors = schema.Choice(
+    #     title=_(u"CRF Sector"),
+    #     vocabulary='esdrt.content.ghg_source_sectors',
+    #     required=True,
+    # )
 
     ms_key_catagory = schema.Bool(
         title=_(u"MS key category"),
@@ -181,15 +181,19 @@ def check_gas(value):
         raise Invalid(u'You need to select at least one gas')
 
 
-@form.validator(field=IObservation['ghg_source_category'])
-def check_sector(value):
+@form.validator(field=IObservation['crf_code'])
+def check_crf_code(value):
+    """ Check if the user is in one of the group of users
+        allowed to add this category CRF Code observations
+    """
+    category = get_category_from_crf_code(value)
     user = api.user.get_current()
     groups = user.getGroups()
     valid = False
     for group in groups:
-        if group.startswith('extranet-esd-ghginv-sr-%s-' % value):
+        if group.startswith('extranet-esd-ghginv-sr-%s-' % category):
             valid = True
-        if group.startswith('extranet-esd-esdreview-reviewexp-%s-' % value):
+        if group.startswith('extranet-esd-esdreview-reviewexp-%s-' % category):
             valid = True
 
     if not valid:
@@ -258,14 +262,12 @@ class Observation(dexterity.Container):
         )
 
     def ghg_source_category_value(self):
-        return self._vocabulary_value('esdrt.content.ghg_source_category',
-            self.ghg_source_category
-        )
+        # XXX Provide a way to extract category from self.crf_code
+        return get_category_from_crf_code(self.crf_code)
 
     def ghg_source_sectors_value(self):
-        return self._vocabulary_value('esdrt.content.ghg_source_sectors',
-            self.ghg_source_sectors
-        )
+        # XXX Provide a way to extract sector from self.crf_code
+        return u'Sector Value'
 
     def parameter_value(self):
         return self._vocabulary_value('esdrt.content.parameter',
@@ -1357,3 +1359,9 @@ class AddConclusionForm(Form):
         super(AddConclusionForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+
+def get_category_from_crf_code(value):
+    """ get the CRF category this CRF Code matches
+        According to the rules previously set. See #21438
+    """
+    return u'sector1'
