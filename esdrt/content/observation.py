@@ -160,18 +160,18 @@ class IObservation(form.Schema, IImageScaleTraversable):
     #         ),
     # )
 
-    form.widget(ghg_estimations=DataGridFieldFactory)
-    ghg_estimations = schema.List(
-        title=_(u'GHG estimates [Gg CO2 eq.]'),
-        value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
-        default=[
-            {'line_title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'line_title': 'Technical correction proposed by  TERT', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'line_title': 'Revised estimate by MS', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'line_title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+    # form.widget(ghg_estimations=DataGridFieldFactory)
+    # ghg_estimations = schema.List(
+    #     title=_(u'GHG estimates [Gg CO2 eq.]'),
+    #     value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
+    #     default=[
+    #         {'line_title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+    #         {'line_title': 'Technical correction proposed by  TERT', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+    #         {'line_title': 'Revised estimate by MS', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+    #         {'line_title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
 
-        ],
-    )
+    #     ],
+    # )
 
     form.read_permission(technical_corrections='cmf.ManagePortal')
     form.write_permission(technical_corrections='cmf.ManagePortal')
@@ -209,12 +209,12 @@ class IObservation(form.Schema, IImageScaleTraversable):
     )
 
 
-@form.validator(field=IObservation['ghg_estimations'])
-def check_ghg_estimations(value):
-    for item in value:
-        for val in item.values():
-            if type(val) is IntType and val < 0:
-                raise Invalid(u'Estimation values must be positive numbers')
+# @form.validator(field=IObservation['ghg_estimations'])
+# def check_ghg_estimations(value):
+#     for item in value:
+#         for val in item.values():
+#             if type(val) is IntType and val < 0:
+#                 raise Invalid(u'Estimation values must be positive numbers')
 
 
 @form.validator(field=IObservation['ghg_source_category'])
@@ -1256,8 +1256,8 @@ class ModificationForm(dexterity.EditForm):
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
         if 'status_flag' in fields:
             self.fields['status_flag'].widgetFactory = CheckBoxFieldWidget
-        if 'ghg_estimations' in fields:
-            self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
+        # if 'ghg_estimations' in fields:
+        #     self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
         if 'parameter' in fields:
             self.fields['parameter'].widgetFactory = RadioFieldWidget
         if 'highlight' in fields:
