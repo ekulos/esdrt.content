@@ -3,6 +3,8 @@ from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Acquisition.interfaces import IAcquirer
+from collective.z3cform.datagridfield import DataGridFieldFactory
+from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
 from five import grok
 from plone import api
@@ -14,13 +16,27 @@ from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from time import time
+from types import IntType
 from z3c.form import field
 from zope import schema
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
 from zope.globalrequest import getRequest
+from zope.interface import Invalid
 from zope.schema.interfaces import IVocabularyFactory
+
+
+class ITableRowSchema(form.Schema):
+
+    line_title = schema.TextLine(title=_(u'Title'), required=True)
+    co2 = schema.Int(title=_(u'CO\u2082'), required=False)
+    ch4 = schema.Int(title=_(u'CH\u2084'), required=False)
+    n2o = schema.Int(title=_(u'N\u2082O'), required=False)
+    nox = schema.Int(title=_(u'NO\u2093'), required=False)
+    co = schema.Int(title=_(u'CO'), required=False)
+    nmvoc = schema.Int(title=_(u'NMVOC'), required=False)
+    so2 = schema.Int(title=_(u'SO\u2082'), required=False)
 
 
 class IConclusion(form.Schema, IImageScaleTraversable):
@@ -39,6 +55,28 @@ class IConclusion(form.Schema, IImageScaleTraversable):
         title=_(u'Text'),
         required=True,
         )
+
+    form.widget(ghg_estimations=DataGridFieldFactory)
+    ghg_estimations = schema.List(
+        title=_(u'GHG estimates [Gg CO2 eq.]'),
+        value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
+        default=[
+            {'line_title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Technical correction proposed by  TERT', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Revised estimate by MS', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+
+        ],
+    )
+
+@form.validator(field=IConclusion['ghg_estimations'])
+def check_ghg_estimations(value):
+    for item in value:
+        for val in item.values():
+            if type(val) is IntType and val < 0:
+                raise Invalid(u'Estimation values must be positive numbers')
+
+
 
 HIDDEN_ACTIONS = [
     '/content_status_history',
@@ -139,7 +177,7 @@ class AddForm(dexterity.AddForm):
 
     def updateFields(self):
         super(AddForm, self).updateFields()
-        self.fields = field.Fields(IConclusion).select('text')
+        self.fields = field.Fields(IConclusion).select('text', 'closing_reason', 'ghg_estimations')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
     def create(self, data={}):
@@ -174,5 +212,5 @@ class EditForm(dexterity.EditForm):
 
     def updateFields(self):
         super(EditForm, self).updateFields()
-        self.fields = field.Fields(IConclusion).select('text', 'closing_reason')
+        self.fields = field.Fields(IConclusion).select('text', 'closing_reason', 'ghg_estimations')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
