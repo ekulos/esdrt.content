@@ -137,14 +137,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=True,
     )
 
-    # form.widget(status_flag=CheckBoxFieldWidget)
-    # status_flag = schema.List(
-    #     title=_(u"Status Flag"),
-    #     value_type=schema.Choice(
-    #         vocabulary='esdrt.content.status_flag',
-    #         ),
-    # )
-
     form.read_permission(technical_corrections='cmf.ManagePortal')
     form.write_permission(technical_corrections='cmf.ManagePortal')
     technical_corrections = RichText(
