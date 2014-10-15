@@ -1,8 +1,16 @@
 Changelog
 =========
 
-1.16 (UNRELEASED)
+1.16 (2014-10-15)
 --------------------
+
+- Simplify CRF category/code/sector metadata [erral]
+
+- Remove confidential tag from files [erral]
+
+- Move ghg_estimations field to conclusions [erral]
+
+- Allow several gases to be selected in an observation [erral]
 
 1.15 (2014-10-14)
 ---------------------
