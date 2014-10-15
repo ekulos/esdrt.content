@@ -28,11 +28,11 @@ class IESDRTFile(form.Schema, IImageScaleTraversable):
         required=True,
     )
 
-    confidential = schema.Bool(
-        title=_(u'Is it a confidential file?'),
-        description=_(u'Confidential files are only available for people '
-                      u'taking part in the review process')
-    )
+    # confidential = schema.Bool(
+    #     title=_(u'Is it a confidential file?'),
+    #     description=_(u'Confidential files are only available for people '
+    #                   u'taking part in the review process')
+    # )
 
 
 # Custom content-type class; objects created for this content type will

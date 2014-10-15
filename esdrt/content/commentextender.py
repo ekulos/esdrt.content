@@ -29,11 +29,11 @@ class ICommentExtenderFields(Interface):
         required=False,
     )
 
-    confidential = schema.Bool(
-        title=_(u'Is it a confidential file?'),
-        description=_(u'Confidential files are only available for people '
-                      u'taking part in the review process')
-    )
+    # confidential = schema.Bool(
+    #     title=_(u'Is it a confidential file?'),
+    #     description=_(u'Confidential files are only available for people '
+    #                   u'taking part in the review process')
+    # )
 
 
 class CommentExtenderFields(Implicit, Persistent):
@@ -43,7 +43,7 @@ class CommentExtenderFields(Implicit, Persistent):
 
     security.declareProtected(permissions.View, 'attachment')
     attachment = u""
-    confidential = False
+    #confidential = False
 
 InitializeClass(CommentExtenderFields)
 
