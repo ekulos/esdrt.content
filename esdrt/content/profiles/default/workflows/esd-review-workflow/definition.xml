@@ -136,9 +136,10 @@
   </permission-map>
  </state>
  <state state_id="phase1-conclusions" title="Conclusions">
-  <exit-transition transition_id="phase1-request-comments"/>
+  <exit-transition transition_id="phase1-edit-highlights"/>
   <exit-transition transition_id="phase1-reopen"/>
   <exit-transition transition_id="phase1-request-close"/>
+  <exit-transition transition_id="phase1-request-comments"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>ExpertReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -598,8 +599,14 @@
    <guard-expression>here/can_draft_conclusions</guard-expression>
   </guard>
  </transition>
- <transition transition_id="phase1-finish-comments" title="Finish Comments" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase1-finish-comments" category="workflow" icon="">Finish Comments</action>
+ <transition transition_id="phase1-edit-highlights" title="Edit Highlights" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/edit-highlights" category="workflow" icon="">Edit Highlights</action>
+  <guard>
+   <guard-role>ReviewerPhase1</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase1-finish-comments" title="Edit Conclusions" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/edit-conclusions-and-close-comments?workflow_action=phase1-finish-comments" category="workflow" icon="">Edit Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
   </guard>

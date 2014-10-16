@@ -18,7 +18,6 @@
   <exit-transition transition_id="redraft"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
-   <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
@@ -31,7 +30,6 @@
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>CounterPart</permission-role>
-   <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
@@ -47,7 +45,6 @@
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
-   <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
