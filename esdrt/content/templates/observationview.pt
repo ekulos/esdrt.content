@@ -273,16 +273,6 @@
     </div>
   </div>
 
-  <!--ul class="eea-tabs" tal:condition="view/get_questions">
-    <li style="width:200px;max-width:200px">Observation history</li>
-    <li style="width:150px;max-width:150px">Workflow</li>
-  </ul>
-
-  <div class="eea-tabs-panels" style="overflow:hidden">
-    <div class="eea-tabs-panel workflow">
-      aafsdsf
-    </div>
-  </div-->
 
   <div class="esdDiv observation-workflow" style="display:none">
     <div class="row">
@@ -538,9 +528,6 @@
           <div class="file" tal:repeat="file question/get_files">
             <p>
               <span class="eea-icon eea-icon-lg attachment"></span>
-              <span class="eea-icon eea-icon-lg confidential"
-                title="Confidential file (Only available for people taking part in the review process)"
-                tal:condition="file/confidential"></span>
               <a href="" tal:attributes="href string:${file/absolute_url}/@@download/file"
                 tal:content="file/file/filename">
               </a>
