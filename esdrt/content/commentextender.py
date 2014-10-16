@@ -63,4 +63,3 @@ class CommentExtender(extensible.FormExtender):
     def update(self):
         self.add(ICommentExtenderFields, prefix="")
         self.move('attachment', after='text', prefix="")
-        self.move('confidential', after='attachment', prefix="")
