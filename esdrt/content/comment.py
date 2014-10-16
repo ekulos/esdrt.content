@@ -127,6 +127,10 @@ class EditForm(dexterity.EditForm):
         self.fields = field.Fields(IComment).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
+    def updateActions(self):
+        super(EditForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
 
 @grok.subscribe(IComment, IObjectAddedEvent)
 def add_question(context, event):
