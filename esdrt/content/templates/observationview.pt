@@ -320,35 +320,38 @@
 
   <ul class="eea-tabs" tal:condition="view/get_questions">
     <li style="width:165px;max-width:165px"
-      tal:condition="python:context.get_status() == 'close-requested'">Finish observation</li>
+      tal:condition="python:context.get_status() == 'phase1-close-requested'">Finish observation</li>
     <li style="width:150px;max-width:150px"
       tal:define="conclusion view/get_conclusion"
       tal:condition="nocall:conclusion"
-      >Conclusions</li>
+      >Conclusions Phase 1</li>
     <li style="width:200px;max-width:200px">Question chat room</li>
   </ul>
 
   <div class="eea-tabs-panels" style="overflow:hidden">
     <div class="eea-tabs-panel finish-observation"
-      tal:condition="python:context.get_status() == 'close-requested'">
-        <strong>Observation Finish Requested</strong><br/>
-        <strong>Reason:</strong> <span tal:replace="context/finish_reason_value" />
-        <br/>
-        <strong>Comments:</strong>
-        <div tal:replace="structure context/closing_comments/output|nothing">
-          Content
-        </div>
+      tal:condition="python:context.get_status() == 'phase1-close-requested'">
+        <strong>Observation Finish Requested</strong>
+        <dl>
+          <dt>Reason:</dt>
+          <dd><span tal:replace="context/finish_reason_value" /></dd>
 
-        <div class="finish-denied" tal:condition="context/closing_deny_reason|nothing">
-          <strong>Previous finishing denying reason</strong><br />
-          <strong>Reason:</strong> <span tal:replace="context/finish_deny_reason_value" /><br/>
-          <br/>
-          <strong>Comments:</strong>
-          <div tal:replace="structure context/closing_deny_comments/output|nothing">
-          Content
-          </div>
-        </div>
+          <dt>Comments:</dt>
+          <dd><span tal:replace="structure context/closing_comments/output|nothing" /></dd>
+        </dl>
 
+        <div class="finish-denied" tal:condition="python:context.closing_deny_comments and context.get_status() == 'phase1-close-requested'" >
+          <dl>
+            <dt>Observation Finalisation previously denied</dt>
+            <dd></dd>
+            <dt>Comments:</dt>
+            <dd>
+              <div tal:replace="structure context/closing_deny_comments/output|nothing">
+              Content
+              </div>
+            </dd>
+          </dl>
+        </div>
 
       <div class="actions">
         <tal:block tal:repeat="action view/actions">
@@ -366,21 +369,22 @@
         tal:condition="nocall:conclusion">
       <div class="row">
         <div id="conclusions">
-          <strong>Conclusions: </strong><br/>
-          <strong>Reason:</strong> <span tal:replace="conclusion/reason_value" />
-          <br/>
-          <strong>Comments:</strong><div tal:replace="structure conclusion/text/output|nothing">
-          Content
-          </div>
+          <dl>
+            <dt>Reason:</dt>
+            <dd><span tal:replace="conclusion/reason_value" /></dd>
+            <dt>Comments:</dt>
+            <dd><span tal:replace="structure conclusion/text/output|nothing" /></dd>
+          </dl>
+
         </div>
 
-        <div class="finish-denied" tal:condition="context/closing_deny_reason|nothing">
-          <strong>Observation Finishing denied</strong><br />
-          <strong>Reason:</strong> <span tal:replace="context/finish_deny_reason_value" />
-          <br/>
-          <strong>Comments:</strong><div tal:replace="structure context/closing_deny_comments/output|nothing">
-          Content
-          </div>
+        <div class="finish-denied" tal:condition="context/closing_deny_comments|nothing">
+          <dl>
+            <dt>Observation Finishing denied</dt>
+            <dd></dd>
+            <dt>Comments:</dt>
+            <dd><span tal:replace="structure context/closing_deny_comments/output|nothing" /></dd>
+          </dl>
         </div>
 
         <div class="files" tal:condition="conclusion/get_files">
@@ -395,13 +399,7 @@
                     tal:define="size file/file/getSize;
                                 kb python:size/1024">
                     &mdash; <span tal:replace="kb" /> KB</span>
-              <a tal:condition="file/can_edit"
-                 tal:replace="nothing"
-                 class="edit"
-                 tal:attributes="href string:${file/absolute_url}/edit">
-                Edit File
-              </a>
-              <a tal:condition="file/can_edit"
+              <a tal:condition="file/can_delete"
                  class="deleteButton"
                  tal:attributes="href string:${file/absolute_url}/delete_confirmation">
                  Delete File
