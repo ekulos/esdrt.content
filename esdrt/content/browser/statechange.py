@@ -137,7 +137,16 @@ class AssignAnswererForm(BrowserView):
             target = self.assignation_target()
             return 'MSExpert' in api.user.get_roles(user=u, obj=target)
 
-        return [(u, isMSE(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+        try:
+            return [(u, isMSE(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+        except api.user.GroupNotFoundError:
+            from logging import getLogger
+            log = getLogger(__name__)
+            log.info('There is not such a group %s' % groupname)
+            status = IStatusMessage(self.request)
+            msg = _(u'There is not such a group: %s' % groupname)
+            status.addStatusMessage(msg, "info")
+            return []
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
@@ -229,8 +238,17 @@ class AssignCounterPartForm(BrowserView):
             return 'CounterPart' in api.user.get_roles(user=u, obj=target)
 
         for groupname in self.target_groupnames():
-            data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
-            users.extend(data)
+            try:
+                data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+                users.extend(data)
+            except api.user.GroupNotFoundError:
+                from logging import getLogger
+                log = getLogger(__name__)
+                log.info('There is not such a group %s' % groupname)
+                status = IStatusMessage(self.request)
+                msg = _(u'There is not such a group: %s' % groupname)
+                status.addStatusMessage(msg, "info")
+
 
         return users
 
@@ -322,8 +340,17 @@ class AssignConclusionReviewerForm(BrowserView):
             return 'CounterPart' in api.user.get_roles(user=u, obj=target)
 
         for groupname in self.target_groupnames():
-            data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
-            users.extend(data)
+            try:
+                data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+                users.extend(data)
+            except api.user.GroupNotFoundError:
+                from logging import getLogger
+                log = getLogger(__name__)
+                log.info('There is not such a group %s' % groupname)
+                status = IStatusMessage(self.request)
+                msg = _(u'There is not such a group: %s' % groupname)
+                status.addStatusMessage(msg, "info")
+
 
         return users
 
