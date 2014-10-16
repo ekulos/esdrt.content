@@ -161,14 +161,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=False,
     )
 
-    form.write_permission(closing_deny_reason='cmf.ManagePortal')
-    closing_deny_reason = schema.Choice(
-        title=_(u'Finish deny reason'),
-        vocabulary='esdrt.content.finishobservationdenyreasons',
-        required=False,
-
-    )
-
     form.write_permission(closing_deny_comments='cmf.ManagePortal')
     closing_deny_comments = RichText(
         title=_(u'Finish deny comments'),
@@ -828,8 +820,9 @@ class ObservationView(grok.View):
         return sm.checkPermission('Modify portal content', self.context)
 
     def get_conclusion(self):
+        sm = getSecurityManager()
         conclusions = [c for c in self.context.values() if c.portal_type == 'Conclusion']
-        if conclusions:
+        if conclusions and sm.checkPermission('View', conclusions[0]):
             return conclusions[0]
 
         return None
@@ -1353,3 +1346,39 @@ def get_category_from_crf_code(value):
         According to the rules previously set. See #21438
     """
     return u'sector1'
+
+
+class EditConclusionAndCloseComments(grok.View):
+    grok.name('edit-conclusions-and-close-comments')
+    grok.context(IObservation)
+    grok.require('zope2.View')
+
+    def update(self):
+        # Some checks:
+        waction = self.request.get('workflow_action')
+        if waction != 'phase1-finish-comments':
+                status = IStatusMessage(self.request)
+                msg = _(u'There was an error, try again please')
+                status.addStatusMessage(msg, "error")
+
+
+    def render(self):
+        # Execute the transition
+        api.content.transition(obj=self.context,
+            transition='phase1-finish-comments'
+        )
+        conclusions = [c for c in self.context.values() if c.portal_type == 'Conclusion']
+        conclusion = conclusions[0]
+        url = '%s/edit' % conclusion.absolute_url()
+        return self.request.response.redirect(url)
+
+class EditHighlightsForm(dexterity.EditForm):
+    grok.name('edit-highlights')
+    grok.context(IObservation)
+    grok.require('cmf.ModifyPortalContent')
+
+    def updateFields(self):
+        super(EditHighlightsForm, self).updateFields()
+        self.fields = field.Fields(IObservation).select('highlight')
+        self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
+        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
