@@ -116,6 +116,10 @@ class AddForm(dexterity.AddForm):
 
         return aq_base(content)
 
+    def updateActions(self):
+        super(AddForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
 
 class EditForm(dexterity.EditForm):
     grok.name('edit')
