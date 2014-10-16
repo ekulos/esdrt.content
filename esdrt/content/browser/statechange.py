@@ -60,14 +60,8 @@ class FinishObservationReasonForm(Form):
 
 class IDenyFinishObservationReasonForm(Interface):
 
-    reason = schema.Choice(
-        title=_(u'Denying reason'),
-        vocabulary='esdrt.content.finishobservationdenyreasons',
-        required=True,
-    )
-
     comments = RichText(
-        title=_(u'Enter comments if you want'),
+        title=_(u'Enter your reasons to deny the finishing of this observation'),
         required=False,
     )
 
@@ -80,10 +74,9 @@ class DenyFinishObservationReasonForm(Form):
 
     @button.buttonAndHandler(u'Deny finishing observation')
     def finish_observation(self, action):
-        reason = self.request.get('form.widgets.reason')[0]
+
         comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):
-            self.context.closing_deny_reason = reason
             self.context.closing_deny_comments = RichTextValue(comments, 'text/html', 'text/html')
             if api.content.get_state(self.context) == 'phase1-close-requested':
                 return self.context.content_status_modify(
