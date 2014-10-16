@@ -1,3 +1,4 @@
+from Products.statusmessages.interfaces import IStatusMessage
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -5,7 +6,6 @@ from Acquisition import aq_parent
 from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from esdrt.content.comment import IComment
-from esdrt.content.observation import hidden
 from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
@@ -15,18 +15,14 @@ from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
-from Products.CMFEditions import CMFEditionsMessageFactory as _CMFE
 from time import time
 from z3c.form import button
 from z3c.form import field
 from z3c.form.form import Form
 from z3c.form.interfaces import ActionExecutionError
 from zope.app.container.interfaces import IObjectAddedEvent
-from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
-from zope.i18n import translate
-from zope.interface import alsoProvides
 from zope.interface import Invalid
 
 
@@ -322,3 +318,29 @@ class AddAnswerForm(Form):
         super(AddAnswerForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+
+
+class EditAndCloseComments(grok.View):
+    grok.name('edit-and-close-comments')
+    grok.context(IQuestion)
+    grok.require('zope2.View')
+
+    def update(self):
+        # Some checks:
+        waction = self.request.get('workflow_action')
+        comment = self.request.get('comment')
+        if waction != 'phase1-send-comments' and \
+            comment not in self.context.keys():
+                status = IStatusMessage(self.request)
+                msg = _(u'There was an error, try again please')
+                status.addStatusMessage(msg, "error")
+        else:
+            self.comment = comment
+
+    def render(self):
+        # Execute the transition
+        api.content.transition(obj=self.context,
+            transition='phase1-send-comments'
+        )
+        url = '%s/%s/edit' % (self.context.absolute_url(), self.comment)
+        return self.request.response.redirect(url)

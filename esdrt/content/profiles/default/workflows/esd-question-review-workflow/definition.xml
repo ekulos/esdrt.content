@@ -1092,7 +1092,7 @@
   </guard>
  </transition>
  <transition transition_id="phase1-send-comments" title="End comments and redraft" new_state="phase1-draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase1-send-comments" category="workflow" icon="">End comments and redraft</action>
+  <action url="%(content_url)s/edit-and-close-comments?workflow_action=phase1-send-comments" category="workflow" icon="">Edit Question</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
   </guard>
@@ -1184,19 +1184,19 @@
   </guard>
  </transition>
  <transition transition_id="phase2-send-comments" title="End comments and redraft " new_state="phase2-draft" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-comments" category="workflow" icon="">End comments and redraft </action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-comments" category="workflow" icon="">End comments and redraft</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-send-to-lr" title=" Send Question for Approval " new_state="phase2-drafted" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-to-lr" category="workflow" icon=""> Send Question for Approval </action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-to-lr" category="workflow" icon="">Send Question for Approval</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-validate-answer-msa" title="Acknowledge Answer " new_state="phase2-closed" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-validate-answer-msa" category="workflow" icon="">Acknowledge Answer </action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-validate-answer-msa" category="workflow" icon="">Acknowledge Answer</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
