@@ -286,14 +286,6 @@ class Observation(dexterity.Container):
             h) for h in self.highlight]
         return u', '.join(highlight)
 
-    def status_flag_value(self):
-        # XXX
-        values = []
-        for val in self.status_flag:
-            values.append(self._vocabulary_value('esdrt.content.status_flag',
-            val))
-        return values
-
     def finish_reason_value(self):
         return self._vocabulary_value('esdrt.content.finishobservationreasons',
             self.closing_reason
@@ -1204,7 +1196,7 @@ class ModificationForm(dexterity.EditForm):
         roles = api.user.get_roles(username=user.getId(), obj=self.context)
         fields = []
         # XXX Needed? Edit rights are controlled by the WF
-        if 'SectorExpertReviewer' in roles:
+        if 'ReviewerPhase1' in roles or 'ReviewerPhase2' in roles:
             fields = [f for f in field.Fields(IObservation) if f not in [
                 'country',
                 'crf_code',
@@ -1215,21 +1207,17 @@ class ModificationForm(dexterity.EditForm):
                 'closing_deny_comments',
                 'closing_deny_reason',
                 ]]
-        elif 'LeadReviewer' in roles:
-            fields = ['text']
-        elif 'CounterPart' in roles:
-            fields = ['text']
+        elif 'QualityExpert' in roles or 'LeadReviewer' in roles:
+            fields = ['text', 'highlight']
 
         self.fields = field.Fields(IObservation).select(*fields)
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
-        if 'status_flag' in fields:
-            self.fields['status_flag'].widgetFactory = CheckBoxFieldWidget
-        # if 'ghg_estimations' in fields:
-        #     self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
         if 'parameter' in fields:
             self.fields['parameter'].widgetFactory = RadioFieldWidget
         if 'highlight' in fields:
             self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
+        if 'gas' in fields:
+            self.fields['gas'].widgetFactory = CheckBoxFieldWidget
 
     def updateActions(self):
         super(ModificationForm, self).updateActions()
