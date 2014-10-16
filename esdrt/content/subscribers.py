@@ -49,17 +49,17 @@ def question_transition(question, event):
         if comment is not None:
             api.content.transition(obj=comment, transition='retract')
 
-    if api.content.get_state(obj=event.object) == 'phase1-closed':
-        parent = aq_parent(event.object)
-        with api.env.adopt_roles(roles=['Manager']):
-            if api.content.get_state(parent) != 'phase1-conclusions':
-                api.content.transition(obj=parent, transition='phase1-draft-conclusions')
-
-    if api.content.get_state(obj=event.object) == 'phase2-closed':
-        parent = aq_parent(event.object)
-        with api.env.adopt_roles(roles=['Manager']):
-            if api.content.get_state(parent) != 'phase2-conclusions':
-                api.content.transition(obj=parent, transition='phase2-draft-conclusions')
+#    if api.content.get_state(obj=event.object) == 'phase1-closed':
+#        parent = aq_parent(event.object)
+#        with api.env.adopt_roles(roles=['Manager']):
+#            if api.content.get_state(parent) != 'phase1-conclusions':
+#                api.content.transition(obj=parent, transition='phase1-draft-conclusions')
+#
+#    if api.content.get_state(obj=event.object) == 'phase2-closed':
+#        parent = aq_parent(event.object)
+#        with api.env.adopt_roles(roles=['Manager']):
+#            if api.content.get_state(parent) != 'phase2-conclusions':
+#                api.content.transition(obj=parent, transition='phase2-draft-conclusions')
 
 
 @grok.subscribe(IObservation, IActionSucceededEvent)
