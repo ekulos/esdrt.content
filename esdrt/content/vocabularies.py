@@ -182,6 +182,23 @@ class Conclusions(object):
 grok.global_utility(Conclusions,
     name=u"esdrt.content.conclusionreasons")
 
+class ConclusionsPhase2(object):
+    grok.implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        pvoc = getToolByName(context, 'portal_vocabularies')
+        voc = pvoc.getVocabularyByName('conclusion_phase2_reasons')
+        terms = []
+        if voc is not None:
+            for key, value in voc.getVocabularyLines():
+                # create a term - the arguments are the value, the token, and
+                # the title (optional)
+                terms.append(SimpleVocabulary.createTerm(key, key, value))
+        return SimpleVocabulary(terms)
+
+grok.global_utility(Conclusions,
+    name=u"esdrt.content.conclusionphase2reasons")
+
 
 class FinishObservationReasons(object):
     grok.implements(IVocabularyFactory)
