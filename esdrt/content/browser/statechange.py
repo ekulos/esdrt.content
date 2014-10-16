@@ -143,9 +143,6 @@ class AssignAnswererForm(BrowserView):
             from logging import getLogger
             log = getLogger(__name__)
             log.info('There is not such a group %s' % groupname)
-            status = IStatusMessage(self.request)
-            msg = _(u'There is not such a group: %s' % groupname)
-            status.addStatusMessage(msg, "info")
             return []
 
     def __call__(self):
@@ -245,9 +242,6 @@ class AssignCounterPartForm(BrowserView):
                 from logging import getLogger
                 log = getLogger(__name__)
                 log.info('There is not such a group %s' % groupname)
-                status = IStatusMessage(self.request)
-                msg = _(u'There is not such a group: %s' % groupname)
-                status.addStatusMessage(msg, "info")
 
 
         return users
@@ -347,9 +341,6 @@ class AssignConclusionReviewerForm(BrowserView):
                 from logging import getLogger
                 log = getLogger(__name__)
                 log.info('There is not such a group %s' % groupname)
-                status = IStatusMessage(self.request)
-                msg = _(u'There is not such a group: %s' % groupname)
-                status.addStatusMessage(msg, "info")
 
 
         return users
