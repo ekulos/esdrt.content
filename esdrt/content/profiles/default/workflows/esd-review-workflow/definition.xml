@@ -593,7 +593,6 @@
  <transition transition_id="phase1-draft-conclusions" title="Draft conclusions" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Finish Observation</action>
   <guard>
-   <guard-role>ReviewerPhase1</guard-role>
    <guard-role>QualityExpert</guard-role>
    <guard-expression>here/can_draft_conclusions</guard-expression>
   </guard>
