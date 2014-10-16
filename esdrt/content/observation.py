@@ -1260,34 +1260,34 @@ class AddAnswerForm(Form):
             self.actions[k].addClass('standardButton')
 
 
-class AddNoAnswerForm(Form):
+class AddAnswerAndRequestComments(grok.View):
+    grok.context(IObservation)
+    grok.name('add-answer-and-request-comments')
+    grok.require('zope2.View')
 
-    ignoreContext = True
-    fields = field.Fields(ICommentAnswer).omit('text')
-
-    @button.buttonAndHandler(_('Save no answer'))
-    def add_no_answer(self, action):
+    def render(self):
         observation = aq_inner(self.context)
         questions = [q for q in observation.values() if q.portal_type == 'Question']
         if questions:
             context = questions[0]
         else:
-            raise
+            raise ActionExecutionError(Invalid(u"Invalid context"))
+        text = u'Help me drafting the answer'
+
         id = str(int(time()))
         item_id = context.invokeFactory(
                 type_name='CommentAnswer',
                 id=id,
         )
-        text = u'No draft answer available so far'
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
+        if api.content.get_state(context).startswith('phase1-'):
+            action = 'phase1-assign-answerer'
+        else:
+            action = 'phase2-assign-answerer'
+        url = '%s/assign_answerer_form?workflow_action=%s&comment=%s' % (context.absolute_url(), action, item_id)
+        return self.request.response.redirect(url)
 
-        return self.request.response.redirect(context.absolute_url() + "/assign_answerer_form?workflow_action=assign-answerer")
-
-    def updateActions(self):
-        super(AddNoAnswerForm, self).updateActions()
-        for k in self.actions.keys():
-            self.actions[k].addClass('standardButton')
 
 
 class AddCommentForm(Form):
