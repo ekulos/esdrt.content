@@ -401,6 +401,7 @@
                                 kb python:size/1024">
                     &mdash; <span tal:replace="kb" /> KB</span>
               <a tal:condition="file/can_edit"
+                 tal:replace="nothing"
                  class="edit"
                  tal:attributes="href string:${file/absolute_url}/edit">
                 Edit File
@@ -538,6 +539,7 @@
                     &mdash; <span tal:replace="kb" /> KB</span>
               <a tal:condition="file/can_edit"
                  class="edit"
+                 tal:replace="nothing"
                  tal:attributes="href string:${file/absolute_url}/edit">
                 Edit File
               </a>
@@ -705,6 +707,7 @@
                     Edit question
             </a>
             <a href=""
+                  tal:replace="nothing"
                   tal:condition="question/can_delete"
                   tal:attributes="href string:${question/absolute_url}/../delete_confirmation"
                   class="deleteButton standardButton">
