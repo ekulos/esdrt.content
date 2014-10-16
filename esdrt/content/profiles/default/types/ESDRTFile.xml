@@ -6,7 +6,7 @@
   <!-- Basic metadata -->
   <property name="title" i18n:translate="">ESDRTFile</property>
   <property name="description"
-    i18n:translate="">Files with special needs</property>
+    i18n:translate=""></property>
   <property name="icon_expr">string:${portal_url}/document_icon.png</property>
   <property name="factory">esdrt.content.esdrtfile</property>
   <property name="global_allow">False</property>
