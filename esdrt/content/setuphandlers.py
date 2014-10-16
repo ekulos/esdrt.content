@@ -18,10 +18,6 @@ VOCABULARIES = [
      'title': 'CRF category codes',
      'filename': 'crf_code.csv',
     },
-    {'id': 'status_flag',
-     'title': 'Status Flag',
-     'filename': 'status_flag.csv',
-    },
     {'id': 'fuel',
      'title': 'Fuel',
      'filename': 'fuel.csv',
@@ -49,10 +45,6 @@ VOCABULARIES = [
     {'id': 'finish_observation_reasons',
      'title': 'Finish Observation Reasons',
      'filename': 'finish_observation_reasons.csv',
-    },
-    {'id': 'finish_observation_deny_reasons',
-     'title': 'Finish Observation Deny Reasons',
-     'filename': 'finish_observation_deny_reasons.csv',
     },
 ]
 
