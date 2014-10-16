@@ -126,3 +126,8 @@ class EditForm(dexterity.EditForm):
         super(EditForm, self).updateFields()
         self.fields = field.Fields(ICommentAnswer).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+
+    def updateActions(self):
+        super(EditForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
