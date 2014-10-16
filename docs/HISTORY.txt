@@ -1,8 +1,15 @@
 Changelog
 =========
 
-1.17 (UNRELEASED)
+1.17 (2014-10-16)
 -------------------
+
+- Change on permissions settings of the workflow [erral]
+
+- Conclusions for phase2 (initial) [erral]
+
+- Reasoning of finalisation [erral]
+
 
 1.16 (2014-10-15)
 --------------------
