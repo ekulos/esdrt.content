@@ -18,6 +18,5 @@ class CopyFileToAnswer(grok.View):
             id=file.filename,
             type_name='ESDRTFile',
             file=file,
-            confidential=context.confidential,
         )
         return self.request.response.redirect(context.absolute_url())
