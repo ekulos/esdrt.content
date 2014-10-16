@@ -178,5 +178,5 @@ class EditForm(dexterity.EditForm):
 
     def updateFields(self):
         super(EditForm, self).updateFields()
-        self.fields = field.Fields(IConclusion).select('text', 'closing_reason', 'ghg_estimations')
+        self.fields = field.Fields(IConclusion).select('closing_reason', 'text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
