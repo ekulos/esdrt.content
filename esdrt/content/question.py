@@ -369,3 +369,28 @@ class EditAnswerAndCloseComments(grok.View):
         )
         url = '%s/%s/edit' % (self.context.absolute_url(), self.comment)
         return self.request.response.redirect(url)
+
+class AddFollowUpQuestion(grok.View):
+    grok.context(IQuestion)
+    grok.name('add-follow-up-question')
+    grok.require('zope2.View')
+
+    def render(self):
+        api.content.transition(obj=self.context,
+            transition='phase1-reopen')
+
+        url = '%s/++add++Comment' % self.context.absolute_url()
+        return self.request.response.redirect(url)
+
+class AddConclusions(grok.View):
+    grok.context(IQuestion)
+    grok.name('add-conclusions')
+    grok.require('zope2.View')
+
+    def render(self):
+        parent = aq_parent(self.context)
+        api.content.transition(obj=parent,
+            transition='phase1-draft-conclusions')
+
+        url = '%s/++add++Conclusion' % parent.absolute_url()
+        return self.request.response.redirect(url)
