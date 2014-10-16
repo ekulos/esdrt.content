@@ -484,6 +484,7 @@
           </a>
         </tal:block>
         <a href="./content_status_modify?workflow_action=close"
+          tal:condition="python:not context.get_question() and view.can_add_question()"
           id="observation-finish"
           tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=phase1-draft-conclusions"
           class="standardButton">
