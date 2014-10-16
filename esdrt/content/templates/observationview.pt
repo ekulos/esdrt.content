@@ -495,7 +495,7 @@
         </tal:block>
         <a href="./content_status_modify?workflow_action=close"
           id="observation-finish"
-          tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=draft-conclusions"
+          tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=phase1-draft-conclusions"
           class="standardButton">
           Finish observation
         </a>
