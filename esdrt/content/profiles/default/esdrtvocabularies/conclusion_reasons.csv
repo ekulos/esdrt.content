@@ -1,3 +1,4 @@
-gap-filling,Gap filling
-recommendation,Recommendation
-technical-correction,Technical correction
+no-response-neede,no response needed: issue dropped before MS contact;
+resolved,resolved: issue dropped or clarified;
+unresolved,unresolved: forward to 2nd step review;
+partly-resolved,partly resolved: below treshold, maybe recommendation, but not forwarded to 2nd step review
