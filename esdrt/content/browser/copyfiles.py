@@ -14,8 +14,12 @@ class CopyFileToAnswer(grok.View):
         conversation = aq_parent(context)
         answer = aq_parent(conversation)
         file = getattr(context, 'attachment', None)
+        candidate_id = file.filename
+        while candidate_id in answer.keys():
+            candidate_id += '-1'
+
         filename = answer.invokeFactory(
-            id=file.filename,
+            id=candidate_id,
             type_name='ESDRTFile',
             file=file,
         )
