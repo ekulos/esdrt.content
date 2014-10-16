@@ -19,6 +19,8 @@ def upgrade(context, logger=None):
 def reimport_vocabularies(context, logger):
     atvm = getToolByName(context, 'portal_vocabularies')
     del atvm['conclusion_reasons']
+    del atvm['finish_observation_deny_reasons']
+    del atvm['status_flag']
     psetup = getToolByName(context, 'portal_setup')
     profile = psetup._getImportContext(PROFILE_ID)
     prepareVocabularies(context, profile)
