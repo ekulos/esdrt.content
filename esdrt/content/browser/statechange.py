@@ -354,7 +354,17 @@ class AssignConclusionReviewerForm(BrowserView):
                     roles=['CounterPart'],
                 )
 
-            wf_action = 'phase1-request-comments'
+            if api.content.get_state(self.context).startswith('phase1-'):
+                wf_action = 'phase1-request-comments'
+            elif api.content.get_state(self.context).startswith('phase2-'):
+                wf_action = 'phase2-request-comments'
+            else:
+                status = IStatusMessage(self.request)
+                msg = _(u'There was an error. Try again please')
+                status.addStatusMessage(msg, "error")
+                url = self.context.absolute_url()
+                return self.request.response.redirect(url)
+
             return self.context.content_status_modify(
                 workflow_action=wf_action,
             )
