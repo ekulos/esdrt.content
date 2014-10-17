@@ -16,12 +16,6 @@ from zope.interface import Interface
 
 class IFinishObservationReasonForm(Interface):
 
-    reason = schema.Choice(
-        title=_(u'Finishing reason'),
-        vocabulary='esdrt.content.finishobservationreasons',
-        required=True,
-    )
-
     comments = RichText(
         title=_(u'Enter comments if you want'),
         required=False,
@@ -36,10 +30,8 @@ class FinishObservationReasonForm(Form):
 
     @button.buttonAndHandler(u'Finish observation')
     def finish_observation(self, action):
-        reason = self.request.get('form.widgets.reason')[0]
         comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):
-            self.context.closing_reason = reason
             self.context.closing_comments = RichTextValue(comments, 'text/html', 'text/html')
             if api.content.get_state(self.context) == 'phase1-conclusions':
                 return self.context.content_status_modify(
@@ -74,7 +66,6 @@ class DenyFinishObservationReasonForm(Form):
 
     @button.buttonAndHandler(u'Deny finishing observation')
     def finish_observation(self, action):
-
         comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):
             self.context.closing_deny_comments = RichTextValue(comments, 'text/html', 'text/html')
