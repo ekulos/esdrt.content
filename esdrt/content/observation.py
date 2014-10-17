@@ -140,13 +140,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=True,
     )
 
-    form.read_permission(technical_corrections='cmf.ManagePortal')
-    form.write_permission(technical_corrections='cmf.ManagePortal')
-    technical_corrections = RichText(
-        title=_(u'Technical Corrections'),
-        required=False
-    )
-
     form.write_permission(closing_comments='cmf.ManagePortal')
     closing_comments = RichText(
         title=_(u'Finish request comments'),
@@ -158,6 +151,19 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=_(u'Finish deny comments'),
         required=False,
     )
+
+    form.write_permission(closing_comments_phase2='cmf.ManagePortal')
+    closing_comments_phase2 = RichText(
+        title=_(u'Finish request comments for phase 2'),
+        required=False,
+    )
+
+    form.write_permission(closing_deny_comments_phase2='cmf.ManagePortal')
+    closing_deny_comments_phase2 = RichText(
+        title=_(u'Finish deny comments for phase 2'),
+        required=False,
+    )
+
 
 @form.validator(field=IObservation['gas'])
 def check_gas(value):
@@ -821,7 +827,7 @@ class ObservationView(grok.View):
 
     def get_conclusion_phase2(self):
         sm = getSecurityManager()
-        conclusions = [c for c in self.context.values() if c.portal_type == 'ConclusionPhase2']
+        conclusions = [c for c in self.context.values() if c.portal_type == 'ConclusionsPhase2']
         if conclusions and sm.checkPermission('View', conclusions[0]):
             return conclusions[0]
 
