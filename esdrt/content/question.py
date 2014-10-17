@@ -419,7 +419,11 @@ class AddConclusions(grok.View):
         elif api.content.get_state(parent).startswith('phase2-'):
             api.content.transition(obj=parent,
                 transition='phase2-draft-conclusions')
-            url = '%s/++add++ConclusionPhase2' % parent.absolute_url()
+            # XXX check why the standard redirect does not work
+            cp2 = parent.invokeFactory(id=int(time()), type_name='ConclusionsPhase2')
+            conclusionsphase2 = parent.get(cp2)
+
+            url = '%s/edit' % conclusionsphase2.absolute_url()
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
 

@@ -819,6 +819,14 @@ class ObservationView(grok.View):
 
         return None
 
+    def get_conclusion_phase2(self):
+        sm = getSecurityManager()
+        conclusions = [c for c in self.context.values() if c.portal_type == 'ConclusionPhase2']
+        if conclusions and sm.checkPermission('View', conclusions[0]):
+            return conclusions[0]
+
+        return None
+
     def can_add_conclusion(self):
         sm = getSecurityManager()
         conclusion = self.get_conclusion()

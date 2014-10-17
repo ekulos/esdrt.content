@@ -1,23 +1,24 @@
-from zope.globalrequest import getRequest
 from AccessControl import getSecurityManager
-from esdrt.content.observation import hidden
-from zope.component import getUtility
-from plone import api
-from zope.schema.interfaces import IVocabularyFactory
-from zope.browsermenu.menu import getMenu
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
+from esdrt.content.observation import hidden
 from five import grok
+from plone import api
 from plone.app.textfield import RichText
 from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from types import IntType
+from z3c.form import field
 from zope import schema
+from zope.browsermenu.menu import getMenu
+from zope.component import getUtility
+from zope.globalrequest import getRequest
 from zope.interface import Invalid
+from zope.schema.interfaces import IVocabularyFactory
 
 class ITableRowSchema(form.Schema):
 
@@ -136,3 +137,19 @@ class ConclusionsPhase2View(grok.View):
         url = '%s#tab-conclusions-phase2' % parent.absolute_url()
 
         return self.request.response.redirect(url)
+
+class EditForm(dexterity.EditForm):
+    grok.name('edit')
+    grok.context(IConclusionsPhase2)
+    grok.require('cmf.ModifyPortalContent')
+
+    def updateFields(self):
+        super(EditForm, self).updateFields()
+        self.fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text', 'ghg_estimations')
+        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+        self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
+
+    def updateActions(self):
+        super(EditForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
