@@ -1,6 +1,16 @@
 Changelog
 =========
 
+1.18 (2014-10-17)
+----------------------
+
+- Implementation of phase2 conclusions workflow [erral]
+
+- Finish Observation has no reason, just a comment box [erral]
+
+- Different reasons for phase2 conclusions [erral]
+
+
 1.17 (2014-10-16)
 -------------------
 
