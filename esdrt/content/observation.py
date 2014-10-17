@@ -147,14 +147,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=False
     )
 
-    form.write_permission(closing_reason='cmf.ManagePortal')
-    closing_reason = schema.Choice(
-        title=_(u'Finish request reason'),
-        vocabulary='esdrt.content.finishobservationreasons',
-        required=False,
-
-    )
-
     form.write_permission(closing_comments='cmf.ManagePortal')
     closing_comments = RichText(
         title=_(u'Finish request comments'),
