@@ -42,10 +42,6 @@ VOCABULARIES = [
      'title': 'Conclusion Phase2 Reasons',
      'filename': 'conclusion_phase2_reasons.csv',
     },
-    {'id': 'finish_observation_reasons',
-     'title': 'Finish Observation Reasons',
-     'filename': 'finish_observation_reasons.csv',
-    },
 ]
 
 
