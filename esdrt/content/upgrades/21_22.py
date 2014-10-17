@@ -33,7 +33,6 @@ def install_workflow(context, logger):
         'esd-answer-workflow',
         'esd-comment-workflow',
         'esd-conclusion-workflow',
-        'esd-conclusions-phase2-workflow',
         'esd-file-workflow',
         'esd-question-review-workflow',
         'esd-reviewtool-folder-workflow',
