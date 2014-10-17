@@ -329,7 +329,7 @@ class EditAndCloseComments(grok.View):
         # Some checks:
         waction = self.request.get('workflow_action')
         comment = self.request.get('comment')
-        if waction != 'phase1-send-comments' and \
+        if waction not in ['phase1-send-comments', 'phase2-send-comments'] and \
             comment not in self.context.keys():
                 status = IStatusMessage(self.request)
                 msg = _(u'There was an error, try again please')
@@ -339,9 +339,17 @@ class EditAndCloseComments(grok.View):
 
     def render(self):
         # Execute the transition
-        api.content.transition(obj=self.context,
-            transition='phase1-send-comments'
-        )
+        if api.content.get_state(self.context).startswith('phase1-'):
+            api.content.transition(obj=self.context,
+                transition='phase1-send-comments'
+            )
+        elif api.content.get_state(self.context).startswith('phase2-'):
+            api.content.transition(obj=self.context,
+                transition='phase2-send-comments'
+            )
+        else:
+            raise ActionExecutionError(Invalid(u"Invalid context"))
+
         url = '%s/%s/edit' % (self.context.absolute_url(), self.comment)
         return self.request.response.redirect(url)
 
@@ -354,19 +362,28 @@ class EditAnswerAndCloseComments(grok.View):
         # Some checks:
         waction = self.request.get('workflow_action')
         comment = self.request.get('comment')
-        if waction != 'phase1-ask-answer-approval' and \
+        if waction not in ['phase1-ask-answer-approval', 'phase2-ask-answer-aproval'] and \
             comment not in self.context.keys():
                 status = IStatusMessage(self.request)
                 msg = _(u'There was an error, try again please')
                 status.addStatusMessage(msg, "error")
+                return
         else:
             self.comment = comment
 
     def render(self):
         # Execute the transition
-        api.content.transition(obj=self.context,
-            transition='phase1-ask-answer-approval'
-        )
+        if api.content.get_state(self.context).startswith('phase1-'):
+            api.content.transition(obj=self.context,
+                transition='phase1-ask-answer-approval'
+            )
+        elif api.content.get_state(self.context).startswith('phase2-'):
+            api.content.transition(obj=self.context,
+                transition='phase2-ask-answer-aproval'
+            )
+        else:
+            raise ActionExecutionError(Invalid(u"Invalid context"))
+
         url = '%s/%s/edit' % (self.context.absolute_url(), self.comment)
         return self.request.response.redirect(url)
 
@@ -376,8 +393,14 @@ class AddFollowUpQuestion(grok.View):
     grok.require('zope2.View')
 
     def render(self):
-        api.content.transition(obj=self.context,
-            transition='phase1-reopen')
+        if api.content.get_state(self.context).startswith('phase1-'):
+            api.content.transition(obj=self.context,
+                transition='phase1-reopen')
+        elif api.content.get_state(self.context).startswith('phase2-'):
+            api.content.transition(obj=self.context,
+                transition='phase2-reopen')
+        else:
+            raise ActionExecutionError(Invalid(u"Invalid context"))
 
         url = '%s/++add++Comment' % self.context.absolute_url()
         return self.request.response.redirect(url)
@@ -389,8 +412,15 @@ class AddConclusions(grok.View):
 
     def render(self):
         parent = aq_parent(self.context)
-        api.content.transition(obj=parent,
-            transition='phase1-draft-conclusions')
+        if api.content.get_state(parent).startswith('phase1-'):
+            api.content.transition(obj=parent,
+                transition='phase1-draft-conclusions')
+            url = '%s/++add++Conclusion' % parent.absolute_url()
+        elif api.content.get_state(parent).startswith('phase2-'):
+            api.content.transition(obj=parent,
+                transition='phase2-draft-conclusions')
+            url = '%s/++add++ConclusionPhase2' % parent.absolute_url()
+        else:
+            raise ActionExecutionError(Invalid(u"Invalid context"))
 
-        url = '%s/++add++Conclusion' % parent.absolute_url()
         return self.request.response.redirect(url)

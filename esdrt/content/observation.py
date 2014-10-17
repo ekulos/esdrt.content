@@ -1268,8 +1268,10 @@ class AddAnswerAndRequestComments(grok.View):
         comment.text = RichTextValue(text, 'text/html', 'text/html')
         if api.content.get_state(context).startswith('phase1-'):
             action = 'phase1-assign-answerer'
-        else:
+        elif api.content.get_state(context).startswith('phase2-'):
             action = 'phase2-assign-answerer'
+        else:
+            raise ActionExecutionError(Invalid(u"Invalid context"))
         url = '%s/assign_answerer_form?workflow_action=%s&comment=%s' % (context.absolute_url(), action, item_id)
         return self.request.response.redirect(url)
 
