@@ -165,7 +165,7 @@
 
     <genericsetup:upgradeStep
          title="Upgrade to 22."
-         description="Workflow definition, Vocabularies, Conclusions"
+         description="Workflow definition, Vocabularies"
          source="21"
          destination="22"
          handler=".21_22.upgrade"
