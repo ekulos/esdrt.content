@@ -32,12 +32,13 @@ class FinishObservationReasonForm(Form):
     def finish_observation(self, action):
         comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):
-            self.context.closing_comments = RichTextValue(comments, 'text/html', 'text/html')
             if api.content.get_state(self.context) == 'phase1-conclusions':
+                self.context.closing_comments = RichTextValue(comments, 'text/html', 'text/html')
                 return self.context.content_status_modify(
                     workflow_action='phase1-request-close',
                 )
             elif api.content.get_state(self.context) == 'phase2-conclusions':
+                self.context.closing_comments_phase2 = RichTextValue(comments, 'text/html', 'text/html')
                 return self.context.content_status_modify(
                     workflow_action='phase2-finish-observation',
                 )
@@ -68,12 +69,13 @@ class DenyFinishObservationReasonForm(Form):
     def finish_observation(self, action):
         comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):
-            self.context.closing_deny_comments = RichTextValue(comments, 'text/html', 'text/html')
             if api.content.get_state(self.context) == 'phase1-close-requested':
+                self.context.closing_deny_comments = RichTextValue(comments, 'text/html', 'text/html')
                 return self.context.content_status_modify(
                     workflow_action='phase1-deny-closure',
                 )
             elif api.content.get_state(self.context) == 'phase2-close-requested':
+                self.context.closing_deny_comments_phase2 = RichTextValue(comments, 'text/html', 'text/html')
                 return self.context.content_status_modify(
                     workflow_action='phase2-deny-finishing-observation',
                 )

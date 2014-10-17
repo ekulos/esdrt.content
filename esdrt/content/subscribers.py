@@ -126,7 +126,7 @@ def observation_transition(observation, event):
                 api.content.transition(obj=conclusion,
                     transition='redraft')
 
-    elif event.action in ['phase2-request-close']:
+    elif event.action in ['phase2-finish-observation']:
         with api.env.adopt_roles(roles=['Manager']):
             conclusions = [c for c in observation.values() if c.portal_type == 'ConclusionsPhase2']
             if conclusions:

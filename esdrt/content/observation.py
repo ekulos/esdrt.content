@@ -1380,6 +1380,30 @@ class EditConclusionAndCloseComments(grok.View):
         url = '%s/edit' % conclusion.absolute_url()
         return self.request.response.redirect(url)
 
+class EditConclusionP2AndCloseComments(grok.View):
+    grok.name('edit-conclusions-and-close-comments-phase2')
+    grok.context(IObservation)
+    grok.require('zope2.View')
+
+    def update(self):
+        # Some checks:
+        waction = self.request.get('workflow_action')
+        if waction != 'phase2-finish-comments':
+                status = IStatusMessage(self.request)
+                msg = _(u'There was an error, try again please')
+                status.addStatusMessage(msg, "error")
+
+
+    def render(self):
+        # Execute the transition
+        api.content.transition(obj=self.context,
+            transition='phase2-finish-comments'
+        )
+        conclusions = [c for c in self.context.values() if c.portal_type == 'ConclusionsPhase2']
+        conclusion = conclusions[0]
+        url = '%s/edit' % conclusion.absolute_url()
+        return self.request.response.redirect(url)
+
 class EditHighlightsForm(dexterity.EditForm):
     grok.name('edit-highlights')
     grok.context(IObservation)
