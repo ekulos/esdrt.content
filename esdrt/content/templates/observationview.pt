@@ -331,11 +331,9 @@
   <div class="eea-tabs-panels" style="overflow:hidden">
     <div class="eea-tabs-panel finish-observation"
       tal:condition="python:context.get_status() == 'phase1-close-requested'">
-        <strong>Observation Finish Requested</strong>
         <dl>
-          <dt>Reason:</dt>
-          <dd><span tal:replace="context/finish_reason_value" /></dd>
-
+          <dt>Observation Finish Requested</dt>
+          <dd></dd>
           <dt>Comments:</dt>
           <dd><span tal:replace="structure context/closing_comments/output|nothing" /></dd>
         </dl>
