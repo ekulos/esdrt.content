@@ -19,6 +19,7 @@ def reimport_vocabularies(context, logger):
     atvm = getToolByName(context, 'portal_vocabularies')
     del atvm['conclusion_reasons']
     del atvm['conclusion_phase2_reasons']
+    del atvm['finish_observation_reasons']
     psetup = getToolByName(context, 'portal_setup')
     profile = psetup._getImportContext(PROFILE_ID)
     prepareVocabularies(context, profile)
@@ -31,6 +32,7 @@ def install_workflow(context, logger):
         'esd-answer-workflow',
         'esd-comment-workflow',
         'esd-conclusion-workflow',
+        'esd-conclusions-phase2-workflow',
         'esd-file-workflow',
         'esd-question-review-workflow',
         'esd-reviewtool-folder-workflow',
