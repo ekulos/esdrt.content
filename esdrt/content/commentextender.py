@@ -63,3 +63,8 @@ class CommentExtender(extensible.FormExtender):
     def update(self):
         self.add(ICommentExtenderFields, prefix="")
         self.move('attachment', after='text', prefix="")
+        self.form.description = _(u'Handling of confidential files: '
+                u'Please zip your file, protect it with a password, upload it to your reply in the EEA review tool '
+                u'and send the password per email to the ESD Secretariat mailbox. '
+                u'Your password will only be shared with the lead reviewer and review expert. '
+        )
