@@ -82,6 +82,15 @@
         permission="esdrt.content.ViewConclusionDiscussion"
         />
 
+     <browser:viewlet
+        name="plone.comments"
+        for="..conclusionsphase2.IConclusionsPhase2"
+        layer="plone.app.discussion.interfaces.IDiscussionLayer"
+        manager=".interfaces.ICommentDiscussion"
+        view="plone.app.layout.globals.interfaces.IViewView"
+        class=".comments.CommentsViewlet"
+        permission="esdrt.content.ViewConclusionDiscussion"
+        />
 
     <browser:page
         name="download"
