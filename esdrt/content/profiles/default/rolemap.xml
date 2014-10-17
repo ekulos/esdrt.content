@@ -20,8 +20,8 @@
     <!-- -*- extra stuff goes here -*- -->
     <permission name="esdrt.content: Add ConclusionsPhase2" acquire="False">
       <role name="Manager" />
-      <role name="Site Administrator" /> 
-      <role name="Contributor" />      
+      <role name="Site Administrator" />
+      <role name="Contributor" />
     </permission>
     <permission name="esdrt.content: Add Conclusion" acquire="False">
       <role name="Manager" />
