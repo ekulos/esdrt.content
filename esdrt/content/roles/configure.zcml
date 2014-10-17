@@ -29,5 +29,10 @@
       name="conclusion_role_adapter"
       />
 
+  <adapter
+      factory=".localroles.ConclusionPhase2RoleAdapter"
+      name="conclusion_phase2_role_adapter"
+      />
+
 
 </configure>
