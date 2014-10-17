@@ -11,7 +11,8 @@ def upgrade(context, logger=None):
         logger = getLogger('esdrt.content.upgrades.21_22')
 
     reimport_vocabularies(context, logger)
-    #install_workflow(context, logger)
+    install_workflow(context, logger)
+    install_contenttypes(context, logger)
     logger.info('Upgrade steps executed')
 
 
