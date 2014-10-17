@@ -14,6 +14,7 @@
   <property name="allowed_content_types">
     <element value="Question" />
     <element value="Conclusion" />
+    <element value="ConclusionPhase2" />
   </property>
   <property name="allow_discussion">False</property>
 
