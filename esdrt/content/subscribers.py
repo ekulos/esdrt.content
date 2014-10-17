@@ -78,7 +78,7 @@ def observation_transition(observation, event):
                 q = qs[0]
                 api.content.transition(obj=q, transition='phase2-reopen')
 
-    elif event.action in ['phase1-request-comments', 'phase2-request-comments']:
+    elif event.action in ['phase1-request-comments']:
         with api.env.adopt_roles(roles=['Manager']):
             conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
             if conclusions:
@@ -86,7 +86,7 @@ def observation_transition(observation, event):
                 api.content.transition(obj=conclusion,
                     transition='request-comments')
 
-    elif event.action in ['phase1-finish-comments', 'phase2-finish-comments']:
+    elif event.action in ['phase1-finish-comments']:
         with api.env.adopt_roles(roles=['Manager']):
             conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
             if conclusions:
@@ -94,7 +94,7 @@ def observation_transition(observation, event):
                 api.content.transition(obj=conclusion,
                     transition='redraft')
 
-    elif event.action in ['phase1-request-close', 'phase2-request-close']:
+    elif event.action in ['phase1-request-close']:
         with api.env.adopt_roles(roles=['Manager']):
             conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
             if conclusions:
@@ -102,13 +102,46 @@ def observation_transition(observation, event):
                 api.content.transition(obj=conclusion,
                     transition='publish')
 
-    elif event.action in ['phase1-deny-closure', 'phase2-deny-closure']:
+    elif event.action in ['phase1-deny-closure']:
         with api.env.adopt_roles(roles=['Manager']):
             conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
             if conclusions:
                 conclusion = conclusions[0]
                 api.content.transition(obj=conclusion,
                     transition='redraft')
+
+    elif event.action in ['phase2-request-comments']:
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'ConclusionsPhase2']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='request-comments')
+
+    elif event.action in ['phase2-finish-comments']:
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'ConclusionsPhase2']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='redraft')
+
+    elif event.action in ['phase2-request-close']:
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'ConclusionsPhase2']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='publish')
+
+    elif event.action in ['phase2-deny-closure']:
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'ConclusionsPhase2']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='redraft')
+
 
     elif event.action == 'phase1-draft-conclusions':
         with api.env.adopt_roles(roles=['Manager']):
