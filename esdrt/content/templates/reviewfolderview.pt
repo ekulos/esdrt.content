@@ -8,6 +8,12 @@
   <tal:block metal:fill-slot="javascript_head_slot">
     <script type="text/javascript">
       $(document).ready(function(){
+        $(".observationText").text(function(index, currentText){
+          if (currentText.length > 500){
+            $(this).text(currentText.substr(0, 500) + "...");
+            $(this).attr("title", currentText);
+          }
+        });
         $("#btnFilter").click(function(){
           var filter = "";
             if ($('#countryFilter').val() != ""){
@@ -33,15 +39,7 @@
                 filter += "&";
               }            
               filter += "year=" + $('#yearFilter').val();
-            }            
-            if ($('#sectorFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }            
-              filter += "sector=" + $('#sectorFilter').val();
-            }            
+            }                        
             window.location.href = window.location.pathname + filter;
 
         })
@@ -65,7 +63,7 @@
             <a class="eea-icon overview" tal:attributes="href string:${here/absolute_url}/view">Overview list</a>
           </div>
           <div>
-            <a class="eea-icon inbox" tal:attributes="href string:${here/absolute_url}/inboxview">Inbox</a>
+            <a class="eea-icon inbox" tal:attributes="href string:${here/absolute_url}/inboxview">My view</a>
           </div>
         </div>
       </div>
@@ -73,8 +71,8 @@
         <div class="row">
           <div class="cell position-0 width-3 esdLabel">Country</div>
           <div class="cell position-3 width-3 esdLabel">Status</div>
-          <div class="cell position-6 width-3 esdLabel">Inventory year</div>
-          <div class="cell position-9 width-4 esdLabel">Sector</div>
+          <div class="cell position-6 width-3 esdLabel">Review year</div>
+          <div class="cell position-9 width-4 esdLabel">Inventory year</div>
         </div>
         <div class="row">
           <div class="cell position-0 width-3 esdLabel">
@@ -112,17 +110,10 @@
               tal:attributes="value year"/>
           </div>
           <div class="cell position-9 width-4 esdLabel">
-            <select id="sectorFilter">
-              <option></option>
-              <tal:block tal:repeat="item view/get_sectors">
-                <option
-                  tal:define="sector python:'';
-                              sector request/sector | sector"
-                  tal:attributes="value python:item[0];
-                                  selected python:item[0]==sector"
-                  tal:content="python:item[1]"></option>
-              </tal:block>
-            </select>
+            <input type="text" id="yearFilter" 
+                tal:define="year python:'';
+                            year request/year | year"              
+              tal:attributes="value year"/>
           </div>
           <div class="cell position-14 width-1 esdLabel">
             <a class="standardButton" id="btnFilter">Search</a>
@@ -147,25 +138,19 @@
                 Observation
               </th>
               <th>
-                Status
+                In short
+              </th>              
+              <th>
+                CRF code
               </th>
-              <th style="width:65px">
-                Country
+              <th style="width:47px">
+                Review year
               </th>
-              <th style="width:100px">
-                Sector
-              </th>
-              <th style="width:40px">
-                Gas
-              </th>
-              <th style="width:20px">
+              <th style="width:58px">
                 Inventory year
               </th>
-              <th style="width:80px">
-                Modification date
-              </th>
-              <th style="width:130px">
-                Progress
+              <th>
+                Status
               </th>
               <th tal:condition="view/is_secretariat">
                 Author
@@ -192,34 +177,21 @@
                           Observation title
                         </span>
                     </td>
-                    <td class="statusCell">
-                      <span tal:content="observation/observation_status|nothing"
-                            tal:attributes="class observation/observation_status|nothing">
-                        Pending
-                      </span>
+                    <td tal:content="observation/@@text-transform/text/text/plain"
+                      class="observationText">
+                      Observation description
                     </td>
-                    <td tal:content="observation/country_value" class="countryCell">
-                      Austria
+                    <td tal:content="observation/crf_code_value">
+                      1A1 Energy industries
                     </td>
-                    <td tal:content="observation/ghg_source_sectors_value" class="sectorCell">
-                      Waste
-                    </td>
-                    <td tal:content="observation/gas_value" class="gasCell">
-                      CO2
+                    <td tal:content="observation/review_year" class="yearCell">
+                      2014
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
                     </td>
-                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
-                        tal:attributes="data-sorter python:observation.modified()">
-                      20 Jun 2014, 11:35 AM
-                    </td>
-                    <td>
-                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                      <span tal:content="observation/wf_location">Review Expert</span><br/>
-                      <span class="eea-icon eea-icon-lg"
-                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
+                    <td tal:content="observation/overview_status">
+                      Open
                     </td>
                     <td tal:condition="view/is_secretariat">
                       <span tal:replace="python:view.get_author_name(observation.Creator())" />

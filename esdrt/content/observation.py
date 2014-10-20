@@ -423,6 +423,17 @@ class Observation(dexterity.Container):
         else:
             return 'open'
 
+    def overview_status(self):
+        status = self.get_status()
+        if status == 'phase1-closed':
+            conclusion = get_conclusion()
+            return ' - '.join(['closed', conclusion.reason_value()]
+        elif status == 'phase2-closed':
+            conclusion = get_conclusion_phase2()
+            return ' - '.join(['closed', conclusion.reason_value()]
+        else:
+            return 'open'
+
     def is_secretariat(self):
         user = api.user.get_current()
         return 'Manager' in user.getRoles()
