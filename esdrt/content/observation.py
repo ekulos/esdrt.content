@@ -689,6 +689,14 @@ class Observation(dexterity.Container):
                 return state
             else:
                 return ""
+    def observation_css_class(self):
+        if self.get_status().startswith('phase1'):
+            if 'psi' in self.highlight:
+                return "psiBackground"
+        else:
+            if 'ptc' in self.highlight:
+                return 'ptcBackground' 
+
 
 # View class
 # The view will automatically use a similarly named template in
