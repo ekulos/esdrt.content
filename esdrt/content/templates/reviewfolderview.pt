@@ -32,14 +32,30 @@
               }            
               filter += "status=" + $('#statusFilter').val();
             }
-            if ($('#yearFilter').val() != ""){
+            if ($('#reviewYearFilter').val() != ""){
               if (filter == ""){
                 filter += "?";
               }else{
                 filter += "&";
               }            
-              filter += "year=" + $('#yearFilter').val();
-            }                        
+              filter += "reviewYear=" + $('#reviewYearFilter').val();
+            }
+            if ($('#inventoryYearFilter').val() != ""){
+              if (filter == ""){
+                filter += "?";
+              }else{
+                filter += "&";
+              }            
+              filter += "inventoryYear=" + $('#inventoryYearFilter').val();
+            }      
+            if ($('#freeTextFilter').val() != ""){
+              if (filter == ""){
+                filter += "?";
+              }else{
+                filter += "&";
+              }            
+              filter += "inventoryYear=" + $('#freeTextFilter').val();
+            }                                        
             window.location.href = window.location.pathname + filter;
 
         })
@@ -70,12 +86,7 @@
       <div id="filters">
         <div class="row">
           <div class="cell position-0 width-3 esdLabel">Country</div>
-          <div class="cell position-3 width-3 esdLabel">Status</div>
-          <div class="cell position-6 width-3 esdLabel">Review year</div>
-          <div class="cell position-9 width-4 esdLabel">Inventory year</div>
-        </div>
-        <div class="row">
-          <div class="cell position-0 width-3 esdLabel">
+          <div class="cell position-3 width-3">
             <select id="countryFilter">
               <option></option>
               <tal:block tal:repeat="item view/get_countries">
@@ -88,6 +99,21 @@
               </tal:block>
             </select>
           </div>
+          <div class="cell position-7 width-2 esdLabel">
+            Highlights
+          </div>
+          <div class="cell position-9 width-4" style="position:absolute;z-index:2">
+            <tal:block tal:repeat="item view/get_highlights">
+              <input type="checkbox"
+                tal:attributes="value python:item[0];
+                                id python:item[0]"/>
+              <label tal:attributes="for python:item[0];"
+                tal:content="python:item[1]"></label><br/>
+            </tal:block>
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell position-0 width-3 esdLabel">Status</div>
           <div class="cell position-3 width-3 esdLabel">
             <select id="statusFilter"
                 tal:define="status python:'';
@@ -102,23 +128,35 @@
               <option tal:attributes="selected python:'finished'==status" 
                 value="finished">Finished</option>
             </select>
-          </div>
-          <div class="cell position-6 width-3 esdLabel">
-            <input type="text" id="yearFilter" 
-                tal:define="year python:'';
-                            year request/year | year"              
-              tal:attributes="value year"/>
-          </div>
-          <div class="cell position-9 width-4 esdLabel">
-            <input type="text" id="yearFilter" 
-                tal:define="year python:'';
-                            year request/year | year"              
-              tal:attributes="value year"/>
-          </div>
+          </div>          
+        </div>
+        <div class="row">
+          <div class="cell position-0 width-3 esdLabel">Review year</div>
+          <div class="cell position-3 width-3 esdLabel">
+            <input type="text" id="reviewYearFilter" 
+                tal:define="reviewYear python:'';
+                            reviewYear request/reviewYear | reviewYear"              
+              tal:attributes="value reviewYear"/>
+          </div>          
+        </div>
+        <div class="row">
+          <div class="cell position-0 width-3 esdLabel">Inventory year</div>
+          <div class="cell position-3 width-4 esdLabel">
+            <input type="text" id="inventoryYearFilter" 
+                tal:define="inventoryYear python:'';
+                            inventoryYear request/inventoryYear | inventoryYear"              
+              tal:attributes="value inventoryYear"/>
+          </div>          
+        </div>
+        <div class="row">
+          <div class="cell position-0 width-3 esdLabel">Free text</div>
+          <div class="cell position-3 width-4 esdLabel">
+            <input type="text" id="freeTextFilter"/>
+          </div>   
           <div class="cell position-14 width-1 esdLabel">
             <a class="standardButton" id="btnFilter">Search</a>
-          </div>          
-        </div>        
+          </div>                       
+        </div>       
       </div>
       <div id="no-content" tal:condition="not: view/get_questions">
 
@@ -164,8 +202,8 @@
               <tal:item condition="python:item.portal_type == 'Observation'">
                 <tal:item define="observation nocall:item;
                                   toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
-                  <tr tal:attributes="data-href observation/absolute_url"
-                      class="clickableRow">
+                  <tr tal:attributes="data-href observation/absolute_url;
+                      class string:clickableRow ${observation/observation_css_class};">
                     <td class="observationRefCell">
                         <span class="ref-num"
                           tal:content="observation/getId">
