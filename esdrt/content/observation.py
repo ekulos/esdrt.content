@@ -427,10 +427,10 @@ class Observation(dexterity.Container):
         status = self.get_status()
         if status == 'phase1-closed':
             conclusion = get_conclusion()
-            return ' - '.join(['closed', conclusion.reason_value()]
+            return ' - '.join(['closed', conclusion.reason_value()])
         elif status == 'phase2-closed':
             conclusion = get_conclusion_phase2()
-            return ' - '.join(['closed', conclusion.reason_value()]
+            return ' - '.join(['closed', conclusion.reason_value()])
         else:
             return 'open'
 
@@ -679,7 +679,7 @@ class Observation(dexterity.Container):
             return question
 
     def observation_question_status(self):
-        if self.get_status() != 'pending':
+        if self.get_status() != 'phase1-pending' or self.get_status() != 'phase2-pending':
             return self.get_status()
         else:
             questions = self.values()
@@ -689,6 +689,7 @@ class Observation(dexterity.Container):
                 return state
             else:
                 return ""
+
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
