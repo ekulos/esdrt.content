@@ -272,7 +272,6 @@ class InboxReviewFolderView(grok.View):
                         obj = item.getObject()
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                import pdb; pdb.set_trace()
                                 if (obj.observation_question_status() == 'phase1-answered' or \
                                 obj.observation_question_status() == 'phase2-answered'):
                                     items.append(obj)
