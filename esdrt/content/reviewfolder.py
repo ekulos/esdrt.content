@@ -155,6 +155,7 @@ class InboxReviewFolderView(grok.View):
     """
         Sector expert / Review expert
     """
+    @memoize
     def get_draft_observations(self):
         """
          Role: Sector expert / Review expert
@@ -179,6 +180,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items          
 
+    @memoize
     def get_draft_questions(self):
         """
          Role: Sector expert / Review expert
@@ -203,6 +205,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+    @memoize
     def get_counterpart_questions_to_comment(self):
         """
          Role: Sector expert / Review expert
@@ -229,6 +232,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+    @memoize
     def get_counterpart_conclusion_to_comment(self):
         """
          Role: Sector expert / Review expert
@@ -255,6 +259,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+    @memoize
     def get_ms_answers_to_review(self):
         """
          Role: Sector expert / Review expert
@@ -279,7 +284,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items         
 
-
+    @memoize
     def get_unanswered_questions(self):
         """
          Role: Sector expert / Review expert
@@ -306,6 +311,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
  
+    @memoize
     def get_waiting_for_comment_from_counterparts_for_question(self):
         """
          Role: Sector expert / Review expert
@@ -331,6 +337,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+    @memoize
     def get_waiting_for_comment_from_counterparts_for_conclusion(self):
         """
          Role: Sector expert / Review expert
@@ -356,6 +363,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+    @memoize    
     def get_observation_for_finalisation(self):
         """
          Role: Sector expert / Review expert
@@ -383,6 +391,7 @@ class InboxReviewFolderView(grok.View):
     """
         Lead Reviewer / Quality expert
     """
+    @memoize
     def get_questions_to_be_sent(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -409,6 +418,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+    @memoize
     def get_observations_to_finalise(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -433,6 +443,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+    @memoize
     def get_questions_to_comment(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -459,6 +470,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+    @memoize
     def get_conclusions_to_comment(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -485,6 +497,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items
 
+    @memoize        
     def get_questions_with_comments_from_reviewers(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -511,6 +524,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items
 
+    @memoize        
     def get_answers_from_ms(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -535,6 +549,7 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items    
 
+    @memoize
     def get_unanswered_questions(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -565,6 +580,7 @@ class InboxReviewFolderView(grok.View):
     """
         MS Coordinator
     """
+    @memoize    
     def get_questions_to_be_answered(self):
         """
          Role: MS Coordinator
@@ -590,6 +606,8 @@ class InboxReviewFolderView(grok.View):
                     except:
                         pass
         return items 
+
+    @memoize        
     def get_questions_with_comments_received_from_mse(self):
         """
          Role: MS Coordinator
@@ -613,6 +631,8 @@ class InboxReviewFolderView(grok.View):
                     except:
                         pass
         return items  
+
+    @memoize        
     def get_answers_requiring_comments_from_mse(self):
         """
          Role: MS Coordinator
@@ -635,7 +655,9 @@ class InboxReviewFolderView(grok.View):
                                     items.append(obj)
                     except:
                         pass
-        return items    
+        return items   
+
+    @memoize         
     def get_answers_sent_to_se_re(self):
         """
          Role: MS Coordinator
@@ -706,3 +728,7 @@ class InboxReviewFolderView(grok.View):
         user = api.user.get_current()
         return "extranet-esd-countries-msa" in user.getGroups()
 
+    @memoize
+    def is_member_state_expert(self):
+        user = api.user.get_current()
+        return "extranet-esd-countries-msexpert" in user.getGroups()
