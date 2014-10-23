@@ -721,6 +721,617 @@
           </table>  
 
         </tal:block>
+        <!-- Lead Reviewer / Quality expert -->
+        <tal:block tal:condition="view/is_lead_reviewer_or_quality_expert">
+          <div>
+            <div class="row collapsiblePanelTitle" data-panel="my-actions">
+              <div>
+                My actions
+                <span class="eea-icon eea-icon-left"></span>
+              </div>
+            </div>
+          </div> 
+          <div class="my-actions">
+            <div class="row">
+              <div>
+                Questions to be sent
+              </div>
+            </div>
+          </div>   
+          <table class="observationList listing" tal:condition="view/get_questions_to_be_sent">
+            <thead>
+              <tr>
+                <th>
+                  Observation
+                </th>
+                <th>
+                  CRF code
+                </th>   
+                <th style="width:20px">
+                  Inventory year
+                </th>                         
+                <th>
+                  Status
+                </th>
+                <th style="width:80px">
+                  Modification date
+                </th>
+                <th style="width:130px">
+                  Progress
+                </th>
+                <th>
+                  Step
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tal:block tal:repeat="item view/get_questions_to_be_sent">
+                <tal:item define="observation nocall:item;
+                                  toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                  <tr tal:attributes="data-href observation/absolute_url;
+                      class string:clickableRow ${observation/observation_css_class};">
+                    <td class="observationRefCell">
+                        <span class="ref-num"
+                          tal:content="observation/getId">
+                          UK-WAS-13-001
+                        </span>
+                        /
+                        <span class="obs-title"
+                          tal:content="observation/Title">
+                          Observation title
+                        </span>
+                    </td>
+                    <td tal:content="observation/crf_code_value">
+                      1A1 Energy industries
+                    </td>
+                    <td tal:content="observation/year" class="yearCell">
+                      2014
+                    </td>                                        
+                    <td tal:content="observation/overview_status|nothing">
+                      Pending
+                    </td>
+                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                        tal:attributes="data-sorter python:observation.modified()">
+                      20 Jun 2014, 11:35 AM
+                    </td>
+                    <td>
+                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                      <span tal:content="observation/wf_location">Review Expert</span><br/>
+                      <span class="eea-icon eea-icon-lg"
+                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
+                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
+                    </td>
+                    <td>
+                      <div style="background-color:#A8DFFA;width:50%">
+                        &nbsp;
+                      </div>
+                      <div style="background-color:#458EB1;width:50%">
+                        &nbsp;</div>
+                    </td>
+                  </tr>
+                </tal:item>
+              </tal:block>
+            </tbody>
+          </table>  
+          
+          <div class="my-actions">
+            <div class="row">
+              <div>
+                Observations to finalise
+              </div>
+            </div>
+          </div>   
+          <table class="observationList listing" tal:condition="view/get_observations_to_finalise">
+            <thead>
+              <tr>
+                <th>
+                  Observation
+                </th>
+                <th>
+                  CRF code
+                </th>   
+                <th style="width:20px">
+                  Inventory year
+                </th>                         
+                <th>
+                  Status
+                </th>
+                <th style="width:80px">
+                  Modification date
+                </th>
+                <th style="width:130px">
+                  Progress
+                </th>
+                <th>
+                  Step
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tal:block tal:repeat="item view/get_observations_to_finalise">
+                <tal:item define="observation nocall:item;
+                                  toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                  <tr tal:attributes="data-href observation/absolute_url;
+                      class string:clickableRow ${observation/observation_css_class};">
+                    <td class="observationRefCell">
+                        <span class="ref-num"
+                          tal:content="observation/getId">
+                          UK-WAS-13-001
+                        </span>
+                        /
+                        <span class="obs-title"
+                          tal:content="observation/Title">
+                          Observation title
+                        </span>
+                    </td>
+                    <td tal:content="observation/crf_code_value">
+                      1A1 Energy industries
+                    </td>
+                    <td tal:content="observation/year" class="yearCell">
+                      2014
+                    </td>                                        
+                    <td tal:content="observation/overview_status|nothing">
+                      Pending
+                    </td>
+                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                        tal:attributes="data-sorter python:observation.modified()">
+                      20 Jun 2014, 11:35 AM
+                    </td>
+                    <td>
+                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                      <span tal:content="observation/wf_location">Review Expert</span><br/>
+                      <span class="eea-icon eea-icon-lg"
+                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
+                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
+                    </td>
+                    <td>
+                      <div style="background-color:#A8DFFA;width:50%">
+                        &nbsp;
+                      </div>
+                      <div style="background-color:#458EB1;width:50%">
+                        &nbsp;</div>
+                    </td>
+                  </tr>
+                </tal:item>
+              </tal:block>
+            </tbody>
+          </table>           
+
+          <div class="my-actions">
+            <div class="row">
+              <div>
+                Questions to comment
+              </div>
+            </div>
+          </div>   
+          <table class="observationList listing" tal:condition="view/get_questions_to_comment">
+            <thead>
+              <tr>
+                <th>
+                  Observation
+                </th>
+                <th>
+                  CRF code
+                </th>   
+                <th style="width:20px">
+                  Inventory year
+                </th>                         
+                <th>
+                  Status
+                </th>
+                <th style="width:80px">
+                  Modification date
+                </th>
+                <th style="width:130px">
+                  Progress
+                </th>
+                <th>
+                  Step
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tal:block tal:repeat="item view/get_questions_to_comment">
+                <tal:item define="observation nocall:item;
+                                  toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                  <tr tal:attributes="data-href observation/absolute_url;
+                      class string:clickableRow ${observation/observation_css_class};">
+                    <td class="observationRefCell">
+                        <span class="ref-num"
+                          tal:content="observation/getId">
+                          UK-WAS-13-001
+                        </span>
+                        /
+                        <span class="obs-title"
+                          tal:content="observation/Title">
+                          Observation title
+                        </span>
+                    </td>
+                    <td tal:content="observation/crf_code_value">
+                      1A1 Energy industries
+                    </td>
+                    <td tal:content="observation/year" class="yearCell">
+                      2014
+                    </td>                                        
+                    <td tal:content="observation/overview_status|nothing">
+                      Pending
+                    </td>
+                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                        tal:attributes="data-sorter python:observation.modified()">
+                      20 Jun 2014, 11:35 AM
+                    </td>
+                    <td>
+                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                      <span tal:content="observation/wf_location">Review Expert</span><br/>
+                      <span class="eea-icon eea-icon-lg"
+                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
+                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
+                    </td>
+                    <td>
+                      <div style="background-color:#A8DFFA;width:50%">
+                        &nbsp;
+                      </div>
+                      <div style="background-color:#458EB1;width:50%">
+                        &nbsp;</div>
+                    </td>
+                  </tr>
+                </tal:item>
+              </tal:block>
+            </tbody>
+          </table> 
+
+          <div class="my-actions">
+            <div class="row">
+              <div>
+                Conclusions to comment
+              </div>
+            </div>
+          </div>   
+          <table class="observationList listing" tal:condition="view/get_conclusions_to_comment">
+            <thead>
+              <tr>
+                <th>
+                  Observation
+                </th>
+                <th>
+                  CRF code
+                </th>   
+                <th style="width:20px">
+                  Inventory year
+                </th>                         
+                <th>
+                  Status
+                </th>
+                <th style="width:80px">
+                  Modification date
+                </th>
+                <th style="width:130px">
+                  Progress
+                </th>
+                <th>
+                  Step
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tal:block tal:repeat="item view/get_conclusions_to_comment">
+                <tal:item define="observation nocall:item;
+                                  toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                  <tr tal:attributes="data-href observation/absolute_url;
+                      class string:clickableRow ${observation/observation_css_class};">
+                    <td class="observationRefCell">
+                        <span class="ref-num"
+                          tal:content="observation/getId">
+                          UK-WAS-13-001
+                        </span>
+                        /
+                        <span class="obs-title"
+                          tal:content="observation/Title">
+                          Observation title
+                        </span>
+                    </td>
+                    <td tal:content="observation/crf_code_value">
+                      1A1 Energy industries
+                    </td>
+                    <td tal:content="observation/year" class="yearCell">
+                      2014
+                    </td>                                        
+                    <td tal:content="observation/overview_status|nothing">
+                      Pending
+                    </td>
+                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                        tal:attributes="data-sorter python:observation.modified()">
+                      20 Jun 2014, 11:35 AM
+                    </td>
+                    <td>
+                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                      <span tal:content="observation/wf_location">Review Expert</span><br/>
+                      <span class="eea-icon eea-icon-lg"
+                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
+                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
+                    </td>
+                    <td>
+                      <div style="background-color:#A8DFFA;width:50%">
+                        &nbsp;
+                      </div>
+                      <div style="background-color:#458EB1;width:50%">
+                        &nbsp;</div>
+                    </td>
+                  </tr>
+                </tal:item>
+              </tal:block>
+            </tbody>
+          </table> 
+          <div>
+            <div class="row collapsiblePanelTitle" data-panel="my-teams-actions">
+              <div>
+                My team's actions
+                <span class="eea-icon eea-icon-left"></span>
+              </div>
+            </div>
+          </div>
+          <div class="my-teams-actions">
+            <div class="row">
+              <div>
+                Questions with comments from reviewers
+              </div>
+            </div>
+          </div>  
+          <table class="observationList listing" tal:condition="view/get_questions_with_comments_from_reviewers">
+            <thead>
+              <tr>
+                <th>
+                  Observation
+                </th>
+                <th>
+                  CRF code
+                </th>   
+                <th style="width:20px">
+                  Inventory year
+                </th>                         
+                <th>
+                  Status
+                </th>
+                <th style="width:80px">
+                  Modification date
+                </th>
+                <th style="width:130px">
+                  Progress
+                </th>
+                <th>
+                  Step
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tal:block tal:repeat="item view/get_questions_with_comments_from_reviewers">
+                <tal:item define="observation nocall:item;
+                                  toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                  <tr tal:attributes="data-href observation/absolute_url;
+                      class string:clickableRow ${observation/observation_css_class};">
+                    <td class="observationRefCell">
+                        <span class="ref-num"
+                          tal:content="observation/getId">
+                          UK-WAS-13-001
+                        </span>
+                        /
+                        <span class="obs-title"
+                          tal:content="observation/Title">
+                          Observation title
+                        </span>
+                    </td>
+                    <td tal:content="observation/crf_code_value">
+                      1A1 Energy industries
+                    </td>
+                    <td tal:content="observation/year" class="yearCell">
+                      2014
+                    </td>                                        
+                    <td tal:content="observation/overview_status|nothing">
+                      Pending
+                    </td>
+                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                        tal:attributes="data-sorter python:observation.modified()">
+                      20 Jun 2014, 11:35 AM
+                    </td>
+                    <td>
+                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                      <span tal:content="observation/wf_location">Review Expert</span><br/>
+                      <span class="eea-icon eea-icon-lg"
+                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
+                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
+                    </td>
+                    <td>
+                      <div style="background-color:#A8DFFA;width:50%">
+                        &nbsp;
+                      </div>
+                      <div style="background-color:#458EB1;width:50%">
+                        &nbsp;</div>
+                    </td>
+                  </tr>
+                </tal:item>
+              </tal:block>
+            </tbody>
+          </table> 
+          <div class="my-teams-actions">
+            <div class="row">
+              <div>
+                Answers from MS
+              </div>
+            </div>
+          </div>  
+          <table class="observationList listing" tal:condition="view/get_answers_from_ms">
+            <thead>
+              <tr>
+                <th>
+                  Observation
+                </th>
+                <th>
+                  CRF code
+                </th>   
+                <th style="width:20px">
+                  Inventory year
+                </th>                         
+                <th>
+                  Status
+                </th>
+                <th style="width:80px">
+                  Modification date
+                </th>
+                <th style="width:130px">
+                  Progress
+                </th>
+                <th>
+                  Step
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tal:block tal:repeat="item view/get_answers_from_ms">
+                <tal:item define="observation nocall:item;
+                                  toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                  <tr tal:attributes="data-href observation/absolute_url;
+                      class string:clickableRow ${observation/observation_css_class};">
+                    <td class="observationRefCell">
+                        <span class="ref-num"
+                          tal:content="observation/getId">
+                          UK-WAS-13-001
+                        </span>
+                        /
+                        <span class="obs-title"
+                          tal:content="observation/Title">
+                          Observation title
+                        </span>
+                    </td>
+                    <td tal:content="observation/crf_code_value">
+                      1A1 Energy industries
+                    </td>
+                    <td tal:content="observation/year" class="yearCell">
+                      2014
+                    </td>                                        
+                    <td tal:content="observation/overview_status|nothing">
+                      Pending
+                    </td>
+                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                        tal:attributes="data-sorter python:observation.modified()">
+                      20 Jun 2014, 11:35 AM
+                    </td>
+                    <td>
+                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                      <span tal:content="observation/wf_location">Review Expert</span><br/>
+                      <span class="eea-icon eea-icon-lg"
+                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
+                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
+                    </td>
+                    <td>
+                      <div style="background-color:#A8DFFA;width:50%">
+                        &nbsp;
+                      </div>
+                      <div style="background-color:#458EB1;width:50%">
+                        &nbsp;</div>
+                    </td>
+                  </tr>
+                </tal:item>
+              </tal:block>
+            </tbody>
+          </table>   
+          <div>
+            <div class="row collapsiblePanelTitle" data-panel="my-ms-actions">
+              <div>
+                My MS' actions
+                <span class="eea-icon eea-icon-left"></span>
+              </div>
+            </div>
+          </div> 
+          <div class="my-ms-actions">
+            <div class="row">
+              <div>
+                Unanswered questions
+              </div>
+            </div>
+          </div>  
+          <table class="observationList listing" tal:condition="view/get_unanswered_questions">
+            <thead>
+              <tr>
+                <th>
+                  Observation
+                </th>
+                <th>
+                  CRF code
+                </th>   
+                <th style="width:20px">
+                  Inventory year
+                </th>                         
+                <th>
+                  Status
+                </th>
+                <th style="width:80px">
+                  Modification date
+                </th>
+                <th style="width:130px">
+                  Progress
+                </th>
+                <th>
+                  Step
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tal:block tal:repeat="item view/get_unanswered_questions">
+                <tal:item define="observation nocall:item;
+                                  toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
+                  <tr tal:attributes="data-href observation/absolute_url;
+                      class string:clickableRow ${observation/observation_css_class};">
+                    <td class="observationRefCell">
+                        <span class="ref-num"
+                          tal:content="observation/getId">
+                          UK-WAS-13-001
+                        </span>
+                        /
+                        <span class="obs-title"
+                          tal:content="observation/Title">
+                          Observation title
+                        </span>
+                    </td>
+                    <td tal:content="observation/crf_code_value">
+                      1A1 Energy industries
+                    </td>
+                    <td tal:content="observation/year" class="yearCell">
+                      2014
+                    </td>                                        
+                    <td tal:content="observation/overview_status|nothing">
+                      Pending
+                    </td>
+                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                        tal:attributes="data-sorter python:observation.modified()">
+                      20 Jun 2014, 11:35 AM
+                    </td>
+                    <td>
+                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
+                      <span tal:content="observation/wf_location">Review Expert</span><br/>
+                      <span class="eea-icon eea-icon-lg"
+                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
+                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
+                    </td>
+                    <td>
+                      <div style="background-color:#A8DFFA;width:50%">
+                        &nbsp;
+                      </div>
+                      <div style="background-color:#458EB1;width:50%">
+                        &nbsp;</div>
+                    </td>
+                  </tr>
+                </tal:item>
+              </tal:block>
+            </tbody>
+          </table>                                          
+        </tal:block>
       </div>
       <div class="actions" tal:condition="python:view.can_add_observation()">
         <a href="./++add++Observation"
