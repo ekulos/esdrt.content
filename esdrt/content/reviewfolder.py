@@ -561,6 +561,104 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items 
 
+
+    """
+        MS Coordinator
+    """
+    def get_questions_to_be_answered(self):
+        """
+         Role: MS Coordinator
+         Questions from the SE/RE to be answered
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending' or \
+                                obj.observation_question_status() == 'phase2-pending' or \
+                                obj.observation_question_status() == 'phase1-recalled-msa' or \
+                                obj.observation_question_status() == 'phase2-recalled-msa'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+    def get_questions_with_comments_received_from_mse(self):
+        """
+         Role: MS Coordinator
+         Comments received from MS Experts
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
+                                obj.observation_question_status() == 'phase2-pending-answer'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items  
+    def get_answers_requiring_comments_from_mse(self):
+        """
+         Role: MS Coordinator
+         Answers requiring comments/discussion from MS experts
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
+                                obj.observation_question_status() == 'phase2-pending-answer'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items    
+    def get_answers_sent_to_se_re(self):
+        """
+         Role: MS Coordinator
+         Answers sent to SE/RE
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-answered' or \
+                                obj.observation_question_status() == 'phase2-answered'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items                      
     def can_add_observation(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Observation', self)
@@ -604,17 +702,7 @@ class InboxReviewFolderView(grok.View):
         return ("extranet-esd-ghginv-qualityexpert" in user.getGroups() or "extranet-esd-esdreview-leadreview" in user.getGroups())
 
     @memoize
-    def is_lead_reviewer(self):
+    def is_member_state_coordinator(self):
         user = api.user.get_current()
-        return "LeadReviewer" in user.getRoles()
-
-    @memoize
-    def is_quality_expert(self):
-        user = api.user.get_current()
-        return "QualityExpert" in user.getRoles()
-
-    @memoize
-    def is_member_state_authority(self):
-        user = api.user.get_current()
-        return "MSAuthority" in user.getRoles()
+        return "extranet-esd-countries-msa" in user.getGroups()
 
