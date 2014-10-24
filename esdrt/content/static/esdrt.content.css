@@ -251,7 +251,10 @@
 }
 .observationList tr.psiBackground td,
 .observationList tr.ptcBackground td{
-	background-color: #ffa500 !important;
+	background-color: #F6D18B !important;
+}
+.observationList tr.technicalCorrectionBackground td{
+	background-color: #FFA500 !important;
 }
 .observationRefCell{
 	color: #427597;
