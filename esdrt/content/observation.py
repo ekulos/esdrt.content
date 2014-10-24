@@ -679,7 +679,7 @@ class Observation(dexterity.Container):
             return question
 
     def observation_question_status(self):
-        if self.get_status() != 'phase1-pending' or self.get_status() != 'phase2-pending':
+        if self.get_status() != 'phase1-pending' and self.get_status() != 'phase2-pending':
             return self.get_status()
         else:
             questions = self.values()
@@ -688,7 +688,10 @@ class Observation(dexterity.Container):
                 state = api.content.get_state(question)
                 return state
             else:
-                return "phase1-draft"
+                if self.get_status().startswith('phase1'):
+                    return "observation-phase1-draft"
+                else:
+                    return "observation-phase2-draft"
     def observation_css_class(self):
         if self.get_status().startswith('phase1'):
             if 'psi' in self.highlight:

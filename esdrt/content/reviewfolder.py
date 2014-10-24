@@ -173,8 +173,8 @@ class InboxReviewFolderView(grok.View):
                         obj = item.getObject()
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-draft' or \
-                                obj.observation_question_status() == 'phase2-draft'):
+                                if (obj.observation_question_status() == 'observation-phase1-draft' or \
+                                obj.observation_question_status() == 'observation-phase2-draft'):
                                     items.append(obj)
                     except:
                         pass
