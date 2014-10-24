@@ -568,7 +568,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Quality expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-pending' and item['action'] == 'phase1-approve-question':
-                    item['state'] = 'Question approved and sent to MSA'
+                    item['state'] = 'Question approved and sent to MSC'
                     item['role'] = "Quality expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-recalled-lr':
@@ -625,7 +625,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
-                    item['state'] = 'Question approved and sent to MSA'
+                    item['state'] = 'Question approved and sent to MSC'
                     item['role'] = "Lead reviewer"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-recalled-lr':
