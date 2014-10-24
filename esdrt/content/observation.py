@@ -688,7 +688,7 @@ class Observation(dexterity.Container):
                 state = api.content.get_state(question)
                 return state
             else:
-                return ""
+                return "phase1-draft"
     def observation_css_class(self):
         if self.get_status().startswith('phase1'):
             if 'psi' in self.highlight:
@@ -696,6 +696,14 @@ class Observation(dexterity.Container):
         else:
             if 'ptc' in self.highlight:
                 return 'ptcBackground' 
+    def observation_finalisation_reason(self):
+        status = self.get_status()
+        if status == 'phase1-closed':
+            conclusion = get_conclusion()
+            return conclusion.closing_reason
+        elif status == 'phase2-closed':
+            conclusion = get_conclusion_phase2()
+            return conclusion.closing_reason
 
 
 # View class
