@@ -29,6 +29,34 @@
   <indexed_attr value="GHG_Source_Sectors"/>
  </index>
 
+ <index name="highlight" meta_type="KeywordIndex">
+  <indexed_attr value="get_highlight"/>
+ </index>
+
+ <index name="year" meta_type="FieldIndex">
+    <indexed_attr value="year"/>
+ </index>
+
+ <index name="review_year" meta_type="FieldIndex">
+    <indexed_attr value="review_year"/>
+ </index>
+
+ <index name="last_question_reply_number" meta_type="FieldIndex">
+    <indexed_attr value="last_question_reply_number" />
+ </index>
+
+ <index name="last_answer_reply_number" meta_type="FieldIndex">
+    <indexed_attr value="last_answer_reply_number" />
+ </index>
+
+ <index name="conclusion1_reply_number" meta_type="FieldIndex">
+    <indexed_attr value="conclusion1_reply_number" />
+ </index>
+
+ <index name="conclusion2_reply_number" meta_type="FieldIndex">
+    <indexed_attr value="conclusion2_reply_number" />
+ </index>
+
 
  <column value="observation_status" />
  <column value="country" />

@@ -43,5 +43,9 @@
   <adapter name="GHG_Source_Category" factory=".indexers.observation_ghg_source_category" />
   <adapter name="GHG_Source_Sectors" factory=".indexers.observation_ghg_source_sectors" />
   <adapter name="Status_Flag" factory=".indexers.observation_status_flag" />
+  <adapter name="last_question_reply_number" factory=".indexers.last_question_reply_number" />
+  <adapter name="last_answer_reply_number" factory=".indexers.last_answer_reply_number" />
+  <adapter name="conclusion1_reply_number" factory=".indexers.conclusion1_reply_number" />
+  <adapter name="conclusion2_reply_number" factory=".indexers.conclusion2_reply_number" />
 
 </configure>
