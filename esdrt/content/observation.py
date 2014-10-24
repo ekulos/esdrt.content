@@ -364,7 +364,7 @@ class Observation(dexterity.Container):
                     'phase1-pending-answer-drafting', 'phase1-recalled-msa',
                     'phase2-pending', 'phase2-answered',
                     'phase2-pending-answer-drafting', 'phase2-recalled-msa']:
-                    return 'Member state authority'
+                    return 'Member state coordinator'
                 elif state in ['phase1-pending-answer', 'phase2-pending-answer']:
                     return 'Member state expert'
             else:
@@ -576,19 +576,19 @@ class Observation(dexterity.Container):
                     item['role'] = "Quality expert"
                 elif item['review_state'] == 'phase1-answered':
                     item['state'] = 'Answer sent'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-expert-comments':
                     item['state'] = 'Member state expert comments requested'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-pending-answer-validation':
                     item['state'] = 'Member state expert comments closed'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-recalled-msa':
                     item['state'] = 'Answer recalled'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['action'] == 'phase1-validate-answer-msa':
                     item['state'] = 'Sector expert'
@@ -633,19 +633,19 @@ class Observation(dexterity.Container):
                     item['role'] = "Lead reviewer"
                 elif item['review_state'] == 'phase2-answered':
                     item['state'] = 'Answer sent'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-expert-comments':
                     item['state'] = 'Member state expert comments requested'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-pending-answer-validation':
                     item['state'] = 'Member state expert comments closed'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-recalled-msa':
                     item['state'] = 'Answer recalled'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['action'] == 'phase2-validate-answer-msa':
                     item['state'] = 'Review expert'
@@ -961,7 +961,7 @@ class ObservationView(grok.View):
             if question.portal_type == 'Comment':
                 return ' - '.join([country, sector])
             elif question.portal_type == 'CommentAnswer':
-                return ' - '.join([country, 'Authority'])
+                return ' - '.join([country, 'Coordinator'])
 
         if userid:
             user = api.user.get(username=userid)
