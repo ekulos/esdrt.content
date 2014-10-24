@@ -6,6 +6,8 @@ from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
+from zope import schema
+from esdrt.content import MessageFactory as _
 
 
 # Interface class; used to define content-type schema.
@@ -13,7 +15,10 @@ class IReviewFolder(form.Schema, IImageScaleTraversable):
     """
     Folder to have all observations together
     """
-
+    year = schema.Int(
+        title=_(u'Year'),
+        required=True,
+        )
 
 # Custom content-type class; objects created for this content type will
 # be instances of this class. Use this class to add content-type specific
@@ -43,9 +48,9 @@ class ReviewFolderView(grok.View):
     @memoize
     def get_questions(self):
         country = self.request.form.get('country', '')
-        sector = self.request.form.get('sector', '')
+        reviewYearFilter = self.request.form.get('reviewYearFilter', '')
+        inventoryYearFilter = self.request.form.get('inventoryYearFilter', '')
         status = self.request.form.get('status', '')
-        year = self.request.form.get('year', '')
 
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
@@ -57,8 +62,6 @@ class ReviewFolderView(grok.View):
         }
         if (country != ""):
             query['Country'] = country;
-        if (sector != ""):
-            query['GHG_Source_Sectors'] = sector;
         if (status != ""):
             if status == "draft":
                 query['review_state'] = "draft";
@@ -68,6 +71,10 @@ class ReviewFolderView(grok.View):
                 query['review_state'] = ['conclusions', 'conclusion-discussion'];
             else:
                 query['review_state'] = ['pending', 'close-requested'];
+        if (reviewYearFilter != ""):
+            query['reviewYear'] = reviewYearFilter
+        if (inventoryYearFilter != ""):
+            query['inventoryYear'] = inventoryYearFilter        
             
 
             
@@ -113,15 +120,15 @@ class ReviewFolderView(grok.View):
 
         return countries        
 
-    def get_sectors(self):
+    def get_highlights(self):
         vtool = getToolByName(self, 'portal_vocabularies')
-        voc = vtool.getVocabularyByName('ghg_source_sectors')
-        sectors = []
+        voc = vtool.getVocabularyByName('highlight')
+        highlights = []
         voc_terms = voc.getDisplayList(self).items()
         for term in voc_terms:
-            sectors.append((term[0], term[1]))
+            highlights.append((term[0], term[1]))
 
-        return sectors          
+        return highlights          
 
 
 class InboxReviewFolderView(grok.View):
@@ -129,22 +136,35 @@ class InboxReviewFolderView(grok.View):
     grok.require('zope2.View')
     grok.name('inboxview')
 
-    @memoize
-    def get_questions(self):
+    def update(self):
+        self.observations = self.get_all_observations()
+
+    def get_all_observations(self):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         query = {
             'path':path,
-            'portal_type':['Observation', 'Question'],
+            'portal_type':'Observation',
             'sort_on':'modified',
             'sort_order':'reverse',
         }
             
         values = catalog.unrestrictedSearchResults(query)
-        items = []
+        return values
+
+    """
+        Sector expert / Review expert
+    """
+    @memoize
+    def get_draft_observations(self):
+        """
+         Role: Sector expert / Review expert
+         without actions for LR, counterpart or MS
+        """
         user = api.user.get_current()
         mtool = api.portal.get_tool('portal_membership')
-        for item in values:
+        items = []
+        for item in self.observations:
             if 'Manager' in user.getRoles():
                 items.append(item.getObject())
             else:
@@ -153,226 +173,48 @@ class InboxReviewFolderView(grok.View):
                         obj = item.getObject()
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                items.append(obj)
+                                if (obj.observation_question_status() == 'observation-phase1-draft' or \
+                                obj.observation_question_status() == 'observation-phase2-draft'):
+                                    items.append(obj)
                     except:
                         pass
-
-        return items
+        return items          
 
     @memoize
-    def get_questions_reported_by_me(self):
-        if self.is_review_expert():
-            catalog = api.portal.get_tool('portal_catalog')
-            path = '/'.join(self.context.getPhysicalPath())
-            query = {
-                'path':path,
-                'portal_type':['Observation', 'Question'],
-                'sort_on':'modified',
-                'sort_order':'reverse',
-            }
-                
-            values = catalog.unrestrictedSearchResults(query)
-            items = []
-            user = api.user.get_current()
-            mtool = api.portal.get_tool('portal_membership')
-            for item in values:
-                if 'Manager' in user.getRoles():
-                    items.append(item.getObject())
-                else:
-                    with api.env.adopt_roles(['Manager']):
-                        try:
-                            obj = item.getObject()
-                            owner = obj.getOwner()
-                            with api.env.adopt_user(user=user):
-                                if mtool.checkPermission('View', obj):
-                                    if user.id == owner._id:
-                                        items.append(obj)
-                        except:
-                            pass
-
-            return items
-
-    def get_questions_as_counterpart(self):
-        if self.is_review_expert() or self.is_lead_reviewer() or self.is_quality_expert():
-            catalog = api.portal.get_tool('portal_catalog')
-            path = '/'.join(self.context.getPhysicalPath())
-            query = {
-                'path':path,
-                'portal_type':['Observation', 'Question'],
-                'sort_on':'modified',
-                'sort_order':'reverse',
-            }
-                
-            values = catalog.unrestrictedSearchResults(query)
-            items = []
-            user = api.user.get_current()
-            mtool = api.portal.get_tool('portal_membership')
-            for item in values:
-                if 'Manager' in user.getRoles():
-                    items.append(item.getObject())
-                else:
-                    with api.env.adopt_roles(['Manager']):
-                        try:
-                            obj = item.getObject()
-                            owner = obj.getOwner()
-                            roles = api.user.get_roles(username=user.id, obj=obj)
-                            with api.env.adopt_user(user=user):
-                                if mtool.checkPermission('View', obj):
-                                    if (obj.observation_question_status() == "phase1-counterpart-comments" or obj.observation_question_status() == "phase2-counterpart-comments") \
-                                    and (user.id == owner._id or "CounterPart" in roles):
-                                        items.append(obj)
-                        except:
-                            pass
-
-            return items    
-
-    def get_questions_replied_by_msa(self):
-        if self.is_review_expert():
-            catalog = api.portal.get_tool('portal_catalog')
-            path = '/'.join(self.context.getPhysicalPath())
-            query = {
-                'path':path,
-                'portal_type':['Observation', 'Question'],
-                'sort_on':'modified',
-                'sort_order':'reverse',
-            }
-                
-            values = catalog.unrestrictedSearchResults(query)
-            items = []
-            user = api.user.get_current()
-            mtool = api.portal.get_tool('portal_membership')
-            for item in values:
-                if 'Manager' in user.getRoles():
-                    items.append(item.getObject())
-                else:
-                    with api.env.adopt_roles(['Manager']):
-                        try:
-                            obj = item.getObject()
-                            owner = obj.getOwner()
-                            with api.env.adopt_user(user=user):
-                                if mtool.checkPermission('View', obj):
-                                    if (obj.observation_question_status() == 'phase1-answered' or \
-                                        obj.observation_question_status() == 'phase2-answered') \
-                                     and user.id == owner._id:
-                                        items.append(obj)
-                        except:
-                            pass
-
-            return items            
-
-    def get_questions_for_approval(self):
-        if self.is_lead_reviewer() or self.is_quality_expert():
-            catalog = api.portal.get_tool('portal_catalog')
-            path = '/'.join(self.context.getPhysicalPath())
-            query = {
-                'path':path,
-                'portal_type':['Observation', 'Question'],
-                'sort_on':'modified',
-                'sort_order':'reverse',
-            }
-                
-            values = catalog.unrestrictedSearchResults(query)
-            items = []
-            user = api.user.get_current()
-            mtool = api.portal.get_tool('portal_membership')
-            for item in values:
-                if 'Manager' in user.getRoles():
-                    items.append(item.getObject())
-                else:
-                    with api.env.adopt_roles(['Manager']):
-                        try:
-                            obj = item.getObject()
-                            with api.env.adopt_user(user=user):
-                                if mtool.checkPermission('View', obj):
-                                    if (obj.observation_question_status() == 'phase1-drafted' or obj.observation_question_status() == 'phase2-drafted'):
-                                        items.append(obj)
-                        except:
-                            pass
-
-            return items 
-
-    def get_questions_finalisation_requested(self):
-        if self.is_lead_reviewer() or self.is_quality_expert():
-            catalog = api.portal.get_tool('portal_catalog')
-            path = '/'.join(self.context.getPhysicalPath())
-            query = {
-                'path':path,
-                'portal_type':['Observation', 'Question'],
-                'sort_on':'modified',
-                'sort_order':'reverse',
-            }
-                
-            values = catalog.unrestrictedSearchResults(query)
-            items = []
-            user = api.user.get_current()
-            mtool = api.portal.get_tool('portal_membership')
-            for item in values:
-                if 'Manager' in user.getRoles():
-                    items.append(item.getObject())
-                else:
-                    with api.env.adopt_roles(['Manager']):
-                        try:
-                            obj = item.getObject()
-                            with api.env.adopt_user(user=user):
-                                if mtool.checkPermission('View', obj):
-                                    if (obj.observation_question_status() == 'phase1-close-requested' or obj.observation_question_status() == 'phase2-close-requested'):
-                                        items.append(obj)
-                        except:
-                            pass
-
-            return items 
-
-    def get_questions_answer_pending(self):
-        if self.is_member_state_authority():
-            catalog = api.portal.get_tool('portal_catalog')
-            path = '/'.join(self.context.getPhysicalPath())
-            query = {
-                'path':path,
-                'portal_type':['Observation', 'Question'],
-                'sort_on':'modified',
-                'sort_order':'reverse',
-            }
-                
-            values = catalog.unrestrictedSearchResults(query)
-            items = []
-            user = api.user.get_current()
-            mtool = api.portal.get_tool('portal_membership')
-            for item in values:
-                if 'Manager' in user.getRoles():
-                    items.append(item.getObject())
-                else:
-                    with api.env.adopt_roles(['Manager']):
-                        try:
-                            obj = item.getObject()
-                            with api.env.adopt_user(user=user):
-                                if mtool.checkPermission('View', obj):
-                                    if (obj.observation_question_status() == 'phase1-pending' or obj.observation_question_status() == 'phase2-pending'):
-                                        items.append(obj)
-                        except:
-                            pass
-
-            return items 
-
-    def get_questions_mse_comments_requested(self):
-        country = self.request.form.get('country', '')
-        sector = self.request.form.get('sector', '')
-        status = self.request.form.get('status', '')
-        year = self.request.form.get('year', '')
-
-        catalog = api.portal.get_tool('portal_catalog')
-        path = '/'.join(self.context.getPhysicalPath())
-        query = {
-            'path':path,
-            'portal_type':['Observation', 'Question'],
-            'sort_on':'modified',
-            'sort_order':'reverse',
-        }
-            
-        values = catalog.unrestrictedSearchResults(query)
-        items = []
+    def get_draft_questions(self):
+        """
+         Role: Sector expert / Review expert
+         with comments from counterpart of LR
+        """
         user = api.user.get_current()
         mtool = api.portal.get_tool('portal_membership')
-        for item in values:
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-draft' or \
+                                obj.observation_question_status() == 'phase2-draft'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    @memoize
+    def get_counterpart_questions_to_comment(self):
+        """
+         Role: Sector expert / Review expert
+         needing comment from me
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
             if 'Manager' in user.getRoles():
                 items.append(item.getObject())
             else:
@@ -382,15 +224,610 @@ class InboxReviewFolderView(grok.View):
                         roles = api.user.get_roles(username=user.id, obj=obj)
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-pending-answer' \
-                                    or obj.observation_question_status() == 'phase2-pending-answer') \
-                                 and "MSExpert" in roles:
+                                if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                                "CounterPart" in roles:
                                     items.append(obj)
                     except:
                         pass
+        return items 
 
-        return items    
+    @memoize
+    def get_counterpart_conclusion_to_comment(self):
+        """
+         Role: Sector expert / Review expert
+         needing comment from me
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
+                                obj.observation_question_status() == 'phase2-conclusion-discussion') and \
+                                "CounterPart" in roles:
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    @memoize
+    def get_ms_answers_to_review(self):
+        """
+         Role: Sector expert / Review expert
+         that need review
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-answered' or \
+                                obj.observation_question_status() == 'phase2-answered'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items         
+
+    @memoize
+    def get_unanswered_questions(self):
+        """
+         Role: Sector expert / Review expert
+         my questions sent to LR and MS and waiting for reply
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending' or \
+                                obj.observation_question_status() == 'phase2-pending' or \
+                                obj.observation_question_status() == 'phase1-recalled-msa' or \
+                                obj.observation_question_status() == 'phase2-recalled-msa'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
  
+    @memoize
+    def get_waiting_for_comment_from_counterparts_for_question(self):
+        """
+         Role: Sector expert / Review expert
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                                "CounterPart" not in roles:
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    @memoize
+    def get_waiting_for_comment_from_counterparts_for_conclusion(self):
+        """
+         Role: Sector expert / Review expert
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
+                                obj.observation_question_status() == 'phase2-conclusion-discussion') and \
+                                "CounterPart" not in roles:
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    @memoize    
+    def get_observation_for_finalisation(self):
+        """
+         Role: Sector expert / Review expert
+         waiting approval from LR
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-close-requested' or \
+                                obj.observation_question_status() == 'phase2-close-requested'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    """
+        Lead Reviewer / Quality expert
+    """
+    @memoize
+    def get_questions_to_be_sent(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Questions waiting for me to send to the MS
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-drafted' or \
+                                obj.observation_question_status() == 'phase2-drafted' or \
+                                obj.observation_question_status() == 'phase1-recalled-lr' or \
+                                obj.observation_question_status() == 'phase2-recalled-lr'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    @memoize
+    def get_observations_to_finalise(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Observations waiting for me to confirm finalisation
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-close-requested' or \
+                                obj.observation_question_status() == 'phase2-close-requested'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    @memoize
+    def get_questions_to_comment(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Questions waiting for my comments
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                                "CounterPart" in roles:
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    @memoize
+    def get_conclusions_to_comment(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Conclusions waiting for my comments
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
+                                obj.observation_question_status() == 'phase2-conclusion-discussion') and \
+                                "CounterPart" in roles:
+                                    items.append(obj)
+                    except:
+                        pass
+        return items
+
+    @memoize        
+    def get_questions_with_comments_from_reviewers(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Questions waiting for comments by counterpart
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                                "CounterPart" not in roles:
+                                    items.append(obj)
+                    except:
+                        pass
+        return items
+
+    @memoize        
+    def get_answers_from_ms(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         that need review by Sector Expert/Review expert
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-answered' or \
+                                obj.observation_question_status() == 'phase2-answered'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items    
+
+    @memoize
+    def get_unanswered_questions_lr_qe(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         questions waiting for comments from MS
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending' or \
+                                obj.observation_question_status() == 'phase2-pending' or \
+                                obj.observation_question_status() == 'phase1-recalled-msa' or \
+                                obj.observation_question_status() == 'phase2-recalled-msa'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+
+    """
+        MS Coordinator
+    """
+    @memoize    
+    def get_questions_to_be_answered(self):
+        """
+         Role: MS Coordinator
+         Questions from the SE/RE to be answered
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending' or \
+                                obj.observation_question_status() == 'phase2-pending' or \
+                                obj.observation_question_status() == 'phase1-recalled-msa' or \
+                                obj.observation_question_status() == 'phase2-recalled-msa'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+
+    @memoize        
+    def get_questions_with_comments_received_from_mse(self):
+        """
+         Role: MS Coordinator
+         Comments received from MS Experts
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
+                                obj.observation_question_status() == 'phase2-pending-answer'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items  
+
+    @memoize        
+    def get_answers_requiring_comments_from_mse(self):
+        """
+         Role: MS Coordinator
+         Answers requiring comments/discussion from MS experts
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
+                                obj.observation_question_status() == 'phase2-pending-answer'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items   
+
+    @memoize         
+    def get_answers_sent_to_se_re(self):
+        """
+         Role: MS Coordinator
+         Answers sent to SE/RE
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-answered' or \
+                                obj.observation_question_status() == 'phase2-answered'):
+                                    items.append(obj)
+                    except:
+                        pass
+        return items  
+    """
+        Finalised observations
+    """
+    @memoize
+    def get_no_response_needed_observations(self):
+        """
+         Finalised with 'no response needed'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'no-response-needed':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+    @memoize
+    def get_resolved_observations(self):
+        """
+         Finalised with 'resolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'resolved':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items   
+    @memoize
+    def get_unresolved_observations(self):
+        """
+         Finalised with 'unresolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'unresolved':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items   
+    @memoize
+    def get_partly_resolved_observations(self):
+        """
+         Finalised with 'partly resolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'partly-resolved':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+    @memoize
+    def get_technical_correction_observations(self):
+        """
+         Finalised with 'partly resolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'technical-correction':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items    
+    @memoize
+    def get_revised_estimate_observations(self):
+        """
+         Finalised with 'partly resolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'revised-estimate':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items                                                          
     def can_add_observation(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Observation', self)
@@ -424,22 +861,21 @@ class InboxReviewFolderView(grok.View):
         return sectors      
 
     @memoize
-    def is_review_expert(self):
+    def is_sector_expert_or_review_expert(self):
         user = api.user.get_current()
-        return "ExpertReviewer" in user.getRoles()
+        return ("extranet-esd-ghginv-sr" in user.getGroups() or "extranet-esd-esdreview-reviewexp" in user.getGroups())
 
     @memoize
-    def is_lead_reviewer(self):
+    def is_lead_reviewer_or_quality_expert(self):
         user = api.user.get_current()
-        return "LeadReviewer" in user.getRoles()
+        return ("extranet-esd-ghginv-qualityexpert" in user.getGroups() or "extranet-esd-esdreview-leadreview" in user.getGroups())
 
     @memoize
-    def is_quality_expert(self):
+    def is_member_state_coordinator(self):
         user = api.user.get_current()
-        return "QualityExpert" in user.getRoles()
+        return "extranet-esd-countries-msa" in user.getGroups()
 
     @memoize
-    def is_member_state_authority(self):
+    def is_member_state_expert(self):
         user = api.user.get_current()
-        return "MSAuthority" in user.getRoles()
-
+        return "extranet-esd-countries-msexpert" in user.getGroups()

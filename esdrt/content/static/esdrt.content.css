@@ -249,7 +249,13 @@
 	background-color: white !important;
 	vertical-align: middle !important;
 }
-
+.observationList tr.psiBackground td,
+.observationList tr.ptcBackground td{
+	background-color: #F6D18B !important;
+}
+.observationList tr.technicalCorrectionBackground td{
+	background-color: #FFA500 !important;
+}
 .observationRefCell{
 	color: #427597;
 	font-weight: bold;
@@ -409,8 +415,8 @@
 #filters .row{
 	background-color: #F3F3F3;
 }
-#filters .row:first-child{
-	padding: 14px 0;
+#filters .row{
+	padding: 5px 0;
 }
 #observations{
 	background-color: #F3F3F3;

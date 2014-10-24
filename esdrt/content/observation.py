@@ -364,7 +364,7 @@ class Observation(dexterity.Container):
                     'phase1-pending-answer-drafting', 'phase1-recalled-msa',
                     'phase2-pending', 'phase2-answered',
                     'phase2-pending-answer-drafting', 'phase2-recalled-msa']:
-                    return 'Member state authority'
+                    return 'Member state coordinator'
                 elif state in ['phase1-pending-answer', 'phase2-pending-answer']:
                     return 'Member state expert'
             else:
@@ -420,6 +420,17 @@ class Observation(dexterity.Container):
         elif status in ['phase1-conclusions', 'phase1-conclusion-discussion',
                         'phase2-conclusions', 'phase2-conclusion-discussion']:
             return 'conclusion'
+        else:
+            return 'open'
+
+    def overview_status(self):
+        status = self.get_status()
+        if status == 'phase1-closed':
+            conclusion = get_conclusion()
+            return ' - '.join(['closed', conclusion.reason_value()])
+        elif status == 'phase2-closed':
+            conclusion = get_conclusion_phase2()
+            return ' - '.join(['closed', conclusion.reason_value()])
         else:
             return 'open'
 
@@ -557,7 +568,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Quality expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-pending' and item['action'] == 'phase1-approve-question':
-                    item['state'] = 'Question approved and sent to MSA'
+                    item['state'] = 'Question approved and sent to MSC'
                     item['role'] = "Quality expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-recalled-lr':
@@ -565,19 +576,19 @@ class Observation(dexterity.Container):
                     item['role'] = "Quality expert"
                 elif item['review_state'] == 'phase1-answered':
                     item['state'] = 'Answer sent'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-expert-comments':
                     item['state'] = 'Member state expert comments requested'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-pending-answer-validation':
                     item['state'] = 'Member state expert comments closed'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-recalled-msa':
                     item['state'] = 'Answer recalled'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['action'] == 'phase1-validate-answer-msa':
                     item['state'] = 'Sector expert'
@@ -614,7 +625,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
-                    item['state'] = 'Question approved and sent to MSA'
+                    item['state'] = 'Question approved and sent to MSC'
                     item['role'] = "Lead reviewer"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-recalled-lr':
@@ -622,19 +633,19 @@ class Observation(dexterity.Container):
                     item['role'] = "Lead reviewer"
                 elif item['review_state'] == 'phase2-answered':
                     item['state'] = 'Answer sent'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-expert-comments':
                     item['state'] = 'Member state expert comments requested'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-pending-answer-validation':
                     item['state'] = 'Member state expert comments closed'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-recalled-msa':
                     item['state'] = 'Answer recalled'
-                    item['role'] = "Member state authority"
+                    item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['action'] == 'phase2-validate-answer-msa':
                     item['state'] = 'Review expert'
@@ -668,7 +679,7 @@ class Observation(dexterity.Container):
             return question
 
     def observation_question_status(self):
-        if self.get_status() != 'pending':
+        if self.get_status() != 'phase1-pending' and self.get_status() != 'phase2-pending':
             return self.get_status()
         else:
             questions = self.values()
@@ -677,7 +688,27 @@ class Observation(dexterity.Container):
                 state = api.content.get_state(question)
                 return state
             else:
-                return ""
+                if self.get_status().startswith('phase1'):
+                    return "observation-phase1-draft"
+                else:
+                    return "observation-phase2-draft"
+    def observation_css_class(self):
+        if self.get_status().startswith('phase1'):
+            if 'psi' in self.highlight:
+                return "psiBackground"
+        else:
+            if 'ptc' in self.highlight:
+                return 'ptcBackground' 
+    def observation_finalisation_reason(self):
+        status = self.get_status()
+        if status == 'phase1-closed':
+            conclusion = get_conclusion()
+            return conclusion.closing_reason
+        elif status == 'phase2-closed':
+            conclusion = get_conclusion_phase2()
+            return conclusion.closing_reason
+
+
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
@@ -930,7 +961,7 @@ class ObservationView(grok.View):
             if question.portal_type == 'Comment':
                 return ' - '.join([country, sector])
             elif question.portal_type == 'CommentAnswer':
-                return ' - '.join([country, 'Authority'])
+                return ' - '.join([country, 'Coordinator'])
 
         if userid:
             user = api.user.get(username=userid)
