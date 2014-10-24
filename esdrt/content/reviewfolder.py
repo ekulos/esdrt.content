@@ -550,7 +550,7 @@ class InboxReviewFolderView(grok.View):
         return items    
 
     @memoize
-    def get_unanswered_questions(self):
+    def get_unanswered_questions_lr_qe(self):
         """
          Role: Lead Reviewer / Quality expert
          questions waiting for comments from MS
@@ -680,7 +680,154 @@ class InboxReviewFolderView(grok.View):
                                     items.append(obj)
                     except:
                         pass
-        return items                      
+        return items  
+    """
+        Finalised observations
+    """
+    @memoize
+    def get_no_response_needed_observations(self):
+        """
+         Finalised with 'no response needed'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'no-response-needed':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+    @memoize
+    def get_resolved_observations(self):
+        """
+         Finalised with 'resolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'resolved':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items   
+    @memoize
+    def get_unresolved_observations(self):
+        """
+         Finalised with 'unresolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'unresolved':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items   
+    @memoize
+    def get_partly_resolved_observations(self):
+        """
+         Finalised with 'partly resolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'partly-resolved':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items 
+    @memoize
+    def get_technical_correction_observations(self):
+        """
+         Finalised with 'partly resolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'technical-correction':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items    
+    @memoize
+    def get_revised_estimate_observations(self):
+        """
+         Finalised with 'partly resolved'
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-closed' or \
+                                obj.observation_question_status() == 'phase2-closed') and \
+                                obj.observation_finalisation_reason == 'revised-estimate':
+                                    items.append(obj)
+                    except:
+                        pass
+        return items                                                          
     def can_add_observation(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Observation', self)
