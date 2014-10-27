@@ -708,7 +708,19 @@ class Observation(dexterity.Container):
             conclusion = self.get_conclusion_phase2()
             return conclusion.closing_reason
 
+    def get_conclusion(self):
+        conclusions = [c for c in self.values() if c.portal_type == "Conclusion"]
+        mtool = api.portal.get_tool('portal_membership')
+        if conclusions and mtool.checkPermission('View', conclusions[0]):
+            return conclusions[0]
+        return None
 
+    def get_conclusion_phase2(self):
+        conclusions = [c for c in self.values() if c.portal_type == "ConclusionPhase2"]
+        mtool = api.portal.get_tool('portal_membership')
+        if conclusions and mtool.checkPermission('View', conclusions[0]):
+            return conclusions[0]
+        return None
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
