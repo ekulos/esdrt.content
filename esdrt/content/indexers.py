@@ -33,7 +33,7 @@ def observation_year(context):
 
 @indexer(IObservation)
 def observation_review_year(context):
-    return context.review_year
+    return str(context.review_year)
 
 @indexer(IObservation)
 def last_question_reply_number(context):

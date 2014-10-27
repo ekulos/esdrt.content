@@ -52,6 +52,7 @@ class ReviewFolderView(grok.View):
         inventoryYear = self.request.form.get('inventoryYear', '')
         status = self.request.form.get('status', '')
         highlights = self.request.form.get('highlights', '')
+        freeText = self.request.form.get('freeText', '')
 
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
@@ -78,8 +79,9 @@ class ReviewFolderView(grok.View):
             query['year'] = inventoryYear        
         if (highlights != ""):
             query['highlight'] = highlights.split(",")
-
-            
+        if (freeText != ""):
+            query['SearchableText'] = freeText
+   
 
         values = catalog.unrestrictedSearchResults(query)
         items = []
