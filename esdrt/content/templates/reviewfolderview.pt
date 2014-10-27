@@ -133,19 +133,35 @@
         <div class="row">
           <div class="cell position-0 width-3 esdLabel">Review year</div>
           <div class="cell position-3 width-3 esdLabel">
-            <input type="text" id="reviewYearFilter" 
-                tal:define="reviewYear python:'';
-                            reviewYear request/reviewYear | reviewYear"              
-              tal:attributes="value reviewYear"/>
+            <select id="reviewYearFilter">
+              <option></option>
+              <tal:block tal:repeat="item view/get_review_years">
+                <option
+                  tal:define="reviewYear python:'';
+                              reviewYear request/reviewYear | reviewYear"
+                  tal:attributes="value python:item;
+                                  selected python:item==reviewYear"
+                  tal:content="python:item"></option>
+              </tal:block>
+            </select>
+
+
           </div>          
         </div>
         <div class="row">
           <div class="cell position-0 width-3 esdLabel">Inventory year</div>
           <div class="cell position-3 width-4 esdLabel">
-            <input type="text" id="inventoryYearFilter" 
-                tal:define="inventoryYear python:'';
-                            inventoryYear request/inventoryYear | inventoryYear"              
-              tal:attributes="value inventoryYear"/>
+            <select id="inventoryYearFilter">
+              <tal:block tal:repeat="item view/get_inventory_years">
+                <option
+                  tal:define="inventoryYear python:'';
+                              inventoryYear request/inventoryYear | inventoryYear"
+                  tal:attributes="value python:item;
+                                  selected python:item==inventoryYear"
+                  tal:content="python:item"></option>
+              </tal:block>
+            </select>
+
           </div>          
         </div>
         <div class="row">

@@ -131,6 +131,15 @@ class ReviewFolderView(grok.View):
 
         return highlights          
 
+    def get_review_years(self):
+        catalog = api.portal.get_tool('portal_catalog')
+        review_years = catalog.uniqueValuesFor('review_year')
+        return review_years
+
+    def get_inventory_years(self):
+        catalog = api.portal.get_tool('portal_catalog')
+        inventory_years = catalog.uniqueValuesFor('year')
+        return inventory_years
 
 class InboxReviewFolderView(grok.View):
     grok.context(IReviewFolder)
