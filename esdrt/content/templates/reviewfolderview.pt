@@ -55,7 +55,21 @@
                 filter += "&";
               }            
               filter += "inventoryYear=" + $('#freeTextFilter').val();
-            }                                        
+            }  
+            if ($("input:checked").length > 0){
+              var len = $("input:checked").length;
+              var highlights = "";
+              for(i=0; i < len; i++){
+                highlights += $("input:checked")[i].value + ","
+              }
+              highlights = highlights.substring(0, highlights.length - 1)
+              if (filter == ""){
+                filter += "?";
+              }else{
+                filter += "&";
+              }   
+              filter += "highlights=" + highlights;            
+            }
             window.location.href = window.location.pathname + filter;
 
         })
@@ -104,11 +118,15 @@
           </div>
           <div class="cell position-9 width-4" style="position:absolute;z-index:2">
             <tal:block tal:repeat="item view/get_highlights">
-              <input type="checkbox"
-                tal:attributes="value python:item[0];
-                                id python:item[0]"/>
-              <label tal:attributes="for python:item[0];"
-                tal:content="python:item[1]"></label><br/>
+              <tal:block tal:define="highlights python:'';
+                                     highlights request/highlights | highlights">
+                <input type="checkbox"
+                  tal:attributes="value python:item[0];
+                                  checked python:highlights.find(item[0]) >= 0;
+                                  id python:item[0]"/>
+                <label tal:attributes="for python:item[0];"
+                  tal:content="python:item[1]"></label><br/>
+              </tal:block>
             </tal:block>
           </div>
         </div>

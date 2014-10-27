@@ -76,7 +76,8 @@ class ReviewFolderView(grok.View):
             query['review_year'] = reviewYear
         if (inventoryYear != ""):
             query['year'] = inventoryYear        
-
+        if (highlights != ""):
+            query['highlight'] = highlights.split(",")
 
             
 
