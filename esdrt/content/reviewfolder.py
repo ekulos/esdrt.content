@@ -48,9 +48,10 @@ class ReviewFolderView(grok.View):
     @memoize
     def get_questions(self):
         country = self.request.form.get('country', '')
-        reviewYearFilter = self.request.form.get('reviewYearFilter', '')
-        inventoryYearFilter = self.request.form.get('inventoryYearFilter', '')
+        reviewYear = self.request.form.get('reviewYear', '')
+        inventoryYear = self.request.form.get('inventoryYear', '')
         status = self.request.form.get('status', '')
+        highlights = self.request.form.get('highlights', '')
 
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
@@ -64,18 +65,18 @@ class ReviewFolderView(grok.View):
             query['Country'] = country;
         if (status != ""):
             if status == "draft":
-                query['review_state'] = "draft";
+                query['review_state'] = ['phase1-draft', 'phase2-draft'];
             elif status == "finished":
-                query['review_state'] = "closed";
+                query['review_state'] = ['phase1-closed', 'phase2-closed'];
             elif status == "conclusion":
-                query['review_state'] = ['conclusions', 'conclusion-discussion'];
+                query['review_state'] = ['phase1-conclusions', 'phase2-conclusions', 'phase1-conclusion-discussion', 'phase2-conclusion-discussion'];
             else:
-                query['review_state'] = ['pending', 'close-requested'];
-        if (reviewYearFilter != ""):
-            query['reviewYear'] = reviewYearFilter
-        if (inventoryYearFilter != ""):
-            query['inventoryYear'] = inventoryYearFilter        
-            
+                query['review_state'] = ['phase1-pending', 'phase2-pending', 'phase1-close-requested', 'phase2-close-requested'];
+        if (reviewYear != ""):
+            query['review_year'] = reviewYear
+        if (inventoryYear != ""):
+            query['year'] = inventoryYear        
+
 
             
 
@@ -682,6 +683,63 @@ class InboxReviewFolderView(grok.View):
                         pass
         return items  
     """
+        MS Expert
+    """   
+    @memoize        
+    def get_questions_with_comments_for_answer_needed_by_msc(self):
+        """
+         Role: MS Expert
+         Comments for answer needed by MS Coordinator
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
+                                obj.observation_question_status() == 'phase2-pending-answer') and \
+                                "CounterPart" in roles:
+                                    items.append(obj)
+                    except:
+                        pass
+        return items         
+    @memoize        
+    def get_observations_with_my_comments(self):
+        """
+         Role: MS Expert
+         Observation I have commented on
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
+                                obj.observation_question_status() == 'phase2-pending-answer' or \
+                                obj.observation_question_status() == 'phase1-answer-validation' or \
+                                obj.observation_question_status() == 'phase2-answer-validation') and \
+                                "CounterPart" in roles:
+                                    items.append(obj)
+                    except:
+                        pass
+        return items           
+    """
         Finalised observations
     """
     @memoize
@@ -703,7 +761,7 @@ class InboxReviewFolderView(grok.View):
                             if mtool.checkPermission('View', obj):
                                 if (obj.observation_question_status() == 'phase1-closed' or \
                                 obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason == 'no-response-needed':
+                                obj.observation_finalisation_reason() == 'no-response-needed':
                                     items.append(obj)
                     except:
                         pass
@@ -727,7 +785,7 @@ class InboxReviewFolderView(grok.View):
                             if mtool.checkPermission('View', obj):
                                 if (obj.observation_question_status() == 'phase1-closed' or \
                                 obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason == 'resolved':
+                                obj.observation_finalisation_reason() == 'resolved':
                                     items.append(obj)
                     except:
                         pass
@@ -751,7 +809,7 @@ class InboxReviewFolderView(grok.View):
                             if mtool.checkPermission('View', obj):
                                 if (obj.observation_question_status() == 'phase1-closed' or \
                                 obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason == 'unresolved':
+                                obj.observation_finalisation_reason() == 'unresolved':
                                     items.append(obj)
                     except:
                         pass
@@ -775,7 +833,7 @@ class InboxReviewFolderView(grok.View):
                             if mtool.checkPermission('View', obj):
                                 if (obj.observation_question_status() == 'phase1-closed' or \
                                 obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason == 'partly-resolved':
+                                obj.observation_finalisation_reason() == 'partly-resolved':
                                     items.append(obj)
                     except:
                         pass
@@ -799,7 +857,7 @@ class InboxReviewFolderView(grok.View):
                             if mtool.checkPermission('View', obj):
                                 if (obj.observation_question_status() == 'phase1-closed' or \
                                 obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason == 'technical-correction':
+                                obj.observation_finalisation_reason() == 'technical-correction':
                                     items.append(obj)
                     except:
                         pass
@@ -823,7 +881,7 @@ class InboxReviewFolderView(grok.View):
                             if mtool.checkPermission('View', obj):
                                 if (obj.observation_question_status() == 'phase1-closed' or \
                                 obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason == 'revised-estimate':
+                                obj.observation_finalisation_reason() == 'revised-estimate':
                                     items.append(obj)
                     except:
                         pass
