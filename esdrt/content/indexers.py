@@ -27,6 +27,13 @@ def observation_ghg_source_sectors(context):
 def observation_status_flag(context):
     return context.status_flag
 
+@indexer(IObservation)
+def observation_year(context):
+    return context.year
+
+@indexer(IObservation)
+def observation_review_year(context):
+    return context.review_year
 
 @indexer(IObservation)
 def last_question_reply_number(context):
