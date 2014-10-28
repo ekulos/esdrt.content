@@ -137,6 +137,7 @@ class ReviewFolderView(grok.View):
     def get_review_years(self):
         catalog = api.portal.get_tool('portal_catalog')
         review_years = catalog.uniqueValuesFor('review_year')
+        review_years = [c for c in  catalog.uniqueValuesFor('review_year') if isinstance(c, basestring)]
         return review_years
 
     def get_inventory_years(self):

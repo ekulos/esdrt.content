@@ -729,7 +729,6 @@ class Observation(dexterity.Container):
         if questions:
             comments = [c for c in questions[-1].values() if c.portal_type == "Comment"]
             if comments:
-                import pdb; pdb.set_trace()
                 last = comments[-1]
                 disc = IConversation(last)
                 return disc.total_comments
