@@ -39,6 +39,7 @@ from zope.interface import alsoProvides
 from zope.interface import Invalid
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
+from plone.app.discussion.interfaces import IConversation
 
 import datetime
 
@@ -721,6 +722,43 @@ class Observation(dexterity.Container):
         if conclusions and mtool.checkPermission('View', conclusions[0]):
             return conclusions[0]
         return None
+
+    def last_question_reply_number(self):
+        questions = [c for c in self.values() if c.portal_type == "Question"]
+        replynum = 0
+        if questions:
+            comments = [c for c in questions[-1].values() if c.portal_type == "Comment"]
+            if comments:
+                import pdb; pdb.set_trace()
+                last = comments[-1]
+                disc = IConversation(last)
+                return disc.total_comments
+
+        return replynum  
+
+    def last_answer_reply_number(context):
+        questions = [c for c in self.values() if c.portal_type == "Question"]
+        replynum = 0
+        if questions:
+            comments = [c for c in questions[-1].values() if c.portal_type == "CommentAnswer"]
+            if comments:
+                last = comments[-1]
+                disc = IConversation(last)
+                return disc.total_comments
+
+        return replynum     
+
+    def reply_comments_by_mse(context):
+        questions = [c for c in self.values() if c.portal_type == "Question"]
+        user = api.user.get_current().id
+        if questions:
+            comments = [c for c in questions[-1].values() if c.portal_type == "CommentAnswer"]
+            if comments:
+                last = comments[-1]
+                disc = IConversation(last)
+                return user in IConversation(last).commentators
+
+        return false                     
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
