@@ -170,4 +170,11 @@
          destination="22"
          handler=".21_22.upgrade"
          profile="esdrt.content:default" />
+    <genericsetup:upgradeStep
+         title="Upgrade to 23."
+         description="Vocabularies, Catalog"
+         source="22"
+         destination="23"
+         handler=".22_23.upgrade"
+         profile="esdrt.content:default" />         
 </configure>

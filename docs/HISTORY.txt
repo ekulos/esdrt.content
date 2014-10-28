@@ -3,6 +3,9 @@ Changelog
 
 1.19 (UNRELEASED)
 -------------------
+- New indexes for My View [erral]
+- Add filters to overview list [MikelS]
+- Update "My view" for different roles [MikelS]
 
 1.18 (2014-10-17)
 ----------------------
