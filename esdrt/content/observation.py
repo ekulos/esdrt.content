@@ -569,7 +569,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Quality expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-pending' and item['action'] == 'phase1-approve-question':
-                    item['state'] = 'Question approved and sent to MSC'
+                    item['state'] = 'Question approved and sent to MS coodinator'
                     item['role'] = "Quality expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-recalled-lr':
@@ -580,10 +580,10 @@ class Observation(dexterity.Container):
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-expert-comments':
-                    item['state'] = 'Member state expert comments requested'
+                    item['state'] = 'MS expert comments requested'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
-                elif item['review_state'] == 'phase1-pending-answer-validation':
+                elif item['review_state'] == 'phase1-pending-answer-drafting':
                     item['state'] = 'Member state expert comments closed'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
@@ -591,7 +591,7 @@ class Observation(dexterity.Container):
                     item['state'] = 'Answer recalled'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
-                elif item['action'] == 'phase1-validate-answer-msa':
+                elif item['action'] == 'phase1-closed' and item['action'] == 'phase1-validate-answer-msa":
                     item['state'] = 'Sector expert'
                     item['role'] = "Answer acknowledged"
                     question_wf.append(item)
@@ -626,7 +626,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
-                    item['state'] = 'Question approved and sent to MSC'
+                    item['state'] = 'Question approved and sent to MS coordinator'
                     item['role'] = "Lead reviewer"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-recalled-lr':
@@ -637,10 +637,10 @@ class Observation(dexterity.Container):
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-expert-comments':
-                    item['state'] = 'Member state expert comments requested'
+                    item['state'] = 'MS expert comments requested'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
-                elif item['review_state'] == 'phase2-pending-answer-validation':
+                elif item['review_state'] == 'phase2-pending-answer-drafting':
                     item['state'] = 'Member state expert comments closed'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
@@ -648,7 +648,7 @@ class Observation(dexterity.Container):
                     item['state'] = 'Answer recalled'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
-                elif item['action'] == 'phase2-validate-answer-msa':
+                elif item['action'] == 'phase2-validate-answer-msa' and item['action'] == 'phase2-validate-answer-msa']:
                     item['state'] = 'Review expert'
                     item['role'] = "Answer acknowledged"
                     question_wf.append(item)
