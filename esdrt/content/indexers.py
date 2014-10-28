@@ -1,6 +1,20 @@
-from plone.app.discussion.interfaces import IConversation
-from plone.indexer import indexer
+from esdrt.content.commentanswer import ICommentAnswer
+from esdrt.content.comment import IComment
+from conclusion import IConclusion
+from conclusionsphase2 import IConclusionsPhase2
 from .observation import IObservation
+from plone import api
+from plone.app.discussion.interfaces import IConversation
+from plone.app.textfield.interfaces import IRichTextValue
+from plone.indexer import indexer
+from Products.CMFPlone.utils import safe_unicode
+from types import FloatType
+from types import IntType
+from types import ListType
+from types import StringType
+from types import TupleType
+from types import UnicodeType
+from zope.schema import getFieldsInOrder
 
 
 @indexer(IObservation)
@@ -27,13 +41,16 @@ def observation_ghg_source_sectors(context):
 def observation_status_flag(context):
     return context.status_flag
 
+
 @indexer(IObservation)
 def observation_year(context):
     return context.year
 
+
 @indexer(IObservation)
 def observation_review_year(context):
     return str(context.review_year)
+
 
 @indexer(IObservation)
 def last_question_reply_number(context):
@@ -85,3 +102,74 @@ def conclusion2_reply_number(context):
         return disc.total_comments
 
     return replynum
+
+
+@indexer(IObservation)
+def SearchableText(context):
+    items = []
+    items.extend(index_fields(getFieldsInOrder(IObservation), context))
+    questions = context.getFolderContents({'portal_type': 'Question'},
+        full_objects=True
+    )
+    conclusions = context.getFolderContents({'portal_type': 'Conclusion'},
+        full_objects=True
+    )
+    conclusionsphase2 = context.getFolderContents(
+        {'portal_type': 'ConclusionsPhase2'},
+        full_objects=True
+    )
+    for question in questions:
+        comments = question.getFolderContents({'portal_type': 'Comment'},
+            full_objects=True
+        )
+        answers = question.getFolderContents({'portal_type': 'CommentAnswer'},
+            full_objects=True
+        )
+        for comment in comments:
+            items.extend(index_fields(getFieldsInOrder(IComment), comment))
+        for answer in answers:
+            items.extend(index_fields(
+                getFieldsInOrder(ICommentAnswer), answer)
+            )
+    for conclusion in conclusions:
+        items.extend(index_fields(getFieldsInOrder(IConclusion), conclusion))
+    for conclusion in conclusionsphase2:
+        items.extend(index_fields(
+            getFieldsInOrder(IConclusionsPhase2), conclusion)
+        )
+
+    return u' '.join(items)
+
+
+def index_fields(fields, context):
+    items = []
+    for name, field in fields:
+        value = getattr(context, name)
+        if getattr(field, 'vocabularyName', None):
+            if type(value) in [ListType, TupleType]:
+                vals = [context._vocabulary_value(field.vocabularyName, v) for v in value]
+            else:
+                vals = context._vocabulary_value(field.vocabularyName, value)
+            items.extend(to_unicode(vals))
+
+        if IRichTextValue.providedBy(value):
+            html = value.output
+            transforms = api.portal.get_tool('portal_transforms')
+            if isinstance(html, unicode):
+                html = html.encode('utf-8')
+            value = transforms.convertTo('text/plain',
+                html, mimetype='text/html'
+            ).getData().strip()
+        if value:
+            items.extend(to_unicode(value))
+
+    return items
+
+
+def to_unicode(value):
+    if type(value) in (StringType, UnicodeType):
+        return [safe_unicode(value)]
+    elif type(value) in [IntType, FloatType]:
+        return [safe_unicode(str(value))]
+    elif type(value) in [ListType, TupleType]:
+        return [safe_unicode(v) for v in value if v]
