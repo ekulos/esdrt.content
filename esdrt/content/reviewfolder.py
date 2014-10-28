@@ -212,7 +212,10 @@ class InboxReviewFolderView(grok.View):
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
                                 if (obj.observation_question_status() == 'phase1-draft' or \
-                                obj.observation_question_status() == 'phase2-draft'):
+                                obj.observation_question_status() == 'phase2-draft' or \
+                                obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                                obj.last_question_reply_number() > 0:
                                     items.append(obj)
                     except:
                         pass
@@ -638,8 +641,9 @@ class InboxReviewFolderView(grok.View):
                         obj = item.getObject()
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
-                                obj.observation_question_status() == 'phase2-pending-answer'):
+                                if (obj.observation_question_status() == 'phase1-expert-comments' or \
+                                obj.observation_question_status() == 'phase2-expert-comments') and \
+                                obj.last_answer_reply_number() > 0:
                                     items.append(obj)
                     except:
                         pass
@@ -663,8 +667,8 @@ class InboxReviewFolderView(grok.View):
                         obj = item.getObject()
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
-                                obj.observation_question_status() == 'phase2-pending-answer'):
+                                if (obj.observation_question_status() == 'phase1-expert-comments' or \
+                                obj.observation_question_status() == 'phase2-expert-comments'):
                                     items.append(obj)
                     except:
                         pass
@@ -716,8 +720,8 @@ class InboxReviewFolderView(grok.View):
                         roles = api.user.get_roles(username=user.id, obj=obj)
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
-                                obj.observation_question_status() == 'phase2-pending-answer') and \
+                                if (obj.observation_question_status() == 'phase1-expert-comments' or \
+                                obj.observation_question_status() == 'phase2-expert-comments') and \
                                 "CounterPart" in roles:
                                     items.append(obj)
                     except:
@@ -742,15 +746,47 @@ class InboxReviewFolderView(grok.View):
                         roles = api.user.get_roles(username=user.id, obj=obj)
                         with api.env.adopt_user(user=user):
                             if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-pending-answer' or \
-                                obj.observation_question_status() == 'phase2-pending-answer' or \
-                                obj.observation_question_status() == 'phase1-answer-validation' or \
-                                obj.observation_question_status() == 'phase2-answer-validation') and \
-                                "CounterPart" in roles:
+                                if (obj.observation_question_status() == 'phase1-expert-comments' or \
+                                obj.observation_question_status() == 'phase2-expert-comments' or \
+                                obj.observation_question_status() == 'phase1-pending-answer-drafting' or \
+                                obj.observation_question_status() == 'phase2-pending-answer-drafting') and \
+                                "CounterPart" in roles and \
+                                obj.reply_comments_by_mse():
                                     items.append(obj)
                     except:
                         pass
-        return items           
+        return items        
+
+    @memoize        
+    def get_observations_with_my_comments_sent_to_se_re(self):
+        """
+         Role: MS Expert
+         Answers that I commented on sent to Sector Expert/Review expert
+        """
+        user = api.user.get_current()
+        mtool = api.portal.get_tool('portal_membership')
+        items = []
+        for item in self.observations:
+            if 'Manager' in user.getRoles():
+                items.append(item.getObject())
+            else:
+                with api.env.adopt_roles(['Manager']):
+                    try:
+                        obj = item.getObject()
+                        roles = api.user.get_roles(username=user.id, obj=obj)
+                        with api.env.adopt_user(user=user):
+                            if mtool.checkPermission('View', obj):
+                                if (obj.observation_question_status() == 'phase1-answered' or \
+                                obj.observation_question_status() == 'phase2-answered' or \
+                                obj.observation_question_status() == 'phase1-recalled-msa' or \
+                                obj.observation_question_status() == 'phase2-recalled-msa') and \
+                                "CounterPart" in roles and \
+                                obj.reply_comments_by_mse():
+                                    items.append(obj)
+                    except:
+                        pass
+        return items  
+
     """
         Finalised observations
     """
