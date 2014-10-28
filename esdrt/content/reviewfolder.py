@@ -179,19 +179,16 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'observation-phase1-draft' or \
-                                obj.observation_question_status() == 'observation-phase2-draft'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'observation-phase1-draft' or \
+                            obj.observation_question_status() == 'observation-phase2-draft'):
+                                items.append(obj)
+                except:
+                    pass
         return items          
 
     @memoize
@@ -204,22 +201,19 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-draft' or \
-                                obj.observation_question_status() == 'phase2-draft' or \
-                                obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                                obj.last_question_reply_number() > 0:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-draft' or \
+                            obj.observation_question_status() == 'phase2-draft' or \
+                            obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                            obj.last_question_reply_number() > 0:
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize
@@ -232,21 +226,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                                "CounterPart" in roles:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                            "CounterPart" in roles:
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize
@@ -259,21 +250,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
-                                obj.observation_question_status() == 'phase2-conclusion-discussion') and \
-                                "CounterPart" in roles:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
+                            obj.observation_question_status() == 'phase2-conclusion-discussion') and \
+                            "CounterPart" in roles:
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize
@@ -286,19 +274,16 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-answered' or \
-                                obj.observation_question_status() == 'phase2-answered'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-answered' or \
+                            obj.observation_question_status() == 'phase2-answered'):
+                                items.append(obj)
+                except:
+                    pass
         return items         
 
     @memoize
@@ -311,21 +296,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-pending' or \
-                                obj.observation_question_status() == 'phase2-pending' or \
-                                obj.observation_question_status() == 'phase1-recalled-msa' or \
-                                obj.observation_question_status() == 'phase2-recalled-msa'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-pending' or \
+                            obj.observation_question_status() == 'phase2-pending' or \
+                            obj.observation_question_status() == 'phase1-recalled-msa' or \
+                            obj.observation_question_status() == 'phase2-recalled-msa'):
+                                items.append(obj)
+                except:
+                    pass
         return items 
  
     @memoize
@@ -337,21 +319,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                                "CounterPart" not in roles:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                            "CounterPart" not in roles:
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize
@@ -363,21 +342,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
-                                obj.observation_question_status() == 'phase2-conclusion-discussion') and \
-                                "CounterPart" not in roles:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
+                            obj.observation_question_status() == 'phase2-conclusion-discussion') and \
+                            "CounterPart" not in roles:
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize    
@@ -390,19 +366,16 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-close-requested' or \
-                                obj.observation_question_status() == 'phase2-close-requested'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-close-requested' or \
+                            obj.observation_question_status() == 'phase2-close-requested'):
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     """
@@ -418,21 +391,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-drafted' or \
-                                obj.observation_question_status() == 'phase2-drafted' or \
-                                obj.observation_question_status() == 'phase1-recalled-lr' or \
-                                obj.observation_question_status() == 'phase2-recalled-lr'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-drafted' or \
+                            obj.observation_question_status() == 'phase2-drafted' or \
+                            obj.observation_question_status() == 'phase1-recalled-lr' or \
+                            obj.observation_question_status() == 'phase2-recalled-lr'):
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize
@@ -445,19 +415,16 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-close-requested' or \
-                                obj.observation_question_status() == 'phase2-close-requested'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-close-requested' or \
+                            obj.observation_question_status() == 'phase2-close-requested'):
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize
@@ -470,21 +437,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                                "CounterPart" in roles:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                            "CounterPart" in roles:
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize
@@ -497,21 +461,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
-                                obj.observation_question_status() == 'phase2-conclusion-discussion') and \
-                                "CounterPart" in roles:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
+                            obj.observation_question_status() == 'phase2-conclusion-discussion') and \
+                            "CounterPart" in roles:
+                                items.append(obj)
+                except:
+                    pass
         return items
 
     @memoize        
@@ -524,21 +485,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                                obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                                "CounterPart" not in roles:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
+                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
+                            "CounterPart" not in roles:
+                                items.append(obj)
+                except:
+                    pass
         return items
 
     @memoize        
@@ -551,19 +509,16 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-answered' or \
-                                obj.observation_question_status() == 'phase2-answered'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-answered' or \
+                            obj.observation_question_status() == 'phase2-answered'):
+                                items.append(obj)
+                except:
+                    pass
         return items    
 
     @memoize
@@ -576,21 +531,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-pending' or \
-                                obj.observation_question_status() == 'phase2-pending' or \
-                                obj.observation_question_status() == 'phase1-recalled-msa' or \
-                                obj.observation_question_status() == 'phase2-recalled-msa'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-pending' or \
+                            obj.observation_question_status() == 'phase2-pending' or \
+                            obj.observation_question_status() == 'phase1-recalled-msa' or \
+                            obj.observation_question_status() == 'phase2-recalled-msa'):
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
 
@@ -607,21 +559,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-pending' or \
-                                obj.observation_question_status() == 'phase2-pending' or \
-                                obj.observation_question_status() == 'phase1-recalled-msa' or \
-                                obj.observation_question_status() == 'phase2-recalled-msa'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-pending' or \
+                            obj.observation_question_status() == 'phase2-pending' or \
+                            obj.observation_question_status() == 'phase1-recalled-msa' or \
+                            obj.observation_question_status() == 'phase2-recalled-msa'):
+                                items.append(obj)
+                except:
+                    pass
         return items 
 
     @memoize        
@@ -634,20 +583,17 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                                obj.observation_question_status() == 'phase2-expert-comments') and \
-                                obj.last_answer_reply_number() > 0:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-expert-comments' or \
+                            obj.observation_question_status() == 'phase2-expert-comments') and \
+                            obj.last_answer_reply_number() > 0:
+                                items.append(obj)
+                except:
+                    pass
         return items  
 
     @memoize        
@@ -660,19 +606,16 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                                obj.observation_question_status() == 'phase2-expert-comments'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-expert-comments' or \
+                            obj.observation_question_status() == 'phase2-expert-comments'):
+                                items.append(obj)
+                except:
+                    pass
         return items   
 
     @memoize         
@@ -685,19 +628,16 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-answered' or \
-                                obj.observation_question_status() == 'phase2-answered'):
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-answered' or \
+                            obj.observation_question_status() == 'phase2-answered'):
+                                items.append(obj)
+                except:
+                    pass
         return items  
     """
         MS Expert
@@ -712,21 +652,18 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                                obj.observation_question_status() == 'phase2-expert-comments') and \
-                                "CounterPart" in roles:
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-expert-comments' or \
+                            obj.observation_question_status() == 'phase2-expert-comments') and \
+                            "CounterPart" in roles:
+                                items.append(obj)
+                except:
+                    pass
         return items         
     @memoize        
     def get_observations_with_my_comments(self):
@@ -738,24 +675,21 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                                obj.observation_question_status() == 'phase2-expert-comments' or \
-                                obj.observation_question_status() == 'phase1-pending-answer-drafting' or \
-                                obj.observation_question_status() == 'phase2-pending-answer-drafting') and \
-                                "CounterPart" in roles and \
-                                obj.reply_comments_by_mse():
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-expert-comments' or \
+                            obj.observation_question_status() == 'phase2-expert-comments' or \
+                            obj.observation_question_status() == 'phase1-pending-answer-drafting' or \
+                            obj.observation_question_status() == 'phase2-pending-answer-drafting') and \
+                            "CounterPart" in roles and \
+                            obj.reply_comments_by_mse():
+                                items.append(obj)
+                except:
+                    pass
         return items        
 
     @memoize        
@@ -768,24 +702,21 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        roles = api.user.get_roles(username=user.id, obj=obj)
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-answered' or \
-                                obj.observation_question_status() == 'phase2-answered' or \
-                                obj.observation_question_status() == 'phase1-recalled-msa' or \
-                                obj.observation_question_status() == 'phase2-recalled-msa') and \
-                                "CounterPart" in roles and \
-                                obj.reply_comments_by_mse():
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    roles = api.user.get_roles(username=user.id, obj=obj)
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-answered' or \
+                            obj.observation_question_status() == 'phase2-answered' or \
+                            obj.observation_question_status() == 'phase1-recalled-msa' or \
+                            obj.observation_question_status() == 'phase2-recalled-msa') and \
+                            "CounterPart" in roles and \
+                            obj.reply_comments_by_mse():
+                                items.append(obj)
+                except:
+                    pass
         return items  
 
     """
@@ -800,20 +731,17 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-closed' or \
-                                obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason() == 'no-response-needed':
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-closed' or \
+                            obj.observation_question_status() == 'phase2-closed') and \
+                            obj.observation_finalisation_reason() == 'no-response-needed':
+                                items.append(obj)
+                except:
+                    pass
         return items 
     @memoize
     def get_resolved_observations(self):
@@ -824,20 +752,17 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-closed' or \
-                                obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason() == 'resolved':
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-closed' or \
+                            obj.observation_question_status() == 'phase2-closed') and \
+                            obj.observation_finalisation_reason() == 'resolved':
+                                items.append(obj)
+                except:
+                    pass
         return items   
     @memoize
     def get_unresolved_observations(self):
@@ -848,20 +773,17 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-closed' or \
-                                obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason() == 'unresolved':
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-closed' or \
+                            obj.observation_question_status() == 'phase2-closed') and \
+                            obj.observation_finalisation_reason() == 'unresolved':
+                                items.append(obj)
+                except:
+                    pass
         return items   
     @memoize
     def get_partly_resolved_observations(self):
@@ -872,20 +794,17 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-closed' or \
-                                obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason() == 'partly-resolved':
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-closed' or \
+                            obj.observation_question_status() == 'phase2-closed') and \
+                            obj.observation_finalisation_reason() == 'partly-resolved':
+                                items.append(obj)
+                except:
+                    pass
         return items 
     @memoize
     def get_technical_correction_observations(self):
@@ -896,20 +815,17 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-closed' or \
-                                obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason() == 'technical-correction':
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-closed' or \
+                            obj.observation_question_status() == 'phase2-closed') and \
+                            obj.observation_finalisation_reason() == 'technical-correction':
+                                items.append(obj)
+                except:
+                    pass
         return items    
     @memoize
     def get_revised_estimate_observations(self):
@@ -920,20 +836,17 @@ class InboxReviewFolderView(grok.View):
         mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            if 'Manager' in user.getRoles():
-                items.append(item.getObject())
-            else:
-                with api.env.adopt_roles(['Manager']):
-                    try:
-                        obj = item.getObject()
-                        with api.env.adopt_user(user=user):
-                            if mtool.checkPermission('View', obj):
-                                if (obj.observation_question_status() == 'phase1-closed' or \
-                                obj.observation_question_status() == 'phase2-closed') and \
-                                obj.observation_finalisation_reason() == 'revised-estimate':
-                                    items.append(obj)
-                    except:
-                        pass
+            with api.env.adopt_roles(['Manager']):
+                try:
+                    obj = item.getObject()
+                    with api.env.adopt_user(user=user):
+                        if mtool.checkPermission('View', obj):
+                            if (obj.observation_question_status() == 'phase1-closed' or \
+                            obj.observation_question_status() == 'phase2-closed') and \
+                            obj.observation_finalisation_reason() == 'revised-estimate':
+                                items.append(obj)
+                except:
+                    pass
         return items                                                          
     def can_add_observation(self):
         sm = getSecurityManager()

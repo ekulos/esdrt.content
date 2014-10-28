@@ -198,7 +198,7 @@
       <div id="no-content" tal:condition="not: view/get_questions">
 
         <p>
-          There are no observations or questions to review.
+          There are no observations to review.
         </p>
 
       </div>
