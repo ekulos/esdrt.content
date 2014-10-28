@@ -173,3 +173,4 @@ def to_unicode(value):
         return [safe_unicode(str(value))]
     elif type(value) in [ListType, TupleType]:
         return [safe_unicode(v) for v in value if v]
+    return []
