@@ -4,7 +4,7 @@ Changelog
 1.20 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Update workflow history and progress with new statuses [MikelS]
 
 
 1.19.1 (2014-10-28)
