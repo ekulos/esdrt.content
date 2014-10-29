@@ -356,7 +356,7 @@ class Observation(dexterity.Container):
                 if state in ['phase2-draft', 'phase2-closed']:
                     return 'Review expert'
                 elif state in ['phase1-counterpart-comments', 'phase2-counterpart-comments']:
-                    return 'Counterpart'
+                    return 'Counterparts'
                 elif state in ['phase1-drafted', 'phase1-recalled-lr']:
                     return 'Quality Expert'
                 elif state in ['phase2-drafted', 'phase2-recalled-lr']:
@@ -366,10 +366,13 @@ class Observation(dexterity.Container):
                     'phase2-pending', 'phase2-answered',
                     'phase2-pending-answer-drafting', 'phase2-recalled-msa']:
                     return 'Member state coordinator'
-                elif state in ['phase1-pending-answer', 'phase2-pending-answer']:
-                    return 'Member state expert'
+                elif state in ['phase1-expert-comments', 'phase2-expert-comments']:
+                    return 'Member state experts'
             else:
-                return 'Sector expert'
+                if state.startswith('phase1'):
+                    return "Sector expert"
+                else:
+                    return "Review expert"
 
     def wf_status(self):
         if self.get_status() in ['phase1-draft', 'phase2-draft']:
@@ -387,22 +390,20 @@ class Observation(dexterity.Container):
             if questions:
                 question = questions[-1]
                 state = api.content.get_state(question)
-                if state in ['phase1-raft', 'phase2-raft']:
+                if state in ['phase1-draft', 'phase2-draft']:
                     return ["Question drafted", "questionIcon"]
                 elif state in ['phase1-counterpart-comments', 'phase2-counterpart-comments']:
                     return ["Counterpart's comments requested", "questionIcon"]
                 elif state in ['phase1-answered', 'phase2-answered']:
                     return ['Pending question', "questionIcon"]
-                elif state in ['phase1-pending', 'phase1-pending-answer', 'phase1-pending-answer-validation',
-                    'phase1-validate-answer', 'phase1-recalled-msa',
-                    'phase2-pending', 'phase2-pending-answer', 'phase2-pending-answer-validation',
-                    'phase2-validate-answer', 'phase2-recalled-msa']:
+                elif state in ['phase1-pending', 'phase1-pending-answer-drafting', 'phase1-recalled-msa',
+                    'phase2-pending', 'phase2-pending-answer-drafting', 'phase2-recalled-msa']:
                     return ['Open question', "questionIcon"]
-                elif state in ['phase1-draft', 'phase1-ounterpart-comments',
-                    'phase1-drafted', 'phase1-recalled-lr',
-                    'phase2-draft', 'phase2-ounterpart-comments',
+                elif state in ['phase1-drafted', 'phase1-recalled-lr',
                     'phase2-drafted', 'phase2-recalled-lr']:
                     return ['Draft question', "questionIcon"]
+                elif state in ['phase1-expert-comments', 'phase2-expert-comments']:
+                    return ['MS expert comments requested', 'questionIcon']
                 elif state in ['phase1-closed', 'phase2-closed']:
                     return ['Closed question', "questionIcon"]
             else:
@@ -591,7 +592,7 @@ class Observation(dexterity.Container):
                     item['state'] = 'Answer recalled'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
-                elif item['action'] == 'phase1-closed' and item['action'] == 'phase1-validate-answer-msa":
+                elif item['action'] == 'phase1-closed' and item['action'] == 'phase1-validate-answer-msa':
                     item['state'] = 'Sector expert'
                     item['role'] = "Answer acknowledged"
                     question_wf.append(item)
@@ -648,7 +649,7 @@ class Observation(dexterity.Container):
                     item['state'] = 'Answer recalled'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
-                elif item['action'] == 'phase2-validate-answer-msa' and item['action'] == 'phase2-validate-answer-msa']:
+                elif item['action'] == 'phase2-validate-answer-msa' and item['action'] == 'phase2-validate-answer-msa':
                     item['state'] = 'Review expert'
                     item['role'] = "Answer acknowledged"
                     question_wf.append(item)
@@ -735,7 +736,7 @@ class Observation(dexterity.Container):
 
         return replynum  
 
-    def last_answer_reply_number(context):
+    def last_answer_reply_number(self):
         questions = [c for c in self.values() if c.portal_type == "Question"]
         replynum = 0
         if questions:
@@ -747,7 +748,7 @@ class Observation(dexterity.Container):
 
         return replynum     
 
-    def reply_comments_by_mse(context):
+    def reply_comments_by_mse(self):
         questions = [c for c in self.values() if c.portal_type == "Question"]
         user = api.user.get_current().id
         if questions:
