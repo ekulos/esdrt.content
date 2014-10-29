@@ -369,7 +369,7 @@ class Observation(dexterity.Container):
                 elif state in ['phase1-expert-comments', 'phase2-expert-comments']:
                     return 'Member state experts'
             else:
-                if state.startswith('phase1'):
+                if self.get_status().startswith('phase1'):
                     return "Sector expert"
                 else:
                     return "Review expert"
@@ -699,7 +699,10 @@ class Observation(dexterity.Container):
             if 'psi' in self.highlight:
                 return "psiBackground"
         else:
-            if 'ptc' in self.highlight:
+            if self.get_status() == "phase2-closed":
+                if self.get_conclusion_phase2().closing_reason == "recommendation":
+                    return 'technicalCorrectionBackground'
+            elif 'ptc' in self.highlight:
                 return 'ptcBackground' 
     def observation_finalisation_reason(self):
         status = self.get_status()

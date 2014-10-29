@@ -809,7 +809,7 @@ class InboxReviewFolderView(grok.View):
     @memoize
     def get_technical_correction_observations(self):
         """
-         Finalised with 'partly resolved'
+         Finalised with 'technical correction'
         """
         user = api.user.get_current()
         mtool = api.portal.get_tool('portal_membership')
