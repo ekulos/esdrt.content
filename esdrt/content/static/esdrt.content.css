@@ -429,9 +429,10 @@
 }
 #filters .row{
 	background-color: #F3F3F3;
-}
-#filters .row{
 	padding: 5px 0;
+}
+#filters label{
+	font-weight: normal;
 }
 #observations{
 	background-color: #F3F3F3;

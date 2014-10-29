@@ -14,6 +14,7 @@
             $(this).attr("title", currentText);
           }
         });
+        $(".chosen-select").chosen({width: "100%", allow_single_deselect: true});
         $("#btnFilter").click(function(){
           var filter = "";
             if ($('#countryFilter').val() != ""){
@@ -98,7 +99,93 @@
         </div>
       </div>
       <div id="filters">
+        <div class="row" style="padding-top:25px">
+          <div class="cell position-1 width-3 esdLabel">Country</div>
+          <div class="cell position-4 width-3 esdLabel">Review year</div>
+          <div class="cell position-7 width-3 esdLabel">Inventory year</div>
+          <div class="cell position-11 width-3 esdLabel">Highlights</div>
+        </div>
         <div class="row">
+          <div class="cell position-1 width-3">
+            <select id="countryFilter" class="chosen-select" data-placeholder="Select country">
+              <option></option>
+              <tal:block tal:repeat="item view/get_countries">
+                <option
+                  tal:define="country python:'';
+                              country request/country | country"
+                  tal:attributes="value python:item[0];
+                                  selected python:item[0]==country"
+                  tal:content="python:item[1]"></option>
+              </tal:block>
+            </select>            
+          </div>
+          <div class="cell position-4 width-3">
+            <select id="reviewYearFilter" class="chosen-select" data-placeholder="Select review year">
+              <option></option>
+              <tal:block tal:repeat="item view/get_review_years">
+                <option
+                  tal:define="reviewYear python:'';
+                              reviewYear request/reviewYear | reviewYear"
+                  tal:attributes="value python:item;
+                                  selected python:item==reviewYear"
+                  tal:content="python:item"></option>
+              </tal:block>
+            </select>            
+          </div>
+          <div class="cell position-7 width-3">
+            <select id="inventoryYearFilter" class="chosen-select" data-placeholder="Select inventory year">
+              <tal:block tal:repeat="item view/get_inventory_years">
+                <option
+                  tal:define="inventoryYear python:'';
+                              inventoryYear request/inventoryYear | inventoryYear"
+                  tal:attributes="value python:item;
+                                  selected python:item==inventoryYear"
+                  tal:content="python:item"></option>
+              </tal:block>
+            </select>            
+          </div>
+          <div class="cell position-11 width-5" style="position:absolute;z-index:2">
+            <tal:block tal:repeat="item view/get_highlights">
+              <tal:block tal:define="highlights python:'';
+                                     highlights request/highlights | highlights">
+                <input type="checkbox"
+                  tal:attributes="value python:item[0];
+                                  checked python:highlights.find(item[0]) >= 0;
+                                  id python:item[0]"/>
+                <label tal:attributes="for python:item[0];"
+                  tal:content="python:item[1]"></label><br/>
+              </tal:block>
+            </tal:block>
+          </div>
+        </div>   
+        <div class="row" style="padding-top:30px">
+          <div class="cell position-1 width-3 esdLabel">Status</div>
+          <div class="cell position-4 width-6 esdLabel">Free text</div>
+        </div>  
+        <div class="row">
+          <div class="cell position-1 width-3 esdLabel">
+            <select id="statusFilter"  class="chosen-select" data-placeholder="Select status"
+                tal:define="status python:'';
+                            status request/status | status">
+              <option></option>
+              <option tal:attributes="selected python:'draft'==status" 
+                value="draft">Draft</option>
+             <option tal:attributes="selected python:'open'==status" 
+                value="open">Open</option>
+              <option tal:attributes="selected python:'conclusion'==status" 
+                value="conclusion">Conclusion</option>
+              <option tal:attributes="selected python:'finished'==status" 
+                value="finished">Finished</option>
+            </select>            
+          </div>
+          <div class="cell position-4 width-6 esdLabel">
+            <input type="text" id="freeTextFilter" style="width:100%;border-radius:5px;height:21px"
+                tal:define="freeText python:'';
+                            freeText request/freeText | freeText"
+                tal:attributes="value python:freeText"/>            
+          </div>
+        </div>                    
+        <!--div class="row">
           <div class="cell position-0 width-3 esdLabel">Country</div>
           <div class="cell position-3 width-3">
             <select id="countryFilter">
@@ -193,7 +280,12 @@
           <div class="cell position-14 width-1 esdLabel">
             <a class="standardButton" id="btnFilter">Search</a>
           </div>                       
-        </div>       
+        </div-->   
+        <div class="row">
+          <div class="cell position-14 width-1 esdLabel">
+            <a class="standardButton" id="btnFilter">Search</a>
+          </div>          
+        </div>    
       </div>
       <div id="no-content" tal:condition="not: view/get_questions">
 
