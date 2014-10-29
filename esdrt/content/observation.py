@@ -762,6 +762,13 @@ class Observation(dexterity.Container):
                 return user in IConversation(last).commentators
 
         return false                     
+
+    def observation_phase(self):        
+        status = self.get_status()
+        if status.startswith('phase1-'):
+            return "phase1-observation"
+        else:
+            return "phase2-observation"       
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .

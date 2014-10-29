@@ -212,14 +212,21 @@
 }
 .observationList {
 	width: 100%;
+	border: 0px;
+}
+.myview .observationList{
+	margin-left: 15px;
 }
 .observationList th{
 	cursor: pointer;
-	background-color: #005e7d;
-	color: #fff;
+	background-color: #FFF !important;
+	color: #D8D8D8 !important;
 	border: 0.1em solid #e7e7e7;
 	border-style: solid solid none;
 	padding: 4px;
+	text-transform: uppercase;
+	vertical-align: middle !important;
+	border: 0px !important;	
 }
 .observationList th:after{
 	content: ' ';
@@ -230,18 +237,14 @@
 .observationList th.desc:after{
 	content: '▲';
 }
-.observationList tbody tr{
-	border-bottom: 1px solid lightgray;
-	border-left: 1px solid lightgray;
-	border-right: 1px solid lightgray;
+.observationList tr{
+	border-bottom: 0px !important;
+	border-right: 0px !important;
+	border-top: 1px solid #F9F9F9 !important;
+	border-left: 5px solid white;
 }
-.observationList tbody tr:hover{	
-	background-color: #EEEEEE;
+.observationList tbody tr:hover{
 	cursor: pointer;
-}
-.observationList th{
-	vertical-align: middle !important;
-	border: 0px !important;
 }
 .observationList td{
 	padding: 8px;
@@ -249,12 +252,24 @@
 	background-color: white !important;
 	vertical-align: middle !important;
 }
-.observationList tr.psiBackground td,
-.observationList tr.ptcBackground td{
-	background-color: #F6D18B !important;
+.observationList tr.psiBackground,
+.observationList tr.ptcBackground{
+	/**background-color: #F6D18B !important;*/
+	border-left: 5px solid #F6D18B !important;
 }
-.observationList tr.technicalCorrectionBackground td{
-	background-color: #FFA500 !important;
+.observationList tr.technicalCorrectionBackground{
+	/**background-color: #FFA500 !important;*/
+	border-left: 5px solid #FFA500 !important;
+}
+.observationList td div.phase1-observation{
+	background: url("./phase-1.png") no-repeat;
+	width: 61px;
+	height: 32px;
+}
+.observationList td div.phase2-observation{
+	background: url("./phase-1.png") no-repeat;
+	width: 61px;
+	height: 32px;
 }
 .observationRefCell{
 	color: #427597;
@@ -420,9 +435,19 @@
 }
 #observations{
 	background-color: #F3F3F3;
-	padding: 0px 10px;
+	padding: 20px !important;
 	overflow: hidden;
-	padding-top: 10px !important;
+}
+#observations .collapsiblePanelTitle {
+	font-size: 120%;
+	border-bottom: 1px solid lightgray;
+}
+#observations .inboxSection{
+	text-transform: uppercase;
+	font-weight: bold;
+	padding-left: 15px;
+	padding-top: 15px;
+	overflow: hidden;
 }
 ul.eea-tabs{
 	background-color: #FBFBFB !important;

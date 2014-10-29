@@ -31,7 +31,7 @@
 
 
 
-      <div id="observations">  
+      <div id="observations" class="myview">  
         <!-- Sector expert / Review expert -->
         <tal:block tal:condition="view/is_sector_expert_or_review_expert">
           <div>
@@ -42,14 +42,14 @@
               </div>
             </div>
           </div>   
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Draft observations
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_draft_observations">
+          <table class="my-actions observationList listing" tal:condition="view/get_draft_observations">
             <thead>
               <tr>
                 <th>
@@ -60,10 +60,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -98,10 +95,7 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
-                    </td>
+                    </td>  
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
@@ -114,11 +108,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -126,14 +116,14 @@
             </tbody>
           </table>  
 
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Draft questions
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_draft_questions">
+          <table class="my-actions observationList listing" tal:condition="view/get_draft_questions">
             <thead>
               <tr>
                 <th>
@@ -144,10 +134,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -182,10 +169,7 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
-                    </td>
+                    </td> 
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
@@ -198,11 +182,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -210,14 +190,14 @@
             </tbody>
           </table> 
 
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Counterpart questions to comment
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_counterpart_questions_to_comment">
+          <table class="my-actions observationList listing" tal:condition="view/get_counterpart_questions_to_comment">
             <thead>
               <tr>
                 <th>
@@ -228,10 +208,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -266,9 +243,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -282,11 +256,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -294,14 +264,14 @@
             </tbody>
           </table> 
 
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 MS answers to review
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_ms_answers_to_review">
+          <table class="my-actions observationList listing" tal:condition="view/get_ms_answers_to_review">
             <thead>
               <tr>
                 <th>
@@ -312,10 +282,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -350,9 +317,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -366,11 +330,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -385,14 +345,14 @@
               </div>
             </div>
           </div> 
-          <div class="other-actions-for-my-observations">
+          <div class="other-actions-for-my-observations inboxSection">
             <div class="row">
               <div>
                 Unanswered questions
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_unanswered_questions">
+          <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_unanswered_questions">
             <thead>
               <tr>
                 <th>
@@ -403,10 +363,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -441,9 +398,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -457,25 +411,21 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
               </tal:block>
             </tbody>
           </table>  
-          <div class="other-actions-for-my-observations">
+          <div class="other-actions-for-my-observations inboxSection">
             <div class="row">
               <div>
                 Waiting for comment from counterparts for question
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_waiting_for_comment_from_counterparts_for_question">
+          <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_waiting_for_comment_from_counterparts_for_question">
             <thead>
               <tr>
                 <th>
@@ -486,10 +436,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th>  
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -524,9 +471,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -540,11 +484,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -552,14 +492,14 @@
             </tbody>
           </table>   
 
-          <div class="other-actions-for-my-observations">
+          <div class="other-actions-for-my-observations inboxSection">
             <div class="row">
               <div>
                 Waiting for comment from counterparts for conclusion
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_waiting_for_comment_from_counterparts_for_conclusion">
+          <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_waiting_for_comment_from_counterparts_for_conclusion">
             <thead>
               <tr>
                 <th>
@@ -570,10 +510,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -608,9 +545,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -624,11 +558,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -636,14 +566,14 @@
             </tbody>
           </table>  
 
-          <div class="other-actions-for-my-observations">
+          <div class="other-actions-for-my-observations inboxSection">
             <div class="row">
               <div>
                 Observation for finalisation
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_observation_for_finalisation">
+          <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_observation_for_finalisation">
             <thead>
               <tr>
                 <th>
@@ -654,10 +584,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -692,9 +619,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -708,11 +632,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -731,14 +651,14 @@
               </div>
             </div>
           </div> 
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Questions to be sent
               </div>
             </div>
           </div>   
-          <table class="observationList listing" tal:condition="view/get_questions_to_be_sent">
+          <table class="observationList listing my-actions" tal:condition="view/get_questions_to_be_sent">
             <thead>
               <tr>
                 <th>
@@ -749,10 +669,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th>  
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -787,9 +704,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -803,11 +717,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -815,14 +725,14 @@
             </tbody>
           </table>  
           
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Observations to finalise
               </div>
             </div>
           </div>   
-          <table class="observationList listing" tal:condition="view/get_observations_to_finalise">
+          <table class="observationList listing my-actions" tal:condition="view/get_observations_to_finalise">
             <thead>
               <tr>
                 <th>
@@ -833,10 +743,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th>  
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -871,9 +778,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -887,11 +791,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -899,14 +799,14 @@
             </tbody>
           </table>           
 
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Questions to comment
               </div>
             </div>
           </div>   
-          <table class="observationList listing" tal:condition="view/get_questions_to_comment">
+          <table class="observationList listing my-actions" tal:condition="view/get_questions_to_comment">
             <thead>
               <tr>
                 <th>
@@ -917,10 +817,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -955,9 +852,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -971,11 +865,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -983,14 +873,14 @@
             </tbody>
           </table> 
 
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Conclusions to comment
               </div>
             </div>
           </div>   
-          <table class="observationList listing" tal:condition="view/get_conclusions_to_comment">
+          <table class="observationList listing my-actions" tal:condition="view/get_conclusions_to_comment">
             <thead>
               <tr>
                 <th>
@@ -1001,10 +891,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th>  
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1039,9 +926,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1055,11 +939,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1074,14 +954,14 @@
               </div>
             </div>
           </div>
-          <div class="my-teams-actions">
+          <div class="my-teams-actions inboxSection">
             <div class="row">
               <div>
                 Questions with comments from reviewers
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_questions_with_comments_from_reviewers">
+          <table class="observationList listing my-teams-actions" tal:condition="view/get_questions_with_comments_from_reviewers">
             <thead>
               <tr>
                 <th>
@@ -1092,10 +972,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th>  
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1130,9 +1007,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1146,25 +1020,21 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
               </tal:block>
             </tbody>
           </table> 
-          <div class="my-teams-actions">
+          <div class="my-teams-actions inboxSection">
             <div class="row">
               <div>
                 Answers from MS
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_answers_from_ms">
+          <table class="observationList listing my-teams-actions" tal:condition="view/get_answers_from_ms">
             <thead>
               <tr>
                 <th>
@@ -1175,10 +1045,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1213,9 +1080,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1229,11 +1093,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1248,14 +1108,14 @@
               </div>
             </div>
           </div> 
-          <div class="my-ms-actions">
+          <div class="my-ms-actions inboxSection">
             <div class="row">
               <div>
                 Unanswered questions
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_unanswered_questions_lr_qe">
+          <table class="observationList listing my-ms-actions" tal:condition="view/get_unanswered_questions_lr_qe">
             <thead>
               <tr>
                 <th>
@@ -1266,9 +1126,6 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
                 </th>
                 <th style="width:80px">
                   Modification date
@@ -1304,9 +1161,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1320,11 +1174,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1342,14 +1192,14 @@
               </div>
             </div>
           </div> 
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Questions from Sector expert / Review expert to be answered
               </div>
             </div>
           </div>
-          <table class="observationList listing" tal:condition="view/get_questions_to_be_answered">
+          <table class="observationList listing my-actions" tal:condition="view/get_questions_to_be_answered">
             <thead>
               <tr>
                 <th>
@@ -1360,10 +1210,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1398,9 +1245,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1414,25 +1258,21 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
               </tal:block>
             </tbody>
           </table>           
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Comments received from MS experts
               </div>
             </div>
           </div>  
-          <table class="observationList listing" tal:condition="view/get_questions_with_comments_received_from_mse">
+          <table class="observationList listing my-actions" tal:condition="view/get_questions_with_comments_received_from_mse">
             <thead>
               <tr>
                 <th>
@@ -1443,10 +1283,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1481,9 +1318,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1497,11 +1331,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1516,14 +1346,14 @@
               </div>
             </div>
           </div>          
-          <div class="mse-actions">
+          <div class="mse-actions inboxSection">
             <div class="row">
               <div>
                 Answers requiring comments/discussion from MS experts
               </div>
             </div>
           </div> 
-          <table class="observationList listing" tal:condition="view/get_answers_requiring_comments_from_mse">
+          <table class="observationList listing mse-actions" tal:condition="view/get_answers_requiring_comments_from_mse">
             <thead>
               <tr>
                 <th>
@@ -1534,10 +1364,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1572,9 +1399,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1588,11 +1412,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1607,14 +1427,14 @@
               </div>
             </div>
           </div>
-          <div class="se-re-actions">
+          <div class="se-re-actions inboxSection">
             <div class="row">
               <div>
                 Answers sent to Sector expert / Review expert
               </div>
             </div>
           </div>   
-          <table class="observationList listing" tal:condition="view/get_answers_sent_to_se_re">
+          <table class="observationList listing se-re-actions" tal:condition="view/get_answers_sent_to_se_re">
             <thead>
               <tr>
                 <th>
@@ -1625,10 +1445,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1663,9 +1480,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1679,11 +1493,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1701,14 +1511,14 @@
               </div>
             </div>
           </div> 
-          <div class="my-actions">
+          <div class="my-actions inboxSection">
             <div class="row">
               <div>
                 Comments for answer needed by MS coordinator
               </div>
             </div>
           </div> 
-          <table class="observationList listing" tal:condition="view/get_questions_with_comments_for_answer_needed_by_msc">
+          <table class="observationList listing my-actions" tal:condition="view/get_questions_with_comments_for_answer_needed_by_msc">
             <thead>
               <tr>
                 <th>
@@ -1719,10 +1529,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1757,9 +1564,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1773,11 +1577,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1792,14 +1592,14 @@
               </div>
             </div>
           </div> 
-          <div class="msc-actions">
+          <div class="msc-actions inboxSection">
             <div class="row">
               <div>
                 Observations with my comments still with MSC
               </div>
             </div>
           </div> 
-          <table class="observationList listing" tal:condition="view/get_observations_with_my_comments">
+          <table class="observationList listing msc-actions" tal:condition="view/get_observations_with_my_comments">
             <thead>
               <tr>
                 <th>
@@ -1810,10 +1610,7 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
                 </th>
@@ -1848,9 +1645,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1864,11 +1658,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1883,14 +1673,14 @@
               </div>
             </div>
           </div> 
-          <div class="sr-re-actions">
+          <div class="sr-re-actions inboxSection">
             <div class="row">
               <div>
                 Answers that I commented on sent to Sector expoert/Review expert
               </div>
             </div>
           </div> 
-          <table class="observationList listing" tal:condition="view/get_observations_with_my_comments_sent_to_se_re">
+          <table class="observationList listing sr-re-actions" tal:condition="view/get_observations_with_my_comments_sent_to_se_re">
             <thead>
               <tr>
                 <th>
@@ -1901,9 +1691,6 @@
                 </th>   
                 <th style="width:20px">
                   Inventory year
-                </th>                         
-                <th>
-                  Status
                 </th>
                 <th style="width:80px">
                   Modification date
@@ -1939,9 +1726,6 @@
                     </td>
                     <td tal:content="observation/year" class="yearCell">
                       2014
-                    </td>                                        
-                    <td tal:content="observation/overview_status|nothing">
-                      Pending
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
@@ -1955,11 +1739,7 @@
                       <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
-                      <div style="background-color:#A8DFFA;width:50%">
-                        &nbsp;
-                      </div>
-                      <div style="background-color:#458EB1;width:50%">
-                        &nbsp;</div>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
                   </tr>
                 </tal:item>
@@ -1975,14 +1755,14 @@
             </div>
           </div>
         </div>
-        <div class="finalised-observations">
+        <div class="finalised-observations inboxSection">
           <div class="row">
             <div>
               Finalised with 'no response needed'
             </div>
           </div>
         </div>   
-        <table class="observationList listing" tal:condition="view/get_no_response_needed_observations">
+        <table class="observationList listing finalised-observations" tal:condition="view/get_no_response_needed_observations">
           <thead>
             <tr>
               <th>
@@ -2031,9 +1811,6 @@
                   </td>
                   <td tal:content="observation/year" class="yearCell">
                     2014
-                  </td>                                        
-                  <td tal:content="observation/overview_status|nothing">
-                    Pending
                   </td>
                   <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                       tal:attributes="data-sorter python:observation.modified()">
@@ -2047,25 +1824,21 @@
                     <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                   </td>
                   <td>
-                    <div style="background-color:#A8DFFA;width:50%">
-                      &nbsp;
-                    </div>
-                    <div style="background-color:#458EB1;width:50%">
-                      &nbsp;</div>
+                    <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                   </td>
                 </tr>
               </tal:item>
             </tal:block>
           </tbody>
         </table> 
-        <div class="finalised-observations">
+        <div class="finalised-observations inboxSection">
           <div class="row">
             <div>
               Finalised with 'resolved'
             </div>
           </div>
         </div>   
-        <table class="observationList listing" tal:condition="view/get_resolved_observations">
+        <table class="observationList listing finalised-observations" tal:condition="view/get_resolved_observations">
           <thead>
             <tr>
               <th>
@@ -2114,10 +1887,7 @@
                   </td>
                   <td tal:content="observation/year" class="yearCell">
                     2014
-                  </td>                                        
-                  <td tal:content="observation/overview_status|nothing">
-                    Pending
-                  </td>
+                  </td> 
                   <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                       tal:attributes="data-sorter python:observation.modified()">
                     20 Jun 2014, 11:35 AM
@@ -2130,25 +1900,21 @@
                     <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                   </td>
                   <td>
-                    <div style="background-color:#A8DFFA;width:50%">
-                      &nbsp;
-                    </div>
-                    <div style="background-color:#458EB1;width:50%">
-                      &nbsp;</div>
+                    <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                   </td>
                 </tr>
               </tal:item>
             </tal:block>
           </tbody>
         </table> 
-        <div class="finalised-observations">
+        <div class="finalised-observations inboxSection">
           <div class="row">
             <div>
               Finalised with 'unresolved'
             </div>
           </div>
         </div>   
-        <table class="observationList listing" tal:condition="view/get_unresolved_observations">
+        <table class="observationList listing finalised-observations" tal:condition="view/get_unresolved_observations">
           <thead>
             <tr>
               <th>
@@ -2197,10 +1963,7 @@
                   </td>
                   <td tal:content="observation/year" class="yearCell">
                     2014
-                  </td>                                        
-                  <td tal:content="observation/overview_status|nothing">
-                    Pending
-                  </td>
+                  </td> 
                   <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                       tal:attributes="data-sorter python:observation.modified()">
                     20 Jun 2014, 11:35 AM
@@ -2213,25 +1976,21 @@
                     <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                   </td>
                   <td>
-                    <div style="background-color:#A8DFFA;width:50%">
-                      &nbsp;
-                    </div>
-                    <div style="background-color:#458EB1;width:50%">
-                      &nbsp;</div>
+                    <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                   </td>
                 </tr>
               </tal:item>
             </tal:block>
           </tbody>
         </table>     
-        <div class="finalised-observations">
+        <div class="finalised-observations inboxSection">
           <div class="row">
             <div>
               Finalised with 'partly resolved'
             </div>
           </div>
         </div>   
-        <table class="observationList listing" tal:condition="view/get_partly_resolved_observations">
+        <table class="observationList listing finalised-observations" tal:condition="view/get_partly_resolved_observations">
           <thead>
             <tr>
               <th>
@@ -2280,10 +2039,7 @@
                   </td>
                   <td tal:content="observation/year" class="yearCell">
                     2014
-                  </td>                                        
-                  <td tal:content="observation/overview_status|nothing">
-                    Pending
-                  </td>
+                  </td> 
                   <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                       tal:attributes="data-sorter python:observation.modified()">
                     20 Jun 2014, 11:35 AM
@@ -2296,25 +2052,21 @@
                     <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                   </td>
                   <td>
-                    <div style="background-color:#A8DFFA;width:50%">
-                      &nbsp;
-                    </div>
-                    <div style="background-color:#458EB1;width:50%">
-                      &nbsp;</div>
+                    <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                   </td>
                 </tr>
               </tal:item>
             </tal:block>
           </tbody>
         </table> 
-        <div class="finalised-observations">
+        <div class="finalised-observations inboxSection">
           <div class="row">
             <div>
               Finalised with 'technical correction'
             </div>
           </div>
         </div>   
-        <table class="observationList listing" tal:condition="view/get_technical_correction_observations">
+        <table class="observationList listing finalised-observations" tal:condition="view/get_technical_correction_observations">
           <thead>
             <tr>
               <th>
@@ -2363,10 +2115,7 @@
                   </td>
                   <td tal:content="observation/year" class="yearCell">
                     2014
-                  </td>                                        
-                  <td tal:content="observation/overview_status|nothing">
-                    Pending
-                  </td>
+                  </td> 
                   <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                       tal:attributes="data-sorter python:observation.modified()">
                     20 Jun 2014, 11:35 AM
@@ -2379,25 +2128,21 @@
                     <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                   </td>
                   <td>
-                    <div style="background-color:#A8DFFA;width:50%">
-                      &nbsp;
-                    </div>
-                    <div style="background-color:#458EB1;width:50%">
-                      &nbsp;</div>
+                    <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                   </td>
                 </tr>
               </tal:item>
             </tal:block>
           </tbody>
         </table>
-        <div class="finalised-observations">
+        <div class="finalised-observations inboxSection">
           <div class="row">
             <div>
               Finalised with 'revised estimate'
             </div>
           </div>
         </div>   
-        <table class="observationList listing" tal:condition="view/get_revised_estimate_observations">
+        <table class="observationList listing finalised-observations" tal:condition="view/get_revised_estimate_observations">
           <thead>
             <tr>
               <th>
@@ -2446,9 +2191,6 @@
                   </td>
                   <td tal:content="observation/year" class="yearCell">
                     2014
-                  </td>                                        
-                  <td tal:content="observation/overview_status|nothing">
-                    Pending
                   </td>
                   <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                       tal:attributes="data-sorter python:observation.modified()">
@@ -2462,11 +2204,7 @@
                     <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                   </td>
                   <td>
-                    <div style="background-color:#A8DFFA;width:50%">
-                      &nbsp;
-                    </div>
-                    <div style="background-color:#458EB1;width:50%">
-                      &nbsp;</div>
+                    <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                   </td>
                 </tr>
               </tal:item>
