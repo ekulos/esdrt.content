@@ -1773,9 +1773,6 @@
               </th>   
               <th style="width:20px">
                 Inventory year
-              </th>                         
-              <th>
-                Status
               </th>
               <th style="width:80px">
                 Modification date
@@ -1849,10 +1846,7 @@
               </th>   
               <th style="width:20px">
                 Inventory year
-              </th>                         
-              <th>
-                Status
-              </th>
+              </th> 
               <th style="width:80px">
                 Modification date
               </th>
@@ -1925,9 +1919,6 @@
               </th>   
               <th style="width:20px">
                 Inventory year
-              </th>                         
-              <th>
-                Status
               </th>
               <th style="width:80px">
                 Modification date
@@ -2001,10 +1992,7 @@
               </th>   
               <th style="width:20px">
                 Inventory year
-              </th>                         
-              <th>
-                Status
-              </th>
+              </th> 
               <th style="width:80px">
                 Modification date
               </th>
@@ -2077,9 +2065,6 @@
               </th>   
               <th style="width:20px">
                 Inventory year
-              </th>                         
-              <th>
-                Status
               </th>
               <th style="width:80px">
                 Modification date
@@ -2153,9 +2138,6 @@
               </th>   
               <th style="width:20px">
                 Inventory year
-              </th>                         
-              <th>
-                Status
               </th>
               <th style="width:80px">
                 Modification date
