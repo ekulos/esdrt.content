@@ -561,7 +561,7 @@ span.envelope:before{
 }
 #workflowhelp {
 	position: fixed;
-	display: block;
+	display: none;
 	top: 50%;
 	left: 0;
 	-webkit-transform: rotate(-90deg);
