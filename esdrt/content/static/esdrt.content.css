@@ -196,14 +196,15 @@
 	border: 0px;
 }
 .myview .observationList{
-	margin-left: 15px;
+	width: 97%;
 }
 .observationList th{
 	cursor: pointer;
-	background-color: #FFF !important;
-	color: #B5B5B5 !important;
-	border: 0.1em solid #e7e7e7;
-	border-style: solid solid none;
+	background-color: #e6eff0 !important;
+	color: #88afb8 !important;
+	/**border: 0.1em solid #e7e7e7;
+	border-style: solid solid none;*/
+	border-right: 1px solid white;
 	padding: 4px;
 	text-transform: uppercase;
 	vertical-align: middle !important;
@@ -217,6 +218,9 @@
 }
 .observationList th.desc:after{
 	content: '▲';
+}
+.observationList thead tr{
+	border-left: 5px solid #e6eff0;	
 }
 .observationList tr{
 	border-bottom: 0px !important;
@@ -429,14 +433,25 @@
 }
 #observations .collapsiblePanelTitle {
 	font-size: 120%;
-	border-bottom: 1px solid lightgray;
+	background-color: #2d8da1;
+	color: #fff;
+}
+#observations .collapsiblePanelTitle span{
+	background-color: #fff;
+}
+#observations .collapsed span{
+	background-color: #2d8da1;
+	color: #fff;
 }
 #observations .inboxSection{
-	text-transform: uppercase;
-	font-weight: bold;
-	padding-left: 15px;
+	padding-left: 24px;
 	padding-top: 15px;
 	overflow: hidden;
+	background-color: #fff;
+}
+#observations .inboxSection div{
+	font-size: 110%;
+	font-weight: bold;
 }
 ul.eea-tabs{
 	background-color: #FBFBFB !important;
@@ -541,4 +556,25 @@ ul.eea-tabs{
 }
 span.envelope:before{
 	content: "\f0e0";
+}
+#workflowhelp {
+	position: fixed;
+	display: block;
+	top: 50%;
+	left: 0;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+
+	/* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+	-webkit-transform-origin: 45% 100%;
+	-moz-transform-origin: 45% 100%;
+	-ms-transform-origin: 45% 100%;
+	-o-transform-origin: 45% 100%;
+	transform-origin: 45% 100%;
+
+	/* Should be unset in IE9+ I think. */
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
