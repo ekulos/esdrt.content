@@ -317,7 +317,9 @@
             New observation
         </a>
       </div>
-
+      <div id="workflowhelp">
+        WORKFLOW
+      </div>
     </metal:content-core>
   </metal:main>
 

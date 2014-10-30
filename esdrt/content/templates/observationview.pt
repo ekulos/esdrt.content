@@ -161,7 +161,7 @@
       </a>
     </div>
     <div class="esdDiv">
-      <div class="row">
+      <div class="row" style="margin-top:15px">
         <div class="cell position-0 width-1">
           <i class="eea-icon eea-icon-4x observation"></i>
         </div>
@@ -180,7 +180,7 @@
           </span>
         </div>
       </div>
-      <div class="row">
+      <div class="row" style="margin-top:15px">
         <div class="cell position-1 width-2 esdLabel">Country</div>
         <div class="cell position-3 width-2 esdLabel">Sector</div>
         <div class="cell position-5 width-2 esdLabel">Gases</div>
@@ -210,13 +210,13 @@
         <div class="cell position-7 width-3" tal:content="context/year">Year of emission</div>
         <div class="cell position-10 width-3" tal:content="context/wf_location">Review expert</div>
       </div>
-      <div class="row collapsiblePanelTitle collapsed" data-panel="observation-details">
+      <div class="row collapsiblePanelTitle collapsed" data-panel="observation-details" style="margin-top:15px">
         <div class="cell position-0 width-16">
           Observation details
           <span class="eea-icon eea-icon-left"></span>
         </div>
       </div>
-      <div class="row observation-details" style="display:none">
+      <div class="row observation-details" style="display:none;padding-top:15px">
         <div class="cell position-0 width-8 esdLabel">GHG source category</div>
         <div class="cell position-8 width-4 esdLabel">CRF code</div>
         <div class="cell position-12 width-4 esdLabel">Parameter</div>
@@ -226,7 +226,7 @@
         <div class="cell position-8 width-4" tal:content="context/crf_code_value">CRF code</div>
         <div class="cell position-12 width-4" tal:content="context/parameter_value">Parameter</div>
       </div>
-      <div class="row observation-details" style="display:none">
+      <div class="row observation-details" style="display:none;padding-top:15px">
         <div class="cell position-0 width-4 esdLabel">Review Year</div>
         <div class="cell position-4 width-4 esdLabel">Key category</div>
         <div class="cell position-8 width-4 esdLabel">Status flag</div>
@@ -238,7 +238,7 @@
         <div class="cell position-8 width-4" tal:content="context/highlight_value">Status flag</div>
         <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.modified(), True)">Last update</div>
       </div>
-      <div class="row observation-details" style="display:none">
+      <div class="row observation-details" style="display:none;padding-top:15px" tal:condition="view/show_description">
         <div class="cell position-0 width-4 esdLabel">Description</div>
       </div>      
       <div class="row observation-details" style="display:none" tal:condition="view/show_description">
@@ -249,7 +249,7 @@
           </span>
         </div>
       </div>         
-      <div class="row collapsiblePanelTitle collapsed" data-panel="observation-workflow">
+      <div class="row collapsiblePanelTitle collapsed" data-panel="observation-workflow" style="margin-top:15px">
         <div class="cell position-0 width-16">
           Observation history
           <span class="eea-icon eea-icon-left"></span>
@@ -664,7 +664,7 @@
             </tal:noteffective>
          </span>
         </div>
-        <h3 tal:condition="question/can_edit">Current text</h3>
+        <!--h3 tal:condition="question/can_edit">Current text</h3-->
         <div tal:content="structure question/text/output|string:">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </div>
@@ -697,7 +697,7 @@
         <div class="changes" tal:condition="question/can_edit">
           <div class="row collapsiblePanelTitle collapsed" data-panel="question-history">
             <div class="cell position-0 width-16">
-              Question history
+              History
               <span class="eea-icon eea-icon-left"></span>
             </div>
           </div>
@@ -798,7 +798,7 @@
               <tal:block tal:condition="python:portalType == 'comment' and question.can_see_comment_discussion()">
                 <div class="row collapsiblePanelTitle collapsed" data-panel="question-comments">
                   <div class="cell position-0 width-16">
-                    Question comments
+                    Comments
                     <span class="eea-icon eea-icon-left"></span>
                   </div>
                 </div>
@@ -807,7 +807,7 @@
               <tal:block tal:condition="python:portalType == 'commentanswer' and question.can_see_answer_discussion()">
                 <div class="row collapsiblePanelTitle collapsed" data-panel="answer-comments">
                   <div class="cell position-0 width-16">
-                    Answer comments
+                    Comments
                     <span class="eea-icon eea-icon-left"></span>
                   </div>
                 </div>
