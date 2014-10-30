@@ -4,7 +4,7 @@ Changelog
 1.20 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- New styles for overview list, 'My View' and observation [MikelS]
 
 
 1.19.3 (2014-10-29)
