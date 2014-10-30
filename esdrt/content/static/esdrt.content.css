@@ -16,7 +16,6 @@
 	padding: 8px;
 }
 .esdLabel{
-	font-style: italic;
 	font-weight: normal;
 	color: #918C86;
 }
@@ -225,7 +224,7 @@
 .observationList tr{
 	border-bottom: 0px !important;
 	border-right: 0px !important;
-	border-top: 1px solid #F9F9F9 !important;
+	border-top: 1px solid #ddd !important;
 	border-left: 5px solid white;
 }
 .observationList tbody tr:hover{
@@ -358,11 +357,11 @@
 	margin-bottom: 10px;
 }
 .collapsiblePanelTitle .eea-icon-left:before {
-	content: "\f078";
+	content: "\f077";
 	color:#2c8da2;
 }
 .collapsiblePanelTitle.collapsed .eea-icon-left:before {
-	content: "\f054";
+	content: "\f078";
 	color:#2c8da2;
 }
 #tabs {
@@ -438,6 +437,9 @@
 }
 #observations .collapsiblePanelTitle span{
 	background-color: #fff;
+}
+#observations .collapsiblePanelTitle.collapsed .eea-icon-left:before {
+	color:#fff;
 }
 #observations .collapsed span{
 	background-color: #2d8da1;
@@ -577,4 +579,23 @@ span.envelope:before{
 
 	/* Should be unset in IE9+ I think. */
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+.observation-details,
+.observation-workflow{
+	background-color: #fff;
+}
+.esdDiv .collapsiblePanelTitle{
+	background-color: #2d8da1;
+	color: #fff;
+}
+.esdDiv .collapsiblePanelTitle span{
+	background-color: #fff;
+	margin-left: -11px;
+}
+.esdDiv .collapsed span{
+	background-color: #2d8da1;
+	color: #fff;
+}
+.esdDiv .collapsiblePanelTitle.collapsed .eea-icon-left:before {
+	color:#fff;
 }
