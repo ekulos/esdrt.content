@@ -145,9 +145,9 @@ class AssignAnswererForm(BrowserView):
 
             for user, cp in self.get_counterpart_users():
                 if cp:
-                    api.user.revoke_roles(user=user,
-                        roles=['MSExpert'],
+                    api.user.revoke_roles(username=user.getId(),
                         obj=target,
+                        roles=['MSExpert'],
                     )
 
             if isinstance(usernames, basestring):
@@ -160,9 +160,9 @@ class AssignAnswererForm(BrowserView):
                         roles=['MSExpert'],
                         obj=target)
 
-            if api.content.get_state(self.context) == u'phase1-pending':
+            if api.content.get_state(self.context) in [u'phase1-pending', u'phase1-pending-answer-drafting']:
                 wf_action = 'phase1-assign-answerer'
-            elif api.content.get_state(self.context) == u'phase2-pending':
+            elif api.content.get_state(self.context) in [u'phase2-pending', u'phase2-pending-answer-drafting']:
                 wf_action = 'phase2-assign-answerer'
             else:
                 status = IStatusMessage(self.request)
@@ -247,9 +247,9 @@ class AssignCounterPartForm(BrowserView):
 
             for user, cp in self.get_counterpart_users():
                 if cp:
-                    api.user.revoke_roles(user=user,
-                        roles=['CounterPart'],
+                    api.user.revoke_roles(username=user.getId(),
                         obj=target,
+                        roles=['CounterPart'],
                     )
 
             if isinstance(counterparts, basestring):
@@ -345,7 +345,7 @@ class AssignConclusionReviewerForm(BrowserView):
 
             for user, cp in self.get_counterpart_users():
                 if cp:
-                    api.user.revoke_roles(user=user,
+                    api.user.revoke_roles(username=user.getId(),
                         obj=target,
                         roles=['CounterPart'],
                     )
