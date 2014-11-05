@@ -35,6 +35,7 @@ setup(name='esdrt.content',
           'collective.contentrules.mailadapter',
           'plone.app.versioningbehavior',
           'plone.app.workflowmanager',
+          'cs.htmlmailer',
       ],
       entry_points="""
       # -*- Entry points: -*-
