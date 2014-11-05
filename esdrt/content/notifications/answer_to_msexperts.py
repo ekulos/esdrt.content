@@ -18,7 +18,7 @@ def notification_mse(context, event):
 
     if event.action in ['phase1-assign-answere', 'phase2-assign-answerer']:
         observation = aq_parent(context)
-        users = get_users_in_context(observation, roles=['MSExperts'])
+        users = get_users_in_context(observation, roles=['MSExpert'])
         subject = u'New question for your country'
         content = _temp(**dict(observation=observation))
         send_mail(subject, safe_unicode(content), users)
