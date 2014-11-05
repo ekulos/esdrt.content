@@ -16,7 +16,7 @@ def notification_mse(context, event):
     """
     _temp = PageTemplateFile('answer_to_msexperts.pt')
 
-    if event.action in ['phase1-assign-answere', 'phase2-assign-answerer']:
+    if event.action in ['phase1-assign-answerer', 'phase2-assign-answerer']:
         observation = aq_parent(context)
         users = get_users_in_context(observation, roles=['MSExpert'])
         subject = u'New question for your country'
