@@ -15,7 +15,7 @@ def notification_qe(context, event):
     """
     _temp = PageTemplateFile('observation_finalisation_request.pt')
 
-    if event.action in ['phase1-closed']:
+    if event.action in ['phase1-request-close']:
         observation = context
         users = get_users_in_context(observation, roles=['QualityExpert'])
         subject = u'Observation finalisation request'
@@ -31,7 +31,7 @@ def notification_lr(context, event):
     """
     _temp = PageTemplateFile('observation_finalisation_request.pt')
 
-    if event.action in ['phase2-confirm-finishing-observation']:
+    if event.action in ['phase2-finish-observation']:
         observation = context
         users = get_users_in_context(observation, roles=['LeadReviewer'])
         subject = u'Observation finalisation request'
