@@ -25,7 +25,7 @@ def notification_ms(context, event):
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)
-def notification_rev(context, event):
+def notification_rev_ph1(context, event):
     """
     To:     ReviewerPhase1
     When:   Your question was sent to MS
@@ -41,7 +41,7 @@ def notification_rev(context, event):
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)
-def notification_lr(context, event):
+def notification_rev_ph2(context, event):
     """
     To:     ReviewerPhase2
     When:   Your question was sent to MS
