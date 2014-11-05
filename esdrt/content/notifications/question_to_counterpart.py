@@ -6,7 +6,6 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import PageTemplateFile
 from utils import get_users_in_context
 from utils import send_mail
-from zope.globalrequest import getRequest
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)
