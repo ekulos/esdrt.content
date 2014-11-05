@@ -15,8 +15,7 @@ def notification_ms(context, event):
     When:   Observation was finalised
     """
     _temp = PageTemplateFile('observation_finalised.pt')
-
-    if event.action in ['phase1-closed', 'phase2-confirm-finishing-observation']:
+    if event.action in ['phase1-close', 'phase2-confirm-finishing-observation']:
         observation = context
         users = get_users_in_context(observation, roles=['MSAuthority'])
         subject = u'An observation for your country was finalised'
@@ -31,8 +30,7 @@ def notification_rev_ph1(context, event):
     When:   Observation finalised
     """
     _temp = PageTemplateFile('observation_finalised_rev_msg.pt')
-
-    if event.action in ['phase1-closed']:
+    if event.action in ['phase1-close']:
         observation = context
         users = get_users_in_context(observation, roles=['ReviewerPhase1'])
         subject = u'Your observation was finalised'
@@ -47,7 +45,6 @@ def notification_rev_ph2(context, event):
     When:   Observation finalised
     """
     _temp = PageTemplateFile('observation_finalised_rev_msg.pt')
-
     if event.action in ['phase2-confirm-finishing-observation']:
         observation = context
         users = get_users_in_context(observation, roles=['ReviewerPhase2'])

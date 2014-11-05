@@ -15,10 +15,10 @@ def notification_lr(context, event):
     """
     _temp = PageTemplateFile('observation_to_phase2.pt')
 
-    if event.action in ['phase1-deny-closure']:
+    if event.action in ['phase1-send-to-team-2']:
         observation = context
         users = get_users_in_context(observation, roles=['LeadReviewer'])
-        subject = u'Observation haned over to phase 2'
+        subject = u'Observation handed over to phase 2'
         content = _temp(**dict(observation=observation))
         send_mail(subject, safe_unicode(content), users)
 
@@ -31,7 +31,7 @@ def notification_rev_ph2(context, event):
     """
     _temp = PageTemplateFile('observation_to_phase2_rev_msg.pt')
 
-    if event.action in ['phase2-deny-finishing-observation']:
+    if event.action in ['phase1-send-to-team-2']:
         observation = context
         users = get_users_in_context(observation, roles=['ReviewerPhase2'])
         subject = u'Observation handed over to phase 2'
