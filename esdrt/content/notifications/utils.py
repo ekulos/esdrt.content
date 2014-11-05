@@ -42,7 +42,7 @@ def extract_emails(users):
         if email:
             emails.append(email)
 
-    return emails
+    return set(emails)
 
 
 def get_users_in_context(observation, roles):
