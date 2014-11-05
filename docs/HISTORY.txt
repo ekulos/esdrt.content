@@ -1,10 +1,10 @@
 Changelog
 =========
 
-1.19.5 (unreleased)
+1.20 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Enable notifications [erral]
 
 
 1.19.4 (2014-10-30)
