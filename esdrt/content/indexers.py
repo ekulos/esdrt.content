@@ -108,16 +108,26 @@ def conclusion2_reply_number(context):
 def SearchableText(context):
     items = []
     items.extend(index_fields(getFieldsInOrder(IObservation), context))
-    questions = context.getFolderContents({'portal_type': 'Question'},
-        full_objects=True
-    )
-    conclusions = context.getFolderContents({'portal_type': 'Conclusion'},
-        full_objects=True
-    )
-    conclusionsphase2 = context.getFolderContents(
-        {'portal_type': 'ConclusionsPhase2'},
-        full_objects=True
-    )
+    try:
+        questions = context.getFolderContents({'portal_type': 'Question'},
+            full_objects=True
+        )
+    except:
+        questions = []
+    try:
+        conclusions = context.getFolderContents({'portal_type': 'Conclusion'},
+            full_objects=True
+        )
+    except:
+        conclusions = []
+    try:
+        conclusionsphase2 = context.getFolderContents(
+            {'portal_type': 'ConclusionsPhase2'},
+            full_objects=True
+        )
+    except:
+        conclusionsphase2 = []
+
     for question in questions:
         comments = question.getFolderContents({'portal_type': 'Comment'},
             full_objects=True
@@ -131,8 +141,10 @@ def SearchableText(context):
             items.extend(index_fields(
                 getFieldsInOrder(ICommentAnswer), answer)
             )
+
     for conclusion in conclusions:
         items.extend(index_fields(getFieldsInOrder(IConclusion), conclusion))
+
     for conclusion in conclusionsphase2:
         items.extend(index_fields(
             getFieldsInOrder(IConclusionsPhase2), conclusion)
