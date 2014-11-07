@@ -166,7 +166,7 @@
           <i class="eea-icon eea-icon-4x observation"></i>
         </div>
         <div class="cell position-1 width-4 esdLabel">Ref. Number</div>
-        <div class="cell position-5 width-13 esdLabel">Observation</div>
+        <div class="cell position-5 width-11 esdLabel">Observation</div>
       </div>
       <div class="row">
         <div class="cell position-1 width-4 value">
@@ -187,20 +187,7 @@
         <div class="cell position-7 width-3 esdLabel">Inventory year</div>
         <div class="cell position-10 width-3 esdLabel">WF Location</div>
         <div class="cell position-13 width-3">
-          <table class="progressbar progress100">
-            <tr>
-              <td id="progress0">&nbsp;</td>
-              <td id="progress25"></td>
-              <td id="progress75"></td>
-              <td id="progress100"></td>
-            </tr>
-            <tr>
-              <td>0%</td>
-              <td></td>
-              <td></td>
-              <td style="text-align:right">100%</td>
-            </tr>
-          </table>
+          <div tal:attributes="class python:context.observation_phase()">&nbsp;</div>
         </div>
       </div>
       <div class="row">
@@ -208,7 +195,7 @@
         <div class="cell position-3 width-2" tal:content="context/ghg_source_sectors_value">Sector</div>
         <div class="cell position-5 width-2" tal:content="context/gas_value">Gas</div>
         <div class="cell position-7 width-3" tal:content="context/year">Year of emission</div>
-        <div class="cell position-10 width-3" tal:content="context/wf_location">Review expert</div>
+        <div class="cell position-10 width-3" tal:content="context/wf_location">Review expert</div>       
       </div>
       <div class="row collapsiblePanelTitle collapsed" data-panel="observation-details" style="margin-top:15px">
         <div class="cell position-0 width-16">
