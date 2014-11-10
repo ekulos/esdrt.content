@@ -113,7 +113,7 @@ class Question(dexterity.Container):
             last_question = questions[-1]
             question_history = self.workflow_history['esd-question-review-workflow']
             for item in question_history:
-                if item['review_state'] == 'phase1-counterpart-comments' or if item['review_state'] == 'phase2-counterpart-comments' :
+                if item['review_state'] == 'phase1-counterpart-comments' or item['review_state'] == 'phase2-counterpart-comments':
                     return True
 
     def can_request_comments(self):
