@@ -1233,6 +1233,7 @@
   <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase2-request-for-counterpart-comments" category="workflow" icon="">Request Comments</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
+   <guard-expression>python:object.can_request_comments()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-send-comments" title="Edit Question (End comments and redraft )" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
@@ -1245,6 +1246,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-to-lr" category="workflow" icon="">Send Question for Approval</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
+   <guard-expression>python:object.can_be_sent_to_lr()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-validate-answer-msa" title="Acknowledge Answer " new_state="phase2-closed" trigger="USER" before_script="" after_script="">
