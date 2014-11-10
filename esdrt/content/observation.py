@@ -503,6 +503,9 @@ class Observation(dexterity.Container):
                 item['state'] = 'Observation reopened'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
+            elif item['review_state'] == 'phase2-pending':
+                item['state'] = 'Pending'
+                #Do not add                
             elif item['review_state'] == 'phase2-closed':
                 item['state'] = 'Closed observation'
                 item['role'] = "Review expert"
