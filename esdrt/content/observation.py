@@ -724,7 +724,7 @@ class Observation(dexterity.Container):
         return None
 
     def get_conclusion_phase2(self):
-        conclusions = [c for c in self.values() if c.portal_type == "ConclusionPhase2"]
+        conclusions = [c for c in self.values() if c.portal_type == "ConclusionsPhase2"]
         mtool = api.portal.get_tool('portal_membership')
         if conclusions and mtool.checkPermission('View', conclusions[0]):
             return conclusions[0]
