@@ -317,9 +317,10 @@
   </permission-map>
  </state>
  <state state_id="phase1-pending" title="Pending">
+  <exit-transition transition_id="phase1-add-answer"/>
   <exit-transition transition_id="phase1-answer-to-lr"/>
-  <exit-transition transition_id="phase1-recall-question-lr"/>
   <exit-transition transition_id="phase1-assign-answerer"/>
+  <exit-transition transition_id="phase1-recall-question-lr"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>QualityExpert</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -804,9 +805,10 @@
   </permission-map>
  </state>
  <state state_id="phase2-pending" title="phase2-pending">
+  <exit-transition transition_id="phase2-add-answer"/>
+  <exit-transition transition_id="phase2-answer-to-lr"/>
   <exit-transition transition_id="phase2-assign-answerer"/>
   <exit-transition transition_id="phase2-recall-question-lr"/>
-  <exit-transition transition_id="phase2-answer-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -1038,6 +1040,12 @@
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
+ <transition transition_id="phase1-add-answer" title="Add Answer" new_state="phase1-pending-answer-drafting" trigger="USER" before_script="" after_script="">
+  
+  <guard>
+   <guard-role>MSAuthority</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase1-add-folowup-question" title="Add follow up question" new_state="phase1-draft" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/add-follow-up-question?workflow_action=phase1-add-followup-question" category="workflow" icon="">Add follow up question</action>
   <guard>
@@ -1150,6 +1158,12 @@
    <guard-role>ReviewerPhase1</guard-role>
   </guard>
  </transition>
+ <transition transition_id="phase2-add-answer" title="Add Answer" new_state="phase2-pending-answer-drafting" trigger="USER" before_script="" after_script="">
+  
+  <guard>
+   <guard-role>MSAuthority</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase2-add-folowup-question " title="Add follow up question" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/add-follow-up-question?workflow_action=phase2-add-followup-question" category="workflow" icon="">Add follow up question</action>
   <guard>
@@ -1233,7 +1247,6 @@
   <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase2-request-for-counterpart-comments" category="workflow" icon="">Request Comments</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
-   <guard-expression>python:object.can_request_comments()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-send-comments" title="Edit Question (End comments and redraft )" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
@@ -1246,7 +1259,6 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=phase2-send-to-lr" category="workflow" icon="">Send Question for Approval</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
-   <guard-expression>python:object.can_be_sent_to_lr()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-validate-answer-msa" title="Acknowledge Answer " new_state="phase2-closed" trigger="USER" before_script="" after_script="">

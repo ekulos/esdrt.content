@@ -895,7 +895,6 @@ class ObservationView(grok.View):
               mapping=dict(version=version_name)),
             context=self.request
         )
-
     def can_delete_observation(self):
         is_draft = api.content.get_state(self.context) == 'phase1-pending'
         questions = len([q for q in self.context.values() if q.portal_type == 'Question'])
@@ -1345,8 +1344,16 @@ class AddAnswerForm(Form):
         )
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
+        if api.content.get_state(context).startswith('phase1-'):
+            action = 'phase1-add-answer'
+        elif api.content.get_state(context).startswith('phase2-'):
+            action = 'phase2-add-answer'
+        else:
+            raise ActionExecutionError(Invalid(u"Invalid context"))
 
-        return self.request.response.redirect(context.absolute_url())
+        api.content.transition(obj=context, transition=action)
+
+        return self.request.response.redirect(observation.absolute_url())
 
     def updateActions(self):
         super(AddAnswerForm, self).updateActions()

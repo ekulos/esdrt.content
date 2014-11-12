@@ -7,12 +7,12 @@
  <permission>Sharing page: Delegate roles</permission>
  <permission>View</permission>
  <permission>esdrt.content: Add Conclusion</permission>
+ <permission>esdrt.content: Add ConclusionsPhase2</permission>
  <permission>esdrt.content: Add ESDRTFile</permission>
  <permission>esdrt.content: Add Question</permission>
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
  <permission>esdrt.content: View Conclusion Discussion</permission>
- <permission>esdrt.content: Add ConclusionsPhase2</permission>
  <state state_id="phase1-close-requested" title="Close requested">
   <exit-transition transition_id="phase1-send-to-team-2"/>
   <exit-transition transition_id="phase1-deny-closure"/>
