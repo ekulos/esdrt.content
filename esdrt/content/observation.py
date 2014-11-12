@@ -1296,9 +1296,10 @@ class ModificationForm(dexterity.EditForm):
                 'review_year',
                 'technical_corrections',
                 'closing_comments',
-                'closing_reason',
                 'closing_deny_comments',
-                'closing_deny_reason',
+                'closing_comments_phase2',
+                'closing_deny_comments_phase2'
+
                 ]]
         elif 'QualityExpert' in roles or 'LeadReviewer' in roles:
             fields = ['text', 'highlight']
