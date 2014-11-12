@@ -615,12 +615,19 @@
           </a>
         </tal:block>
         <a href="./content_status_modify?workflow_action=close"
-          tal:condition="python:not context.get_question() and view.can_add_question()"
+          tal:condition="python:not context.get_question() and view.can_add_question() and context.observation_phase() == 'phase1-observation'"
           id="observation-finish"
           tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=phase1-draft-conclusions"
           class="standardButton">
           Finish observation
         </a>
+       <a href="./content_status_modify?workflow_action=close"
+          tal:condition="python:not context.get_question() and view.can_add_question() and context.observation_phase() == 'phase2-observation'"
+          id="observation-finish"
+          tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=phase2-draft-conclusions"
+          class="standardButton">
+          Finish observation
+        </a>        
       </div>
 
       <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">
