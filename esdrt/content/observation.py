@@ -505,7 +505,7 @@ class Observation(dexterity.Container):
                 observation_wf.append(item)
             elif item['review_state'] == 'phase2-pending':
                 item['state'] = 'Pending'
-                #Do not add                
+                #Do not add
             elif item['review_state'] == 'phase2-closed':
                 item['state'] = 'Closed observation'
                 item['role'] = "Review expert"
@@ -706,7 +706,7 @@ class Observation(dexterity.Container):
                 if self.get_conclusion_phase2().closing_reason == "recommendation":
                     return 'technicalCorrectionBackground'
             elif 'ptc' in self.highlight:
-                return 'ptcBackground' 
+                return 'ptcBackground'
     def observation_finalisation_reason(self):
         status = self.get_status()
         if status == 'phase1-closed':
@@ -740,7 +740,7 @@ class Observation(dexterity.Container):
                 disc = IConversation(last)
                 return disc.total_comments
 
-        return replynum  
+        return replynum
 
     def last_answer_reply_number(self):
         questions = [c for c in self.values() if c.portal_type == "Question"]
@@ -752,7 +752,7 @@ class Observation(dexterity.Container):
                 disc = IConversation(last)
                 return disc.total_comments
 
-        return replynum     
+        return replynum
 
     def reply_comments_by_mse(self):
         questions = [c for c in self.values() if c.portal_type == "Question"]
@@ -764,14 +764,14 @@ class Observation(dexterity.Container):
                 disc = IConversation(last)
                 return user in IConversation(last).commentators
 
-        return false                     
+        return false
 
-    def observation_phase(self):        
+    def observation_phase(self):
         status = self.get_status()
         if status.startswith('phase1-'):
             return "phase1-observation"
         else:
-            return "phase2-observation"       
+            return "phase2-observation"
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
