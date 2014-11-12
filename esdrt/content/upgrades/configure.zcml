@@ -176,5 +176,15 @@
          source="22"
          destination="23"
          handler=".22_23.upgrade"
-         profile="esdrt.content:default" />         
+         profile="esdrt.content:default" />
+    <genericsetup:upgradeStep
+         title="Upgrade to 24."
+         description="Workflow"
+         source="23"
+         destination="24"
+         handler=".23_24.upgrade"
+         profile="esdrt.content:default" />
+
+
+
 </configure>
