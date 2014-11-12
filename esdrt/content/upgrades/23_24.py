@@ -11,6 +11,7 @@ def upgrade(context, logger=None):
         logger = getLogger('esdrt.content.upgrades.23_24')
 
     install_workflow(context, logger)
+    install_contenttypes(context, logger)
     logger.info('Upgrade steps executed')
 
 
@@ -35,3 +36,8 @@ def install_workflow(context, logger):
     logger.info('Reinstalled Workflows, Roles and Permissions ')
     wtool.updateRoleMappings()
     logger.info('Security settings updated')
+
+def install_contenttypes(context, logger):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runImportStepFromProfile(PROFILE_ID, 'typeinfo')
+    logger.info('Content types installed')
