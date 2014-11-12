@@ -195,7 +195,7 @@
         <div class="cell position-3 width-2" tal:content="context/ghg_source_sectors_value">Sector</div>
         <div class="cell position-5 width-2" tal:content="context/gas_value">Gas</div>
         <div class="cell position-7 width-3" tal:content="context/year">Year of emission</div>
-        <div class="cell position-10 width-3" tal:content="context/wf_location">Review expert</div>       
+        <div class="cell position-10 width-3" tal:content="context/wf_location">Review expert</div>
       </div>
       <div class="row collapsiblePanelTitle collapsed" data-panel="observation-details" style="margin-top:15px">
         <div class="cell position-0 width-16">
@@ -227,7 +227,7 @@
       </div>
       <div class="row observation-details" style="display:none;padding-top:15px" tal:condition="view/show_description">
         <div class="cell position-0 width-4 esdLabel">Description</div>
-      </div>      
+      </div>
       <div class="row observation-details" style="display:none" tal:condition="view/show_description">
         <div class="cell position-0 width-16">
           <span
@@ -235,13 +235,13 @@
               Here goes the description
           </span>
         </div>
-      </div>         
+      </div>
       <div class="row collapsiblePanelTitle collapsed" data-panel="observation-workflow" style="margin-top:15px">
         <div class="cell position-0 width-16">
           Observation history
           <span class="eea-icon eea-icon-left"></span>
         </div>
-      </div>      
+      </div>
       <div class="row observation-workflow" style="display:none">
         <div class="cell position-0 width-16" style="overflow-x:auto">
           <table style="table-layout: fixed" id="workflowTable">
@@ -271,7 +271,7 @@
           </table>
         </div>
       </div>
-    </div>    
+    </div>
   </metal:observation>
 
 
@@ -619,15 +619,15 @@
           id="observation-finish"
           tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=phase1-draft-conclusions"
           class="standardButton">
-          Finish observation
+          Request finalisation of the observation
         </a>
        <a href="./content_status_modify?workflow_action=close"
           tal:condition="python:not context.get_question() and view.can_add_question() and context.observation_phase() == 'phase2-observation'"
           id="observation-finish"
           tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=phase2-draft-conclusions"
           class="standardButton">
-          Finish observation
-        </a>        
+          Request finalisation of the observation
+        </a>
       </div>
 
       <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">
