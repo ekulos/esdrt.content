@@ -142,7 +142,6 @@ def observation_transition(observation, event):
                 api.content.transition(obj=conclusion,
                     transition='redraft')
 
-
     elif event.action == 'phase1-draft-conclusions':
         with api.env.adopt_roles(roles=['Manager']):
             questions = [c for c in observation.values() if c.portal_type == 'Question']
