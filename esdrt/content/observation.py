@@ -1078,6 +1078,24 @@ class ObservationView(grok.View):
         alsoProvides(form_instance, IWrappedForm)
         return form_instance()
 
+    def in_conclusions_phase1(self):
+        state = api.content.get_state(self.context)
+        return state in [
+            'phase1-conclusions',
+            'phase1-conclusion-discussion',
+            'phase1-close-requested',
+            'phase1-closed',
+        ]
+
+    def in_conclusions_phase2(self):
+        state = api.content.get_state(self.context)
+        return state in [
+            'phase2-conclusions',
+            'phase2-conclusion-discussion',
+            'phase2-close-requested',
+            'phase2-closed',
+        ]
+
     def update(self):
         question = self.question()
         if question:

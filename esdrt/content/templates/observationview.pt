@@ -331,7 +331,7 @@
           </dl>
         </div>
 
-      <div class="actions">
+      <div class="actions" tal:condition="view/in_conclusions_phase1">
         <tal:block tal:repeat="action view/actions">
           <a href=""
             tal:attributes="href action/action"
@@ -364,7 +364,7 @@
           </dl>
         </div>
 
-      <div class="actions">
+      <div class="actions" tal:condition="view/in_conclusions_phase2">
         <tal:block tal:repeat="action view/actions">
           <a href=""
             tal:attributes="href action/action"
@@ -477,7 +477,7 @@
               <div id="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
             </div>
         </div>
-        <div class="actions">
+        <div class="actions" tal:condition="view/in_conclusions_phase2">
           <a href=""
             tal:condition="conclusion/can_edit"
             tal:attributes="href string:${conclusion/absolute_url}/edit"
@@ -558,7 +558,7 @@
               <div id="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
             </div>
         </div>
-        <div class="actions">
+        <div class="actions" tal:condition="view/in_conclusions_phase1">
           <a href=""
             tal:condition="conclusion/can_edit"
             tal:attributes="href string:${conclusion/absolute_url}/edit"
@@ -583,6 +583,7 @@
       </div>
     </div>
     <div class="eea-tabs-panel questions">
+      <tal:qactions condition="python:(not view.in_conclusions_phase1()) and (not view.in_conclusions_phase2())">
       <div class="actions"
         tal:condition="python:not view.get_questions() and view.can_add_conclusion()">
         <a href=""
@@ -629,7 +630,7 @@
           Request finalisation of the observation
         </a>
       </div>
-
+      </tal:qactions>
       <div id="question-add-form" style="display: none" tal:condition="view/can_add_question">
         <span tal:replace="structure view/add_question_form"></span>
       </div>
@@ -809,6 +810,7 @@
               </tal:block>
             </tal:block>
         </div>
+      <tal:qactions condition="python:(not view.in_conclusions_phase1()) and (not view.in_conclusions_phase2())">
         <div class="actions" tal:condition="repeat/question/end">
           <!--tal:block condition="view/can_edit">
             <a href=""
@@ -884,6 +886,7 @@
             </a>
           </tal:block>
         </div>
+      </tal:qactions>
       </div>
       <div class="actions" tal:condition="view/can_add_comment">
         <a href="./++add++Comment"
@@ -923,6 +926,7 @@
       <div id="conclusion-add-form" style="display: none" tal:condition="view/can_add_conclusion">
         <span tal:replace="structure view/add_conclusion_form" />
       </div>
+
     </div>
   </div>
   </metal:content-core>
