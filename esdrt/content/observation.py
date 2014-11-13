@@ -697,6 +697,7 @@ class Observation(dexterity.Container):
                     return "observation-phase1-draft"
                 else:
                     return "observation-phase2-draft"
+
     def observation_css_class(self):
         if self.get_status().startswith('phase1'):
             if 'psi' in self.highlight:
@@ -707,6 +708,7 @@ class Observation(dexterity.Container):
                     return 'technicalCorrectionBackground'
             elif 'ptc' in self.highlight:
                 return 'ptcBackground'
+
     def observation_finalisation_reason(self):
         status = self.get_status()
         if status == 'phase1-closed':
@@ -772,6 +774,11 @@ class Observation(dexterity.Container):
             return "phase1-observation"
         else:
             return "phase2-observation"
+
+    def can_add_followup(self):
+        status = api.context.get_state(self)
+        return status in ['phase1-conclusions', 'phase2-conclusions']
+
 # View class
 # The view will automatically use a similarly named template in
 # templates called observationview.pt .
@@ -895,6 +902,7 @@ class ObservationView(grok.View):
               mapping=dict(version=version_name)),
             context=self.request
         )
+
     def can_delete_observation(self):
         is_draft = api.content.get_state(self.context) == 'phase1-pending'
         questions = len([q for q in self.context.values() if q.portal_type == 'Question'])
