@@ -184,5 +184,5 @@ def to_unicode(value):
     elif type(value) in [IntType, FloatType]:
         return [safe_unicode(str(value))]
     elif type(value) in [ListType, TupleType]:
-        return [safe_unicode(v) for v in value if v]
+        return [' '.join(to_unicode(v)) for v in value if v]
     return []
