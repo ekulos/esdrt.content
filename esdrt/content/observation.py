@@ -703,7 +703,7 @@ class Observation(dexterity.Container):
                 return "psiBackground"
         else:
             if self.get_status() == "phase2-closed":
-                if self.get_conclusion_phase2().closing_reason == "recommendation":
+                if self.get_conclusion_phase2().closing_reason == "technical-correction":
                     return 'technicalCorrectionBackground'
             elif 'ptc' in self.highlight:
                 return 'ptcBackground'
