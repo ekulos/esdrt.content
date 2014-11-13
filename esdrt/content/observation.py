@@ -904,7 +904,7 @@ class ObservationView(grok.View):
         )
 
     def can_delete_observation(self):
-        is_draft = api.content.get_state(self.context) == 'phase1-pending'
+        is_draft = api.content.get_state(self.context) in ['phase1-pending', 'phase2-pending']
         questions = len([q for q in self.context.values() if q.portal_type == 'Question'])
 
         return is_draft and not questions
@@ -936,7 +936,11 @@ class ObservationView(grok.View):
 
     def can_add_conclusion(self):
         sm = getSecurityManager()
-        conclusion = self.get_conclusion()
+        status = api.content.get_state(self.context)
+        if status.startswith('phase1-'):
+            conclusion = self.get_conclusion()
+        else:
+            conclusion = self.get_conclusion_phase2()
         return sm.checkPermission('esdrt.content: Add Conclusion', self.context) and not conclusion
 
     def subscription_options(self):
