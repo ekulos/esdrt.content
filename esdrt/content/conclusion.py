@@ -170,6 +170,11 @@ class AddForm(dexterity.AddForm):
         adapted.allow_discussion = True
         return aq_base(content)
 
+    def updateActions(self):
+        super(AddForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
 
 class EditForm(dexterity.EditForm):
     grok.name('edit')
@@ -180,3 +185,8 @@ class EditForm(dexterity.EditForm):
         super(EditForm, self).updateFields()
         self.fields = field.Fields(IConclusion).select('closing_reason', 'text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+
+    def updateActions(self):
+        super(EditForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
