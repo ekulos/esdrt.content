@@ -104,6 +104,17 @@ class AssignAnswererForm(BrowserView):
 
     index = ViewPageTemplateFile('templates/assign_answerer_form.pt')
 
+    def revoke_all_roles(self):
+        """
+          Revoke all existing roles
+        """
+        target = self.assignation_target()
+        for user, cp in self.get_counterpart_users():
+            if cp:
+                api.user.revoke_roles(username=user.getId(),
+                    obj=target,
+                    roles=['MSExpert'],
+                )
 
     def assignation_target(self):
         return aq_parent(aq_inner(self.context))
@@ -143,12 +154,7 @@ class AssignAnswererForm(BrowserView):
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
-            for user, cp in self.get_counterpart_users():
-                if cp:
-                    api.user.revoke_roles(username=user.getId(),
-                        obj=target,
-                        roles=['MSExpert'],
-                    )
+            self.revoke_all_roles()
 
             if isinstance(usernames, basestring):
                 api.user.grant_roles(username=usernames,
@@ -176,6 +182,7 @@ class AssignAnswererForm(BrowserView):
             )
 
         else:
+            self.revoke_all_roles()
             return self.index()
 
     def updateActions(self):
@@ -198,6 +205,18 @@ class IAssignCounterPartForm(Interface):
 class AssignCounterPartForm(BrowserView):
 
     index = ViewPageTemplateFile('templates/assign_counterpart_form.pt')
+
+    def revoke_all_roles(self):
+        """
+          Revoke all existing roles
+        """
+        target = self.assignation_target()
+        for user, cp in self.get_counterpart_users():
+            if cp:
+                api.user.revoke_roles(username=user.getId(),
+                    obj=target,
+                    roles=['CounterPart'],
+                )
 
     def target_groupnames(self):
         return [
@@ -229,7 +248,6 @@ class AssignCounterPartForm(BrowserView):
                 log = getLogger(__name__)
                 log.info('There is not such a group %s' % groupname)
 
-
         return users
 
     def __call__(self):
@@ -245,12 +263,7 @@ class AssignCounterPartForm(BrowserView):
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
-            for user, cp in self.get_counterpart_users():
-                if cp:
-                    api.user.revoke_roles(username=user.getId(),
-                        obj=target,
-                        roles=['CounterPart'],
-                    )
+            self.revoke_all_roles()
 
             if isinstance(counterparts, basestring):
                 api.user.grant_roles(username=counterparts,
@@ -279,6 +292,7 @@ class AssignCounterPartForm(BrowserView):
             )
 
         else:
+            self.revoke_all_roles()
             return self.index()
 
     def updateActions(self):
@@ -297,6 +311,21 @@ class IAssignConclusionReviewerForm(Interface):
 class AssignConclusionReviewerForm(BrowserView):
 
     index = ViewPageTemplateFile('templates/assign_conclusion_reviewer_form.pt')
+
+    def update(self):
+        self.revoke_all_roles()
+
+    def revoke_all_roles(self):
+        """
+          Revoke all existing roles
+        """
+        target = self.assignation_target()
+        for user, cp in self.get_counterpart_users():
+            if cp:
+                api.user.revoke_roles(username=user.getId(),
+                    obj=target,
+                    roles=['CounterPart'],
+                )
 
     def assignation_target(self):
         return aq_parent(aq_inner(self.context))
@@ -328,7 +357,6 @@ class AssignConclusionReviewerForm(BrowserView):
                 log = getLogger(__name__)
                 log.info('There is not such a group %s' % groupname)
 
-
         return users
 
     def __call__(self):
@@ -343,12 +371,7 @@ class AssignConclusionReviewerForm(BrowserView):
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
-            for user, cp in self.get_counterpart_users():
-                if cp:
-                    api.user.revoke_roles(username=user.getId(),
-                        obj=target,
-                        roles=['CounterPart'],
-                    )
+            self.revoke_all_roles()
 
             for username in usernames:
                 api.user.grant_roles(username=username,
