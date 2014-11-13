@@ -1481,6 +1481,7 @@ class AddConclusionForm(Form):
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
 
+
 def get_category_from_crf_code(value):
     """ get the CRF category this CRF Code matches
         According to the rules previously set. See #21438
@@ -1500,7 +1501,6 @@ class EditConclusionAndCloseComments(grok.View):
                 status = IStatusMessage(self.request)
                 msg = _(u'There was an error, try again please')
                 status.addStatusMessage(msg, "error")
-
 
     def render(self):
         # Execute the transition
@@ -1525,7 +1525,6 @@ class EditConclusionP2AndCloseComments(grok.View):
                 msg = _(u'There was an error, try again please')
                 status.addStatusMessage(msg, "error")
 
-
     def render(self):
         # Execute the transition
         api.content.transition(obj=self.context,
@@ -1535,6 +1534,7 @@ class EditConclusionP2AndCloseComments(grok.View):
         conclusion = conclusions[0]
         url = '%s/edit' % conclusion.absolute_url()
         return self.request.response.redirect(url)
+
 
 class EditHighlightsForm(dexterity.EditForm):
     grok.name('edit-highlights')
@@ -1546,3 +1546,40 @@ class EditHighlightsForm(dexterity.EditForm):
         self.fields = field.Fields(IObservation).select('highlight')
         self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+
+
+class AddConclusions(grok.View):
+    grok.context(IObservation)
+    grok.name('add-conclusions')
+    grok.require('zope2.View')
+
+    def render(self):
+        parent = aq_inner(self.context)
+        if api.content.get_state(parent).startswith('phase1-'):
+            cs = [cs for cs in parent.values() if cs.portal_type == 'Conclusion']
+            if cs:
+                conclusion = cs[0]
+                url = conclusion.absolute_url() + '/edit'
+            else:
+                api.content.transition(obj=parent,
+                    transition='phase1-draft-conclusions')
+                url = '%s/++add++Conclusion' % parent.absolute_url()
+        elif api.content.get_state(parent).startswith('phase2-'):
+            api.content.transition(obj=parent,
+                transition='phase2-draft-conclusions')
+            # XXX check why the standard redirect does not work
+            csp2 = [cs for cs in parent.values() if cs.portal_type == 'ConclusionsPhase2']
+            if csp2:
+                conclusionsphase2 = csp2[0]
+            else:
+                cp2 = parent.invokeFactory(id=int(time()),
+                    type_name='ConclusionsPhase2'
+                )
+                conclusionsphase2 = parent.get(cp2)
+
+            url = '%s/edit' % conclusionsphase2.absolute_url()
+        else:
+            raise ActionExecutionError(Invalid(u"Invalid context"))
+
+        return self.request.response.redirect(url)
+
