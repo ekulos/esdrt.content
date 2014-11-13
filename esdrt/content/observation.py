@@ -631,6 +631,7 @@ class Observation(dexterity.Container):
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-draft':
                     #Do not add
+                    pass
                 elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
                     item['state'] = 'Question approved and sent to MS coordinator'
                     item['role'] = "Lead reviewer"
