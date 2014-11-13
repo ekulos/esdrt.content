@@ -15,10 +15,6 @@ class IReviewFolder(form.Schema, IImageScaleTraversable):
     """
     Folder to have all observations together
     """
-    year = schema.Int(
-        title=_(u'Year'),
-        required=True,
-        )
 
 # Custom content-type class; objects created for this content type will
 # be instances of this class. Use this class to add content-type specific
@@ -76,12 +72,12 @@ class ReviewFolderView(grok.View):
         if (reviewYear != ""):
             query['review_year'] = reviewYear
         if (inventoryYear != ""):
-            query['year'] = inventoryYear        
+            query['year'] = inventoryYear
         if (highlights != ""):
             query['highlight'] = highlights.split(",")
         if (freeText != ""):
             query['SearchableText'] = freeText
-   
+
 
         values = catalog.unrestrictedSearchResults(query)
         items = []
@@ -122,7 +118,7 @@ class ReviewFolderView(grok.View):
         for term in voc_terms:
             countries.append((term[0], term[1]))
 
-        return countries        
+        return countries
 
     def get_highlights(self):
         vtool = getToolByName(self, 'portal_vocabularies')
@@ -132,7 +128,7 @@ class ReviewFolderView(grok.View):
         for term in voc_terms:
             highlights.append((term[0], term[1]))
 
-        return highlights          
+        return highlights
 
     def get_review_years(self):
         catalog = api.portal.get_tool('portal_catalog')
@@ -162,7 +158,7 @@ class InboxReviewFolderView(grok.View):
             'sort_on':'modified',
             'sort_order':'reverse',
         }
-            
+
         values = catalog.unrestrictedSearchResults(query)
         return values
 
@@ -189,7 +185,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items          
+        return items
 
     @memoize
     def get_draft_questions(self):
@@ -214,7 +210,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
     @memoize
     def get_counterpart_questions_to_comment(self):
@@ -238,7 +234,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
     @memoize
     def get_counterpart_conclusion_to_comment(self):
@@ -262,7 +258,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
     @memoize
     def get_ms_answers_to_review(self):
@@ -284,7 +280,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items         
+        return items
 
     @memoize
     def get_unanswered_questions(self):
@@ -308,8 +304,8 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
- 
+        return items
+
     @memoize
     def get_waiting_for_comment_from_counterparts_for_question(self):
         """
@@ -331,7 +327,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
     @memoize
     def get_waiting_for_comment_from_counterparts_for_conclusion(self):
@@ -354,9 +350,9 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
-    @memoize    
+    @memoize
     def get_observation_for_finalisation(self):
         """
          Role: Sector expert / Review expert
@@ -376,7 +372,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
     """
         Lead Reviewer / Quality expert
@@ -403,7 +399,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
     @memoize
     def get_observations_to_finalise(self):
@@ -425,7 +421,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
     @memoize
     def get_questions_to_comment(self):
@@ -449,7 +445,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
     @memoize
     def get_conclusions_to_comment(self):
@@ -475,7 +471,7 @@ class InboxReviewFolderView(grok.View):
                     pass
         return items
 
-    @memoize        
+    @memoize
     def get_questions_with_comments_from_reviewers(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -499,7 +495,7 @@ class InboxReviewFolderView(grok.View):
                     pass
         return items
 
-    @memoize        
+    @memoize
     def get_answers_from_ms(self):
         """
          Role: Lead Reviewer / Quality expert
@@ -519,7 +515,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items    
+        return items
 
     @memoize
     def get_unanswered_questions_lr_qe(self):
@@ -543,13 +539,13 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
 
     """
         MS Coordinator
     """
-    @memoize    
+    @memoize
     def get_questions_to_be_answered(self):
         """
          Role: MS Coordinator
@@ -571,9 +567,9 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
 
-    @memoize        
+    @memoize
     def get_questions_with_comments_received_from_mse(self):
         """
          Role: MS Coordinator
@@ -594,9 +590,9 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items  
+        return items
 
-    @memoize        
+    @memoize
     def get_answers_requiring_comments_from_mse(self):
         """
          Role: MS Coordinator
@@ -616,9 +612,9 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items   
+        return items
 
-    @memoize         
+    @memoize
     def get_answers_sent_to_se_re(self):
         """
          Role: MS Coordinator
@@ -638,11 +634,11 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items  
+        return items
     """
         MS Expert
-    """   
-    @memoize        
+    """
+    @memoize
     def get_questions_with_comments_for_answer_needed_by_msc(self):
         """
          Role: MS Expert
@@ -664,8 +660,8 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items         
-    @memoize        
+        return items
+    @memoize
     def get_observations_with_my_comments(self):
         """
          Role: MS Expert
@@ -690,9 +686,9 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items        
+        return items
 
-    @memoize        
+    @memoize
     def get_observations_with_my_comments_sent_to_se_re(self):
         """
          Role: MS Expert
@@ -717,7 +713,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items  
+        return items
 
     """
         Finalised observations
@@ -742,7 +738,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
     @memoize
     def get_resolved_observations(self):
         """
@@ -763,7 +759,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items   
+        return items
     @memoize
     def get_unresolved_observations(self):
         """
@@ -784,7 +780,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items   
+        return items
     @memoize
     def get_partly_resolved_observations(self):
         """
@@ -805,7 +801,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items 
+        return items
     @memoize
     def get_technical_correction_observations(self):
         """
@@ -826,7 +822,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items    
+        return items
     @memoize
     def get_revised_estimate_observations(self):
         """
@@ -847,7 +843,7 @@ class InboxReviewFolderView(grok.View):
                                 items.append(obj)
                 except:
                     pass
-        return items                                                          
+        return items
     def can_add_observation(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Observation', self)
@@ -868,7 +864,7 @@ class InboxReviewFolderView(grok.View):
         for term in voc_terms:
             countries.append((term[0], term[1]))
 
-        return countries        
+        return countries
 
     def get_sectors(self):
         vtool = getToolByName(self, 'portal_vocabularies')
@@ -878,7 +874,7 @@ class InboxReviewFolderView(grok.View):
         for term in voc_terms:
             sectors.append((term[0], term[1]))
 
-        return sectors      
+        return sectors
 
     @memoize
     def is_sector_expert_or_review_expert(self):
