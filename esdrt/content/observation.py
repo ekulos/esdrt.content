@@ -629,6 +629,8 @@ class Observation(dexterity.Container):
                     item['state'] = 'Question redrafted'
                     item['role'] = "Review expert"
                     question_wf.append(item)
+                elif item['review_state'] == 'phase2-draft':
+                    #Do not add
                 elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
                     item['state'] = 'Question approved and sent to MS coordinator'
                     item['role'] = "Lead reviewer"
@@ -704,7 +706,7 @@ class Observation(dexterity.Container):
                 return "psiBackground"
         else:
             if self.get_status() == "phase2-closed":
-                if self.get_conclusion_phase2().closing_reason == "recommendation":
+                if self.get_conclusion_phase2().closing_reason == "technical-correction":
                     return 'technicalCorrectionBackground'
             elif 'ptc' in self.highlight:
                 return 'ptcBackground'
