@@ -1022,14 +1022,14 @@
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
   </permission-map>
  </state>
- <transition transition_id="finish-observation-qe" title="Finish Observation" new_state="" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/../content_status_modify?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Finish Observation</action>
+ <transition transition_id="finish-observation-qe" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
   </guard>
  </transition>
- <transition transition_id="finish-observation-sr" title="Finish Observation" new_state="" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/../content_status_modify?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Finish Observation</action>
+ <transition transition_id="finish-observation-sr" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
   </guard>
