@@ -76,6 +76,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     year = schema.TextLine(
         title=_(u'Inventory year'),
+        description=_(u'Inventory year should be a year or a range of years (ex. "2012", "2012-2014")'),
         required=True
     )
 
@@ -206,6 +207,27 @@ def check_country(value):
 
     if not valid:
         raise Invalid(u'You are not allowed to add observations for this country')
+
+
+@form.validator(field=IObservation['year'])
+def inventory_year(value):
+    """
+    Inventory year can be a given year (2014) or a range of years (2012-2014)
+    """
+    try:
+        _ = int(value)
+        valid = True
+    except ValueError:
+        # Let's see if it's a range of years:
+        for item in value.split('-'):
+            try:
+                _ = int(item.strip())
+                valid = True
+            except ValueError:
+                valid = False
+
+    if not valid:
+        raise Invalid(u'Inventory year format is not correct. ')
 
 
 @default_value(field=IObservation['review_year'])
