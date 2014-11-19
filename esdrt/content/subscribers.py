@@ -71,7 +71,7 @@ def observation_transition(observation, event):
                 q = qs[0]
                 api.content.transition(obj=q, transition='phase1-reopen')
 
-    elif event.action == 'phase2-reopen':
+    elif event.action == 'phase2-reopen-qa-chat':
         with api.env.adopt_roles(roles=['Manager']):
             qs = [q for q in observation.values() if q.portal_type == 'Question']
             if qs:

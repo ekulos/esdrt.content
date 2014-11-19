@@ -629,8 +629,9 @@
   </permission-map>
  </state>
  <state state_id="phase2-draft" title="phase2-draft">
-  <exit-transition transition_id="phase2-request-for-counterpart-comments"/>
+  <exit-transition transition_id="finish-observation-re"/>
   <exit-transition transition_id="phase2-close"/>
+  <exit-transition transition_id="phase2-request-for-counterpart-comments"/>
   <exit-transition transition_id="phase2-send-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -1028,6 +1029,12 @@
   <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="finish-observation-re" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <transition transition_id="finish-observation-sr" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
