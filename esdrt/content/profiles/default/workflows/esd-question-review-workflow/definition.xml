@@ -110,6 +110,7 @@
   </permission-map>
  </state>
  <state state_id="phase1-counterpart-comments" title="Counterpart comments">
+  <exit-transition transition_id="phase1-reselect-counterparts"/>
   <exit-transition transition_id="phase1-send-comments"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
@@ -572,6 +573,7 @@
   <exit-transition transition_id="phase2-reopen"/>
  </state>
  <state state_id="phase2-counterpart-comments" title="phase2-counterpart-comments">
+  <exit-transition transition_id="phase2-reselect-counterparts"/>
   <exit-transition transition_id="phase2-send-comments"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
@@ -1149,6 +1151,12 @@
    <guard-expression>python:object.can_request_comments()</guard-expression>
   </guard>
  </transition>
+ <transition transition_id="phase1-reselect-counterparts" title="Select new Counterparts" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/reassign_counterpart_form?workflow_action=phase1-reselect-counterpart" category="workflow" icon="">Select new Counterparts</action>
+  <guard>
+   <guard-role>ReviewerPhase1</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase1-send-comments" title="Edit Question (End comments and redraft)" new_state="phase1-draft" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/edit-and-close-comments?workflow_action=phase1-send-comments" category="workflow" icon="">Edit Question</action>
   <guard>
@@ -1260,6 +1268,12 @@
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
    <guard-expression>here/unanswered_questions</guard-expression>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-reselect-counterparts" title="Select new Counterparts" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/reassign_counterpart_form?workflow_action=phase2-reselect-counterpart" category="workflow" icon="">Select new Counterparts</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-send-comments" title="Edit Question (End comments and redraft )" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
