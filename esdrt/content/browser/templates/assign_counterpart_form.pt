@@ -40,12 +40,12 @@
 
         <tal:block condition="view/get_counterpart_users">
           <form method="post"
-                tal:attributes="action string:${context/absolute_url}/@@assign_counterpart_form">
+                tal:attributes="action string:${context/absolute_url}/${view/__name__}">
 
               <input type="hidden" name="form.submitted:boolean" value="True" />
             <div id="user-group-sharing-container">
 
-              <select multiple="multiple" name="counterparts" class="chosen-select"
+              <select multiple="multiple" name="counterparts:list" class="chosen-select"
                 data-placeholder="Click here or type the name to select counterparts">
                 <option
                   tal:repeat="member view/get_counterpart_users"

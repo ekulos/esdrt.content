@@ -6,6 +6,7 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import PageTemplateFile
 from utils import get_users_in_context
 from utils import send_mail
+from utils import notify
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)
@@ -18,10 +19,8 @@ def notification_cp(context, event):
 
     if event.action in ['phase1-request-for-counterpart-comments', 'phase2-request-for-counterpart-comments']:
         observation = aq_parent(context)
-        users = get_users_in_context(observation, roles=['CounterPart'])
         subject = u'New draft question to comment'
-        content = _temp(**dict(observation=observation))
-        send_mail(subject, safe_unicode(content), users)
+        notify(observation, _temp, subject, roles=['CounterPart'])
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)

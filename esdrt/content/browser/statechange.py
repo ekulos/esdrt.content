@@ -12,6 +12,8 @@ from z3c.form import field
 from z3c.form.form import Form
 from zope import schema
 from zope.interface import Interface
+from esdrt.content.notifications.utils import notify
+from Products.Five.browser.pagetemplatefile import PageTemplateFile
 
 
 class IFinishObservationReasonForm(Interface):
@@ -306,6 +308,51 @@ class IAssignConclusionReviewerForm(Interface):
         title=_(u'Select the conclusion reviewers'),
         vocabulary=u'plone.app.vocabularies.Users',
     )
+
+
+class ReAssignCounterPartForm(AssignCounterPartForm):
+
+    index = ViewPageTemplateFile('templates/assign_counterpart_form.pt')
+
+    def __call__(self):
+        """Perform the update and redirect if necessary, or render the page
+        """
+        target = self.assignation_target()
+        if self.request.form.get('send', None):
+            counterparts = self.request.get('counterparts', None)
+            #comments = self.request.get('comments', None)
+            if counterparts is None:
+                status = IStatusMessage(self.request)
+                msg = _(u'You need to select at least one counterpart')
+                status.addStatusMessage(msg, "error")
+                return self.index()
+
+            self.revoke_all_roles()
+
+            if isinstance(counterparts, basestring):
+                api.user.grant_roles(username=counterparts,
+                    roles=['CounterPart'],
+                    obj=target)
+            else:
+                for username in counterparts:
+                    api.user.grant_roles(username=username,
+                        roles=['CounterPart'],
+                        obj=target)
+
+            status = IStatusMessage(self.request)
+            msg = _(u'CounterParts reassigned correctly')
+            status.addStatusMessage(msg, "info")
+            url = self.context.absolute_url()
+
+            subject = u'New draft question to comment'
+            _temp = PageTemplateFile('../notifications/question_to_counterpart.pt')
+            notify(target, _temp, subject, roles=['CounterPart'])
+
+
+            return self.request.response.redirect(url)
+
+        else:
+            return self.index()
 
 
 class AssignConclusionReviewerForm(BrowserView):

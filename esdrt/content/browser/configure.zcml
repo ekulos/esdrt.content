@@ -16,6 +16,13 @@
         />
 
     <browser:page
+        name="reassign_counterpart_form"
+        for="..question.IQuestion"
+        class=".statechange.ReAssignCounterPartForm"
+        permission="zope2.View"
+        />
+
+    <browser:page
         name="assign_answerer_form"
         for="*"
         class=".statechange.AssignAnswererForm"
