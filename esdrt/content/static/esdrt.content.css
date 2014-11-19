@@ -609,3 +609,6 @@ span.envelope:before{
 .esdDiv .collapsiblePanelTitle.collapsed .eea-icon-left:before {
 	color:#fff;
 }
+#comment-discussion-wrapper{
+	overflow: hidden;
+}
