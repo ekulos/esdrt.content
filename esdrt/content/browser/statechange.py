@@ -158,15 +158,10 @@ class AssignAnswererForm(BrowserView):
 
             self.revoke_all_roles()
 
-            if isinstance(usernames, basestring):
-                api.user.grant_roles(username=usernames,
+            for username in usernames:
+                api.user.grant_roles(username=username,
                     roles=['MSExpert'],
                     obj=target)
-            else:
-                for username in usernames:
-                    api.user.grant_roles(username=username,
-                        roles=['MSExpert'],
-                        obj=target)
 
             if api.content.get_state(self.context) in [u'phase1-pending', u'phase1-pending-answer-drafting']:
                 wf_action = 'phase1-assign-answerer'
@@ -267,15 +262,10 @@ class AssignCounterPartForm(BrowserView):
 
             self.revoke_all_roles()
 
-            if isinstance(counterparts, basestring):
-                api.user.grant_roles(username=counterparts,
+            for username in counterparts:
+                api.user.grant_roles(username=username,
                     roles=['CounterPart'],
                     obj=target)
-            else:
-                for username in counterparts:
-                    api.user.grant_roles(username=username,
-                        roles=['CounterPart'],
-                        obj=target)
 
             if api.content.get_state(self.context) == 'phase1-draft':
                 wf_action = 'phase1-request-for-counterpart-comments'
@@ -329,15 +319,10 @@ class ReAssignCounterPartForm(AssignCounterPartForm):
 
             self.revoke_all_roles()
 
-            if isinstance(counterparts, basestring):
-                api.user.grant_roles(username=counterparts,
+            for username in counterparts:
+                api.user.grant_roles(username=username,
                     roles=['CounterPart'],
                     obj=target)
-            else:
-                for username in counterparts:
-                    api.user.grant_roles(username=username,
-                        roles=['CounterPart'],
-                        obj=target)
 
             status = IStatusMessage(self.request)
             msg = _(u'CounterParts reassigned correctly')
