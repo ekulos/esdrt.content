@@ -40,7 +40,7 @@
 
         <tal:block condition="view/get_counterpart_users">
           <form method="post"
-                tal:attributes="action string:${context/absolute_url}/@@assign_conclusion_reviewer_form">
+                tal:attributes="action string:${context/absolute_url}/${view/__name__}}">
 
               <input type="hidden" name="form.submitted:boolean" value="True" />
             <div id="user-group-sharing-container">

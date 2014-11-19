@@ -38,20 +38,11 @@
 
         <tal:block condition="view/get_counterpart_users">
           <form method="post"
-                tal:attributes="action string:${context/absolute_url}/@@assign_answerer_form">
+                tal:attributes="action string:${context/absolute_url}/${view/__name__}}">
 
               <input type="hidden" name="form.submitted:boolean" value="True" />
             <div id="user-group-sharing-container">
 
-              <!--div class="field" tal:repeat="member view/get_counterpart_users">
-                <label tal:attributes="for member/getId">
-                  <input type="checkbox"
-                    name="answerers:list"
-                    id=""
-                    tal:attributes="value member/getId; id member/getId;" />
-                    <span tal:content="python:member.getProperty('fullname', member.getId())"></span>
-                </label>
-              </div-->
               <select multiple="multiple" name="counterparts:list" class="chosen-select"
                 data-placeholder="Click here or type the name to select MS Experts">
                 <option
