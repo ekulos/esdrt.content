@@ -1,7 +1,14 @@
 from cs.htmlmailer.mailer import create_html_mail
 from plone import api
+from Products.CMFPlone.utils import safe_unicode
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.globalrequest import getRequest
+
+
+def notify(observation, template, subject, roles=[]):
+    users = get_users_in_context(observation, roles=roles)
+    content = template(**dict(observation=observation))
+    send_mail(subject, safe_unicode(content), users)
 
 
 def send_mail(subject, email_content, users=[]):
