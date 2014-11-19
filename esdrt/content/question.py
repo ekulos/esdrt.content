@@ -110,11 +110,16 @@ class Question(dexterity.Container):
         answers = [q for q in items if q.portal_type == 'CommentAnswer']
 
         if (len(questions) > len(answers)):
-            last_question = questions[-1]
             question_history = self.workflow_history['esd-question-review-workflow']
+            current_status = api.content.get_state(self)
             for item in question_history:
-                if item['review_state'] == 'phase1-counterpart-comments' or item['review_state'] == 'phase2-counterpart-comments':
+                if current_status.startswith('phase1-') and \
+                    item['review_state'] == 'phase1-counterpart-comments':
                     return True
+                if current_status.startswith('phase2-') and \
+                    item['review_state'] == 'phase2-counterpart-comments':
+                    return True
+        return False
 
     def can_request_comments(self):
         items = self.values()
@@ -122,12 +127,13 @@ class Question(dexterity.Container):
         answers = [q for q in items if q.portal_type == 'CommentAnswer']
 
         if (len(questions) > len(answers)):
-            last_question = questions[-1]
             question_history = self.workflow_history['esd-question-review-workflow']
             for item in question_history:
                 if item['review_state'] == 'phase1-counterpart-comments' or item['review_state'] == 'phase2-counterpart-comments':
                     return False
             return True
+
+        return False
 
     def unanswered_questions(self):
         items = self.values()
