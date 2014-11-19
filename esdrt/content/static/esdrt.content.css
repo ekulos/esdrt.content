@@ -246,12 +246,12 @@
 	border-left: 5px solid #FFA500 !important;
 }
 div.phase1-observation{
-	background: url("./phase-1.png") no-repeat;
+	background: url("++resource++esdrt.content/phase-1.png") no-repeat;
 	width: 61px;
 	height: 32px;
 }
 div.phase2-observation{
-	background: url("./phase-2.png") no-repeat;
+	background: url("++resource++esdrt.content/phase-2.png") no-repeat;
 	width: 61px;
 	height: 32px;
 }
@@ -608,4 +608,7 @@ span.envelope:before{
 }
 .esdDiv .collapsiblePanelTitle.collapsed .eea-icon-left:before {
 	color:#fff;
+}
+#comment-discussion-wrapper{
+	overflow: hidden;
 }
