@@ -650,6 +650,7 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="True">
    <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
@@ -716,6 +717,7 @@
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>LeadReviewer</permission-role>
