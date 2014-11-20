@@ -163,7 +163,7 @@
           <div class="cell position-4 width-6 esdLabel">Free text</div>
         </div>  
         <div class="row">
-          <div class="cell position-1 width-3 esdLabel">
+          <div class="cell position-1 width-3">
             <select id="statusFilter"  class="chosen-select" data-placeholder="Select status"
                 tal:define="status python:'';
                             status request/status | status">
