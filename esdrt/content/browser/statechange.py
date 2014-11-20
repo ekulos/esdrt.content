@@ -26,11 +26,11 @@ class IFinishObservationReasonForm(Interface):
 
 class FinishObservationReasonForm(Form):
     fields = field.Fields(IFinishObservationReasonForm)
-    label = _(u'Finish observation')
+    label = _(u'Request finalisation of the observation')
     description = _(u'Check the reason for requesting the closure of this observation')
     ignoreContext = True
 
-    @button.buttonAndHandler(u'Finish observation')
+    @button.buttonAndHandler(u'Request finalisation of the observation')
     def finish_observation(self, action):
         comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):

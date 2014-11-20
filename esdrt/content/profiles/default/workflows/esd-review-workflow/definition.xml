@@ -602,7 +602,7 @@
   </guard>
  </transition>
  <transition transition_id="phase1-draft-conclusions" title="Draft conclusions" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase1-draft-conclusions" category="" icon="">Finish Observation</action>
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase1-draft-conclusions" category="" icon="">Request finalisation of the observation</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
    <guard-role>ReviewerPhase1</guard-role>
@@ -628,7 +628,7 @@
   </guard>
  </transition>
  <transition transition_id="phase1-request-close" title="Finish Observation" new_state="phase1-close-requested" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/request-finish-observation?workflow_action=phase1-request-close" category="workflow" icon="">Finish Observation</action>
+  <action url="%(content_url)s/request-finish-observation?workflow_action=phase1-request-close" category="workflow" icon="">Request finalisation of the observation</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
    <guard-expression>here/@@view/get_conclusion</guard-expression>
@@ -675,7 +675,7 @@
   </guard>
  </transition>
  <transition transition_id="phase2-finish-observation" title="Finish Observation" new_state="phase2-close-requested" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/request-finish-observation?workflow_action=phase2-finish-observation" category="workflow" icon="">Finish Observation</action>
+  <action url="%(content_url)s/request-finish-observation?workflow_action=phase2-finish-observation" category="workflow" icon="">Request finalisation of the observation</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
