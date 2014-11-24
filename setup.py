@@ -35,6 +35,7 @@ setup(name='esdrt.content',
           'plone.app.versioningbehavior',
           'plone.app.workflowmanager',
           'cs.htmlmailer',
+          'collective.deletepermission'
       ],
       entry_points="""
       # -*- Entry points: -*-
