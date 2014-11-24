@@ -8,14 +8,4 @@
         factory=".reference_number.ReferenceNumberCreator"
     />
 
-<!--     <adapter
-        factory=".notifications.NotificationReceivers"
-    /> -->
-
-<!--     <adapter
-        factory=".notifications.QuestionNotificationReceivers"
-    />
-
- -->
-
 </configure>
