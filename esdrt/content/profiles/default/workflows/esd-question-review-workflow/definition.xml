@@ -19,6 +19,7 @@
  <permission>esdrt.content: Edit CommentAnswer</permission>
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
+ <permission>Delete portal content</permission>
  <state state_id="phase1-answered" title="Answered">
   <exit-transition transition_id="phase1-recall-msa"/>
   <exit-transition transition_id="phase1-validate-answer-msa"/>
@@ -179,6 +180,8 @@
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="Delete objects" acquired="True">
+  </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">

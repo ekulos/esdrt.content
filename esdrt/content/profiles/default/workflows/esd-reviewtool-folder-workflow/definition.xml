@@ -30,6 +30,7 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>SectorExpert</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Owner</permission-role>
@@ -75,6 +76,7 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>ReviewExpert</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Owner</permission-role>

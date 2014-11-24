@@ -13,6 +13,7 @@
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
  <permission>esdrt.content: View Conclusion Discussion</permission>
+ <permission>Delete portal content</permission>
  <state state_id="phase1-close-requested" title="Close requested">
   <exit-transition transition_id="phase1-send-to-team-2"/>
   <exit-transition transition_id="phase1-deny-closure"/>
@@ -231,6 +232,8 @@
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="Delete objects" acquired="True">
+  </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
@@ -254,6 +257,8 @@
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Add ConclusionsPhase2" acquired="True">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
   </permission-map>
