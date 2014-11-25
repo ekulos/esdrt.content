@@ -477,6 +477,7 @@
  </state>
  <state state_id="phase2-draft" title="phase2-draft">
   <exit-transition transition_id="phase2-open"/>
+  <exit-transition transition_id="recall-from-phase2"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
@@ -581,14 +582,14 @@
   </permission-map>
  </state>
  <transition transition_id="go-to-phase2" title="Go to phase 2" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
-  
+
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase1-approve" title="Open" new_state="phase1-pending" trigger="USER" before_script="" after_script="">
-  
+
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase1</guard-role>
@@ -606,8 +607,8 @@
    <guard-role>QualityExpert</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase1-draft-conclusions" title="Draft conclusions" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/content_status_modify?workflow_action=phase1-draft-conclusions" category="" icon="">Request finalisation of the observation</action>
+ <transition transition_id="phase1-draft-conclusions" title="Go to Conclusions" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/add-conclusions?workflow_action=phase1-draft-conclusions" category="" icon="">Go to conclusions</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
    <guard-role>ReviewerPhase1</guard-role>
@@ -705,6 +706,12 @@
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
+ <transition transition_id="recall-from-phase2" title="Recall Observation" new_state="phase1-close-requested" trigger="USER" before_script="" after_script="">
+  <action url="" category="workflow" icon="%(content_url)s/content_status_modify?workflow_action=recall-from-phase2">Recall Observation</action>
+  <guard>
+   <guard-role>QualityExpert</guard-role>
+  </guard>
+ </transition>
  <worklist worklist_id="reviewer_queue" title="">
   <description>Reviewer tasks</description>
   <action url="%(portal_url)s/search?review_state=pending" category="global" icon="">Pending (%(count)d)</action>
@@ -716,7 +723,7 @@
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
-   
+
    <expression>transition/getId|nothing</expression>
   </default>
   <guard>
@@ -725,7 +732,7 @@
  <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
   <description>The ID of the user who performed the previous transition</description>
   <default>
-   
+
    <expression>user/getId</expression>
   </default>
   <guard>
@@ -734,7 +741,7 @@
  <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
-   
+
    <expression>python:state_change.kwargs.get('comment', '')</expression>
   </default>
   <guard>
@@ -743,7 +750,7 @@
  <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
   <description>Provides access to workflow history</description>
   <default>
-   
+
    <expression>state_change/getHistory</expression>
   </default>
   <guard>
@@ -754,7 +761,7 @@
  <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
-   
+
    <expression>state_change/getDateTime</expression>
   </default>
   <guard>
