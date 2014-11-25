@@ -2,6 +2,7 @@ from Acquisition import aq_parent
 from DateTime import DateTime
 from esdrt.content.observation import IObservation
 from esdrt.content.question import IQuestion
+from esdrt.content.commentanswer import ICommentAnswer
 from five import grok
 from plone import api
 from Products.CMFCore.interfaces import IActionSucceededEvent
@@ -168,3 +169,19 @@ def observation_transition(observation, event):
                 api.content.transition(obj=question,
                     transition='phase2-reopen'
                 )
+
+
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
+
+
+@grok.subscribe(ICommentAnswer, IObjectRemovedEvent)
+def delete_answer(answer, event):
+    question = aq_parent(answer)
+    if api.content.get_state(obj=question).startswith('phase1-'):
+        api.content.transition(obj=question,
+            transition='phase1-delete-answer'
+        )
+    elif api.content.get_state(obj=question).startswith('phase2-'):
+        api.content.transition(obj=question,
+            transition='phase2-delete-answer'
+        )

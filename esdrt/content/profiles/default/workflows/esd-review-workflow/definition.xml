@@ -2,6 +2,7 @@
 <dc-workflow workflow_id="esd-review-workflow" title="ESD Review Workflow" description="" state_variable="review_state" initial_state="phase1-draft" manager_bypass="True">
  <permission>Access contents information</permission>
  <permission>Delete objects</permission>
+ <permission>Delete portal content</permission>
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>Sharing page: Delegate roles</permission>
@@ -13,7 +14,6 @@
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
  <permission>esdrt.content: View Conclusion Discussion</permission>
- <permission>Delete portal content</permission>
  <state state_id="phase1-close-requested" title="Close requested">
   <exit-transition transition_id="phase1-send-to-team-2"/>
   <exit-transition transition_id="phase1-deny-closure"/>
@@ -582,14 +582,14 @@
   </permission-map>
  </state>
  <transition transition_id="go-to-phase2" title="Go to phase 2" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
-
+  
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase1-approve" title="Open" new_state="phase1-pending" trigger="USER" before_script="" after_script="">
-
+  
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase1</guard-role>
@@ -723,7 +723,7 @@
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
-
+   
    <expression>transition/getId|nothing</expression>
   </default>
   <guard>
@@ -732,7 +732,7 @@
  <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
   <description>The ID of the user who performed the previous transition</description>
   <default>
-
+   
    <expression>user/getId</expression>
   </default>
   <guard>
@@ -741,7 +741,7 @@
  <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
-
+   
    <expression>python:state_change.kwargs.get('comment', '')</expression>
   </default>
   <guard>
@@ -750,7 +750,7 @@
  <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
   <description>Provides access to workflow history</description>
   <default>
-
+   
    <expression>state_change/getHistory</expression>
   </default>
   <guard>
@@ -761,7 +761,7 @@
  <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
-
+   
    <expression>state_change/getDateTime</expression>
   </default>
   <guard>

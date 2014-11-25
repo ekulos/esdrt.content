@@ -9,6 +9,7 @@
  <permission>CMFEditions: Access previous versions</permission>
  <permission>CMFEditions: Save new version</permission>
  <permission>Delete objects</permission>
+ <permission>Delete portal content</permission>
  <permission>Modify portal content</permission>
  <permission>Reply to item</permission>
  <permission>View</permission>
@@ -19,7 +20,6 @@
  <permission>esdrt.content: Edit CommentAnswer</permission>
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
- <permission>Delete portal content</permission>
  <state state_id="phase1-answered" title="Answered">
   <exit-transition transition_id="phase1-recall-msa"/>
   <exit-transition transition_id="phase1-validate-answer-msa"/>
@@ -382,11 +382,12 @@
  <state state_id="phase1-pending-answer-drafting" title="Pending Answer Validation">
   <exit-transition transition_id="phase1-answer-to-lr"/>
   <exit-transition transition_id="phase1-assign-answerer"/>
+  <exit-transition transition_id="phase1-delete-answer"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>QualityExpert</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
@@ -397,16 +398,19 @@
    <permission-role>MSAuthority</permission-role>
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
+   <permission-role>MSAuthority</permission-role>
+  </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>QualityExpert</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
@@ -876,8 +880,9 @@
   </permission-map>
  </state>
  <state state_id="phase2-pending-answer-drafting" title="phase2-pending-answer-drafting">
-  <exit-transition transition_id="phase2-assign-answerer"/>
   <exit-transition transition_id="phase2-answer-to-lr"/>
+  <exit-transition transition_id="phase2-assign-answerer"/>
+  <exit-transition transition_id="phase2-delete-answer"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -1107,6 +1112,12 @@
    <guard-role>QualityExpert</guard-role>
   </guard>
  </transition>
+ <transition transition_id="phase1-delete-answer" title="Delete Answer" new_state="phase1-pending" trigger="USER" before_script="" after_script="">
+  
+  <guard>
+   <guard-role>MSAuthority</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase1-delete-question" title="Delete Question" new_state="" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/delete_confirmation?w=1" category="workflow" icon="">Delete Question</action>
   <guard>
@@ -1237,6 +1248,12 @@
   <action url="" category="" icon="">Finish Observation</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-delete-answer" title="Delete Answer" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
+  
+  <guard>
+   <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-draft-conclusions" title="Add Conclusions" new_state="" trigger="USER" before_script="" after_script="">
