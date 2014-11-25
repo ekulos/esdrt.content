@@ -49,7 +49,7 @@ class Comment(dexterity.Container):
 
     def can_delete(self):
         sm = getSecurityManager()
-        return sm.checkPermission('Delete objects', self)
+        return sm.checkPermission('Delete portal content', self)
 
     def can_add_files(self):
         sm = getSecurityManager()

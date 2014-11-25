@@ -180,9 +180,9 @@
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="Delete objects" acquired="True">
+   <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="Delete portal content" acquired="True">
-   <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
@@ -638,6 +638,8 @@
  <state state_id="phase2-draft" title="phase2-draft">
   <exit-transition transition_id="finish-observation-re"/>
   <exit-transition transition_id="phase2-close"/>
+  <exit-transition transition_id="phase2-delete-question"/>
+  <exit-transition transition_id="phase2-recall"/>
   <exit-transition transition_id="phase2-request-for-counterpart-comments"/>
   <exit-transition transition_id="phase2-send-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
@@ -657,6 +659,9 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="True">
    <permission-role>Manager</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
+  </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
@@ -1118,10 +1123,11 @@
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase1-delete-question" title="Delete Question" new_state="" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/delete_confirmation?w=1" category="workflow" icon="">Delete Question</action>
+ <transition transition_id="phase1-delete-question" title="Delete Question" new_state="phase1-closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/delete-last-comment?workflow_action=phase1-delete-question" category="workflow" icon="">Delete Question</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
+   <guard-expression>here/unanswered_questions</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-draft-conclusions" title="Add Conclusions" new_state="" trigger="USER" before_script="" after_script="">
@@ -1256,11 +1262,24 @@
    <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
+ <transition transition_id="phase2-delete-question" title="Delete Question" new_state="phase2-closed" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/delete-last-comment?workflow_action=phase2-delete-question" category="workflow" icon="">Delete Question</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase2-draft-conclusions" title="Add Conclusions" new_state="" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/add-conclusions?workflow_action=phase2-draft-conclusions" category="workflow" icon="">Add Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
    <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion_phase2()</guard-expression>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-recall" title="Recall" new_state="phase1-closed" trigger="USER" before_script="" after_script="">
+  <action url="" category="" icon="">Recall</action>
+  <guard>
+   <guard-role>Manager</guard-role>
+   <guard-role>QualityExpert</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-recall-msa" title="Recall" new_state="phase2-recalled-msa" trigger="USER" before_script="" after_script="">

@@ -434,3 +434,17 @@ class AddConclusions(grok.View):
             raise ActionExecutionError(Invalid(u"Invalid context"))
 
         return self.request.response.redirect(url)
+
+
+class DeleteLastComment(grok.View):
+    grok.context(IQuestion)
+    grok.name('delete-last-comment')
+    grok.require('zope2.View')
+
+    def render(self):
+        comments = [c for c in self.context.values() if c.portal_type == 'Comment']
+        if comments:
+            last_comment = comments[-1]
+            self.context.manage_delObjects([last_comment.getId()])
+
+        return self.request.response.redirect(self.context.absolute_url())

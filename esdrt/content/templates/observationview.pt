@@ -848,7 +848,7 @@
             <a href=""
                   tal:replace="nothing"
                   tal:condition="question/can_delete"
-                  tal:attributes="href string:${question/absolute_url}/../delete_confirmation"
+                  tal:attributes="href string:${question/absolute_url}/delete_confirmation"
                   class="deleteButton standardButton">
                     Delete question
             </a>

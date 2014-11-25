@@ -57,7 +57,7 @@ class CommentAnswer(dexterity.Container):
 
     def can_delete(self):
         sm = getSecurityManager()
-        return sm.checkPermission('Delete objects', self)
+        return sm.checkPermission('Delete portal content', self)
 
 
 # View class

@@ -1,12 +1,14 @@
 from Acquisition import aq_parent
 from DateTime import DateTime
+from esdrt.content.comment import IComment
+from esdrt.content.commentanswer import ICommentAnswer
 from esdrt.content.observation import IObservation
 from esdrt.content.question import IQuestion
-from esdrt.content.commentanswer import ICommentAnswer
 from five import grok
 from plone import api
 from Products.CMFCore.interfaces import IActionSucceededEvent
 from Products.CMFCore.utils import getToolByName
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)
@@ -170,8 +172,32 @@ def observation_transition(observation, event):
                     transition='phase2-reopen'
                 )
 
+    elif event.action == 'recall-from-phase2':
+        with api.env.adopt_roles(roles=['Manager']):
+            questions = [c for c in observation.values() if c.portal_type == 'Question']
+            if questions:
+                question = questions[0]
+                api.content.transition(obj=question,
+                    transition='phase2-recall'
+                )
 
-from zope.lifecycleevent.interfaces import IObjectRemovedEvent
+
+@grok.subscribe(IComment, IObjectRemovedEvent)
+def delete_answer(answer, event):
+    question = aq_parent(answer)
+    if not question.has_answers():
+        # delete also the parent question
+        observation = aq_parent(question)
+        del observation[question.getId()]
+    else:
+        if api.content.get_state(obj=question).startswith('phase1-'):
+            api.content.transition(obj=question,
+                transition='phase1-delete-question'
+            )
+        elif api.content.get_state(obj=question).startswith('phase2-'):
+            api.content.transition(obj=question,
+                transition='phase2-delete-question'
+            )
 
 
 @grok.subscribe(ICommentAnswer, IObjectRemovedEvent)
