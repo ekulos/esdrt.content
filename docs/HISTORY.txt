@@ -6,6 +6,10 @@ Changelog
 
 - Enable notifications [erral]
 
+- Fix question and answer deleting issues [erral]
+
+- Improve 'myview' [MikelS]
+
 
 1.19.4 (2014-10-30)
 -------------------
