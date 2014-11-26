@@ -331,7 +331,13 @@ class ReAssignCounterPartForm(AssignCounterPartForm):
 
             subject = u'New draft question to comment'
             _temp = PageTemplateFile('../notifications/question_to_counterpart.pt')
-            notify(target, _temp, subject, roles=['CounterPart'])
+            notify(
+                target,
+                _temp,
+                subject,
+                role='CounterPart',
+                notification_name='question_to_counterpart'
+            )
 
 
             return self.request.response.redirect(url)

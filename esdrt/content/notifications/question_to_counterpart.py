@@ -2,10 +2,7 @@ from Acquisition import aq_parent
 from esdrt.content.question import IQuestion
 from five import grok
 from Products.CMFCore.interfaces import IActionSucceededEvent
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import PageTemplateFile
-from utils import get_users_in_context
-from utils import send_mail
 from utils import notify
 
 
@@ -20,7 +17,13 @@ def notification_cp(context, event):
     if event.action in ['phase1-request-for-counterpart-comments', 'phase2-request-for-counterpart-comments']:
         observation = aq_parent(context)
         subject = u'New draft question to comment'
-        notify(observation, _temp, subject, roles=['CounterPart'])
+        notify(
+            observation,
+            _temp,
+            subject,
+            role='CounterPart',
+            notification_name='question_to_counterpart'
+        )
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)
@@ -33,10 +36,14 @@ def notification_qe(context, event):
 
     if event.action in ['phase1-request-for-counterpart-comments']:
         observation = aq_parent(context)
-        users = get_users_in_context(observation, roles=['QualityExpert'])
         subject = u'New draft question to comment'
-        content = _temp(**dict(observation=observation))
-        send_mail(subject, safe_unicode(content), users)
+        notify(
+            observation,
+            _temp,
+            subject,
+            role='QualityExpert',
+            notification_name='question_to_counterpart'
+        )
 
 
 @grok.subscribe(IQuestion, IActionSucceededEvent)
@@ -49,7 +56,11 @@ def notification_lr(context, event):
 
     if event.action in ['phase2-request-for-counterpart-comments']:
         observation = aq_parent(context)
-        users = get_users_in_context(observation, roles=['LeadReviewer'])
         subject = u'New draft question to comment'
-        content = _temp(**dict(observation=observation))
-        send_mail(subject, safe_unicode(content), users)
+        notify(
+            observation,
+            _temp,
+            subject,
+            role='LeadReviewer',
+            notification_name='question_to_counterpart'
+        )

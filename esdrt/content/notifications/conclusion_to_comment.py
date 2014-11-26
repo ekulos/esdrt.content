@@ -1,11 +1,8 @@
-from Acquisition import aq_parent
 from esdrt.content.observation import IObservation
 from five import grok
 from Products.CMFCore.interfaces import IActionSucceededEvent
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import PageTemplateFile
-from utils import get_users_in_context
-from utils import send_mail
+from utils import notify
 
 
 @grok.subscribe(IObservation, IActionSucceededEvent)
@@ -17,11 +14,15 @@ def notification_cp(context, event):
     _temp = PageTemplateFile('conclusion_to_comment.pt')
 
     if event.action in ['phase1-request-comments', 'phase2-request-comments']:
-        observation = aq_parent(context)
-        users = get_users_in_context(observation, roles=['CounterPart'])
+        observation = context
         subject = u'New draft conclusion to comment on'
-        content = _temp(**dict(observation=observation))
-        send_mail(subject, safe_unicode(content), users)
+        notify(
+            observation,
+            _temp,
+            subject,
+            'CounterPart'
+            'conclusion_to_comment'
+        )
 
 
 @grok.subscribe(IObservation, IActionSucceededEvent)
@@ -33,11 +34,15 @@ def notification_qe(context, event):
     _temp = PageTemplateFile('conclusion_to_comment.pt')
 
     if event.action in ['phase1-request-comments']:
-        observation = aq_parent(context)
-        users = get_users_in_context(observation, roles=['QualityExpert'])
+        observation = context
         subject = u'New draft conclusion to comment on'
-        content = _temp(**dict(observation=observation))
-        send_mail(subject, safe_unicode(content), users)
+        notify(
+            observation,
+            _temp,
+            subject,
+            'QualityExpert'
+            'conclusion_to_comment'
+        )
 
 
 @grok.subscribe(IObservation, IActionSucceededEvent)
@@ -49,8 +54,12 @@ def notification_lr(context, event):
     _temp = PageTemplateFile('conclusion_to_comment.pt')
 
     if event.action in ['phase2-request-comments']:
-        observation = aq_parent(context)
-        users = get_users_in_context(observation, roles=['LeadReviewer'])
+        observation = context
         subject = u'New draft conclusion to comment on'
-        content = _temp(**dict(observation=observation))
-        send_mail(subject, safe_unicode(content), users)
+        notify(
+            observation,
+            _temp,
+            subject,
+            'LeadReviewer'
+            'conclusion_to_comment'
+        )
