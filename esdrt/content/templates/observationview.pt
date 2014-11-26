@@ -275,23 +275,6 @@
   </metal:observation>
 
 
-  <div class="actions" tal:define="actions view/get_menu_actions">
-
-  </div>
-
-  <div class="subscription actions" tal:define="actions view/subscription_options"
-    tal:replace="nothing">
-    <tal:block  tal:repeat="action actions">
-        <a href=""
-          tal:attributes="href action/action"
-          class="standardButton"
-          i18n:translate=""
-          tal:content="action/title">
-          Action
-        </a>
-    </tal:block>
-  </div>
-
   <ul class="eea-tabs" tal:condition="view/get_questions">
     <li style="width:165px;max-width:165px"
       tal:condition="python:context.get_status() == 'phase1-close-requested'">Finish observation</li>

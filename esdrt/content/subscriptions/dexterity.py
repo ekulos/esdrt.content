@@ -1,39 +1,39 @@
 from zope.annotation.interfaces import IAnnotations
-from BTrees.OOBTree import OOSet
+from BTrees.OOBTree import OOBTree
 
 
-SUBSCRIPTION_KEY = 'esdrt.content.subscriptions.subscribed'
+# SUBSCRIPTION_KEY = 'esdrt.content.subscriptions.subscribed'
 UNSUBSCRIPTION_KEY = 'esdrt.content.subscriptions.unsubscribed'
 
 
-class NotificationSubscriptions(object):
+# class NotificationSubscriptions(object):
 
-    def __init__(self, context):
-        self.context = context
+#     def __init__(self, context):
+#         self.context = context
 
-    def get(self):
-        annotated = IAnnotations(self.context)
-        return list(annotated.get(SUBSCRIPTION_KEY, OOSet()))
+#     def get(self):
+#         annotated = IAnnotations(self.context)
+#         return list(annotated.get(SUBSCRIPTION_KEY, OOBTree()))
 
-    def add_notifications(self, userid):
-        annotated = IAnnotations(self.context)
-        data = annotated.get(SUBSCRIPTION_KEY, OOSet())
-        if data.add(userid):
-            annotated[SUBSCRIPTION_KEY] = data
-            return 1
-        return 0
+#     def add_notifications(self, userid):
+#         annotated = IAnnotations(self.context)
+#         data = annotated.get(SUBSCRIPTION_KEY, OOBTree())
+#         if data.add(userid):
+#             annotated[SUBSCRIPTION_KEY] = data
+#             return 1
+#         return 0
 
-    def del_notifications(self, userid):
-        annotated = IAnnotations(self.context)
-        data = annotated.get(SUBSCRIPTION_KEY, OOSet())
-        try:
-            data.remove(userid)
-            annotated[SUBSCRIPTION_KEY] = data
-            return 1
-        except KeyError:
-            return 0
+#     def del_notifications(self, userid):
+#         annotated = IAnnotations(self.context)
+#         data = annotated.get(SUBSCRIPTION_KEY, OOBTree())
+#         try:
+#             data.remove(userid)
+#             annotated[SUBSCRIPTION_KEY] = data
+#             return 1
+#         except KeyError:
+#             return 0
 
-        return 0
+#         return 0
 
 
 class NotificationUnsubscriptions(object):
@@ -43,23 +43,25 @@ class NotificationUnsubscriptions(object):
 
     def get(self):
         annotated = IAnnotations(self.context)
-        return list(annotated.get(UNSUBSCRIPTION_KEY, OOSet()))
+        return annotated.get(UNSUBSCRIPTION_KEY, OOBTree())
 
-    def unsubscribe(self, userid):
-        annotated = IAnnotations(self.context)
-        data = annotated.get(UNSUBSCRIPTION_KEY, OOSet())
-        if data.add(userid):
-            annotated[UNSUBSCRIPTION_KEY] = data
-            return 1
-        return 0
+    def get_user_data(self, userid):
+        return self.get().get(userid, OOBTree())
 
-    def delete_unsubscribe(self, userid):
+    def unsubscribe(self, userid, notifications={}):
+        """
+        Save the unsubscribed notifications dict.
+        The key of the dict should be the role name, and the value
+         the list of notifications that will be unsubscribed:
+
+         {
+            'CounterPart': ['conclusion_to_comment'],
+            'ReviewerPhase1': ['observation_finalised', 'question_to_ms'],
+         }
+        """
         annotated = IAnnotations(self.context)
-        data = annotated.get(UNSUBSCRIPTION_KEY, OOSet())
-        try:
-            data.remove(userid)
-            annotated[UNSUBSCRIPTION_KEY] = data
-            return 1
-        except KeyError:
-            return 0
-        return 0
+        data = annotated.get(UNSUBSCRIPTION_KEY, OOBTree())
+        data[userid] = notifications
+        annotated[UNSUBSCRIPTION_KEY] = data
+        return 1
+
