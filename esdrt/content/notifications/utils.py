@@ -72,7 +72,7 @@ def get_users_in_context(observation, role, notification_name):
     return users
 
 
-def exclue_user_from_notification(observation, user, role, notification):
+def exclude_user_from_notification(observation, user, role, notification):
     adapted = INotificationUnsubscriptions(observation)
     data = adapted.get_user_data(user.getId())
     excluded_notifications = data.get(role, [])
