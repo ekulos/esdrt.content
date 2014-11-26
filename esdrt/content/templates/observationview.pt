@@ -160,6 +160,14 @@
             Back to overview list
       </a>
     </div>
+    <div class="actions">
+      <a href=""
+        tal:attributes="href string:${here/absolute_url}/subscription-configuration"
+        class="standardButton">
+          <span class="eea-icon"><!-- --></span>
+            Configure notifications
+      </a>
+    </div>
     <div class="esdDiv">
       <div class="row" style="margin-top:15px">
         <div class="cell position-0 width-1">
