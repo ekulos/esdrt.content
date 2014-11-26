@@ -26,6 +26,11 @@ class INotificationUnsubscriptions(Interface):
         notifications in a given context
         """
 
+    def get_user_data(userid):
+        """
+        Get unsubscription information for one user
+        """
+
     def unsubscribe(userid):
         """
         Unsubscribe user from receiving notifications
