@@ -14,6 +14,7 @@
             $(this).attr("title", currentText);
           }
         });
+        $('table.observationList tr').superLink('a:first');
         $(".chosen-select").chosen({width: "100%", allow_single_deselect: true});
         $("#btnFilter").click(function(){
           var filter = "";
@@ -238,6 +239,7 @@
                   <tr tal:attributes="data-href observation/absolute_url;
                       class string:clickableRow ${observation/observation_css_class};">
                     <td class="observationRefCell">
+                        <a tal:attributes="href observation/absolute_url;"/>
                         <span class="ref-num"
                           tal:content="observation/getId">
                           UK-WAS-13-001
