@@ -1,3 +1,4 @@
+from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
 from cs.htmlmailer.mailer import create_html_mail
 from plone import api
 from Products.CMFPlone.utils import safe_unicode
@@ -5,8 +6,8 @@ from Products.statusmessages.interfaces import IStatusMessage
 from zope.globalrequest import getRequest
 
 
-def notify(observation, template, subject, roles=[]):
-    users = get_users_in_context(observation, roles=roles)
+def notify(observation, template, subject, role, notification_name):
+    users = get_users_in_context(observation, role, notification_name)
     content = template(**dict(observation=observation))
     send_mail(subject, safe_unicode(content), users)
 
@@ -22,7 +23,8 @@ def send_mail(subject, email_content, users=[]):
         cc_addrs = user_emails[1:]
         request = getRequest()
 
-        mail = create_html_mail(subject,
+        mail = create_html_mail(
+            subject,
             html=email_content,
             from_addr=from_addr,
             to_addr=to_addr,
@@ -53,28 +55,25 @@ def extract_emails(users):
     return list(set(emails))
 
 
-def get_users_in_context(observation, roles):
+def get_users_in_context(observation, role, notification_name):
     users = []
     local_roles = observation.get_local_roles()
-    role_dict = {}
-    role_dict['ReviewerPhase1'] = []
-    role_dict['ReviewerPhase2'] = []
-    role_dict['QualityExpert'] = []
-    role_dict['LeadReviewer'] = []
-    role_dict['MSAuthority'] = []
-    role_dict['CounterPart'] = []
-    role_dict['MSExpert'] = []
-    for username, userroles in local_roles:
-        for userrole in userroles:
-            if userrole in role_dict.keys():
-                role_dict[userrole].append(username)
 
     usernames = []
-    for role in roles:
-        usernames.extend(role_dict.get(role, []))
+    for username, userroles in local_roles:
+        if role in userroles:
+            usernames.append(username)
 
     for username in usernames:
         user = api.user.get(username=username)
-        users.append(user)
+        if not exclude_user_from_notification(observation, user, role, notification):
+            users.append(user)
 
     return users
+
+
+def exclue_user_from_notification(observation, user, role, notification):
+    adapted = INotificationUnsubscriptions(observation)
+    data = adapted.get_user_data(user.getId())
+    excluded_notifications = data.get(role, [])
+    return notification in excluded_notifications
