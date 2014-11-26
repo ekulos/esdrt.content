@@ -20,7 +20,7 @@ def notification_qe(context, event):
             observation,
             _temp,
             subject,
-            'QualityExpert'
+            'QualityExpert',
             'observation_finalisation_request'
         )
 
@@ -40,6 +40,6 @@ def notification_lr(context, event):
             observation,
             _temp,
             subject,
-            'LeadReviewer'
+            'LeadReviewer',
             'observation_finalisation_request'
         )

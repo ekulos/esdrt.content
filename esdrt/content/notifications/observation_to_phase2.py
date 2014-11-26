@@ -20,7 +20,7 @@ def notification_lr(context, event):
             observation,
             _temp,
             subject,
-            'LeadReviewer'
+            'LeadReviewer',
             'observation_to_phase2'
         )
 
@@ -40,6 +40,6 @@ def notification_rev_ph2(context, event):
             observation,
             _temp,
             subject,
-            'ReviewerPhase2'
+            'ReviewerPhase2',
             'observation_to_phase2'
         )

@@ -20,7 +20,7 @@ def notification_rev_ph1(context, event):
             observation,
             _temp,
             subject,
-            'ReviewerPhase1'
+            'ReviewerPhase1',
             'observation_finalisation_denied'
         )
 
@@ -40,6 +40,6 @@ def notification_rev_ph2(context, event):
             observation,
             _temp,
             subject,
-            'ReviewerPhase2'
+            'ReviewerPhase2',
             'observation_finalisation_denied'
         )

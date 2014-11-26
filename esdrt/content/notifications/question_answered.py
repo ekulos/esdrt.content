@@ -21,7 +21,7 @@ def notification_qe(context, event):
             observation,
             _temp,
             subject,
-            'QualityExpert'
+            'QualityExpert',
             'question_answered'
         )
 
@@ -41,7 +41,7 @@ def notification_lr(context, event):
             observation,
             _temp,
             subject,
-            'LeadReviewer'
+            'LeadReviewer',
             'question_answered'
         )
 
@@ -61,7 +61,7 @@ def notification_rev_ph1(context, event):
             observation,
             _temp,
             subject,
-            'ReviewerPhase1'
+            'ReviewerPhase1',
             'question_answered'
         )
 
@@ -81,7 +81,7 @@ def notification_rev_ph2(context, event):
             observation,
             _temp,
             subject,
-            'ReviewerPhase2'
+            'ReviewerPhase2',
             'question_answered'
         )
 

@@ -19,7 +19,7 @@ def notification_ms(context, event):
             observation,
             _temp,
             subject,
-            'MSAuthority'
+            'MSAuthority',
             'observation_finalised'
         )
 
@@ -38,7 +38,7 @@ def notification_rev_ph1(context, event):
             observation,
             _temp,
             subject,
-            'ReviewerPhase1'
+            'ReviewerPhase1',
             'observation_finalised'
         )
 
@@ -57,6 +57,6 @@ def notification_rev_ph2(context, event):
             observation,
             _temp,
             subject,
-            'ReviewerPhase2'
+            'ReviewerPhase2',
             'observation_finalised'
         )

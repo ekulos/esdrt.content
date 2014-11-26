@@ -20,7 +20,7 @@ def notification_cp(context, event):
             observation,
             _temp,
             subject,
-            'CounterPart'
+            'CounterPart',
             'conclusion_to_comment'
         )
 
@@ -40,7 +40,7 @@ def notification_qe(context, event):
             observation,
             _temp,
             subject,
-            'QualityExpert'
+            'QualityExpert',
             'conclusion_to_comment'
         )
 
@@ -60,6 +60,6 @@ def notification_lr(context, event):
             observation,
             _temp,
             subject,
-            'LeadReviewer'
+            'LeadReviewer',
             'conclusion_to_comment'
         )
