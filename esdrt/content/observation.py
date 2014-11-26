@@ -449,10 +449,10 @@ class Observation(dexterity.Container):
         status = self.get_status()
         if status == 'phase1-closed':
             conclusion = self.get_conclusion()
-            return ' - '.join(['closed', conclusion.reason_value()])
+            return ' <br/> '.join(['closed', '(' + conclusion.reason_value() + ')'])
         elif status == 'phase2-closed':
             conclusion = self.get_conclusion_phase2()
-            return ' - '.join(['closed', conclusion.reason_value()])
+            return ' <br/> '.join(['closed', '(' + conclusion.reason_value() + ')'])
         else:
             return 'open'
 
@@ -731,6 +731,21 @@ class Observation(dexterity.Container):
                     return 'technicalCorrectionBackground'
             elif 'ptc' in self.highlight:
                 return 'ptcBackground'
+
+    def observation_is_potential_significant_issue(self):
+        if self.get_status().startswith('phase1'):
+            return 'psi' in self.highlight
+        return False
+
+    def observation_is_potential_technical_correction(self):
+        if self.get_status().startswith('phase2'):
+            return 'ptc' in self.highlight
+        return False
+
+    def observation_is_technical_correction(self):
+        if self.get_status() == "phase2-closed":
+            return self.get_conclusion_phase2().closing_reason == "technical-correction"
+        return False
 
     def observation_finalisation_reason(self):
         status = self.get_status()

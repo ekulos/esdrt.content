@@ -208,7 +208,7 @@
               <th>
                 Observation
               </th>
-              <th>
+              <th style="width:45%">
                 In short
               </th>              
               <th>
@@ -217,11 +217,11 @@
               <th style="width:47px">
                 Review year
               </th>
-              <th style="width:58px">
-                Inventory year
-              </th>
               <th>
                 Status
+              </th>
+              <th>
+                Step
               </th>
               <th tal:condition="view/is_secretariat">
                 Author
@@ -247,6 +247,19 @@
                           tal:content="observation/Title">
                           Observation title
                         </span>
+                        <br/>
+                        <div class="potentialSignificantIssue"
+                             tal:condition="observation/observation_is_potential_significant_issue">
+                          Potential technical correction
+                        </div>
+                        <div class="potentialTechnicalCorrectionTag"
+                             tal:condition="observation/observation_is_potential_technical_correction">
+                          Potential significant issue
+                        </div> 
+                        <div class="technicalCorrectionTag"
+                          tal:condition="observation/observation_is_technical_correction">
+                            Technical correction
+                        </div>                      
                     </td>
                     <td tal:content="observation/@@text-transform/text/text/plain"
                       class="observationText">
@@ -258,51 +271,19 @@
                     <td tal:content="observation/review_year" class="yearCell">
                       2014
                     </td>
-                    <td tal:content="observation/year" class="yearCell">
-                      2014
+                    <td>
+                      <span
+                        tal:replace="structure observation/overview_status">
+                          Open
+                      </span>
                     </td>
-                    <td tal:content="observation/overview_status">
-                      Open
-                    </td>
+                    <td>
+                      <div tal:attributes="class observation/observation_phase">&nbsp;</div>
+                    </td>                    
                     <td tal:condition="view/is_secretariat">
                       <span tal:replace="python:view.get_author_name(observation.Creator())" />
                     </td>
                 </tr>
-                </tal:item>
-              </tal:item>
-
-              <tal:item condition="python:item.portal_type == 'Question'" tal:replace="nothing">
-                <tal:item define="question nocall:item;
-                                  observation question/get_observation;
-                                  toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
-                  <td>
-                    <a href=""
-                      tal:attributes="href observation/absolute_url"
-                      tal:content="observation/getId">
-                      UK-WAS-13-001
-                    </a><br />
-                    <a href=""
-                      tal:attributes="href observation/absolute_url"
-                      tal:content="observation/Title">
-                      Observation title
-                    </a>
-                  </td>
-                  <td tal:content="question/get_status|nothing">
-                    Observation title
-                  </td>
-                  <td tal:content="observation/country_value">
-                    Observation title
-                  </td>
-                  <td tal:content="observation/ghg_source_sectors_value">
-                    Observation title
-                  </td>
-                  <td tal:content="observation/crf_code_value">
-                    Observation title
-                  </td>
-                  <td tal:content="python:toLocalizedTime(question.modified(), True)">
-                    Observation title
-                  </td>
-
                 </tal:item>
               </tal:item>
             </tal:block>

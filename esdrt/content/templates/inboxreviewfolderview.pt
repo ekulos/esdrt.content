@@ -5,7 +5,30 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="esdrt.content">
-
+  <tal:block metal:fill-slot="javascript_head_slot">
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $(".observationText").text(function(index, currentText){
+          if (currentText.length > 500){
+            $(this).text(currentText.substr(0, 500) + "...");
+            $(this).attr("title", currentText);
+          }
+        });
+      $("#btnFilter").click(function(){
+          var filter = "";
+          if ($('#freeTextFilter').val() != ""){
+            if (filter == ""){
+              filter += "?";
+            }else{
+              filter += "&";
+            }            
+            filter += "freeText=" + $('#freeTextFilter').val();
+          }  
+          window.location.href = window.location.pathname + filter;
+        })        
+      });
+    </script>
+  </tal:block>
 <body>
   <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core">
@@ -28,7 +51,22 @@
         </div>
       </div>
 
-
+      <div id="filters">  
+        <div class="row" style="padding-top:30px">
+          <div class="cell position-1 width-3 esdLabel">Free text</div>
+        </div>  
+        <div class="row">
+          <div class="cell position-1 width-12 esdLabel">
+            <input type="text" id="freeTextFilter" style="width:100%;border-radius:5px;height:21px"
+                tal:define="freeText python:'';
+                            freeText request/freeText | freeText"
+                tal:attributes="value python:freeText"/>            
+          </div>
+          <div class="cell position-14 width-1">
+            <a class="standardButton" id="btnFilter">Search</a>
+          </div>           
+        </div>      
+      </div>
 
 
       <div id="observations" class="myview">  
@@ -54,17 +92,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -87,23 +122,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div>  
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
-                      </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>  
+                      </td> 
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -126,17 +168,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -159,23 +198,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td> 
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td> 
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -198,17 +244,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -232,23 +275,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -271,17 +321,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th> 
+                  </th>
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -305,23 +352,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -352,17 +406,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -386,23 +437,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -425,17 +483,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th>  
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -459,23 +514,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -498,17 +560,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th> 
+                  </th>
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -532,23 +591,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -571,17 +637,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th> 
+                  </th>
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -605,23 +668,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -655,17 +725,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th>  
+                  </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -689,23 +756,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -728,17 +802,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th>  
+                  </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -762,23 +833,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -801,17 +879,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -835,23 +910,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -874,17 +956,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th>  
+                  </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -908,23 +987,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -955,17 +1041,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th>  
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -989,23 +1072,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1028,17 +1118,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th> 
+                  </th>
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1062,23 +1149,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1109,17 +1203,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th>
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1143,23 +1234,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1193,17 +1291,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1227,23 +1322,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1266,17 +1368,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th> 
+                  </th>  
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1300,23 +1399,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1347,17 +1453,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th> 
+                  </th>
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1381,23 +1484,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1428,17 +1538,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1462,23 +1569,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1512,17 +1626,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
-                  </th> 
+                  </th>
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1546,23 +1657,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1593,17 +1711,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th> 
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1627,23 +1742,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1674,17 +1796,14 @@
                   <th>
                     Observation
                   </th>
+                  <th style="width:45%">
+                    In short
+                  </th>
                   <th>
                     CRF code
-                  </th>   
-                  <th style="width:20px">
-                    Inventory year
                   </th>
                   <th style="width:80px">
                     Modification date
-                  </th>
-                  <th style="width:130px">
-                    Progress
                   </th>
                   <th>
                     Step
@@ -1708,23 +1827,30 @@
                             tal:content="observation/Title">
                             Observation title
                           </span>
+                          <br/>
+                          <div class="potentialSignificantIssue"
+                            tal:condition="observation/observation_is_potential_significant_issue">
+                              Potential technical correction
+                          </div>
+                          <div class="potentialTechnicalCorrectionTag"
+                            tal:condition="observation/observation_is_potential_technical_correction">
+                              Potential significant issue
+                          </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
+                      </td>
+                      <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                       </td>
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="observation/year" class="yearCell">
-                        2014
-                      </td>
                       <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
-                      </td>
-                      <td>
-                        <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                        <span tal:content="observation/wf_location">Review Expert</span><br/>
-                        <span class="eea-icon eea-icon-lg"
-                          tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                        <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                       </td>
                       <td>
                         <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1756,17 +1882,14 @@
                 <th>
                   Observation
                 </th>
+                <th style="width:45%">
+                    In short
+                </th>
                 <th>
                   CRF code
-                </th>   
-                <th style="width:20px">
-                  Inventory year
                 </th>
                 <th style="width:80px">
                   Modification date
-                </th>
-                <th style="width:130px">
-                  Progress
                 </th>
                 <th>
                   Step
@@ -1790,23 +1913,30 @@
                           tal:content="observation/Title">
                           Observation title
                         </span>
+                        <br/>
+                        <div class="potentialSignificantIssue"
+                          tal:condition="observation/observation_is_potential_significant_issue">
+                            Potential technical correction
+                        </div>
+                        <div class="potentialTechnicalCorrectionTag"
+                          tal:condition="observation/observation_is_potential_technical_correction">
+                            Potential significant issue
+                        </div>
+                          <div class="technicalCorrectionTag"
+                            tal:condition="observation/observation_is_technical_correction">
+                              Technical correction
+                          </div> 
                     </td>
+                    <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
+                      </td>
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
-                    </td>
-                    <td tal:content="observation/year" class="yearCell">
-                      2014
                     </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
-                    </td>
-                    <td>
-                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                      <span tal:content="observation/wf_location">Review Expert</span><br/>
-                      <span class="eea-icon eea-icon-lg"
-                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1829,17 +1959,14 @@
                 <th>
                   Observation
                 </th>
+                <th style="width:45%">
+                    In short
+                </th>
                 <th>
                   CRF code
-                </th>   
-                <th style="width:20px">
-                  Inventory year
-                </th> 
+                </th>
                 <th style="width:80px">
                   Modification date
-                </th>
-                <th style="width:130px">
-                  Progress
                 </th>
                 <th>
                   Step
@@ -1863,23 +1990,30 @@
                           tal:content="observation/Title">
                           Observation title
                         </span>
+                        <br/>
+                        <div class="potentialSignificantIssue"
+                          tal:condition="observation/observation_is_potential_significant_issue">
+                            Potential technical correction
+                        </div>
+                        <div class="potentialTechnicalCorrectionTag"
+                          tal:condition="observation/observation_is_potential_technical_correction">
+                            Potential significant issue
+                        </div>
+                        <div class="technicalCorrectionTag"
+                          tal:condition="observation/observation_is_technical_correction">
+                            Technical correction
+                        </div> 
+                    </td>
+                    <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                     </td>
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="observation/year" class="yearCell">
-                      2014
-                    </td> 
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
-                    </td>
-                    <td>
-                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                      <span tal:content="observation/wf_location">Review Expert</span><br/>
-                      <span class="eea-icon eea-icon-lg"
-                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1902,17 +2036,14 @@
                 <th>
                   Observation
                 </th>
+                <th style="width:45%">
+                    In short
+                </th>
                 <th>
                   CRF code
-                </th>   
-                <th style="width:20px">
-                  Inventory year
-                </th>
+                </th> 
                 <th style="width:80px">
                   Modification date
-                </th>
-                <th style="width:130px">
-                  Progress
                 </th>
                 <th>
                   Step
@@ -1936,23 +2067,30 @@
                           tal:content="observation/Title">
                           Observation title
                         </span>
+                        <br/>
+                        <div class="potentialSignificantIssue"
+                          tal:condition="observation/observation_is_potential_significant_issue">
+                            Potential technical correction
+                        </div>
+                        <div class="potentialTechnicalCorrectionTag"
+                          tal:condition="observation/observation_is_potential_technical_correction">
+                            Potential significant issue
+                        </div>
+                        <div class="technicalCorrectionTag"
+                          tal:condition="observation/observation_is_technical_correction">
+                            Technical correction
+                        </div> 
+                    </td>
+                    <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                     </td>
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="observation/year" class="yearCell">
-                      2014
-                    </td> 
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
-                    </td>
-                    <td>
-                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                      <span tal:content="observation/wf_location">Review Expert</span><br/>
-                      <span class="eea-icon eea-icon-lg"
-                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -1975,17 +2113,14 @@
                 <th>
                   Observation
                 </th>
+                <th style="width:45%">
+                    In short
+                </th>
                 <th>
                   CRF code
-                </th>   
-                <th style="width:20px">
-                  Inventory year
-                </th> 
+                </th>
                 <th style="width:80px">
                   Modification date
-                </th>
-                <th style="width:130px">
-                  Progress
                 </th>
                 <th>
                   Step
@@ -2009,23 +2144,30 @@
                           tal:content="observation/Title">
                           Observation title
                         </span>
+                        <br/>
+                        <div class="potentialSignificantIssue"
+                          tal:condition="observation/observation_is_potential_significant_issue">
+                            Potential technical correction
+                        </div>
+                        <div class="potentialTechnicalCorrectionTag"
+                          tal:condition="observation/observation_is_potential_technical_correction">
+                            Potential significant issue
+                        </div>
+                        <div class="technicalCorrectionTag"
+                          tal:condition="observation/observation_is_technical_correction">
+                            Technical correction
+                        </div> 
+                    </td>
+                    <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                     </td>
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="observation/year" class="yearCell">
-                      2014
-                    </td> 
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
-                    </td>
-                    <td>
-                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                      <span tal:content="observation/wf_location">Review Expert</span><br/>
-                      <span class="eea-icon eea-icon-lg"
-                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -2048,17 +2190,14 @@
                 <th>
                   Observation
                 </th>
+                <th style="width:45%">
+                    In short
+                </th>
                 <th>
                   CRF code
-                </th>   
-                <th style="width:20px">
-                  Inventory year
                 </th>
                 <th style="width:80px">
                   Modification date
-                </th>
-                <th style="width:130px">
-                  Progress
                 </th>
                 <th>
                   Step
@@ -2082,23 +2221,30 @@
                           tal:content="observation/Title">
                           Observation title
                         </span>
+                        <br/>
+                        <div class="potentialSignificantIssue"
+                          tal:condition="observation/observation_is_potential_significant_issue">
+                            Potential technical correction
+                        </div>
+                        <div class="potentialTechnicalCorrectionTag"
+                          tal:condition="observation/observation_is_potential_technical_correction">
+                            Potential significant issue
+                        </div>
+                        <div class="technicalCorrectionTag"
+                          tal:condition="observation/observation_is_technical_correction">
+                            Technical correction
+                        </div>                         
+                    </td>
+                    <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                     </td>
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="observation/year" class="yearCell">
-                      2014
-                    </td> 
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
-                    </td>
-                    <td>
-                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                      <span tal:content="observation/wf_location">Review Expert</span><br/>
-                      <span class="eea-icon eea-icon-lg"
-                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
@@ -2121,17 +2267,14 @@
                 <th>
                   Observation
                 </th>
+                <th style="width:45%">
+                    In short
+                </th>
                 <th>
                   CRF code
-                </th>   
-                <th style="width:20px">
-                  Inventory year
-                </th>
+                </th>  
                 <th style="width:80px">
                   Modification date
-                </th>
-                <th style="width:130px">
-                  Progress
                 </th>
                 <th>
                   Step
@@ -2155,23 +2298,30 @@
                           tal:content="observation/Title">
                           Observation title
                         </span>
+                        <br/>
+                        <div class="potentialSignificantIssue"
+                          tal:condition="observation/observation_is_potential_significant_issue">
+                            Potential technical correction
+                        </div>
+                        <div class="potentialTechnicalCorrectionTag"
+                          tal:condition="observation/observation_is_potential_technical_correction">
+                            Potential significant issue
+                        </div>
+                        <div class="technicalCorrectionTag"
+                          tal:condition="observation/observation_is_technical_correction">
+                            Technical correction
+                        </div>                        
+                    </td>
+                    <td tal:content="observation/@@text-transform/text/text/plain"
+                          class="observationText">
+                        Observation description
                     </td>
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="observation/year" class="yearCell">
-                      2014
-                    </td>
                     <td tal:content="python:toLocalizedTime(observation.modified(), True)"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
-                    </td>
-                    <td>
-                      <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
-                      <span tal:content="observation/wf_location">Review Expert</span><br/>
-                      <span class="eea-icon eea-icon-lg"
-                        tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg', observation.wf_status()[1]])"></span>
-                      <span tal:content="python: observation.wf_status()[0]">Draft observation</span>
                     </td>
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
