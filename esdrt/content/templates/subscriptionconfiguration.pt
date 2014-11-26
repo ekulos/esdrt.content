@@ -17,12 +17,10 @@
     tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime">
     <div class="backButton">
       <a href=""
-        tal:define="pcp here/@@plone_context_state;
-                    parent pcp/parent"
-        tal:attributes="href parent/absolute_url"
+        tal:attributes="href here/absolute_url"
         class="standardButton">
           <span class="eea-icon"><!-- --></span>
-            Back to overview list
+            Back to observation
       </a>
     </div>
     <div class="esdDiv">
