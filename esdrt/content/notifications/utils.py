@@ -43,10 +43,11 @@ def extract_emails(users):
     """
     Get the email of each user
     """
+    putils = api.portal.get_tool(name='plone_utils')
     emails = []
     for user in users:
         email = user.getProperty('email')
-        if email:
+        if email and putils.validateSingleEmailAddress(email):
             emails.append(email)
 
     return list(set(emails))
