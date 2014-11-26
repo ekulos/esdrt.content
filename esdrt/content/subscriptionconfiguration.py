@@ -9,6 +9,8 @@ from esdrt.content.subscriptions.dexterity import UNSUBSCRIPTION_KEY
 from BTrees.OOBTree import OOBTree
 from zope.annotation.interfaces import IAnnotations
 
+import copy
+
 ROLE_TRANSLATOR = {
     'ReviewerPhase1': 'Sector Reviewer (phase 1)',
     'ReviewerPhase2': 'Review Expert (phase 2)',
@@ -96,7 +98,7 @@ class SubscriptionConfiguration(ObservationView):
         roles = self.user_roles(translated_roles=False)
         items = {}
         for role in roles:
-            data = NOTIFICATIONS_PER_ROLE.get(role)
+            data = copy.copy(NOTIFICATIONS_PER_ROLE.get(role))
             for unsubscribed in unsubscribed_notifications.get(role, []):
                 data[unsubscribed] = False
 
