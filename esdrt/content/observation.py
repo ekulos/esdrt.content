@@ -490,12 +490,12 @@ class Observation(dexterity.Container):
                 item['role'] = "Sector expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'phase1-close-requested':
-                item['state'] = 'Closure requested'
+                item['state'] = 'Finalisation requested'
                 item['role'] = "Sector expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'phase1-conclusions' and item['action'] == "phase1-deny-closure":
-                item['state'] = 'Observation closure denied'
-                item['role'] = "Sector expert"
+                item['state'] = 'Finalisation denied'
+                item['role'] = "Quality expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'phase1-conclusion-discussion':
                 item['state'] = 'Conclusion comments requested'
@@ -535,12 +535,12 @@ class Observation(dexterity.Container):
                 item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'phase2-close-requested':
-                item['state'] = 'Closure requested'
+                item['state'] = 'Finalisation requested'
                 item['role'] = "Review expert"
                 observation_wf.append(item)
-            elif item['review_state'] == 'phase2-conclusions' and item['action'] == "phase2-deny-closure":
-                item['state'] = 'Observation closure denied'
-                item['role'] = "Review expert"
+            elif item['review_state'] == 'phase2-conclusions' and item['action'] == "phase2-deny-finishing-observation":
+                item['state'] = 'Finalisation denied'
+                item['role'] = "Lead reviewer"
                 observation_wf.append(item)
             elif item['review_state'] == 'phase2-conclusion-discussion':
                 item['state'] = 'Conclusion comments requested'
