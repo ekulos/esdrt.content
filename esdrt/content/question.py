@@ -1,4 +1,3 @@
-from Products.statusmessages.interfaces import IStatusMessage
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -13,8 +12,11 @@ from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
+from plone.memoize import instance
+from plone.memoize import view
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
 from time import time
 from z3c.form import button
 from z3c.form import field
@@ -60,6 +62,10 @@ CLOSED_STATUS_NAME = 'closed'
 
 class Question(dexterity.Container):
     grok.implements(IQuestion)    # Add your class methods and properties here
+
+    @instance.memoize
+    def get_state_api(self):
+        return api.content.get_state(self)
 
     def get_questions(self):
         sm = getSecurityManager()
