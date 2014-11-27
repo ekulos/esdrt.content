@@ -193,7 +193,7 @@ class InboxReviewFolderView(grok.View):
     def get_draft_questions(self):
         """
          Role: Sector expert / Review expert
-         with comments from counterpart of LR
+         with comments from counterpart or LR
         """
         user = api.user.get_current()
         mtool = api.portal.get_tool('portal_membership')
@@ -207,8 +207,7 @@ class InboxReviewFolderView(grok.View):
                             if (obj.observation_question_status() == 'phase1-draft' or \
                             obj.observation_question_status() == 'phase2-draft' or \
                             obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                            obj.last_question_reply_number() > 0:
+                            obj.observation_question_status() == 'phase2-counterpart-comments'):
                                 items.append(obj)
                 except:
                     pass
