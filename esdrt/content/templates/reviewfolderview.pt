@@ -135,6 +135,7 @@
           </div>
           <div class="cell position-7 width-3">
             <select id="inventoryYearFilter" class="chosen-select" data-placeholder="Select inventory year">
+              <option></option>
               <tal:block tal:repeat="item view/get_inventory_years">
                 <option
                   tal:define="inventoryYear python:'';
