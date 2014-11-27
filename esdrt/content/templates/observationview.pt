@@ -466,7 +466,7 @@
                   <span class="eea-icon eea-icon-left"></span>
                 </div>
               </div>
-              <div id="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
+              <div class="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager"  style="display:none"/>
             </div>
         </div>
         <div class="actions" tal:condition="view/in_conclusions_phase2">
@@ -547,7 +547,7 @@
                   <span class="eea-icon eea-icon-left"></span>
                 </div>
               </div>
-              <div id="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager" />
+              <div class="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager"  style="display:none"/>
             </div>
         </div>
         <div class="actions" tal:condition="view/in_conclusions_phase1">
