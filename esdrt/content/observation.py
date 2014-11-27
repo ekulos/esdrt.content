@@ -449,10 +449,10 @@ class Observation(dexterity.Container):
         status = self.get_status()
         if status == 'phase1-closed':
             conclusion = self.get_conclusion()
-            return ' - '.join(['closed', conclusion.reason_value()])
+            return ' <br/> '.join(['closed', '(' + conclusion.reason_value() + ')'])
         elif status == 'phase2-closed':
             conclusion = self.get_conclusion_phase2()
-            return ' - '.join(['closed', conclusion.reason_value()])
+            return ' <br/> '.join(['closed', '(' + conclusion.reason_value() + ')'])
         else:
             return 'open'
 
@@ -512,13 +512,17 @@ class Observation(dexterity.Container):
                 item['role'] = "Sector expert"
                 item['object'] = 'conclusionIcon'
                 observation_wf.append(item)
+            elif item['action'] == "phase1-send-to-team-2":
+                item['state'] = 'Handed to phase 2'
+                item['role'] = "Quality expert"
+                observation_wf.append(item)                  
             elif item['review_state'] == 'phase2-draft':
                 item['state'] = 'Draft observation'
                 item['role'] = "Review expert"
-                observation_wf.append(item)
+                observation_wf.append(item)                
             elif item['review_state'] == 'phase2-pending' and item['action'] == "phase2-approve":
                 item['state'] = 'Pending'
-                #Do not add
+                #Do not add           
             elif item['review_state'] == 'phase2-pending' and item['action'] == "phase2-reopen":
                 item['state'] = 'Observation reopened'
                 item['role'] = "Review expert"
@@ -731,6 +735,21 @@ class Observation(dexterity.Container):
                     return 'technicalCorrectionBackground'
             elif 'ptc' in self.highlight:
                 return 'ptcBackground'
+
+    def observation_is_potential_significant_issue(self):
+        if self.get_status().startswith('phase1'):
+            return 'psi' in self.highlight
+        return False
+
+    def observation_is_potential_technical_correction(self):
+        if self.get_status().startswith('phase2'):
+            return 'ptc' in self.highlight
+        return False
+
+    def observation_is_technical_correction(self):
+        if self.get_status() == "phase2-closed":
+            return self.get_conclusion_phase2().closing_reason == "technical-correction"
+        return False
 
     def observation_finalisation_reason(self):
         status = self.get_status()

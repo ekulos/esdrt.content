@@ -147,9 +147,10 @@ class InboxReviewFolderView(grok.View):
     grok.name('inboxview')
 
     def update(self):
-        self.observations = self.get_all_observations()
+        freeText = self.request.form.get('freeText', '')
+        self.observations = self.get_all_observations(freeText)
 
-    def get_all_observations(self):
+    def get_all_observations(self, freeText):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         query = {
@@ -158,7 +159,8 @@ class InboxReviewFolderView(grok.View):
             'sort_on':'modified',
             'sort_order':'reverse',
         }
-
+        if (freeText != ""):
+            query['SearchableText'] = freeText
         values = catalog.unrestrictedSearchResults(query)
         return values
 
