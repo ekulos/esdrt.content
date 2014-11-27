@@ -296,9 +296,8 @@
       tal:define="conclusion view/get_conclusion"
       tal:condition="nocall:conclusion"
       >Conclusions Phase 1</li>
-    <li style="width:200px;max-width:200px"  tal:condition="view/get_questions">
-      Question chat room
-    </li>
+    <li style="width:200px;max-width:200px"  
+      tal:condition="view/get_questions">Question chat room</li>
   </ul>
 
   <div class="eea-tabs-panels" style="overflow:hidden">
