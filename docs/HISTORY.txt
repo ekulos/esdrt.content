@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.21 (unreleased)
+1.21 (2014-11-28)
 -----------------
 
 - Notification subscribe/unsubscribe view [erral]
