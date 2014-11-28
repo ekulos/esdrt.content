@@ -6,6 +6,8 @@ Changelog
 
 - Notification subscribe/unsubscribe view [erral]
 
+- Fixed some tickets [MikelS]
+
 
 1.20 (2014-11-25)
 -----------------
