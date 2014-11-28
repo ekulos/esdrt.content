@@ -184,7 +184,13 @@
          destination="24"
          handler=".23_24.upgrade"
          profile="esdrt.content:default" />
-
+    <genericsetup:upgradeStep
+         title="Upgrade to 25."
+         description="JS Registry"
+         source="24"
+         destination="25"
+         handler=".24_25.upgrade"
+         profile="esdrt.content:default" />
 
 
 </configure>
