@@ -9,6 +9,7 @@ from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.dexterity.behaviors.discussion import IAllowDiscussion
+from plone.app.discussion.interfaces import IConversation
 from plone.app.textfield import RichText
 from plone.app.textfield.value import RichTextValue
 from plone.directives import dexterity
@@ -37,7 +38,6 @@ from zope.interface import alsoProvides
 from zope.interface import Invalid
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
-from plone.app.discussion.interfaces import IConversation
 
 import datetime
 
@@ -515,14 +515,14 @@ class Observation(dexterity.Container):
             elif item['action'] == "phase1-send-to-team-2":
                 item['state'] = 'Handed to phase 2'
                 item['role'] = "Quality expert"
-                observation_wf.append(item)                  
+                observation_wf.append(item)
             elif item['review_state'] == 'phase2-draft':
                 item['state'] = 'Draft observation'
                 item['role'] = "Review expert"
-                observation_wf.append(item)                
+                observation_wf.append(item)
             elif item['review_state'] == 'phase2-pending' and item['action'] == "phase2-approve":
                 item['state'] = 'Pending'
-                #Do not add           
+                #Do not add
             elif item['review_state'] == 'phase2-pending' and item['action'] == "phase2-reopen":
                 item['state'] = 'Observation reopened'
                 item['role'] = "Review expert"

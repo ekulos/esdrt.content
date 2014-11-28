@@ -57,7 +57,9 @@ class CommentAnswer(dexterity.Container):
 
     def can_delete(self):
         sm = getSecurityManager()
-        return sm.checkPermission('Delete portal content', self)
+        parent = aq_parent(self)
+        parent_state = api.content.get_state(parent)
+        return sm.checkPermission('Delete portal content', self) and parent_state not in ['phase1-expert-comments', 'phase2-expert-comments']
 
 
 # View class
