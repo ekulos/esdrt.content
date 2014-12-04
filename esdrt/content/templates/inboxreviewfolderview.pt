@@ -1809,7 +1809,7 @@
           <div class="sr-re-actions inboxSection">
             <div class="row">
               <div>
-                Answers that I commented on sent to Sector expoert/Review expert
+                Answers that I commented on sent to Sector expert/Review expert
               </div>
             </div>
             <table class="observationList listing sr-re-actions" tal:condition="view/get_observations_with_my_comments_sent_to_se_re">

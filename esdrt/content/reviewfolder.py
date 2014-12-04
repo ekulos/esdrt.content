@@ -53,31 +53,50 @@ class ReviewFolderView(grok.View):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         query = {
-            'path':path,
-            'portal_type':['Observation', 'Question'],
-            'sort_on':'modified',
-            'sort_order':'reverse',
+            'path': path,
+            'portal_type': ['Observation', 'Question'],
+            'sort_on': 'modified',
+            'sort_order': 'reverse',
         }
         if (country != ""):
-            query['Country'] = country;
+            query['Country'] = country
         if (status != ""):
             if status == "draft":
-                query['review_state'] = ['phase1-draft', 'phase2-draft'];
+                query['review_state'] = [
+                    'phase1-draft',
+                    'phase2-draft'
+                ]
             elif status == "finished":
-                query['review_state'] = ['phase1-closed', 'phase2-closed'];
-            elif status == "conclusion":
-                query['review_state'] = ['phase1-conclusions', 'phase2-conclusions', 'phase1-conclusion-discussion', 'phase2-conclusion-discussion'];
+                query['review_state'] = [
+                    'phase1-closed',
+                    'phase2-closed'
+                ]
+            elif status == "conclusion-1":
+                query['review_state'] = [
+                    'phase1-conclusions',
+                    'phase1-conclusion-discussion'
+                ]
+            elif status == "conclusion-2":
+                query['review_state'] = [
+                    'phase2-conclusions',
+                    'phase2-conclusion-discussion'
+                ]
             else:
-                query['review_state'] = ['phase1-pending', 'phase2-pending', 'phase1-close-requested', 'phase2-close-requested'];
-        if (reviewYear != ""):
-            query['review_year'] = reviewYear
-        if (inventoryYear != ""):
-            query['year'] = inventoryYear
-        if (highlights != ""):
-            query['highlight'] = highlights.split(",")
-        if (freeText != ""):
-            query['SearchableText'] = freeText
+                query['review_state'] = [
+                    'phase1-pending',
+                    'phase2-pending',
+                    'phase1-close-requested',
+                    'phase2-close-requested'
+                ]
 
+        if reviewYear != "":
+            query['review_year'] = reviewYear
+        if inventoryYear != "":
+            query['year'] = inventoryYear
+        if highlights != "":
+            query['highlight'] = highlights.split(",")
+        if freeText != "":
+            query['SearchableText'] = freeText
 
         values = catalog.unrestrictedSearchResults(query)
         items = []
@@ -141,6 +160,7 @@ class ReviewFolderView(grok.View):
         inventory_years = catalog.uniqueValuesFor('year')
         return inventory_years
 
+
 class InboxReviewFolderView(grok.View):
     grok.context(IReviewFolder)
     grok.require('zope2.View')
@@ -154,10 +174,10 @@ class InboxReviewFolderView(grok.View):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         query = {
-            'path':path,
-            'portal_type':'Observation',
-            'sort_on':'modified',
-            'sort_order':'reverse',
+            'path': path,
+            'portal_type': 'Observation',
+            'sort_on': 'modified',
+            'sort_order': 'reverse',
         }
         if (freeText != ""):
             query['SearchableText'] = freeText
@@ -193,7 +213,7 @@ class InboxReviewFolderView(grok.View):
     def get_draft_questions(self):
         """
          Role: Sector expert / Review expert
-         with comments from counterpart of LR
+         with comments from counterpart or LR
         """
         user = api.user.get_current()
         mtool = api.portal.get_tool('portal_membership')
@@ -207,8 +227,7 @@ class InboxReviewFolderView(grok.View):
                             if (obj.observation_question_status() == 'phase1-draft' or \
                             obj.observation_question_status() == 'phase2-draft' or \
                             obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                            obj.last_question_reply_number() > 0:
+                            obj.observation_question_status() == 'phase2-counterpart-comments'):
                                 items.append(obj)
                 except:
                     pass
@@ -657,8 +676,7 @@ class InboxReviewFolderView(grok.View):
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
                             if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                            obj.observation_question_status() == 'phase2-expert-comments') and \
-                            "CounterPart" in roles:
+                            obj.observation_question_status() == 'phase2-expert-comments'):
                                 items.append(obj)
                 except:
                     pass
@@ -683,7 +701,6 @@ class InboxReviewFolderView(grok.View):
                             obj.observation_question_status() == 'phase2-expert-comments' or \
                             obj.observation_question_status() == 'phase1-pending-answer-drafting' or \
                             obj.observation_question_status() == 'phase2-pending-answer-drafting') and \
-                            "CounterPart" in roles and \
                             obj.reply_comments_by_mse():
                                 items.append(obj)
                 except:
@@ -710,7 +727,6 @@ class InboxReviewFolderView(grok.View):
                             obj.observation_question_status() == 'phase2-answered' or \
                             obj.observation_question_status() == 'phase1-recalled-msa' or \
                             obj.observation_question_status() == 'phase2-recalled-msa') and \
-                            "CounterPart" in roles and \
                             obj.reply_comments_by_mse():
                                 items.append(obj)
                 except:
