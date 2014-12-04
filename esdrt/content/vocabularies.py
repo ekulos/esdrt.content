@@ -1,5 +1,5 @@
 from five import grok
-from Products.CMFCore.utils import getToolByName
+from plone import api
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
 
@@ -8,7 +8,7 @@ class MSVocabulary(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('eea_member_states')
         terms = []
         if voc is not None:
@@ -25,7 +25,7 @@ class GHGSourceCategory(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('ghg_source_category')
         terms = []
         if voc is not None:
@@ -43,7 +43,7 @@ class GHGSourceSectors(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('ghg_source_sectors')
         terms = []
         if voc is not None:
@@ -61,7 +61,7 @@ class Gas(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('gas')
         terms = []
         if voc is not None:
@@ -79,7 +79,7 @@ class Fuel(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('fuel')
         terms = []
         if voc is not None:
@@ -97,7 +97,7 @@ class Highlight(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('highlight')
         terms = []
         if voc is not None:
@@ -115,7 +115,7 @@ class Parameter(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('parameter')
         terms = []
         if voc is not None:
@@ -133,7 +133,7 @@ class StatusFlag(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('status_flag')
         terms = []
         if voc is not None:
@@ -151,7 +151,7 @@ class CRFCode(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('crf_code')
         terms = []
         if voc is not None:
@@ -169,7 +169,7 @@ class Conclusions(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('conclusion_reasons')
         terms = []
         if voc is not None:
@@ -182,11 +182,12 @@ class Conclusions(object):
 grok.global_utility(Conclusions,
     name=u"esdrt.content.conclusionreasons")
 
+
 class ConclusionsPhase2(object):
     grok.implements(IVocabularyFactory)
 
     def __call__(self, context):
-        pvoc = getToolByName(context, 'portal_vocabularies')
+        pvoc = api.portal.get_tool('portal_vocabularies')
         voc = pvoc.getVocabularyByName('conclusion_phase2_reasons')
         terms = []
         if voc is not None:
@@ -198,8 +199,3 @@ class ConclusionsPhase2(object):
 
 grok.global_utility(ConclusionsPhase2,
     name=u"esdrt.content.conclusionphase2reasons")
-
-
-
-
-
