@@ -676,8 +676,7 @@ class InboxReviewFolderView(grok.View):
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
                             if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                            obj.observation_question_status() == 'phase2-expert-comments') and \
-                            "CounterPart" in roles:
+                            obj.observation_question_status() == 'phase2-expert-comments'):
                                 items.append(obj)
                 except:
                     pass
@@ -702,7 +701,6 @@ class InboxReviewFolderView(grok.View):
                             obj.observation_question_status() == 'phase2-expert-comments' or \
                             obj.observation_question_status() == 'phase1-pending-answer-drafting' or \
                             obj.observation_question_status() == 'phase2-pending-answer-drafting') and \
-                            "CounterPart" in roles and \
                             obj.reply_comments_by_mse():
                                 items.append(obj)
                 except:
@@ -729,7 +727,6 @@ class InboxReviewFolderView(grok.View):
                             obj.observation_question_status() == 'phase2-answered' or \
                             obj.observation_question_status() == 'phase1-recalled-msa' or \
                             obj.observation_question_status() == 'phase2-recalled-msa') and \
-                            "CounterPart" in roles and \
                             obj.reply_comments_by_mse():
                                 items.append(obj)
                 except:
