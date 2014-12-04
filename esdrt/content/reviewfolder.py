@@ -53,31 +53,50 @@ class ReviewFolderView(grok.View):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         query = {
-            'path':path,
-            'portal_type':['Observation', 'Question'],
-            'sort_on':'modified',
-            'sort_order':'reverse',
+            'path': path,
+            'portal_type': ['Observation', 'Question'],
+            'sort_on': 'modified',
+            'sort_order': 'reverse',
         }
         if (country != ""):
-            query['Country'] = country;
+            query['Country'] = country
         if (status != ""):
             if status == "draft":
-                query['review_state'] = ['phase1-draft', 'phase2-draft'];
+                query['review_state'] = [
+                    'phase1-draft',
+                    'phase2-draft'
+                ]
             elif status == "finished":
-                query['review_state'] = ['phase1-closed', 'phase2-closed'];
-            elif status == "conclusion":
-                query['review_state'] = ['phase1-conclusions', 'phase2-conclusions', 'phase1-conclusion-discussion', 'phase2-conclusion-discussion'];
+                query['review_state'] = [
+                    'phase1-closed',
+                    'phase2-closed'
+                ]
+            elif status == "conclusion-1":
+                query['review_state'] = [
+                    'phase1-conclusions',
+                    'phase1-conclusion-discussion'
+                ]
+            elif status == "conclusion-2":
+                query['review_state'] = [
+                    'phase2-conclusions',
+                    'phase2-conclusion-discussion'
+                ]
             else:
-                query['review_state'] = ['phase1-pending', 'phase2-pending', 'phase1-close-requested', 'phase2-close-requested'];
-        if (reviewYear != ""):
-            query['review_year'] = reviewYear
-        if (inventoryYear != ""):
-            query['year'] = inventoryYear
-        if (highlights != ""):
-            query['highlight'] = highlights.split(",")
-        if (freeText != ""):
-            query['SearchableText'] = freeText
+                query['review_state'] = [
+                    'phase1-pending',
+                    'phase2-pending',
+                    'phase1-close-requested',
+                    'phase2-close-requested'
+                ]
 
+        if reviewYear != "":
+            query['review_year'] = reviewYear
+        if inventoryYear != "":
+            query['year'] = inventoryYear
+        if highlights != "":
+            query['highlight'] = highlights.split(",")
+        if freeText != "":
+            query['SearchableText'] = freeText
 
         values = catalog.unrestrictedSearchResults(query)
         items = []
@@ -141,6 +160,7 @@ class ReviewFolderView(grok.View):
         inventory_years = catalog.uniqueValuesFor('year')
         return inventory_years
 
+
 class InboxReviewFolderView(grok.View):
     grok.context(IReviewFolder)
     grok.require('zope2.View')
@@ -154,10 +174,10 @@ class InboxReviewFolderView(grok.View):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         query = {
-            'path':path,
-            'portal_type':'Observation',
-            'sort_on':'modified',
-            'sort_order':'reverse',
+            'path': path,
+            'portal_type': 'Observation',
+            'sort_on': 'modified',
+            'sort_order': 'reverse',
         }
         if (freeText != ""):
             query['SearchableText'] = freeText

@@ -31,7 +31,7 @@
                 filter += "?";
               }else{
                 filter += "&";
-              }            
+              }
               filter += "status=" + $('#statusFilter').val();
             }
             if ($('#reviewYearFilter').val() != ""){
@@ -39,7 +39,7 @@
                 filter += "?";
               }else{
                 filter += "&";
-              }            
+              }
               filter += "reviewYear=" + $('#reviewYearFilter').val();
             }
             if ($('#inventoryYearFilter').val() != ""){
@@ -47,17 +47,17 @@
                 filter += "?";
               }else{
                 filter += "&";
-              }            
+              }
               filter += "inventoryYear=" + $('#inventoryYearFilter').val();
-            }      
+            }
             if ($('#freeTextFilter').val() != ""){
               if (filter == ""){
                 filter += "?";
               }else{
                 filter += "&";
-              }            
+              }
               filter += "freeText=" + $('#freeTextFilter').val();
-            }  
+            }
             if ($("input:checked").length > 0){
               var len = $("input:checked").length;
               var highlights = "";
@@ -69,8 +69,8 @@
                 filter += "?";
               }else{
                 filter += "&";
-              }   
-              filter += "highlights=" + highlights;            
+              }
+              filter += "highlights=" + highlights;
             }
             window.location.href = window.location.pathname + filter;
 
@@ -118,7 +118,7 @@
                                   selected python:item[0]==country"
                   tal:content="python:item[1]"></option>
               </tal:block>
-            </select>            
+            </select>
           </div>
           <div class="cell position-4 width-3">
             <select id="reviewYearFilter" class="chosen-select" data-placeholder="Select review year">
@@ -131,7 +131,7 @@
                                   selected python:item==reviewYear"
                   tal:content="python:item"></option>
               </tal:block>
-            </select>            
+            </select>
           </div>
           <div class="cell position-7 width-3">
             <select id="inventoryYearFilter" class="chosen-select" data-placeholder="Select inventory year">
@@ -144,7 +144,7 @@
                                   selected python:item==inventoryYear"
                   tal:content="python:item"></option>
               </tal:block>
-            </select>            
+            </select>
           </div>
           <div class="cell position-11 width-5" style="position:absolute;z-index:2">
             <tal:block tal:repeat="item view/get_highlights">
@@ -159,39 +159,41 @@
               </tal:block>
             </tal:block>
           </div>
-        </div>   
+        </div>
         <div class="row" style="padding-top:30px">
           <div class="cell position-1 width-3 esdLabel">Status</div>
           <div class="cell position-4 width-6 esdLabel">Free text</div>
-        </div>  
+        </div>
         <div class="row">
           <div class="cell position-1 width-3">
             <select id="statusFilter"  class="chosen-select" data-placeholder="Select status"
                 tal:define="status python:'';
                             status request/status | status">
               <option></option>
-              <option tal:attributes="selected python:'draft'==status" 
+              <option tal:attributes="selected python:'draft'==status"
                 value="draft">Draft</option>
-             <option tal:attributes="selected python:'open'==status" 
+             <option tal:attributes="selected python:'open'==status"
                 value="open">Open</option>
-              <option tal:attributes="selected python:'conclusion'==status" 
-                value="conclusion">Conclusion</option>
-              <option tal:attributes="selected python:'finished'==status" 
+              <option tal:attributes="selected python:'conclusion-1'==status"
+                value="conclusion-1">Conclusion step 1</option>
+              <option tal:attributes="selected python:'conclusion-'==status"
+                value="conclusion-2">Conclusion step 2</option>
+              <option tal:attributes="selected python:'finished'==status"
                 value="finished">Finished</option>
-            </select>            
+            </select>
           </div>
           <div class="cell position-4 width-6 esdLabel">
             <input type="text" id="freeTextFilter" style="width:100%;border-radius:5px;height:21px"
                 tal:define="freeText python:'';
                             freeText request/freeText | freeText"
-                tal:attributes="value python:freeText"/>            
+                tal:attributes="value python:freeText"/>
           </div>
-        </div>    
+        </div>
         <div class="row">
           <div class="cell position-14 width-1">
             <a class="standardButton" id="btnFilter">Search</a>
-          </div>          
-        </div>    
+          </div>
+        </div>
       </div>
       <div id="no-content" tal:condition="not: view/get_questions">
 
@@ -212,7 +214,7 @@
               </th>
               <th style="width:45%">
                 In short
-              </th>              
+              </th>
               <th>
                 CRF code
               </th>
@@ -258,11 +260,11 @@
                         <div class="potentialTechnicalCorrectionTag"
                              tal:condition="observation/observation_is_potential_technical_correction">
                           Potential significant issue
-                        </div> 
+                        </div>
                         <div class="technicalCorrectionTag"
                           tal:condition="observation/observation_is_technical_correction">
                             Technical correction
-                        </div>                      
+                        </div>
                     </td>
                     <td tal:content="observation/@@text-transform/text/text/plain"
                       class="observationText">
@@ -282,7 +284,7 @@
                     </td>
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
-                    </td>                    
+                    </td>
                     <td tal:condition="view/is_secretariat">
                       <span tal:replace="python:view.get_author_name(observation.Creator())" />
                     </td>
