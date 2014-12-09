@@ -770,7 +770,7 @@ class Observation(dexterity.Container):
             conclusion = self.get_conclusion_phase2()
             return conclusion.closing_reason
 
-    @instance.memoize
+
     def get_conclusion(self):
         conclusions = [c for c in self.get_values() if c.portal_type == "Conclusion"]
         mtool = api.portal.get_tool('portal_membership')
@@ -778,7 +778,7 @@ class Observation(dexterity.Container):
             return conclusions[0]
         return None
 
-    @instance.memoize
+
     def get_conclusion_phase2(self):
         conclusions = [c for c in self.get_values() if c.portal_type == "ConclusionsPhase2"]
         mtool = api.portal.get_tool('portal_membership')
