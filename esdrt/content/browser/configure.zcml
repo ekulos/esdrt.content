@@ -10,7 +10,7 @@
 
     <browser:page
         name="assign_counterpart_form"
-        for="*"
+        for="..question.IQuestion"
         class=".statechange.AssignCounterPartForm"
         permission="zope2.View"
         />
