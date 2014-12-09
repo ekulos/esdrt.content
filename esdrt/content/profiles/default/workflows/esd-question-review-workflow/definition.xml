@@ -1090,7 +1090,7 @@
   <action url="%(content_url)s/add-follow-up-question?workflow_action=phase1-add-followup-question" category="workflow" icon="">Add follow up question</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
-   <guard-expression>python:here.has_answers()</guard-expression>
+   <guard-expression>python:here.has_answers() and here.aq_parent.get_status() not in ['phase1-conclusion-discussion', 'phase1-close-requested']</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-answer-to-lr" title="Submit Answer" new_state="phase1-answered" trigger="USER" before_script="" after_script="">
@@ -1149,14 +1149,14 @@
   <action url="%(content_url)s/add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Add Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
-   <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion()</guard-expression>
+   <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion() and here.aq_parent.get_status() == 'phase1-pending'</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-go-to-conclusions" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
-   <guard-expression>python:here.has_answers() and here.aq_parent.get_conclusion()</guard-expression>
+   <guard-expression>python:here.has_answers() and here.aq_parent.get_conclusion() and here.aq_parent.get_status() == 'phase1-pending'</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-recall-msa" title="Recall Answer" new_state="phase1-recalled-msa" trigger="USER" before_script="" after_script="">
@@ -1237,7 +1237,7 @@
   <action url="%(content_url)s/add-follow-up-question?workflow_action=phase2-add-followup-question" category="workflow" icon="">Add follow up question</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
-   <guard-expression>python:here.has_answers()</guard-expression>
+   <guard-expression>python:here.has_answers() and here.aq_parent.get_status() not in ['phase2-conclusion-discussion', 'phase2-close-requested']</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-answer-to-lr" title="Submit Answer" new_state="phase2-answered" trigger="USER" before_script="" after_script="">
@@ -1288,19 +1288,21 @@
   <action url="%(content_url)s/delete-last-comment?workflow_action=phase2-delete-question" category="workflow" icon="">Delete Question</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
+   <guard-expression>here/unanswered_questions</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-draft-conclusions" title="Add Conclusions" new_state="" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/add-conclusions?workflow_action=phase2-draft-conclusions" category="workflow" icon="">Add Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
-   <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion_phase2()</guard-expression>
+   <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion_phase2()and not here.aq_parent.get_conclusion_phase2() and here.aq_parent.get_status() == 'phase2-pending'</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-go-to-conclusions" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
+   <guard-expression>python:here.has_answers() and here.aq_parent.get_conclusion_phase2() and here.aq_parent.get_status() == 'phase2-pending'</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-recall" title="Recall" new_state="phase1-closed" trigger="USER" before_script="" after_script="">
