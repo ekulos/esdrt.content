@@ -13,6 +13,7 @@
  <permission>View</permission>
  <permission>esdrt.content: Add ESDRTFile</permission>
  <permission>esdrt.content: Edit Comment</permission>
+ <permission>Delete portal content</permission>
  <state state_id="initial" title="Initial">
   <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information" acquired="True">
