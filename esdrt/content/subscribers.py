@@ -150,18 +150,25 @@ def observation_transition(observation, event):
             questions = [c for c in observation.values() if c.portal_type == 'Question']
             if questions:
                 question = questions[0]
-                if api.content.get_state(question) != 'phase1-closed':
+                if api.content.get_state(question) == 'phase1-draft':
                     api.content.transition(obj=question,
                         transition='phase1-close')
+                elif api.content.get_state(question) in ['phase1-drafted', 'phase1-recalled-lr']:
+                    api.content.transition(obj=question,
+                        transition='phase1-close-lr')
 
     elif event.action == 'phase2-draft-conclusions':
         with api.env.adopt_roles(roles=['Manager']):
             questions = [c for c in observation.values() if c.portal_type == 'Question']
             if questions:
                 question = questions[0]
-                if api.content.get_state(question) != 'phase2-closed':
+                if api.content.get_state(question) == 'phase2-draft':
                     api.content.transition(obj=question,
                         transition='phase2-close')
+                elif api.content.get_state(question) in ['phase2-drafted', 'phase2-recalled-lr']:
+                    api.content.transition(obj=question,
+                        transition='phase2-close-lr')
+
 
     elif event.action == 'phase1-send-to-team-2':
         with api.env.adopt_roles(roles=['Manager']):

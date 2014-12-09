@@ -1520,16 +1520,25 @@ class AddConclusions(grok.View):
     def render(self):
         context = aq_inner(self.context)
         if context.get_status().startswith('phase1-'):
+            api.content.transition(
+                obj=context,
+                transition='phase1-draft-conclusions'
+            )
             cs = [cs for cs in context.get_values() if cs.portal_type == 'Conclusion']
             if cs:
                 conclusion = cs[0]
-                url = conclusion.absolute_url() + '/edit'
-            else:
-                api.content.transition(
-                    obj=context,
-                    transition='phase1-draft-conclusions'
+                current_user_id = api.user.get_current().getId()
+                user_roles = api.user.get_roles(
+                    username=current_user_id,
+                    obj=conclusion
                 )
+                if 'ReviewerPhase1' in user_roles or 'ReviewerPhase2' in user_roles:
+                    url = conclusion.absolute_url() + '/edit'
+                else:
+                    url = context.absolute_url()
+            else:
                 url = '%s/++add++Conclusion' % context.absolute_url()
+
         elif context.get_status().startswith('phase2-'):
             api.content.transition(
                 obj=context,
@@ -1539,14 +1548,19 @@ class AddConclusions(grok.View):
             csp2 = [cs for cs in context.get_values() if cs.portal_type == 'ConclusionsPhase2']
             if csp2:
                 conclusionsphase2 = csp2[0]
-            else:
-                cp2 = context.invokeFactory(
-                    id=int(time()),
-                    type_name='ConclusionsPhase2'
+                current_user_id = api.user.get_current().getId()
+                user_roles = api.user.get_roles(
+                    username=current_user_id,
+                    obj=conclusion
                 )
-                conclusionsphase2 = context.get(cp2)
+                if 'ReviewerPhase1' in user_roles or 'ReviewerPhase2' in user_roles:
+                    url = conclusionsphase2.absolute_url() + '/edit'
+                else:
+                    url = context.absolute_url()
 
-            url = '%s/edit' % conclusionsphase2.absolute_url()
+            else:
+                url = '%s/++add++Conclusion' % context.absolute_url()
+
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
 
