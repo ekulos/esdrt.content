@@ -249,7 +249,7 @@ class Observation(dexterity.Container):
     grok.implements(IObservation)
     # Add your class methods and properties here
 
-    @instance.memoize
+
     def get_values(self):
         """
         Memoized version of values, to speed-up
