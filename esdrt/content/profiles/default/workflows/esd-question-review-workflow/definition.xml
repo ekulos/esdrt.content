@@ -67,6 +67,7 @@
  <state state_id="phase1-closed" title="Closed">
   <exit-transition transition_id="phase1-add-folowup-question"/>
   <exit-transition transition_id="phase1-draft-conclusions"/>
+  <exit-transition transition_id="phase1-go-to-conclusions"/>
   <exit-transition transition_id="phase1-reopen"/>
   <exit-transition transition_id="phase2-reopen"/>
   <permission-map name="Access contents information" acquired="False">
@@ -580,6 +581,7 @@
  <state state_id="phase2-closed" title="phase2-closed">
   <exit-transition transition_id="phase2-add-folowup-question "/>
   <exit-transition transition_id="phase2-draft-conclusions"/>
+  <exit-transition transition_id="phase2-go-to-conclusions"/>
   <exit-transition transition_id="phase2-reopen"/>
  </state>
  <state state_id="phase2-counterpart-comments" title="phase2-counterpart-comments">
@@ -711,10 +713,11 @@
   </permission-map>
  </state>
  <state state_id="phase2-drafted" title="phase2-drafted">
-  <exit-transition transition_id="phase2-redraft"/>
-  <exit-transition transition_id="phase2-recall-sre"/>
+  <exit-transition transition_id="finish-observation-lr"/>
   <exit-transition transition_id="phase2-approve-question"/>
   <exit-transition transition_id="phase2-close-lr"/>
+  <exit-transition transition_id="phase2-recall-sre"/>
+  <exit-transition transition_id="phase2-redraft"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
@@ -1046,6 +1049,12 @@
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
   </permission-map>
  </state>
+ <transition transition_id="finish-observation-lr" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
+  <guard>
+   <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="finish-observation-qe" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
@@ -1081,7 +1090,7 @@
   <action url="%(content_url)s/add-follow-up-question?workflow_action=phase1-add-followup-question" category="workflow" icon="">Add follow up question</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
-   <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion()</guard-expression>
+   <guard-expression>python:here.has_answers()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-answer-to-lr" title="Submit Answer" new_state="phase1-answered" trigger="USER" before_script="" after_script="">
@@ -1141,6 +1150,13 @@
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
    <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion()</guard-expression>
+  </guard>
+ </transition>
+ <transition transition_id="phase1-go-to-conclusions" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
+  <guard>
+   <guard-role>ReviewerPhase1</guard-role>
+   <guard-expression>python:here.has_answers() and here.aq_parent.get_conclusion()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-recall-msa" title="Recall Answer" new_state="phase1-recalled-msa" trigger="USER" before_script="" after_script="">
@@ -1221,7 +1237,7 @@
   <action url="%(content_url)s/add-follow-up-question?workflow_action=phase2-add-followup-question" category="workflow" icon="">Add follow up question</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
-   <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion_phase2()</guard-expression>
+   <guard-expression>python:here.has_answers()</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-answer-to-lr" title="Submit Answer" new_state="phase2-answered" trigger="USER" before_script="" after_script="">
@@ -1279,6 +1295,12 @@
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
    <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion_phase2()</guard-expression>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-go-to-conclusions" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-recall" title="Recall" new_state="phase1-closed" trigger="USER" before_script="" after_script="">
