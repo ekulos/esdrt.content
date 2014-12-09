@@ -451,23 +451,28 @@ class DeleteLastComment(grok.View):
         comments = [c for c in self.context.values() if c.portal_type == 'Comment']
         if comments:
             last_comment = comments[-1]
-            self.context.manage_delObjects([last_comment.getId()])
             question = aq_inner(self.context)
-            if not question.getFirstComment():
+            if len(comments) == 1:
                 # delete also the parent question
+                self.context.manage_delObjects([last_comment.getId()])
                 observation = aq_parent(question)
                 del observation[question.getId()]
+                return self.request.response.redirect(observation.absolute_url())
             else:
                 question_state = api.content.get_state(obj=question)
+                self.context.manage_delObjects([last_comment.getId()])
+                url = question.absolute_url()
                 if question_state == 'phase1-draft':
-                    api.content.transition(
-                        obj=question,
-                        transition='phase1-delete-question'
-                    )
+                    # api.content.transition(
+                    #     obj=question,
+                    #     transition='phase1-delete-question'
+                    # )
+                    url += '/content_status_modify?workflow_action=phase1-delete-question'
                 elif question_state == 'phase2-draft':
-                    api.content.transition(
-                        obj=question,
-                        transition='phase2-delete-question'
-                    )
-        observation = aq_parent(self.context)
-        return self.request.response.redirect(observation.absolute_url())
+                    # api.content.transition(
+                    #     obj=question,
+                    #     transition='phase2-delete-question'
+                    # )
+                    url += '/content_status_modify?workflow_action=phase1-delete-question'
+                return self.request.response.redirect(url)
+
