@@ -557,6 +557,7 @@
             </div>
         </div>
         <div class="actions" tal:condition="view/in_conclusions_phase1">
+
           <a href=""
             tal:condition="conclusion/can_edit"
             tal:attributes="href string:${conclusion/absolute_url}/edit"
@@ -808,6 +809,26 @@
               </tal:block>
             </tal:block>
         </div>
+
+      <tal:conclu condition="python:view.in_conclusions_phase1() and not here.get_conclusion()">
+        <a href=""
+            id="add-conclusion-link"
+            tal:attributes="href string:${here/absolute_url}/++add++Conclusion"
+            class="standardButton">
+            Add conclusions
+        </a>
+      </tal:conclu>
+
+      <tal:conclu condition="python:view.in_conclusions_phase2() and not here.get_conclusion_phase2()">
+        <a href=""
+            id="add-conclusion-link"
+            tal:attributes="href string:${here/absolute_url}/++add++ConclusionsPhase2"
+            class="standardButton">
+            Add conclusions
+        </a>
+      </tal:conclu>
+
+
       <tal:qactions condition="python:(not view.in_conclusions_phase1()) and (not view.in_conclusions_phase2())">
         <div class="actions" tal:condition="repeat/question/end">
           <!--tal:block condition="view/can_edit">
