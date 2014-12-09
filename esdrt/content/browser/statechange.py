@@ -16,6 +16,39 @@ from esdrt.content.notifications.utils import notify
 from Products.Five.browser.pagetemplatefile import PageTemplateFile
 
 
+def revoke_roles(username=None, user=None, obj=None, roles=None, inherit=True):
+    """
+    plone.api.user.revoke_roles implementation as per
+    https://github.com/plone/plone.api/pull/200
+    """
+    if user is None:
+        user = api.user.get(username=username)
+    # check we got a user
+    if user is None:
+        raise api.InvalidParameterError("User could not be found")
+
+    if isinstance(roles, tuple):
+        roles = list(roles)
+
+    if 'Anonymous' in roles or 'Authenticated' in roles:
+        raise api.InvalidParameterError
+
+    actual_roles = list(api.user.get_roles(user=user, obj=obj, inherit=inherit))
+    if actual_roles.count('Anonymous'):
+        actual_roles.remove('Anonymous')
+    if actual_roles.count('Authenticated'):
+        actual_roles.remove('Authenticated')
+
+    roles = list(set(actual_roles) - set(roles))
+
+    if obj is None:
+        user.setSecurityProfile(roles=roles)
+    elif not roles:
+        obj.manage_delLocalRoles([user.getId()])
+    else:
+        obj.manage_setLocalRoles(user.getId(), roles)
+
+
 class IFinishObservationReasonForm(Interface):
 
     comments = RichText(
@@ -207,13 +240,16 @@ class AssignCounterPartForm(BrowserView):
         """
           Revoke all existing roles
         """
-        target = self.assignation_target()
-        for user, cp in self.get_counterpart_users():
-            if cp:
-                api.user.revoke_roles(username=user.getId(),
-                    obj=target,
-                    roles=['CounterPart'],
-                )
+        with api.env.adopt_roles(['Manager']):
+            target = self.assignation_target()
+            for user, cp in self.get_counterpart_users():
+                if cp:
+                    revoke_roles(
+                        username=user.getId(),
+                        obj=target,
+                        roles=['CounterPart'],
+                        inherit=False,
+                    )
 
     def target_groupnames(self):
         return [
@@ -234,7 +270,7 @@ class AssignCounterPartForm(BrowserView):
 
         def isCP(u):
             target = self.assignation_target()
-            return 'CounterPart' in api.user.get_roles(user=u, obj=target)
+            return 'CounterPart' in api.user.get_roles(username=u.getId(), obj=target, inherit=False)
 
         for groupname in self.target_groupnames():
             try:
@@ -253,7 +289,6 @@ class AssignCounterPartForm(BrowserView):
         target = self.assignation_target()
         if self.request.form.get('send', None):
             counterparts = self.request.get('counterparts', None)
-            #comments = self.request.get('comments', None)
             if counterparts is None:
                 status = IStatusMessage(self.request)
                 msg = _(u'You need to select at least one counterpart')
