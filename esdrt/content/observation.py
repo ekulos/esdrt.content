@@ -1524,42 +1524,56 @@ class AddConclusions(grok.View):
                 obj=context,
                 transition='phase1-draft-conclusions'
             )
-            cs = [cs for cs in context.get_values() if cs.portal_type == 'Conclusion']
-            if cs:
-                conclusion = cs[0]
-                current_user_id = api.user.get_current().getId()
-                user_roles = api.user.get_roles(
-                    username=current_user_id,
-                    obj=conclusion
-                )
-                if 'ReviewerPhase1' in user_roles or 'ReviewerPhase2' in user_roles:
-                    url = conclusion.absolute_url() + '/edit'
+            current_user_id = api.user.get_current().getId()
+            user_roles = api.user.get_roles(
+                username=current_user_id,
+                obj=context
+            )
+            if 'ReviewerPhase1' in user_roles:
+                cs = [cs for cs in context.get_values() if cs.portal_type == 'Conclusion']
+                if cs:
+                    conclusion = cs[0]
+                    if 'ReviewerPhase1' in user_roles:
+                        url = conclusion.absolute_url() + '/edit'
                 else:
-                    url = context.absolute_url()
+                    url = '%s/++add++Conclusion' % context.absolute_url()
             else:
-                url = '%s/++add++Conclusion' % context.absolute_url()
+                with api.env.adopt_roles(['ReviewerPhase1']):
+                    id = context.invokeFactory(
+                        id=str(int(time())),
+                        type_name='Conclusion',
+                        text=u'<p>Draft conclusions</p>'
+                    )
+                url = context.absolute_url()
 
         elif context.get_status().startswith('phase2-'):
             api.content.transition(
                 obj=context,
                 transition='phase2-draft-conclusions'
             )
-            # XXX check why the standard redirect does not work
-            csp2 = [cs for cs in context.get_values() if cs.portal_type == 'ConclusionsPhase2']
-            if csp2:
-                conclusionsphase2 = csp2[0]
-                current_user_id = api.user.get_current().getId()
-                user_roles = api.user.get_roles(
-                    username=current_user_id,
-                    obj=conclusion
-                )
-                if 'ReviewerPhase1' in user_roles or 'ReviewerPhase2' in user_roles:
+
+            current_user_id = api.user.get_current().getId()
+            user_roles = api.user.get_roles(
+                username=current_user_id,
+                obj=context
+            )
+            if 'ReviewerPhase2' in user_roles:
+                csp2 = [cs for cs in context.get_values() if cs.portal_type == 'ConclusionsPhase2']
+                if csp2:
+                    conclusionsphase2 = csp2[0]
                     url = conclusionsphase2.absolute_url() + '/edit'
+
                 else:
-                    url = context.absolute_url()
+                    url = '%s/++add++Conclusion' % context.absolute_url()
 
             else:
-                url = '%s/++add++Conclusion' % context.absolute_url()
+                with api.env.adopt_roles(['ReviewerPhase2']):
+                    id = context.invokeFactory(
+                        id=str(int(time())),
+                        type_name='ConclusionsPhase2',
+                        text=u'<p>Draft conclusions</p>'
+                    )
+                url = context.absolute_url()
 
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
