@@ -325,7 +325,6 @@ class Observation(dexterity.Container):
         except LookupError:
             return u''
 
-    @instance.memoize
     def get_status(self):
         return api.content.get_state(self)
 
