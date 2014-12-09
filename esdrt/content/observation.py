@@ -1171,6 +1171,12 @@ class ObservationView(grok.View):
     #    if question:
     #        return question.get_questions()
 
+    def isChatCurrent(self):
+        status = api.content.get_state(self.context)
+        if status  in ['phase1-draft', 'phase1-pending', 'phase2-draft', 'phase2-pending']:
+            return True
+        else:
+            return False
 
 class AddQuestionForm(Form):
 
