@@ -282,6 +282,11 @@
     </div>
   </metal:observation>
 
+  <script tal:condition="view/isChatCurrent">
+    $(document).ready(function(){
+      $("#tab-question-chat-room").click();
+    });
+  </script>
 
   <ul class="eea-tabs">
     <li style="width:165px;max-width:165px"
@@ -296,7 +301,8 @@
       tal:define="conclusion view/get_conclusion"
       tal:condition="nocall:conclusion"
       >Conclusions Phase 1</li>
-    <li style="width:200px;max-width:200px"  
+    <li style="width:200px;max-width:200px"
+      id="questionChatRoom"
       tal:condition="view/get_questions">Question chat room</li>
   </ul>
 
