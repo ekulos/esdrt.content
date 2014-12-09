@@ -10,6 +10,7 @@ def upgrade(context, logger=None):
         from logging import getLogger
         logger = getLogger('esdrt.content.upgrades.25_26')
 
+    install_workflow(context, logger)
     reimport_vocabularies(context, logger)
     logger.info('Upgrade steps executed')
 
@@ -22,7 +23,6 @@ def reimport_vocabularies(context, logger):
     prepareVocabularies(context, profile)
 
 
-
 def install_workflow(context, logger):
     setup = getToolByName(context, 'portal_setup')
     wtool = getToolByName(context, 'portal_workflow')
@@ -30,13 +30,12 @@ def install_workflow(context, logger):
         'esd-answer-workflow',
         'esd-comment-workflow',
         'esd-conclusion-workflow',
+        'esd-conclusion-phase2-workflow',
         'esd-file-workflow',
         'esd-question-review-workflow',
         'esd-reviewtool-folder-workflow',
         'esd-review-workflow',
-        ])
-    if 'esd-conclusion-phase2-workflow' in wtool.keys():
-        wtool.manage_delObjects(['esd-conclusion-phase2-workflow'])
+    ])
 
     setup.runImportStepFromProfile(PROFILE_ID, 'rolemap')
     setup.runImportStepFromProfile(PROFILE_ID, 'workflow')
@@ -44,4 +43,3 @@ def install_workflow(context, logger):
     logger.info('Reinstalled Workflows, Roles and Permissions ')
     wtool.updateRoleMappings()
     logger.info('Security settings updated')
-
