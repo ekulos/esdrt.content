@@ -146,9 +146,11 @@ class AssignAnswererForm(BrowserView):
         target = self.assignation_target()
         for user, cp in self.get_counterpart_users():
             if cp:
-                api.user.revoke_roles(username=user.getId(),
+                revoke_roles(
+                    username=user.getId(),
                     obj=target,
                     roles=['MSExpert'],
+                    inherit=False,
                 )
 
     def assignation_target(self):
@@ -167,7 +169,7 @@ class AssignAnswererForm(BrowserView):
 
         def isMSE(u):
             target = self.assignation_target()
-            return 'MSExpert' in api.user.get_roles(user=u, obj=target)
+            return 'MSExpert' in api.user.get_roles(user=u, obj=target, inherit=False)
 
         try:
             return [(u, isMSE(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
@@ -267,6 +269,7 @@ class AssignCounterPartForm(BrowserView):
         current_id = current.getId()
 
         users = []
+
 
         def isCP(u):
             target = self.assignation_target()
@@ -395,9 +398,11 @@ class AssignConclusionReviewerForm(BrowserView):
         target = self.assignation_target()
         for user, cp in self.get_counterpart_users():
             if cp:
-                api.user.revoke_roles(username=user.getId(),
+                revoke_roles(
+                    username=user.getId(),
                     obj=target,
                     roles=['CounterPart'],
+                    inherit=False,
                 )
 
     def assignation_target(self):
@@ -419,7 +424,7 @@ class AssignConclusionReviewerForm(BrowserView):
 
         def isCP(u):
             target = self.assignation_target()
-            return 'CounterPart' in api.user.get_roles(user=u, obj=target)
+            return 'CounterPart' in api.user.get_roles(user=u, obj=target, inherit=False)
 
         for groupname in self.target_groupnames():
             try:
