@@ -181,25 +181,6 @@ def observation_transition(observation, event):
                     transition='phase2-recall'
                 )
 
-
-@grok.subscribe(IComment, IObjectRemovedEvent)
-def delete_answer(answer, event):
-    question = aq_parent(answer)
-    if not question.has_answers():
-        # delete also the parent question
-        observation = aq_parent(question)
-        del observation[question.getId()]
-    else:
-        if api.content.get_state(obj=question).startswith('phase1-'):
-            api.content.transition(obj=question,
-                transition='phase1-delete-question'
-            )
-        elif api.content.get_state(obj=question).startswith('phase2-'):
-            api.content.transition(obj=question,
-                transition='phase2-delete-question'
-            )
-
-
 @grok.subscribe(ICommentAnswer, IObjectRemovedEvent)
 def delete_answer(answer, event):
     question = aq_parent(answer)

@@ -452,5 +452,22 @@ class DeleteLastComment(grok.View):
         if comments:
             last_comment = comments[-1]
             self.context.manage_delObjects([last_comment.getId()])
-
-        return self.request.response.redirect(self.context.absolute_url())
+            question = aq_inner(self.context)
+            if not question.getFirstComment():
+                # delete also the parent question
+                observation = aq_parent(question)
+                del observation[question.getId()]
+            else:
+                question_state = api.content.get_state(obj=question)
+                if question_state == 'phase1-draft':
+                    api.content.transition(
+                        obj=question,
+                        transition='phase1-delete-question'
+                    )
+                elif question_state == 'phase2-draft':
+                    api.content.transition(
+                        obj=question,
+                        transition='phase2-delete-question'
+                    )
+        observation = aq_parent(self.context)
+        return self.request.response.redirect(observation.absolute_url())
