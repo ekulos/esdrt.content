@@ -42,8 +42,7 @@
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="False">
    <permission-role>MSAuthority</permission-role>
   </permission-map>
-  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
-   <permission-role>MSAuthority</permission-role>
+  <permission-map name="esdrt.content: Edit CommentAnswer" acquired="True">
   </permission-map>
  </state>
  <state state_id="public" title="Published">
