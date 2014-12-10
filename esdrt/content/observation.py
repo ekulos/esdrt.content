@@ -376,7 +376,7 @@ class Observation(dexterity.Container):
         elif self.get_status() == 'phase2-close-requested':
             return 'Lead reviewer'
         else:
-            questions = self.get_values()
+            questions = [q for q in self.get_values() if q.portal_type == 'Question']
             if questions:
                 question = questions[0]
                 state = question.get_state_api()
