@@ -113,21 +113,13 @@ def observation_transition(observation, event):
                 api.content.transition(obj=conclusion,
                     transition='redraft')
 
-    elif event.action in ['phase1-close', 'phase1-send-to-team-2']:
+    elif event.action in ['phase1-close']:
         with api.env.adopt_roles(roles=['Manager']):
             conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
             if conclusions:
                 conclusion = conclusions[0]
                 api.content.transition(obj=conclusion,
                     transition='publish')
-
-    elif event.action in ['recall-from-phase2']:
-        with api.env.adopt_roles(roles=['Manager']):
-            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
-            if conclusions:
-                conclusion = conclusions[0]
-                api.content.transition(obj=conclusion,
-                    transition='retract')
 
     elif event.action in ['phase2-request-comments']:
         with api.env.adopt_roles(roles=['Manager']):
@@ -198,8 +190,16 @@ def observation_transition(observation, event):
             questions = [c for c in observation.values() if c.portal_type == 'Question']
             if questions:
                 question = questions[0]
-                api.content.transition(obj=question,
+                api.content.transition(
+                    obj=question,
                     transition='phase2-reopen'
+                )
+            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(
+                    obj=conclusion,
+                    transition='publish'
                 )
 
     elif event.action == 'recall-from-phase2':
@@ -207,18 +207,15 @@ def observation_transition(observation, event):
             questions = [c for c in observation.values() if c.portal_type == 'Question']
             if questions:
                 question = questions[0]
-                api.content.transition(obj=question,
+                api.content.transition(
+                    obj=question,
                     transition='phase2-recall'
                 )
 
-# @grok.subscribe(ICommentAnswer, IObjectRemovedEvent)
-# def delete_answer(answer, event):
-#     question = aq_parent(answer)
-#     if api.content.get_state(obj=question).startswith('phase1-'):
-#         api.content.transition(obj=question,
-#             transition='phase1-delete-answer'
-#         )
-#     elif api.content.get_state(obj=question).startswith('phase2-'):
-#         api.content.transition(obj=question,
-#             transition='phase2-delete-answer'
-#         )
+            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(
+                    obj=conclusion,
+                    transition='retract'
+                )
