@@ -1133,7 +1133,7 @@
   </guard>
  </transition>
  <transition transition_id="phase1-delete-answer" title="Delete Answer" new_state="phase1-pending" trigger="USER" before_script="" after_script="">
-  
+  <action url="%(content_url)s/delete-last-answer?workflow_action=phase1-delete-answer" category="workflow" icon="">Delete Answer</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
   </guard>
@@ -1199,7 +1199,7 @@
   <action url="%(content_url)s/assign_counterpart_form?workflow_action=phase1-request-for-counterpart-comments" category="workflow" icon="">Request Comments</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
-   <guard-expression>python:object.can_request_comments()</guard-expression>
+   <guard-expression>here/unanswered_questions</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-reselect-counterparts" title="Select new Counterparts" new_state="" trigger="USER" before_script="" after_script="">
@@ -1279,7 +1279,7 @@
   </guard>
  </transition>
  <transition transition_id="phase2-delete-answer" title="Delete Answer" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
-  
+  <action url="%(content_url)s/delete-last-answer?workflow_action=phase2-delete-answer" category="workflow" icon="">Delete Answer</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
   </guard>

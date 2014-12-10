@@ -63,7 +63,6 @@ CLOSED_STATUS_NAME = 'closed'
 class Question(dexterity.Container):
     grok.implements(IQuestion)    # Add your class methods and properties here
 
-    @instance.memoize
     def get_state_api(self):
         return api.content.get_state(self)
 
@@ -125,20 +124,6 @@ class Question(dexterity.Container):
                 if current_status.startswith('phase2-') and \
                     item['review_state'] == 'phase2-counterpart-comments':
                     return True
-        return False
-
-    def can_request_comments(self):
-        items = self.values()
-        questions = [q for q in items if q.portal_type == 'Comment']
-        answers = [q for q in items if q.portal_type == 'CommentAnswer']
-
-        if (len(questions) > len(answers)):
-            question_history = self.workflow_history['esd-question-review-workflow']
-            for item in question_history:
-                if item['review_state'] == 'phase1-counterpart-comments' or item['review_state'] == 'phase2-counterpart-comments':
-                    return False
-            return True
-
         return False
 
     def unanswered_questions(self):
