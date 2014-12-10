@@ -463,16 +463,28 @@ class DeleteLastComment(grok.View):
                 self.context.manage_delObjects([last_comment.getId()])
                 url = question.absolute_url()
                 if question_state == 'phase1-draft':
-                    # api.content.transition(
-                    #     obj=question,
-                    #     transition='phase1-delete-question'
-                    # )
                     url += '/content_status_modify?workflow_action=phase1-delete-question'
                 elif question_state == 'phase2-draft':
-                    # api.content.transition(
-                    #     obj=question,
-                    #     transition='phase2-delete-question'
-                    # )
-                    url += '/content_status_modify?workflow_action=phase1-delete-question'
+                    url += '/content_status_modify?workflow_action=phase2-delete-question'
                 return self.request.response.redirect(url)
 
+
+class DeleteLastAnswer(grok.View):
+    grok.context(IQuestion)
+    grok.name('delete-last-answer')
+    grok.require('zope2.View')
+
+    def render(self):
+        question = aq_inner(self.context)
+        url = question.absolute_url()
+        comments = [c for c in self.context.values() if c.portal_type == 'CommentAnswer']
+        if comments:
+            last_comment = comments[-1]
+            question_state = api.content.get_state(obj=question)
+            self.context.manage_delObjects([last_comment.getId()])
+            if question_state == 'phase1-pending-answer-drafting':
+                url += '/content_status_modify?workflow_action=phase1-delete-answer'
+            elif question_state == 'phase2-pending-answer-drafting':
+                url += '/content_status_modify?workflow_action=phase2-delete-answer'
+            return self.request.response.redirect(url)
+        return self.request.response.redirect(url)

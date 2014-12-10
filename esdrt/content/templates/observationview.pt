@@ -881,12 +881,6 @@
                   class="edit standardButton">
                     Edit answer
             </a>
-            <a href=""
-                  tal:condition="question/can_delete"
-                  tal:attributes="href string:${question/absolute_url}/delete_confirmation"
-                  class="deleteButton standardButton">
-                    Delete answer
-            </a>
           </tal:block>
 
           <a href=""
