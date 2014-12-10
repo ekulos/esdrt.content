@@ -103,7 +103,7 @@ def observation_transition(observation, event):
             if conclusions:
                 conclusion = conclusions[0]
                 api.content.transition(obj=conclusion,
-                    transition='publish')
+                    transition='ask-approval')
 
     elif event.action in ['phase1-deny-closure']:
         with api.env.adopt_roles(roles=['Manager']):
@@ -112,6 +112,22 @@ def observation_transition(observation, event):
                 conclusion = conclusions[0]
                 api.content.transition(obj=conclusion,
                     transition='redraft')
+
+    elif event.action in ['phase1-close', 'phase1-send-to-team-2']:
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='publish')
+
+    elif event.action in ['recall-from-phase2']:
+        with api.env.adopt_roles(roles=['Manager']):
+            conclusions = [c for c in observation.values() if c.portal_type == 'Conclusion']
+            if conclusions:
+                conclusion = conclusions[0]
+                api.content.transition(obj=conclusion,
+                    transition='retract')
 
     elif event.action in ['phase2-request-comments']:
         with api.env.adopt_roles(roles=['Manager']):

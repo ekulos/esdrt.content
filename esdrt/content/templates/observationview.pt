@@ -586,6 +586,7 @@
       <div class="actions"
         tal:condition="python:not view.get_questions() and view.can_add_conclusion()">
         <a href=""
+            tal:condition="view/can_add_conclusion"
             id="add-conclusion-link"
             tal:attributes="href string:${here/absolute_url}/++add++Conclusion"
             class="standardButton">
@@ -813,6 +814,7 @@
       <tal:conclu condition="python:view.in_conclusions_phase1() and not here.get_conclusion()">
         <a href=""
             id="add-conclusion-link"
+            tal:condition="view/can_add_conclusion"
             tal:attributes="href string:${here/absolute_url}/++add++Conclusion"
             class="standardButton">
             Add conclusions
@@ -822,6 +824,7 @@
       <tal:conclu condition="python:view.in_conclusions_phase2() and not here.get_conclusion_phase2()">
         <a href=""
             id="add-conclusion-link"
+            tal:condition="view/can_add_conclusion_phase2"
             tal:attributes="href string:${here/absolute_url}/++add++ConclusionsPhase2"
             class="standardButton">
             Add conclusions

@@ -993,9 +993,10 @@ class ObservationView(grok.View):
         status = self.context.get_status()
         if status.startswith('phase1-'):
             conclusion = self.get_conclusion()
+            return sm.checkPermission('esdrt.content: Add Conclusion', self.context) and not conclusion
         else:
             conclusion = self.get_conclusion_phase2()
-        return sm.checkPermission('esdrt.content: Add Conclusion', self.context) and not conclusion
+            return sm.checkPermission('esdrt.content: Add ConclusionsPhase2', self.context) and not conclusion
 
     def show_description(self):
         questions = self.get_questions()
