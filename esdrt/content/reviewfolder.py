@@ -61,32 +61,38 @@ class ReviewFolderView(grok.View):
         if (country != ""):
             query['Country'] = country
         if (status != ""):
-            if status == "draft":
-                query['review_state'] = [
-                    'phase1-draft',
-                    'phase2-draft'
-                ]
-            elif status == "finished":
+            if status == "finished":
                 query['review_state'] = [
                     'phase1-closed',
                     'phase2-closed'
                 ]
-            elif status == "conclusion-1":
-                query['review_state'] = [
-                    'phase1-conclusions',
-                    'phase1-conclusion-discussion'
-                ]
-            elif status == "conclusion-2":
-                query['review_state'] = [
-                    'phase2-conclusions',
-                    'phase2-conclusion-discussion'
-                ]
+            # if status == "draft":
+            #     query['review_state'] = [
+            #         'phase1-draft',
+            #         'phase2-draft'
+            #     ]
+            # elif status == "conclusion-1":
+            #     query['review_state'] = [
+            #         'phase1-conclusions',
+            #         'phase1-conclusion-discussion'
+            #     ]
+            # elif status == "conclusion-2":
+            #     query['review_state'] = [
+            #         'phase2-conclusions',
+            #         'phase2-conclusion-discussion'
+            #     ]
             else:
                 query['review_state'] = [
                     'phase1-pending',
                     'phase2-pending',
                     'phase1-close-requested',
-                    'phase2-close-requested'
+                    'phase2-close-requested',
+                    'phase1-draft',
+                    'phase2-draft',
+                    'phase1-conclusions',
+                    'phase1-conclusion-discussion',
+                    'phase2-conclusions',
+                    'phase2-conclusion-discussion',
                 ]
 
         if reviewYear != "":
@@ -757,6 +763,7 @@ class InboxReviewFolderView(grok.View):
                 except:
                     pass
         return items
+
     @memoize
     def get_resolved_observations(self):
         """
@@ -778,6 +785,7 @@ class InboxReviewFolderView(grok.View):
                 except:
                     pass
         return items
+
     @memoize
     def get_unresolved_observations(self):
         """
@@ -799,6 +807,7 @@ class InboxReviewFolderView(grok.View):
                 except:
                     pass
         return items
+
     @memoize
     def get_partly_resolved_observations(self):
         """
@@ -820,6 +829,7 @@ class InboxReviewFolderView(grok.View):
                 except:
                     pass
         return items
+
     @memoize
     def get_technical_correction_observations(self):
         """
@@ -841,6 +851,7 @@ class InboxReviewFolderView(grok.View):
                 except:
                     pass
         return items
+
     @memoize
     def get_revised_estimate_observations(self):
         """
@@ -862,6 +873,7 @@ class InboxReviewFolderView(grok.View):
                 except:
                     pass
         return items
+
     def can_add_observation(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Observation', self)

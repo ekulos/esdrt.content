@@ -170,14 +170,8 @@
                 tal:define="status python:'';
                             status request/status | status">
               <option></option>
-              <option tal:attributes="selected python:'draft'==status"
-                value="draft">Draft</option>
              <option tal:attributes="selected python:'open'==status"
                 value="open">Open</option>
-              <option tal:attributes="selected python:'conclusion-1'==status"
-                value="conclusion-1">Conclusion step 1</option>
-              <option tal:attributes="selected python:'conclusion-'==status"
-                value="conclusion-2">Conclusion step 2</option>
               <option tal:attributes="selected python:'finished'==status"
                 value="finished">Finished</option>
             </select>
