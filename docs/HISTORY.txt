@@ -4,7 +4,7 @@ Changelog
 1.22 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Bug fixes [erral] [MikelS]
 
 
 1.21 (2014-11-28)
