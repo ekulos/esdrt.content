@@ -224,7 +224,7 @@
       <div class="row observation-details" style="display:none;padding-top:15px">
         <div class="cell position-0 width-4 esdLabel">Review Year</div>
         <div class="cell position-4 width-4 esdLabel">Key category</div>
-        <div class="cell position-8 width-4 esdLabel">Status flag</div>
+        <div class="cell position-8 width-4 esdLabel">Key flags</div>
         <div class="cell position-12 width-4 esdLabel">Last update</div>
       </div>
       <div class="row observation-details" style="display:none">

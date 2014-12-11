@@ -104,7 +104,7 @@
           <div class="cell position-1 width-3 esdLabel">Country</div>
           <div class="cell position-4 width-3 esdLabel">Review year</div>
           <div class="cell position-7 width-3 esdLabel">Inventory year</div>
-          <div class="cell position-11 width-3 esdLabel">Highlights</div>
+          <div class="cell position-11 width-3 esdLabel">Key flags</div>
         </div>
         <div class="row">
           <div class="cell position-1 width-3">
