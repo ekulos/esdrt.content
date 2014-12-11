@@ -1,41 +1,68 @@
-total,Total (Net Emissions)
-1A1,1A1  Energy industries
-1A2,1A2 Manufacturing industries and construction
-1A3,1A3  Transport
-1A4,1A4 Other sectors
-1A5,1A5 Other
-1B1,1B1  Solid fuels
-1B2,1B2  Oil and natural gas and other emissions from energy production
-1C,1C CO2 transport and storage
-2A,2A  Mineral industry
-2B,2B  Chemical industry
-2C,2C  Metal industry
-2D,2D  Non-energy products from fuels and solvent use
-2E,2E  Electronic industry
-2F,2F  Product uses as substitutes for ODS
-2G,2G  Other product manufacture and use
-2H,2H  Other
-3A,3A Enteric fermentation
-3B,3B Manure management
-3C,3C Rice cultivation
-3D,3D Agricultural soils
-3E,3E Prescribed burning of savannahs
-3F,3F  Field burning of agricultural residues
-3G,3G Liming
-3H,3H  Urea application
-3I,3I Other carbon containing fertilisers
-3J,3J Other
-4A,4A Forest land
-4B,4B Cropland
-4C,4C Grassland
-4D,4D Wetlands
-4E,4E Settlements
-4F,4F Other land
-4G,4G Harvested wood products
-4H,4H Other
-5A,5A  Solid waste disposal
-5B,5B  Biological treatment of solid waste
-5C,5C  Incineration and open burning of waste
-5D,5D  Wastewater treatment and discharge
-5E,5E  Other
-6,6  Other (as specified in Summary 1.A)
+1A1,1A1 Fuel Combustion Activities - Energy Industries
+1A2,1A2 Fuel Combustion Activities - Manufacturing Industries and Construction
+1A3a,1A3a Fuel Combustion Activities - Transport - Civil Aviation
+1A3b,1A3b Fuel Combustion Activities - Transport - Road transportation
+1A3c,1A3c Fuel Combustion Activities - Transport - Railways
+1A3d,1A3d Fuel Combustion Activities - Transport - Water-borne Navigation
+1A3e,1A3e Fuel Combustion Activities - Transport - Other Transportation
+1A4,1A4 Fuel Combustion Activities - Other Sectors
+1A5,1A5 Fuel Combustion Activities - Non- Specified
+1B1,1B1 Fugitive emissions from fuels - Solid Fuels
+1B2a,1B2a Fugitive Emissions from Fuels - Oil and Natural Gas - Oil
+1B2b,1B2b Fugitive Emissions from Fuels - Oil and Natural Gas - Natural gas
+1C,1C Carbon Dioxide Transport and Storage
+2A1,2A1 Mineral industry - Cement Production
+2A2,2A2 Mineral Industry - Lime Production
+2A3,2A3 Mineral Industry - Glass Production
+2A4,2A4 Mineral Industry - Other Process Uses of Carbonates
+2B1,2B1 Chemical Industry - Ammonia Production
+2B2,2B2 Chemical industry - Nitric Acid Production
+2B3,2B3 Chemical industry - Adipic Acid Production
+2B4,2B4 Chemical industry - Caprolactam, Glyoxal and Glyoxylic Acid Production
+2B5,2B5 Chemical industry - Carbide Production
+2B6,2B6 Chemical industry - Titanium Dioxide Production
+2B7,2B7 Chemical Industry - Soda Ash Production
+2B8,2B8 Chemical Industry - Petrochemical and Carbon Black Production
+2B9,2B9 Chemical Industry - Fluorochemical Production
+2C1,2C1 Metal Industry - Iron and Steel Production
+2C2,2C2 Metal Industry - Ferroalloys Production
+2C3,2C3 Metal Industry - Aluminium Production
+2C4,2C4 Metal Industry - Magnesium Production
+2C5,2C5 Metal Industry - Lead Production
+2C6,2C6 Metal Industry - Zinc Production
+2D,2D Non-Energy Products from Fuels and Solvent Use
+2E,2E Electronics Industry
+2F1,2F1 Product Uses as Substitutes for Ozone Depleting Substances - Refrigeration and Air Conditioning
+2F2,2F2 Product Uses as Substitutes for Ozone Depleting Substances - Foam Blowing Agents
+2F3,2F3 Product Uses as Substitutes for Ozone Depleting Substances - Fire Protection
+2F4,2F4 Product Uses as Substitutes for Ozone Depleting Substances - Aerosolls
+2F5,2F5 Product Uses as Substitutes for Ozone Depleting Substances - Solvents
+2F6,2F6 Product Uses as Substitutes for Ozone Depleting Substances - Other Applications
+2G,2G Other Product Manufacture and Use
+3A1,3A1 Enteric Fermentation
+3A2,3A2 Manure Management
+3B1a,3B1a Forest Land Remaining Forest Land
+3B1b,3B1b Land Converted to Forest Land
+3B2a,3B2a Cropland Remaining Cropland
+3B2b,3B2b Land Converted to Cropland
+3B3a,3B3a Grassland Remaining Grassland
+3B3b,3B3b Land Converted to Grassland
+3B4ai,3B4ai Peatlands Remaining Peatlands
+3B4aii,3B4aii Flooded land remaining Flooded land
+3B4b,3B4b Land Converted to Wetlands
+3B5a,3B5a Settlements Remaining Settlements
+3B5b,3B5b Land Converted to Settlements
+3C1,3C1 Biomass Burning
+3C2,3C2 Liming
+3C3,3C3 Urea Application
+3C4,3C4 Direct N2O Emissions from Managed soils
+3C5,3C5 Indirect N2O Emissions from Managed soils
+3C6,3C6 Indirect N2O Emissions from Manure Management
+3C7,3C7 Rice Cultivations
+3D1,3D1 Harvested Wood Products
+4A,4A Solid Waste Disposal
+4B,4B Biological Treatment of Solid Waste
+4C,4C Incineration and Open Burning of Waste
+4D,4D Wastewater Treatment and Discharge
+5A,5A Indirect N2O Emissions from the atmospheric deposition of nitrogen in NOx and NH3
+5B,5B Other
