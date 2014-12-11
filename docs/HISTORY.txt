@@ -4,7 +4,11 @@ Changelog
 1.23 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Metadata changes [erral]
+
+- Do not allow to delete questions/answers after going through comments process [erral]
+
+- Enforce going through the CounterPart each time a question is created [erral]
 
 
 1.22.1 (2014-12-10)
