@@ -183,8 +183,8 @@
                 tal:attributes="value python:freeText"/>
           </div>
         </div>
-        <div class="row">
-          <div class="cell position-14 width-1">
+        <div class="row" style="padding-top:30px">
+          <div class="cell position-1 width-1">
             <a class="standardButton" id="btnFilter">Search</a>
           </div>
         </div>
