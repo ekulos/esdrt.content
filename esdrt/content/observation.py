@@ -1378,7 +1378,7 @@ class AddAnswerAndRequestComments(grok.View):
             context = questions[0]
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
-        text = u'Help me drafting the answer'
+        text = u'Please provide input to drafting an answer'
 
         id = str(int(time()))
         item_id = context.invokeFactory(
