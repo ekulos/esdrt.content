@@ -312,7 +312,7 @@
         <dl>
           <dt>Observation Finish Requested</dt>
           <dd></dd>
-          <dt>Comments:</dt>
+          <dt>SE comments on finish observation request:</dt>
           <dd><span tal:replace="structure context/closing_comments/output|context/closing_comments|nothing" /></dd>
         </dl>
 
@@ -320,7 +320,7 @@
           <dl>
             <dt>Observation Finalisation previously denied</dt>
             <dd></dd>
-            <dt>Comments:</dt>
+            <dt>QE comments on finish observation request:</dt>
             <dd>
               <div tal:replace="structure context/closing_deny_comments/output|context/closing_deny_comments|nothing">
               Content
@@ -345,7 +345,7 @@
         <dl>
           <dt>Observation Finish Requested</dt>
           <dd></dd>
-          <dt>Comments:</dt>
+          <dt>RE comments on finish observation request:</dt>
           <dd><span tal:replace="structure context/closing_comments_phase2/output|context/closing_comments_phase2|nothing" /></dd>
         </dl>
 
@@ -353,7 +353,7 @@
           <dl>
             <dt>Observation Finalisation previously denied</dt>
             <dd></dd>
-            <dt>Comments:</dt>
+            <dt>LR comments on finish observation request:</dt>
             <dd>
               <div tal:replace="structure context/closing_deny_comments_phase2/output|context/closing_deny_comments_phase2|nothing">
               Content
@@ -381,7 +381,7 @@
           <dl>
             <dt>Reason:</dt>
             <dd><span tal:replace="conclusion/reason_value" /></dd>
-            <dt>Comments:</dt>
+            <dt>RE comments on conclusion:</dt>
             <dd><span tal:replace="structure conclusion/text/output|conclusion/text|nothing" /></dd>
             <dt>GHG estimates:</dt>
             <dd>
@@ -436,7 +436,7 @@
           <dl>
             <dt>Observation Finishing denied</dt>
             <dd></dd>
-            <dt>Comments:</dt>
+            <dt>LR comments on finish observation request:</dt>
             <dd><span tal:replace="structure context/closing_deny_comments_phase2/output|context/closing_deny_comments_phase2|nothing" /></dd>
           </dl>
         </div>
@@ -507,7 +507,7 @@
           <dl>
             <dt>Reason:</dt>
             <dd><span tal:replace="conclusion/reason_value" /></dd>
-            <dt>Comments:</dt>
+            <dt>RE comments on conclusion:</dt>
             <dd><span tal:replace="structure conclusion/text/output|conclusion/text|nothing" /></dd>
           </dl>
 
@@ -517,7 +517,7 @@
           <dl>
             <dt>Observation Finishing denied</dt>
             <dd></dd>
-            <dt>Comments:</dt>
+            <dt>QE comments on conclusion:</dt>
             <dd><span tal:replace="structure context/closing_deny_comments/output|context/closing_deny_comments|nothing" /></dd>
           </dl>
         </div>
