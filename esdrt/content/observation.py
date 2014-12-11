@@ -123,11 +123,13 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=u"EU key category",
     )
 
-    form.widget(parameter=RadioFieldWidget)
-    parameter = schema.Choice(
+    form.widget(parameter=CheckBoxFieldWidget)
+    parameter = schema.List(
         title=u"Parameter",
-        vocabulary='esdrt.content.parameter',
-        required=True,
+        value_type=schema.Choice(
+            vocabulary='esdrt.content.parameter',
+        ),
+        required=False,
     )
 
     form.widget(highlight=CheckBoxFieldWidget)
@@ -248,7 +250,6 @@ class Observation(dexterity.Container):
     grok.implements(IObservation)
     # Add your class methods and properties here
 
-
     def get_values(self):
         """
         Memoized version of values, to speed-up
@@ -271,12 +272,14 @@ class Observation(dexterity.Container):
         return self.highlight
 
     def country_value(self):
-        return self._vocabulary_value('esdrt.content.eea_member_states',
+        return self._vocabulary_value(
+            'esdrt.content.eea_member_states',
             self.country
         )
 
     def crf_code_value(self):
-        return self._vocabulary_value('esdrt.content.crf_code',
+        return self._vocabulary_value(
+            'esdrt.content.crf_code',
             self.crf_code
         )
 
@@ -289,9 +292,9 @@ class Observation(dexterity.Container):
         return u'Sector Value'
 
     def parameter_value(self):
-        return self._vocabulary_value('esdrt.content.parameter',
-            self.parameter
-        )
+        parameters = [self._vocabulary_value('esdrt.content.parameter',
+            p) for p in self.parameter]
+        return u', '.join(parameters)
 
     def gas_value(self):
         gases = [self._vocabulary_value('esdrt.content.gas',
@@ -1304,7 +1307,7 @@ class ModificationForm(dexterity.EditForm):
         self.fields = field.Fields(IObservation).select(*fields)
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
         if 'parameter' in fields:
-            self.fields['parameter'].widgetFactory = RadioFieldWidget
+            self.fields['parameter'].widgetFactory = CheckBoxFieldWidget
         if 'highlight' in fields:
             self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
         if 'gas' in fields:
