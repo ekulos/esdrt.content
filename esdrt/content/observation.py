@@ -850,6 +850,9 @@ class AddForm(dexterity.AddForm):
     grok.context(IObservation)
     grok.require('esdrt.content.AddObservation')
 
+    label = 'Observation'
+    description = ' '
+
     def updateWidgets(self):
         super(AddForm, self).updateWidgets()
         self.fields['IDublinCore.title'].field.required = False
