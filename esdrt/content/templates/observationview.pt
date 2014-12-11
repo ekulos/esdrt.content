@@ -507,7 +507,7 @@
           <dl>
             <dt>Reason:</dt>
             <dd><span tal:replace="conclusion/reason_value" /></dd>
-            <dt>RE comments on conclusion:</dt>
+            <dt>SE comments on conclusion:</dt>
             <dd><span tal:replace="structure conclusion/text/output|conclusion/text|nothing" /></dd>
           </dl>
 
