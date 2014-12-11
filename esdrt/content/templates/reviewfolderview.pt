@@ -260,7 +260,8 @@
                             Technical correction
                         </div>
                     </td>
-                    <td tal:content="observation/@@text-transform/text/text/plain"
+                    <td tal:content="observation/@@text-transform/text/text/plain|observation/text"
+                      tal:on-error="observation/text"
                       class="observationText">
                       Observation description
                     </td>
