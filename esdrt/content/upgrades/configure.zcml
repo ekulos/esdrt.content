@@ -200,5 +200,12 @@
          handler=".25_26.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 27."
+         description="Workflow and vocabularies"
+         source="26"
+         destination="27"
+         handler=".26_27.upgrade"
+         profile="esdrt.content:default" />
 
 </configure>
