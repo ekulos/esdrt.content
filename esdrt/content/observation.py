@@ -62,7 +62,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
     New review observation
     """
 
-    text = RichText(
+    text = schema.Text(
         title=_(u'Short description'),
         description=_(u''),
         required=True,
@@ -858,6 +858,7 @@ class AddForm(dexterity.AddForm):
         self.fields['IDublinCore.title'].field.required = False
         self.widgets['IDublinCore.title'].mode = interfaces.HIDDEN_MODE
         self.widgets['IDublinCore.description'].mode = interfaces.HIDDEN_MODE
+        self.widgets['text'].rows = 15
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
     def updateActions(self):
