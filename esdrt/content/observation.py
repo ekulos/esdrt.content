@@ -10,12 +10,9 @@ from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
 from plone.app.dexterity.behaviors.discussion import IAllowDiscussion
 from plone.app.discussion.interfaces import IConversation
-from plone.app.textfield import RichText
-from plone.app.textfield.value import RichTextValue
 from plone.directives import dexterity
 from plone.directives import form
 from plone.directives.form import default_value
-from plone.memoize import view
 from plone.memoize import instance
 from plone.namedfile.interfaces import IImageScaleTraversable
 from plone.z3cform.interfaces import IWrappedForm
@@ -143,25 +140,25 @@ class IObservation(form.Schema, IImageScaleTraversable):
     )
 
     form.write_permission(closing_comments='cmf.ManagePortal')
-    closing_comments = RichText(
+    closing_comments = schema.Text(
         title=_(u'Finish request comments'),
         required=False,
     )
 
     form.write_permission(closing_deny_comments='cmf.ManagePortal')
-    closing_deny_comments = RichText(
+    closing_deny_comments = schema.Text(
         title=_(u'Finish deny comments'),
         required=False,
     )
 
     form.write_permission(closing_comments_phase2='cmf.ManagePortal')
-    closing_comments_phase2 = RichText(
+    closing_comments_phase2 = schema.Text(
         title=_(u'Finish request comments for phase 2'),
         required=False,
     )
 
     form.write_permission(closing_deny_comments_phase2='cmf.ManagePortal')
-    closing_deny_comments_phase2 = RichText(
+    closing_deny_comments_phase2 = schema.Text(
         title=_(u'Finish deny comments for phase 2'),
         required=False,
     )
@@ -1325,10 +1322,7 @@ class AddAnswerForm(Form):
     @button.buttonAndHandler(_('Save answer'))
     def add_answer(self, action):
         text = self.request.form.get('form.widgets.text', '')
-        transforms = getToolByName(self.context, 'portal_transforms')
-        stream = transforms.convertTo('text/plain', text, mimetype='text/html')
-        text = stream.getData().strip()
-        if not text:
+        if not text.strip():
             raise ActionExecutionError(Invalid(u"Answer text is empty"))
         observation = aq_inner(self.context)
         questions = [q for q in observation.values() if q.portal_type == 'Question']
@@ -1338,11 +1332,11 @@ class AddAnswerForm(Form):
             raise ActionExecutionError(Invalid(u"Invalid context"))
         id = str(int(time()))
         item_id = context.invokeFactory(
-                type_name='CommentAnswer',
-                id=id,
+            type_name='CommentAnswer',
+            id=id,
         )
         comment = context.get(item_id)
-        comment.text = RichTextValue(text, 'text/html', 'text/html')
+        comment.text = text
         if context.get_state_api().startswith('phase1-'):
             action = 'phase1-add-answer'
         elif context.get_state_api().startswith('phase2-'):
@@ -1384,7 +1378,7 @@ class AddAnswerAndRequestComments(grok.View):
             id=id,
         )
         comment = context.get(item_id)
-        comment.text = RichTextValue(text, 'text/html', 'text/html')
+        comment.text = text
         if context.get_state_api().startswith('phase1-'):
             action = 'phase1-assign-answerer'
         elif api.content.get_state(context).startswith('phase2-'):
@@ -1416,7 +1410,7 @@ class AddCommentForm(Form):
         )
         text = self.request.form.get('form.widgets.text', '')
         comment = context.get(item_id)
-        comment.text = RichTextValue(text, 'text/html', 'text/html')
+        comment.text = text
 
         return self.request.response.redirect(context.absolute_url())
 
@@ -1444,7 +1438,7 @@ class AddConclusionForm(Form):
         )
         text = self.request.form.get('form.widgets.text', '')
         comment = context.get(item_id)
-        comment.text = RichTextValue(text, 'text/html', 'text/html')
+        comment.text = text
         reason = self.request.form.get('form.widgets.closing_reason')
         comment.closing_reason = reason[0]
         adapted = IAllowDiscussion(comment)

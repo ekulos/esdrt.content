@@ -8,14 +8,10 @@ from esdrt.content.comment import IComment
 from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
-from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
-from plone.memoize import instance
-from plone.memoize import view
 from plone.namedfile.interfaces import IImageScaleTraversable
-from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from time import time
 from z3c.form import button
@@ -260,7 +256,7 @@ class AddForm(dexterity.AddForm):
             id=id,
         )
         comment = item.get(item_id)
-        comment.text = RichTextValue(text, 'text/html', 'text/html')
+        comment.text = text
 
 
 @grok.subscribe(IQuestion, IObjectAddedEvent)
@@ -325,7 +321,7 @@ class AddAnswerForm(Form):
             id=id,
         )
         comment = context.get(item_id)
-        comment.text = RichTextValue(text, 'text/html', 'text/html')
+        comment.text = text
 
         return self.request.response.redirect(context.absolute_url())
 
