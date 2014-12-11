@@ -70,6 +70,12 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=True,
     )
 
+    crf_code = schema.Choice(
+        title=u"CRF category codes",
+        vocabulary='esdrt.content.crf_code',
+        required=True,
+    )
+
     year = schema.TextLine(
         title=u'Inventory year',
         description=u"Inventory year is the year or a range of years (e.g. '2012', '2009-2012') when the emissions had occured for which an issue was observed in the review.",
@@ -115,12 +121,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     eu_key_catagory = schema.Bool(
         title=u"EU key category",
-    )
-
-    crf_code = schema.Choice(
-        title=u"CRF category codes",
-        vocabulary='esdrt.content.crf_code',
-        required=True,
     )
 
     form.widget(highlight=CheckBoxFieldWidget)
