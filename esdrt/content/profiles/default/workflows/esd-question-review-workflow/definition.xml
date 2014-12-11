@@ -1140,7 +1140,7 @@
   <action url="%(content_url)s/delete-last-comment?workflow_action=phase1-delete-question" category="workflow" icon="">Delete Question</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
-   <guard-expression>here/unanswered_questions</guard-expression>
+   <guard-expression>here/can_be_deleted</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-draft-conclusions" title="Add Conclusions" new_state="" trigger="USER" before_script="" after_script="">
@@ -1286,7 +1286,7 @@
   <action url="%(content_url)s/delete-last-comment?workflow_action=phase2-delete-question" category="workflow" icon="">Delete Question</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
-   <guard-expression>here/unanswered_questions</guard-expression>
+   <guard-expression>here/can_be_deleted</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-draft-conclusions" title="Add Conclusions" new_state="" trigger="USER" before_script="" after_script="">
