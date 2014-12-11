@@ -615,8 +615,8 @@
    <guard-expression>here/can_draft_conclusions</guard-expression>
   </guard>
  </transition>
- <transition transition_id="phase1-edit-highlights" title="Edit Highlights" new_state="" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/edit-highlights" category="workflow" icon="">Edit Highlights</action>
+ <transition transition_id="phase1-edit-highlights" title="Edit Key Flags" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/edit-highlights" category="workflow" icon="">Edit Key Flags</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
   </guard>
