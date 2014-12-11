@@ -131,7 +131,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
         value_type=schema.Choice(
             vocabulary='esdrt.content.parameter',
         ),
-        required=False,
+        required=True,
     )
 
     form.widget(highlight=CheckBoxFieldWidget)
