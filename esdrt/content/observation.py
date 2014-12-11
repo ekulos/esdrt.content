@@ -1,6 +1,8 @@
 from .comment import IComment
 from .commentanswer import ICommentAnswer
 from .conclusion import IConclusion
+from .crf_code_matching import get_category_ldap_from_crf_code
+from .crf_code_matching import get_category_value_from_crf_code
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -179,7 +181,7 @@ def check_crf_code(value):
     """ Check if the user is in one of the group of users
         allowed to add this category CRF Code observations
     """
-    category = get_category_from_crf_code(value)
+    category = get_category_ldap_from_crf_code(value)
     user = api.user.get_current()
     groups = user.getGroups()
     valid = False
@@ -284,12 +286,13 @@ class Observation(dexterity.Container):
         )
 
     def ghg_source_category_value(self):
-        # XXX Provide a way to extract category from self.crf_code
-        return get_category_from_crf_code(self.crf_code)
+        # Get the value of the sector to be used on the LDAP mapping
+        return get_category_ldap_from_crf_code(self.crf_code)
 
     def ghg_source_sectors_value(self):
-        # XXX Provide a way to extract sector from self.crf_code
-        return u'Sector Value'
+        # Get the value of the sector to be used
+        # on the Observation Metadata screen
+        return get_category_value_from_crf_code(self.crf_code)
 
     def parameter_value(self):
         parameters = [self._vocabulary_value('esdrt.content.parameter',
@@ -1461,11 +1464,6 @@ class AddConclusionForm(Form):
             self.actions[k].addClass('standardButton')
 
 
-def get_category_from_crf_code(value):
-    """ get the CRF category this CRF Code matches
-        According to the rules previously set. See #21438
-    """
-    return u'sector1'
 
 
 class EditConclusionAndCloseComments(grok.View):
