@@ -1,6 +1,8 @@
-psi,Potential significant issue
-ptc,Potential technical correction
-ur,Union Recommendation
+ne,'not estimated' (NE)('initial checks')
+pgf,gap-filling ('initial checks')
+ptc,technical correction (step 2)
+psi,potential significant issue (step 1)
+recalc-prev,Recalculation (compared to previous year submission)
+recalc-same,Recalculation (compared to same year submission)
 unfccc,UNFCCC Recommendation
-recalc,Recalculation
-pgf,Potential gap-filling
+ur,Union Recommendation
