@@ -1195,6 +1195,7 @@ class ObservationView(grok.View):
         else:
             return False
 
+
 class AddQuestionForm(Form):
 
     ignoreContext = True
@@ -1204,32 +1205,33 @@ class AddQuestionForm(Form):
     def create_question(self, action):
         context = aq_inner(self.context)
         text = self.request.form.get('form.widgets.text', '')
-        transforms = getToolByName(context, 'portal_transforms')
-        stream = transforms.convertTo('text/plain', text, mimetype='text/html')
-        text = stream.getData().strip()
-        if not text:
+        if not text.strip():
             raise ActionExecutionError(Invalid(u"Question text is empty"))
 
         qs = [item for item in self.context.get_values() if item.portal_type == 'Question']
         if qs:
             question = qs[0]
         else:
-            q_id = self.context.invokeFactory(type_name='Question',
+            q_id = context.invokeFactory(
+                type_name='Question',
                 id='question-1',
                 title='Question 1',
             )
-            question = self.context.get(q_id)
+            question = context.get(q_id)
 
         id = str(int(time()))
         item_id = question.invokeFactory(
-                type_name='Comment',
-                id=id,
+            type_name='Comment',
+            id=id,
         )
         comment = question.get(item_id)
-        comment.text = RichTextValue(text, 'text/html', 'text/html')
+        comment.text = text
 
-        #return self.request.response.redirect(comment.absolute_url())
-        return self.request.response.redirect(self.context.absolute_url())
+        return self.request.response.redirect(context.absolute_url())
+
+    def updateWidgets(self):
+        super(AddQuestionForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
 
     def updateActions(self):
         super(AddQuestionForm, self).updateActions()
@@ -1352,6 +1354,10 @@ class AddAnswerForm(Form):
 
         return self.request.response.redirect(observation.absolute_url())
 
+    def updateWidgets(self):
+        super(AddAnswerForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
+
     def updateActions(self):
         super(AddAnswerForm, self).updateActions()
         for k in self.actions.keys():
@@ -1374,8 +1380,8 @@ class AddAnswerAndRequestComments(grok.View):
 
         id = str(int(time()))
         item_id = context.invokeFactory(
-                type_name='CommentAnswer',
-                id=id,
+            type_name='CommentAnswer',
+            id=id,
         )
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
@@ -1387,7 +1393,6 @@ class AddAnswerAndRequestComments(grok.View):
             raise ActionExecutionError(Invalid(u"Invalid context"))
         url = '%s/assign_answerer_form?workflow_action=%s&comment=%s' % (context.absolute_url(), action, item_id)
         return self.request.response.redirect(url)
-
 
 
 class AddCommentForm(Form):
@@ -1406,14 +1411,18 @@ class AddCommentForm(Form):
 
         id = str(int(time()))
         item_id = context.invokeFactory(
-                type_name='Comment',
-                id=id,
+            type_name='Comment',
+            id=id,
         )
         text = self.request.form.get('form.widgets.text', '')
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
         return self.request.response.redirect(context.absolute_url())
+
+    def updateWidgets(self):
+        super(AddCommentForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
 
     def updateActions(self):
         super(AddCommentForm, self).updateActions()
@@ -1430,8 +1439,8 @@ class AddConclusionForm(Form):
         context = aq_inner(self.context)
         id = str(int(time()))
         item_id = context.invokeFactory(
-                type_name='Conclusion',
-                id=id,
+            type_name='Conclusion',
+            id=id,
         )
         text = self.request.form.get('form.widgets.text', '')
         comment = context.get(item_id)
@@ -1442,6 +1451,10 @@ class AddConclusionForm(Form):
         adapted.allow_discussion = True
 
         return self.request.response.redirect(context.absolute_url())
+
+    def updateWidgets(self):
+        super(AddConclusionForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
 
     def updateActions(self):
         super(AddConclusionForm, self).updateActions()
@@ -1569,7 +1582,7 @@ class AddConclusions(grok.View):
                     url = conclusionsphase2.absolute_url() + '/edit'
 
                 else:
-                    url = '%s/++add++Conclusion' % context.absolute_url()
+                    url = '%s/++add++ConclusionsPhase2' % context.absolute_url()
 
             else:
                 with api.env.adopt_roles(['ReviewerPhase2']):

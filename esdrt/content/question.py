@@ -228,6 +228,10 @@ class AddForm(dexterity.AddForm):
         self.fields = field.Fields(IComment).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
+    def updateWidgets(self):
+        super(AddForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
+
     def create(self, data={}):
         fti = getUtility(IDexterityFTI, name=self.portal_type)
         container = aq_inner(self.context)
@@ -259,16 +263,6 @@ class AddForm(dexterity.AddForm):
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
 
-# @grok.subscribe(IQuestion, IObjectAddedEvent)
-# def add_question(context, event):
-#     """ When adding a question, go directly to
-#         'open' status on the observation
-#     """
-#     observation = aq_parent(context)
-#     with api.env.adopt_roles(roles=['Manager']):
-#         if api.content.get_state(obj=observation) == 'draft':
-#             api.content.transition(obj=observation, transition='approve')
-
 @grok.subscribe(IQuestion, IObjectAddedEvent)
 def add_question(context, event):
     """ When adding a question, go directly to
@@ -290,21 +284,22 @@ class AddCommentForm(Form):
     def create_question(self, action):
         context = aq_inner(self.context)
         text = self.request.form.get('form.widgets.text', '')
-        transforms = getToolByName(context, 'portal_transforms')
-        stream = transforms.convertTo('text/plain', text, mimetype='text/html')
-        text = stream.getData().strip()
-        if not text:
+        if not text.strip():
             raise ActionExecutionError(Invalid(u"Question text is empty"))
 
         id = str(int(time()))
         item_id = context.invokeFactory(
-                type_name='Comment',
-                id=id,
+            type_name='Comment',
+            id=id,
         )
         comment = context.get(item_id)
-        comment.text = RichTextValue(text, 'text/html', 'text/html')
+        comment.text = text
 
         return self.request.response.redirect(context.absolute_url())
+
+    def updateWidgets(self):
+        super(AddCommentForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
 
     def updateActions(self):
         super(AddCommentForm, self).updateActions()
@@ -321,21 +316,22 @@ class AddAnswerForm(Form):
     def create_question(self, action):
         context = aq_inner(self.context)
         text = self.request.form.get('form.widgets.text', '')
-        transforms = getToolByName(context, 'portal_transforms')
-        stream = transforms.convertTo('text/plain', text, mimetype='text/html')
-        text = stream.getData().strip()
-        if not text:
+        if not text.strip():
             raise ActionExecutionError(Invalid(u"Answer text is empty"))
 
         id = str(int(time()))
         item_id = context.invokeFactory(
-                type_name='CommentAnswer',
-                id=id,
+            type_name='CommentAnswer',
+            id=id,
         )
         comment = context.get(item_id)
         comment.text = RichTextValue(text, 'text/html', 'text/html')
 
         return self.request.response.redirect(context.absolute_url())
+
+    def updateWidgets(self):
+        super(AddAnswerForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
 
     def updateActions(self):
         super(AddAnswerForm, self).updateActions()
@@ -363,11 +359,13 @@ class EditAndCloseComments(grok.View):
     def render(self):
         # Execute the transition
         if api.content.get_state(self.context).startswith('phase1-'):
-            api.content.transition(obj=self.context,
+            api.content.transition(
+                obj=self.context,
                 transition='phase1-send-comments'
             )
         elif api.content.get_state(self.context).startswith('phase2-'):
-            api.content.transition(obj=self.context,
+            api.content.transition(
+                obj=self.context,
                 transition='phase2-send-comments'
             )
         else:
@@ -375,6 +373,7 @@ class EditAndCloseComments(grok.View):
 
         url = '%s/%s/edit' % (self.context.absolute_url(), self.comment)
         return self.request.response.redirect(url)
+
 
 class EditAnswerAndCloseComments(grok.View):
     grok.name('edit-answer-and-close-comments')
@@ -397,11 +396,13 @@ class EditAnswerAndCloseComments(grok.View):
     def render(self):
         # Execute the transition
         if api.content.get_state(self.context).startswith('phase1-'):
-            api.content.transition(obj=self.context,
+            api.content.transition(
+                obj=self.context,
                 transition='phase1-ask-answer-approval'
             )
         elif api.content.get_state(self.context).startswith('phase2-'):
-            api.content.transition(obj=self.context,
+            api.content.transition(
+                obj=self.context,
                 transition='phase2-ask-answer-aproval'
             )
         else:
@@ -410,6 +411,7 @@ class EditAnswerAndCloseComments(grok.View):
         url = '%s/%s/edit' % (self.context.absolute_url(), self.comment)
         return self.request.response.redirect(url)
 
+
 class AddFollowUpQuestion(grok.View):
     grok.context(IQuestion)
     grok.name('add-follow-up-question')
@@ -417,16 +419,19 @@ class AddFollowUpQuestion(grok.View):
 
     def render(self):
         if api.content.get_state(self.context).startswith('phase1-'):
-            api.content.transition(obj=self.context,
+            api.content.transition(
+                obj=self.context,
                 transition='phase1-reopen')
         elif api.content.get_state(self.context).startswith('phase2-'):
-            api.content.transition(obj=self.context,
+            api.content.transition(
+                obj=self.context,
                 transition='phase2-reopen')
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
 
         url = '%s/++add++Comment' % self.context.absolute_url()
         return self.request.response.redirect(url)
+
 
 class AddConclusions(grok.View):
     grok.context(IQuestion)
@@ -436,14 +441,22 @@ class AddConclusions(grok.View):
     def render(self):
         parent = aq_parent(self.context)
         if api.content.get_state(parent).startswith('phase1-'):
-            api.content.transition(obj=parent,
-                transition='phase1-draft-conclusions')
+            api.content.transition(
+                obj=parent,
+                transition='phase1-draft-conclusions'
+            )
             url = '%s/++add++Conclusion' % parent.absolute_url()
+
         elif api.content.get_state(parent).startswith('phase2-'):
-            api.content.transition(obj=parent,
-                transition='phase2-draft-conclusions')
-            # XXX check why the standard redirect does not work
-            cp2 = parent.invokeFactory(id=int(time()), type_name='ConclusionsPhase2')
+            api.content.transition(
+                obj=parent,
+                transition='phase2-draft-conclusions'
+            )
+
+            cp2 = parent.invokeFactory(
+                id=int(time()),
+                type_name='ConclusionsPhase2'
+            )
             conclusionsphase2 = parent.get(cp2)
 
             url = '%s/edit' % conclusionsphase2.absolute_url()

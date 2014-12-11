@@ -2,8 +2,6 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from esdrt.content import MessageFactory as _
 from plone import api
-from plone.app.textfield import RichText
-from plone.app.textfield.value import RichTextValue
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
@@ -51,7 +49,7 @@ def revoke_roles(username=None, user=None, obj=None, roles=None, inherit=True):
 
 class IFinishObservationReasonForm(Interface):
 
-    comments = RichText(
+    comments = schema.Text(
         title=_(u'Enter comments if you want'),
         required=False,
     )
@@ -68,17 +66,21 @@ class FinishObservationReasonForm(Form):
         comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):
             if api.content.get_state(self.context) == 'phase1-conclusions':
-                self.context.closing_comments = RichTextValue(comments, 'text/html', 'text/html')
+                self.context.closing_comments = comments
                 return self.context.content_status_modify(
                     workflow_action='phase1-request-close',
                 )
             elif api.content.get_state(self.context) == 'phase2-conclusions':
-                self.context.closing_comments_phase2 = RichTextValue(comments, 'text/html', 'text/html')
+                self.context.closing_comments_phase2 = comments
                 return self.context.content_status_modify(
                     workflow_action='phase2-finish-observation',
                 )
 
         self.request.response.redirect(self.context.absolute_url())
+
+    def updateWidgets(self):
+        super(FinishObservationReasonForm, self).updateWidgets()
+        self.widgets['comments'].rows = 15
 
     def updateActions(self):
         super(FinishObservationReasonForm, self).updateActions()
@@ -88,7 +90,7 @@ class FinishObservationReasonForm(Form):
 
 class IDenyFinishObservationReasonForm(Interface):
 
-    comments = RichText(
+    comments = schema.Text(
         title=_(u'Enter your reasons to deny the finishing of this observation'),
         required=False,
     )
@@ -105,17 +107,21 @@ class DenyFinishObservationReasonForm(Form):
         comments = self.request.get('form.widgets.comments')
         with api.env.adopt_roles(['Manager']):
             if api.content.get_state(self.context) == 'phase1-close-requested':
-                self.context.closing_deny_comments = RichTextValue(comments, 'text/html', 'text/html')
+                self.context.closing_deny_comments = comments
                 return self.context.content_status_modify(
                     workflow_action='phase1-deny-closure',
                 )
             elif api.content.get_state(self.context) == 'phase2-close-requested':
-                self.context.closing_deny_comments_phase2 = RichTextValue(comments, 'text/html', 'text/html')
+                self.context.closing_deny_comments_phase2 = comments
                 return self.context.content_status_modify(
                     workflow_action='phase2-deny-finishing-observation',
                 )
 
         return self.response.redirect(self.context.absolute_url())
+
+    def updateWidgets(self):
+        super(DenyFinishObservationReasonForm, self).updateWidgets()
+        self.widgets['comments'].rows = 15
 
     def updateActions(self):
         super(DenyFinishObservationReasonForm, self).updateActions()
@@ -270,7 +276,6 @@ class AssignCounterPartForm(BrowserView):
 
         users = []
 
-
         def isCP(u):
             target = self.assignation_target()
             return 'CounterPart' in api.user.get_roles(username=u.getId(), obj=target, inherit=False)
@@ -348,7 +353,6 @@ class ReAssignCounterPartForm(AssignCounterPartForm):
         target = self.assignation_target()
         if self.request.form.get('send', None):
             counterparts = self.request.get('counterparts', None)
-            #comments = self.request.get('comments', None)
             if counterparts is None:
                 status = IStatusMessage(self.request)
                 msg = _(u'You need to select at least one counterpart')
@@ -376,7 +380,6 @@ class ReAssignCounterPartForm(AssignCounterPartForm):
                 role='CounterPart',
                 notification_name='question_to_counterpart'
             )
-
 
             return self.request.response.redirect(url)
 

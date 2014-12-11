@@ -7,8 +7,6 @@ from esdrt.content import MessageFactory as _
 from five import grok
 from plone import api
 from plone.app.dexterity.behaviors.discussion import IAllowDiscussion
-from plone.app.textfield import RichText
-from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
@@ -35,7 +33,7 @@ class IConclusion(form.Schema, IImageScaleTraversable):
 
     )
 
-    text = RichText(
+    text = schema.Text(
         title=_(u'Text'),
         required=True,
         )
@@ -146,6 +144,10 @@ class AddForm(dexterity.AddForm):
         self.fields = field.Fields(IConclusion).select('closing_reason', 'text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
+    def updateWidgets(self):
+        super(AddForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
+
     def create(self, data={}):
         # import pdb; pdb.set_trace()
         # return super(AddForm, self).create(data)
@@ -162,8 +164,7 @@ class AddForm(dexterity.AddForm):
         id = str(int(time()))
         content.title = id
         content.id = id
-        text = self.request.form.get('form.widgets.text', '')
-        content.text = RichTextValue(text, 'text/html', 'text/html')
+        content.text = self.request.form.get('form.widgets.text', '')
         reason = self.request.form.get('form.widgets.closing_reason')
         content.closing_reason = reason[0]
         adapted = IAllowDiscussion(content)
@@ -185,6 +186,10 @@ class EditForm(dexterity.EditForm):
         super(EditForm, self).updateFields()
         self.fields = field.Fields(IConclusion).select('closing_reason', 'text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+
+    def updateWidgets(self):
+        super(EditForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
 
     def updateActions(self):
         super(EditForm, self).updateActions()

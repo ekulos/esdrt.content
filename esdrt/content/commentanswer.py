@@ -6,8 +6,6 @@ from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from five import grok
 from plone import api
-from plone.app.textfield import RichText
-from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
@@ -16,7 +14,7 @@ from time import time
 from z3c.form import field
 from zope.component import createObject
 from zope.component import getUtility
-
+from zope import schema
 
 # Interface class; used to define content-type schema.
 class ICommentAnswer(form.Schema, IImageScaleTraversable):
@@ -28,10 +26,10 @@ class ICommentAnswer(form.Schema, IImageScaleTraversable):
     # If you want a model-based interface, edit
     # models/comment.xml to define the content type
     # and add directives here as necessary.
-    text = RichText(
+    text = schema.Text(
         title=_(u'Text'),
         required=True,
-        )
+    )
 
 
 # Custom content-type class; objects created for this content type will
@@ -96,6 +94,10 @@ class AddForm(dexterity.AddForm):
         self.fields = field.Fields(ICommentAnswer).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
+    def updateWidgets(self):
+        super(AddForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
+
     def create(self, data={}):
         # import pdb; pdb.set_trace()
         # return super(AddForm, self).create(data)
@@ -113,8 +115,7 @@ class AddForm(dexterity.AddForm):
         id = str(int(time()))
         content.title = id
         content.id = id
-        text = self.request.form.get('form.widgets.text', '')
-        content.text = RichTextValue(text, 'text/html', 'text/html')
+        content.text = self.request.form.get('form.widgets.text', '')
 
         return aq_base(content)
 
@@ -128,6 +129,10 @@ class EditForm(dexterity.EditForm):
         super(EditForm, self).updateFields()
         self.fields = field.Fields(ICommentAnswer).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+
+    def updateWidgets(self):
+        super(EditForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
 
     def updateActions(self):
         super(EditForm, self).updateActions()

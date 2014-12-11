@@ -313,7 +313,7 @@
           <dt>Observation Finish Requested</dt>
           <dd></dd>
           <dt>Comments:</dt>
-          <dd><span tal:replace="structure context/closing_comments/output|nothing" /></dd>
+          <dd><span tal:replace="structure context/closing_comments/output|context/closing_comments|nothing" /></dd>
         </dl>
 
         <div class="finish-denied" tal:condition="python:context.closing_deny_comments and context.get_status() == 'phase1-close-requested'" >
@@ -322,7 +322,7 @@
             <dd></dd>
             <dt>Comments:</dt>
             <dd>
-              <div tal:replace="structure context/closing_deny_comments/output|nothing">
+              <div tal:replace="structure context/closing_deny_comments/output|context/closing_deny_comments|nothing">
               Content
               </div>
             </dd>
@@ -346,7 +346,7 @@
           <dt>Observation Finish Requested</dt>
           <dd></dd>
           <dt>Comments:</dt>
-          <dd><span tal:replace="structure context/closing_comments_phase2/output|nothing" /></dd>
+          <dd><span tal:replace="structure context/closing_comments_phase2/output|context/closing_comments_phase2|nothing" /></dd>
         </dl>
 
         <div class="finish-denied" tal:condition="python:context.closing_deny_comments_phase2 and context.get_status() == 'phase2-close-requested'" >
@@ -355,7 +355,7 @@
             <dd></dd>
             <dt>Comments:</dt>
             <dd>
-              <div tal:replace="structure context/closing_deny_comments_phase2/output|nothing">
+              <div tal:replace="structure context/closing_deny_comments_phase2/output|context/closing_deny_comments_phase2|nothing">
               Content
               </div>
             </dd>
@@ -382,7 +382,7 @@
             <dt>Reason:</dt>
             <dd><span tal:replace="conclusion/reason_value" /></dd>
             <dt>Comments:</dt>
-            <dd><span tal:replace="structure conclusion/text/output|nothing" /></dd>
+            <dd><span tal:replace="structure conclusion/text/output|conclusion/text|nothing" /></dd>
             <dt>GHG estimates:</dt>
             <dd>
               <table class="estTable">
@@ -437,7 +437,7 @@
             <dt>Observation Finishing denied</dt>
             <dd></dd>
             <dt>Comments:</dt>
-            <dd><span tal:replace="structure context/closing_deny_comments_phase2/output|nothing" /></dd>
+            <dd><span tal:replace="structure context/closing_deny_comments_phase2/output|context/closing_deny_comments_phase2|nothing" /></dd>
           </dl>
         </div>
 
@@ -508,7 +508,7 @@
             <dt>Reason:</dt>
             <dd><span tal:replace="conclusion/reason_value" /></dd>
             <dt>Comments:</dt>
-            <dd><span tal:replace="structure conclusion/text/output|nothing" /></dd>
+            <dd><span tal:replace="structure conclusion/text/output|conclusion/text|nothing" /></dd>
           </dl>
 
         </div>
@@ -518,7 +518,7 @@
             <dt>Observation Finishing denied</dt>
             <dd></dd>
             <dt>Comments:</dt>
-            <dd><span tal:replace="structure context/closing_deny_comments/output|nothing" /></dd>
+            <dd><span tal:replace="structure context/closing_deny_comments/output|context/closing_deny_comments|nothing" /></dd>
           </dl>
         </div>
 
@@ -660,7 +660,7 @@
          </span>
         </div>
         <!--h3 tal:condition="question/can_edit">Current text</h3-->
-        <div tal:content="structure question/text/output|string:">
+        <div tal:content="structure question/text/output|question/text|string:">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </div>
         <div class="files" tal:condition="question/get_files">

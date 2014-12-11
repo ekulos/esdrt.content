@@ -1,24 +1,30 @@
 from AccessControl import getSecurityManager
+from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from Acquisition.interfaces import IAcquirer
 from collective.z3cform.datagridfield import DataGridFieldFactory
 from collective.z3cform.datagridfield import DictRow
 from esdrt.content import MessageFactory as _
 from esdrt.content.observation import hidden
 from five import grok
 from plone import api
-from plone.app.textfield import RichText
+from plone.app.dexterity.behaviors.discussion import IAllowDiscussion
+from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
+from time import time
 from types import IntType
 from z3c.form import field
 from zope import schema
 from zope.browsermenu.menu import getMenu
+from zope.component import createObject
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.interface import Invalid
 from zope.schema.interfaces import IVocabularyFactory
+
 
 class ITableRowSchema(form.Schema):
 
@@ -44,10 +50,10 @@ class IConclusionsPhase2(form.Schema, IImageScaleTraversable):
 
     )
 
-    text = RichText(
+    text = schema.Text(
         title=_(u'Text'),
         required=True,
-        )
+    )
 
     form.widget(ghg_estimations=DataGridFieldFactory)
     ghg_estimations = schema.List(
@@ -79,7 +85,8 @@ class ConclusionsPhase2(dexterity.Container):
     grok.implements(IConclusionsPhase2)
 
     def reason_value(self):
-        return self._vocabulary_value('esdrt.content.conclusionphase2reasons',
+        return self._vocabulary_value(
+            'esdrt.content.conclusionphase2reasons',
             self.closing_reason
         )
 
@@ -111,12 +118,12 @@ class ConclusionsPhase2(dexterity.Container):
             'plone_contentmenu_workflow',
             self,
             request
-            )
+        )
         observation_menu_items = getMenu(
             'plone_contentmenu_workflow',
             parent,
             request
-            )
+        )
         menu_items = question_menu_items + observation_menu_items
         return [mitem for mitem in menu_items if not hidden(mitem)]
 
@@ -124,6 +131,49 @@ class ConclusionsPhase2(dexterity.Container):
         items = self.values()
         mtool = api.portal.get_tool('portal_membership')
         return [item for item in items if mtool.checkPermission('View', item)]
+
+
+class AddForm(dexterity.AddForm):
+    grok.name('esdrt.content.conclusionsphase2')
+    grok.context(IConclusionsPhase2)
+    grok.require('esdrt.content.AddConclusionsPhase2')
+
+    def updateFields(self):
+        super(AddForm, self).updateFields()
+        self.fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text')
+        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+
+    def updateWidgets(self):
+        super(AddForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
+
+    def create(self, data={}):
+        # import pdb; pdb.set_trace()
+        # return super(AddForm, self).create(data)
+        fti = getUtility(IDexterityFTI, name=self.portal_type)
+        container = aq_inner(self.context)
+        content = createObject(fti.factory)
+        if hasattr(content, '_setPortalTypeName'):
+            content._setPortalTypeName(fti.getId())
+
+        # Acquisition wrap temporarily to satisfy things like vocabularies
+        # depending on tools
+        if IAcquirer.providedBy(content):
+            content = content.__of__(container)
+        id = str(int(time()))
+        content.title = id
+        content.id = id
+        content.text = self.request.form.get('form.widgets.text', '')
+        reason = self.request.form.get('form.widgets.closing_reason')
+        content.closing_reason = reason[0]
+        adapted = IAllowDiscussion(content)
+        adapted.allow_discussion = True
+        return aq_base(content)
+
+    def updateActions(self):
+        super(AddForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
 
 
 class ConclusionsPhase2View(grok.View):
@@ -138,6 +188,7 @@ class ConclusionsPhase2View(grok.View):
 
         return self.request.response.redirect(url)
 
+
 class EditForm(dexterity.EditForm):
     grok.name('edit')
     grok.context(IConclusionsPhase2)
@@ -148,6 +199,11 @@ class EditForm(dexterity.EditForm):
         self.fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text', 'ghg_estimations')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
         self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
+        self.fields['text'].rows = 15
+
+    def updateWidgets(self):
+        super(EditForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
 
     def updateActions(self):
         super(EditForm, self).updateActions()

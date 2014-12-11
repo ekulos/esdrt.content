@@ -6,18 +6,16 @@ from Acquisition.interfaces import IAcquirer
 from esdrt.content import MessageFactory as _
 from five import grok
 from plone import api
-from plone.app.textfield import RichText
-from plone.app.textfield.value import RichTextValue
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.directives import dexterity
 from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from time import time
 from z3c.form import field
+from zope import schema
 from zope.app.container.interfaces import IObjectAddedEvent
 from zope.component import createObject
 from zope.component import getUtility
-from zope.interface import Invalid
 
 
 # Interface class; used to define content-type schema.
@@ -30,7 +28,7 @@ class IComment(form.Schema, IImageScaleTraversable):
     # If you want a model-based interface, edit
     # models/comment.xml to define the content type
     # and add directives here as necessary.
-    text = RichText(
+    text = schema.Text(
         title=_(u'Text'),
         required=True,
         )
@@ -95,6 +93,10 @@ class AddForm(dexterity.AddForm):
         self.fields = field.Fields(IComment).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
+    def updateWidgets(self):
+        super(AddForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
+
     def create(self, data={}):
         # import pdb; pdb.set_trace()
         # return super(AddForm, self).create(data)
@@ -111,8 +113,7 @@ class AddForm(dexterity.AddForm):
         id = str(int(time()))
         content.title = id
         content.id = id
-        text = self.request.form.get('form.widgets.text', '')
-        content.text = RichTextValue(text, 'text/html', 'text/html')
+        content.text = self.request.form.get('form.widgets.text', '')
 
         return aq_base(content)
 
@@ -120,6 +121,7 @@ class AddForm(dexterity.AddForm):
         super(AddForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+
 
 class EditForm(dexterity.EditForm):
     grok.name('edit')
@@ -131,10 +133,15 @@ class EditForm(dexterity.EditForm):
         self.fields = field.Fields(IComment).select('text')
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
+    def updateWidgets(self):
+        super(EditForm, self).updateWidgets()
+        self.widgets['text'].rows = 15
+
     def updateActions(self):
         super(EditForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+
 
 @grok.subscribe(IComment, IObjectAddedEvent)
 def add_question(context, event):
@@ -144,7 +151,6 @@ def add_question(context, event):
     question = aq_parent(context)
     observation = aq_parent(question)
     with api.env.adopt_roles(roles=['Manager']):
-        # XXX is this first if needed?
         if api.content.get_state(obj=question) == 'closed' and \
             api.content.get_state(obj=observation) == 'close-requested':
             api.content.transition(obj=observation, transition='reopen')
