@@ -60,39 +60,39 @@ class IObservation(form.Schema, IImageScaleTraversable):
     """
 
     text = schema.Text(
-        title=_(u'Short description'),
-        description=_(u''),
+        title=u'Short description',
         required=True,
-        )
+    )
 
     country = schema.Choice(
-        title=_(u"Country"),
+        title=u"Country",
         vocabulary='esdrt.content.eea_member_states',
         required=True,
     )
 
     year = schema.TextLine(
-        title=_(u'Inventory year'),
-        description=_(u'Inventory year should be a year or a range of years (ex. "2012", "2012-2014")'),
+        title=u'Inventory year',
+        description=u"Inventory year is the year or a range of years (e.g. '2012', '2009-2012') when the emissions had occured for which an issue was observed in the review.",
         required=True
     )
 
     form.widget(gas=CheckBoxFieldWidget)
     gas = schema.List(
-        title=_(u"Gas"),
+        title=u"Gas",
         value_type=schema.Choice(
             vocabulary='esdrt.content.gas',
-            ),
+        ),
         required=True,
     )
 
     review_year = schema.Int(
-        title=_(u'Review year'),
+        title=u'Review year',
+        description=u'Review year is the year in which the inventory was submitted and the review was carried out',
         required=True,
     )
 
     fuel = schema.Choice(
-        title=_(u"Fuel"),
+        title=u"Fuel",
         vocabulary='esdrt.content.fuel',
         required=False,
     )
@@ -110,56 +110,56 @@ class IObservation(form.Schema, IImageScaleTraversable):
     # )
 
     ms_key_catagory = schema.Bool(
-        title=_(u"MS key category"),
+        title=u"MS key category",
     )
 
     eu_key_catagory = schema.Bool(
-        title=_(u"EU key category"),
+        title=u"EU key category",
     )
 
     crf_code = schema.Choice(
-        title=_(u"CRF category codes"),
+        title=u"CRF category codes",
         vocabulary='esdrt.content.crf_code',
         required=True,
     )
 
     form.widget(highlight=CheckBoxFieldWidget)
     highlight = schema.List(
-        title=_(u"Highlight"),
+        title=u"Highlight",
         value_type=schema.Choice(
             vocabulary='esdrt.content.highlight',
-            ),
+        ),
         required=False,
     )
 
     form.widget(parameter=RadioFieldWidget)
     parameter = schema.Choice(
-        title=_(u"Parameter"),
+        title=u"Parameter",
         vocabulary='esdrt.content.parameter',
         required=True,
     )
 
     form.write_permission(closing_comments='cmf.ManagePortal')
     closing_comments = schema.Text(
-        title=_(u'Finish request comments'),
+        title=u'Finish request comments',
         required=False,
     )
 
     form.write_permission(closing_deny_comments='cmf.ManagePortal')
     closing_deny_comments = schema.Text(
-        title=_(u'Finish deny comments'),
+        title=u'Finish deny comments',
         required=False,
     )
 
     form.write_permission(closing_comments_phase2='cmf.ManagePortal')
     closing_comments_phase2 = schema.Text(
-        title=_(u'Finish request comments for phase 2'),
+        title=u'Finish request comments for phase 2',
         required=False,
     )
 
     form.write_permission(closing_deny_comments_phase2='cmf.ManagePortal')
     closing_deny_comments_phase2 = schema.Text(
-        title=_(u'Finish deny comments for phase 2'),
+        title=u'Finish deny comments for phase 2',
         required=False,
     )
 
@@ -1198,7 +1198,7 @@ class AddQuestionForm(Form):
     ignoreContext = True
     fields = field.Fields(IComment).select('text')
 
-    @button.buttonAndHandler(_('Save question'))
+    @button.buttonAndHandler(u'Save question')
     def create_question(self, action):
         context = aq_inner(self.context)
         text = self.request.form.get('form.widgets.text', '')
@@ -1319,7 +1319,7 @@ class AddAnswerForm(Form):
     ignoreContext = True
     fields = field.Fields(ICommentAnswer).select('text')
 
-    @button.buttonAndHandler(_('Save answer'))
+    @button.buttonAndHandler(u'Save answer')
     def add_answer(self, action):
         text = self.request.form.get('form.widgets.text', '')
         if not text.strip():
@@ -1394,7 +1394,7 @@ class AddCommentForm(Form):
     ignoreContext = True
     fields = field.Fields(IComment).select('text')
 
-    @button.buttonAndHandler(_('Add question'))
+    @button.buttonAndHandler(u'Add question')
     def create_question(self, action):
         observation = aq_inner(self.context)
         questions = [q for q in observation.values() if q.portal_type == 'Question']
@@ -1428,7 +1428,7 @@ class AddConclusionForm(Form):
     ignoreContext = True
     fields = field.Fields(IConclusion).select('text', 'closing_reason')
 
-    @button.buttonAndHandler(_('Add conclusion'))
+    @button.buttonAndHandler(u'Add conclusion')
     def create_conclusion(self, action):
         context = aq_inner(self.context)
         id = str(int(time()))
@@ -1473,7 +1473,7 @@ class EditConclusionAndCloseComments(grok.View):
         waction = self.request.get('workflow_action')
         if waction != 'phase1-finish-comments':
                 status = IStatusMessage(self.request)
-                msg = _(u'There was an error, try again please')
+                msg = u'There was an error, try again please'
                 status.addStatusMessage(msg, "error")
 
     def render(self):
@@ -1498,12 +1498,13 @@ class EditConclusionP2AndCloseComments(grok.View):
         waction = self.request.get('workflow_action')
         if waction != 'phase2-finish-comments':
                 status = IStatusMessage(self.request)
-                msg = _(u'There was an error, try again please')
+                msg = u'There was an error, try again please'
                 status.addStatusMessage(msg, "error")
 
     def render(self):
         # Execute the transition
-        api.content.transition(obj=self.context,
+        api.content.transition(
+            obj=self.context,
             transition='phase2-finish-comments'
         )
         conclusions = [c for c in self.context.get_values() if c.portal_type == 'ConclusionsPhase2']
