@@ -123,6 +123,13 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=u"EU key category",
     )
 
+    form.widget(parameter=RadioFieldWidget)
+    parameter = schema.Choice(
+        title=u"Parameter",
+        vocabulary='esdrt.content.parameter',
+        required=True,
+    )
+
     form.widget(highlight=CheckBoxFieldWidget)
     highlight = schema.List(
         title=u"Key flag",
@@ -133,12 +140,6 @@ class IObservation(form.Schema, IImageScaleTraversable):
         required=False,
     )
 
-    form.widget(parameter=RadioFieldWidget)
-    parameter = schema.Choice(
-        title=u"Parameter",
-        vocabulary='esdrt.content.parameter',
-        required=True,
-    )
 
     form.write_permission(closing_comments='cmf.ManagePortal')
     closing_comments = schema.Text(
