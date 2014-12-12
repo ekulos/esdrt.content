@@ -4,8 +4,7 @@ Changelog
 1.24 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Change some labels in the tool [erral]
 
 1.23 (2014-12-11)
 -----------------
