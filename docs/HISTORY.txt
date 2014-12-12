@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.24 (unreleased)
------------------
+1.23.1 (2014-12-12)
+-------------------
 
 - Change some labels in the tool [erral]
 
