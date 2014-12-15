@@ -51,37 +51,37 @@ CRF_CODES = {
     "title": "2C3 Metal Industry - Aluminium Production"
   },
   "5E": {
-    "ldap": "sector 11",
+    "ldap": "sector11",
     "code": "5E",
     "name": "5A-5F Waste",
     "title": "Other"
   },
   "5D": {
-    "ldap": "sector 11",
+    "ldap": "sector11",
     "code": "5D",
     "name": "5A-5F Waste",
     "title": "Wastewater Treatment and Discharge"
   },
   "5F": {
-    "ldap": "sector 11",
+    "ldap": "sector11",
     "code": "5F",
     "name": "5A-5F Waste",
     "title": "Memo Items"
   },
   "5A": {
-    "ldap": "sector 11",
+    "ldap": "sector11",
     "code": "5A",
     "name": "5A-5F Waste",
     "title": "Solid Waste Disposal"
   },
   "5C": {
-    "ldap": "sector 11",
+    "ldap": "sector11",
     "code": "5C",
     "name": "5A-5F Waste",
     "title": "Incineration and Open Burning of Waste"
   },
   "5B": {
-    "ldap": "sector 11",
+    "ldap": "sector11",
     "code": "5B",
     "name": "5A-5F Waste",
     "title": "Biological Treatment of Solid Waste"
@@ -105,13 +105,13 @@ CRF_CODES = {
     "title": "Petroleum Refining"
   },
   "4F1": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4F1",
     "name": "LULUCF",
     "title": "Other Land Remaining Other Land"
   },
   "4F2": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4F2",
     "name": "LULUCF",
     "title": "Land Converted to Other Land"
@@ -243,13 +243,13 @@ CRF_CODES = {
     "title": "2F4 Product Uses as Substitutes for Ozone Depleting Substances - Aerosolls"
   },
   "4A1": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4A1",
     "name": "LULUCF",
     "title": "Forest Land Remaining Forest Land"
   },
   "4A2": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4A2",
     "name": "LULUCF",
     "title": "Land Converted to Forest Land"
@@ -309,13 +309,13 @@ CRF_CODES = {
     "title": "Indirect N2O from managed soils"
   },
   "4B1": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4B1",
     "name": "LULUCF",
     "title": "Cropland Remaining Cropland"
   },
   "4B2": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4B2",
     "name": "LULUCF",
     "title": "Land Converted to Cropland"
@@ -381,13 +381,13 @@ CRF_CODES = {
     "title": "Commercial/Institutional"
   },
   "4C2": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4C2",
     "name": "LULUCF",
     "title": "Land Converted to Grassland"
   },
   "4C1": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4C1",
     "name": "LULUCF",
     "title": "Grassland Remaining Grassland"
@@ -453,13 +453,13 @@ CRF_CODES = {
     "title": "1A3d Fuel Combustion Activities - Transport - Water-borne Navigation"
   },
   "4D2": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4D2",
     "name": "LULUCF",
     "title": "Land Converted to Wetlands"
   },
   "4D1": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4D1",
     "name": "LULUCF",
     "title": "Wetlands remaining wetlands"
@@ -519,13 +519,13 @@ CRF_CODES = {
     "title": "2B1 Chemical Industry - Ammonia Production"
   },
   "4H": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4H",
     "name": "LULUCF",
     "title": "Other"
   },
   "4G": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4G",
     "name": "LULUCF",
     "title": "Harvested Wood Products"
@@ -573,19 +573,19 @@ CRF_CODES = {
     "title": "Other"
   },
   "1AB": {
-    "ldap": "sector 13",
+    "ldap": "sector13",
     "code": "1AB",
     "name": "Reference approach Fuel combustion, reference approach",
     "title": "Reference Approach"
   },
   "4E1": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4E1",
     "name": "LULUCF",
     "title": "Settlements Remaining Settlements"
   },
   "4E2": {
-    "ldap": "sector10 ",
+    "ldap": "sector10",
     "code": "4E2",
     "name": "LULUCF",
     "title": "Land Converted to Settlements"
