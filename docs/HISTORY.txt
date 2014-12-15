@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.24 (unreleased)
------------------
+1.23.3 (2014-12-15)
+-------------------
 
 - Updated CRF Code list and LDAP role matching [erral]
 
