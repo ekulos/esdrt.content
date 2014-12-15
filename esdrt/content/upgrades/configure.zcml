@@ -208,4 +208,12 @@
          handler=".26_27.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 28."
+         description="Reinstall CRF Codes vocabulary"
+         source="27"
+         destination="28"
+         handler=".27_28.upgrade"
+         profile="esdrt.content:default" />
+
 </configure>
