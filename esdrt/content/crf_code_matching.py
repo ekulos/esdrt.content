@@ -183,10 +183,10 @@ CRF_CODES = {
     "title": "3A Enteric Fermentation"
   },
   "3G": {
-    "ldap": "sector10 ",
+    "ldap": "sector9",
     "code": "3G",
-    "name": "LULUCF",
-    "title": "Harvested Wood Products"
+    "name": "3C-3J Agriculture (soils)",
+    "title": "Liming"
   },
   "3F": {
     "ldap": "sector9",
@@ -518,11 +518,17 @@ CRF_CODES = {
     "name": "2A, 2B Mineral and chemical industry",
     "title": "2B1 Chemical Industry - Ammonia Production"
   },
+  "4H": {
+    "ldap": "sector10 ",
+    "code": "4H",
+    "name": "LULUCF",
+    "title": "Other"
+  },
   "4G": {
     "ldap": "sector10 ",
     "code": "4G",
     "name": "LULUCF",
-    "title": "Other"
+    "title": "Harvested Wood Products"
   },
   "1A2a": {
     "ldap": "sector2",
