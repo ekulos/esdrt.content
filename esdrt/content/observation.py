@@ -130,6 +130,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=u"Parameter",
         value_type=schema.Choice(
             vocabulary='esdrt.content.parameter',
+            required=True,
         ),
         required=True,
     )
@@ -142,6 +143,7 @@ class IObservation(form.Schema, IImageScaleTraversable):
             vocabulary='esdrt.content.highlight',
         ),
         required=False,
+        default=[],
     )
 
 
@@ -168,6 +170,12 @@ class IObservation(form.Schema, IImageScaleTraversable):
         title=u'Finish deny comments for phase 2',
         required=False,
     )
+
+
+@form.validator(field=IObservation['parameter'])
+def check_parameter(value):
+    if len(value) == 0:
+        raise Invalid(u'You need to select at least one parameter')
 
 
 @form.validator(field=IObservation['gas'])
@@ -306,10 +314,11 @@ class Observation(dexterity.Container):
         return u', '.join(gases)
 
     def highlight_value(self):
-
-        highlight = [self._vocabulary_value('esdrt.content.highlight',
-            h) for h in self.highlight]
-        return u', '.join(highlight)
+        if self.highlight:
+            highlight = [self._vocabulary_value('esdrt.content.highlight',
+                h) for h in self.highlight]
+            return u', '.join(highlight)
+        return u''
 
     def finish_reason_value(self):
         return self._vocabulary_value('esdrt.content.finishobservationreasons',
@@ -741,24 +750,27 @@ class Observation(dexterity.Container):
                     return "observation-phase2-draft"
 
     def observation_css_class(self):
-        if self.get_status().startswith('phase1'):
-            if 'psi' in self.highlight:
-                return "psiBackground"
-        else:
-            if self.get_status() == "phase2-closed":
-                if self.get_conclusion_phase2().closing_reason == "technical-correction":
-                    return 'technicalCorrectionBackground'
-            elif 'ptc' in self.highlight:
-                return 'ptcBackground'
+        if self.highlight:
+            if self.get_status().startswith('phase1'):
+                if 'psi' in self.highlight:
+                    return "psiBackground"
+            else:
+                if self.get_status() == "phase2-closed":
+                    if self.get_conclusion_phase2().closing_reason == "technical-correction":
+                        return 'technicalCorrectionBackground'
+                elif 'ptc' in self.highlight:
+                    return 'ptcBackground'
 
     def observation_is_potential_significant_issue(self):
-        if self.get_status().startswith('phase1'):
-            return 'psi' in self.highlight
+        if self.highlight:
+            if self.get_status().startswith('phase1'):
+                return 'psi' in self.highlight
         return False
 
     def observation_is_potential_technical_correction(self):
-        if self.get_status().startswith('phase2'):
-            return 'ptc' in self.highlight
+        if self.highlight:
+            if self.get_status().startswith('phase2'):
+                return 'ptc' in self.highlight
         return False
 
     def observation_is_technical_correction(self):
