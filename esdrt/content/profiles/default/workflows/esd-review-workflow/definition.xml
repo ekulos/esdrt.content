@@ -621,8 +621,8 @@
    <guard-role>ReviewerPhase1</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase1-finish-comments" title="Edit Conclusions" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/edit-conclusions-and-close-comments?workflow_action=phase1-finish-comments" category="workflow" icon="">Edit Conclusions</action>
+ <transition transition_id="phase1-finish-comments" title="Close Comments" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase1-finish-comments" category="workflow" icon="">Close Comments</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
   </guard>
@@ -674,8 +674,8 @@
    <guard-expression>here/can_draft_conclusions</guard-expression>
   </guard>
  </transition>
- <transition transition_id="phase2-finish-comments" title="Finish Comments" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/edit-conclusions-and-close-comments-phase2?workflow_action=phase2-finish-comments" category="workflow" icon="">Finish Comments</action>
+ <transition transition_id="phase2-finish-comments" title="Close Comments" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-finish-comments" category="workflow" icon="">Close Comments</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
