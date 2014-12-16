@@ -409,7 +409,7 @@ class AssignConclusionReviewerForm(BrowserView):
                 )
 
     def assignation_target(self):
-        return aq_parent(aq_inner(self.context))
+        return aq_inner(self.context)
 
     def target_groupnames(self):
         return [
