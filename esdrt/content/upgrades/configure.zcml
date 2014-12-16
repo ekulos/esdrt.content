@@ -216,4 +216,12 @@
          handler=".27_28.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 29."
+         description="Workflow"
+         source="28"
+         destination="29"
+         handler=".28_29.upgrade"
+         profile="esdrt.content:default" />
+
 </configure>
