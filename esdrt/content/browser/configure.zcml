@@ -24,14 +24,14 @@
 
     <browser:page
         name="assign_answerer_form"
-        for="*"
+        for="..question.IQuestion"
         class=".statechange.AssignAnswererForm"
         permission="zope2.View"
         />
 
     <browser:page
         name="assign_conclusion_reviewer_form"
-        for="*"
+        for="..observation.IObservation"
         class=".statechange.AssignConclusionReviewerForm"
         permission="zope2.View"
         />
