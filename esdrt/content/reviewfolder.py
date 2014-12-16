@@ -324,10 +324,7 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-pending' or \
-                            obj.observation_question_status() == 'phase2-pending' or \
-                            obj.observation_question_status() == 'phase1-recalled-msa' or \
-                            obj.observation_question_status() == 'phase2-recalled-msa'):
+                            if obj.observation_question_status() in ['phase1-pending', 'phase2-pending', 'phase1-recalled-msa', 'phase2-recalled-msa', 'phase1-expert-comments', 'phase2-expert-comments', 'phase1-pending-answer-drafting', 'phase2-pending-answer-drafting']:
                                 items.append(obj)
                 except:
                     pass
