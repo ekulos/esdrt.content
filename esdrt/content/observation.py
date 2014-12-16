@@ -756,8 +756,11 @@ class Observation(dexterity.Container):
                     return "psiBackground"
             else:
                 if self.get_status() == "phase2-closed":
-                    if self.get_conclusion_phase2().closing_reason == "technical-correction":
-                        return 'technicalCorrectionBackground'
+                    con_phase2 = self.get_conclusion_phase2()
+                    if con_phase2:
+                        if con_phase2.closing_reason == "technical-correction":
+                            return 'technicalCorrectionBackground'
+
                 elif 'ptc' in self.highlight:
                     return 'ptcBackground'
 
@@ -775,18 +778,19 @@ class Observation(dexterity.Container):
 
     def observation_is_technical_correction(self):
         if self.get_status() == "phase2-closed":
-            return self.get_conclusion_phase2().closing_reason == "technical-correction"
+            con_phase2 = self.get_conclusion_phase2()
+            if con_phase2:
+                return con_phase2.closing_reason == "technical-correction"
         return False
 
     def observation_finalisation_reason(self):
         status = self.get_status()
         if status == 'phase1-closed':
             conclusion = self.get_conclusion()
-            return conclusion.closing_reason
+            return conclusion and conclusion.closing_reason or ' '
         elif status == 'phase2-closed':
             conclusion = self.get_conclusion_phase2()
-            return conclusion.closing_reason
-
+            return conclusion and conclusion.closing_reason or ' '
 
     def get_conclusion(self):
         conclusions = [c for c in self.get_values() if c.portal_type == "Conclusion"]
@@ -794,7 +798,6 @@ class Observation(dexterity.Container):
         if conclusions and mtool.checkPermission('View', conclusions[0]):
             return conclusions[0]
         return None
-
 
     def get_conclusion_phase2(self):
         conclusions = [c for c in self.get_values() if c.portal_type == "ConclusionsPhase2"]
@@ -837,7 +840,7 @@ class Observation(dexterity.Container):
                 disc = IConversation(last)
                 return user in IConversation(last).commentators
 
-        return false
+        return False
 
     def observation_phase(self):
         status = self.get_status()
