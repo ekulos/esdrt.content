@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.23.6 (unreleased)
+1.23.6 (2014-12-16)
 -------------------
 
 - Bug fixes [erral]
