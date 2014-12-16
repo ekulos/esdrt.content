@@ -212,13 +212,11 @@
         </div>
       </div>
       <div class="row observation-details" style="display:none;padding-top:15px">
-        <div class="cell position-0 width-8 esdLabel">GHG source category</div>
-        <div class="cell position-8 width-4 esdLabel">CRF code</div>
+        <div class="cell position-0 width-8 esdLabel">CRF code</div>
         <div class="cell position-12 width-4 esdLabel">Parameter</div>
       </div>
       <div class="row observation-details" style="display:none">
-        <div class="cell position-0 width-8" tal:content="context/ghg_source_category_value">GHG source category</div>
-        <div class="cell position-8 width-4" tal:content="context/crf_code_value">CRF code</div>
+        <div class="cell position-0 width-8" tal:content="context/crf_code_value">CRF code</div>
         <div class="cell position-12 width-4" tal:content="context/parameter_value">Parameter</div>
       </div>
       <div class="row observation-details" style="display:none;padding-top:15px">
@@ -233,6 +231,23 @@
         <div class="cell position-8 width-4" tal:content="context/highlight_value">Status flag</div>
         <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.modified(), True)">Last update</div>
       </div>
+      <div class="row observation-details" style="display:none;padding-top:15px" tal:condition="view/show_description">
+        <div class="row">
+          <div class="cell position-0 width-4">
+            <span tal:condition="here/ms_key_catagory|nothing">
+              MS Key category
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="cell position-0 width-4">
+            <span tal:condition="here/eu_key_catagory|nothing">
+              EU Key category
+            </span>
+          </div>
+        </div>
+      </div>
+
       <div class="row observation-details" style="display:none;padding-top:15px" tal:condition="view/show_description">
         <div class="cell position-0 width-4 esdLabel">Description</div>
       </div>
