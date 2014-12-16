@@ -204,11 +204,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -282,11 +282,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significan issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -360,11 +360,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -446,11 +446,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -524,11 +524,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -602,11 +602,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -680,11 +680,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -769,11 +769,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -847,11 +847,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -925,11 +925,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1003,11 +1003,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1089,11 +1089,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1167,11 +1167,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1253,11 +1253,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1342,11 +1342,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1420,11 +1420,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1506,11 +1506,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1592,11 +1592,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1681,11 +1681,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1767,11 +1767,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1853,11 +1853,11 @@
                           <br/>
                           <div class="potentialSignificantIssue"
                             tal:condition="observation/observation_is_potential_significant_issue">
-                              Potential technical correction
+                              Potential significant issue
                           </div>
                           <div class="potentialTechnicalCorrectionTag"
                             tal:condition="observation/observation_is_potential_technical_correction">
-                              Potential significant issue
+                              Potential technical correction
                           </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -1940,11 +1940,11 @@
                         <br/>
                         <div class="potentialSignificantIssue"
                           tal:condition="observation/observation_is_potential_significant_issue">
-                            Potential technical correction
+                            Potential significant issue
                         </div>
                         <div class="potentialTechnicalCorrectionTag"
                           tal:condition="observation/observation_is_potential_technical_correction">
-                            Potential significant issue
+                            Potential technical correction
                         </div>
                           <div class="technicalCorrectionTag"
                             tal:condition="observation/observation_is_technical_correction">
@@ -2018,11 +2018,11 @@
                         <br/>
                         <div class="potentialSignificantIssue"
                           tal:condition="observation/observation_is_potential_significant_issue">
-                            Potential technical correction
+                            Potential significant issue
                         </div>
                         <div class="potentialTechnicalCorrectionTag"
                           tal:condition="observation/observation_is_potential_technical_correction">
-                            Potential significant issue
+                            Potential technical correction
                         </div>
                         <div class="technicalCorrectionTag"
                           tal:condition="observation/observation_is_technical_correction">
@@ -2096,11 +2096,11 @@
                         <br/>
                         <div class="potentialSignificantIssue"
                           tal:condition="observation/observation_is_potential_significant_issue">
-                            Potential technical correction
+                            Potential significant issue
                         </div>
                         <div class="potentialTechnicalCorrectionTag"
                           tal:condition="observation/observation_is_potential_technical_correction">
-                            Potential significant issue
+                            Potential technical correction
                         </div>
                         <div class="technicalCorrectionTag"
                           tal:condition="observation/observation_is_technical_correction">
@@ -2174,11 +2174,11 @@
                         <br/>
                         <div class="potentialSignificantIssue"
                           tal:condition="observation/observation_is_potential_significant_issue">
-                            Potential technical correction
+                            Potential significant issue
                         </div>
                         <div class="potentialTechnicalCorrectionTag"
                           tal:condition="observation/observation_is_potential_technical_correction">
-                            Potential significant issue
+                            Potential technical correction
                         </div>
                         <div class="technicalCorrectionTag"
                           tal:condition="observation/observation_is_technical_correction">
@@ -2252,11 +2252,11 @@
                         <br/>
                         <div class="potentialSignificantIssue"
                           tal:condition="observation/observation_is_potential_significant_issue">
-                            Potential technical correction
+                            Potential significant issue
                         </div>
                         <div class="potentialTechnicalCorrectionTag"
                           tal:condition="observation/observation_is_potential_technical_correction">
-                            Potential significant issue
+                            Potential technical correction
                         </div>
                         <div class="technicalCorrectionTag"
                           tal:condition="observation/observation_is_technical_correction">
@@ -2330,11 +2330,11 @@
                         <br/>
                         <div class="potentialSignificantIssue"
                           tal:condition="observation/observation_is_potential_significant_issue">
-                            Potential technical correction
+                            Potential significant issue
                         </div>
                         <div class="potentialTechnicalCorrectionTag"
                           tal:condition="observation/observation_is_potential_technical_correction">
-                            Potential significant issue
+                            Potential technical correction
                         </div>
                         <div class="technicalCorrectionTag"
                           tal:condition="observation/observation_is_technical_correction">
