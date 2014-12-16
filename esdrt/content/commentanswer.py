@@ -46,7 +46,8 @@ class CommentAnswer(dexterity.Container):
 
     def can_add_files(self):
         sm = getSecurityManager()
-        return sm.checkPermission('esdrt.content: Add ESDRTFile', self)
+        parent = aq_parent(self)
+        return sm.checkPermission('esdrt.content: Add ESDRTFile', self) and api.content.get_state(parent) not in ['phase1-expert-comments', 'phase2-expert-comments']
 
     def get_files(self):
         items = self.values()

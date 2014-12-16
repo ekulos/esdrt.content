@@ -7,13 +7,13 @@
  </instance-creation-conditions>
  <permission>Access contents information</permission>
  <permission>Delete objects</permission>
+ <permission>Delete portal content</permission>
  <permission>List folder contents</permission>
  <permission>Modify portal content</permission>
  <permission>Reply to item</permission>
  <permission>View</permission>
  <permission>esdrt.content: Add ESDRTFile</permission>
  <permission>esdrt.content: Edit Comment</permission>
- <permission>Delete portal content</permission>
  <state state_id="initial" title="Initial">
   <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information" acquired="True">
