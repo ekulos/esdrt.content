@@ -811,7 +811,9 @@
             </tal:block>
         </div>
 
+      <tal:last condition="repeat/question/end">
       <tal:conclu condition="python:view.in_conclusions_phase1() and not here.get_conclusion()">
+        <div class="actions">
         <a href=""
             id="add-conclusion-link"
             tal:condition="view/can_add_conclusion"
@@ -819,9 +821,11 @@
             class="standardButton">
             Add conclusions
         </a>
+        </div>
       </tal:conclu>
 
       <tal:conclu condition="python:view.in_conclusions_phase2() and not here.get_conclusion_phase2()">
+        <div class="actions">
         <a href=""
             id="add-conclusion-link"
             tal:condition="view/can_add_conclusion_phase2"
@@ -829,8 +833,9 @@
             class="standardButton">
             Add conclusions
         </a>
+        </div>
       </tal:conclu>
-
+      </tal:last>
 
       <tal:qactions condition="python:(not view.in_conclusions_phase1()) and (not view.in_conclusions_phase2())">
         <div class="actions" tal:condition="repeat/question/end">
