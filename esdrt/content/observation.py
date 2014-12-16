@@ -472,10 +472,12 @@ class Observation(dexterity.Container):
         status = self.get_status()
         if status == 'phase1-closed':
             conclusion = self.get_conclusion()
-            return ' <br/> '.join(['closed', '(' + conclusion.reason_value() + ')'])
+            if conclusion:
+                return ' <br/> '.join(['closed', '(' + conclusion.reason_value() + ')'])
         elif status == 'phase2-closed':
             conclusion = self.get_conclusion_phase2()
-            return ' <br/> '.join(['closed', '(' + conclusion.reason_value() + ')'])
+            if conclusion:
+                return ' <br/> '.join(['closed', '(' + conclusion.reason_value() + ')'])
         else:
             return 'open'
 
