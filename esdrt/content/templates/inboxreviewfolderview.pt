@@ -70,7 +70,7 @@
       </div>
 
 
-      <div id="observations" class="myview">
+      <div id="observations" class="myview" tal:condition="not:here/@@plone_portal_state/anonymous">
         <!-- Sector expert / Review expert -->
         <tal:block tal:condition="view/is_sector_expert_or_review_expert">
           <div>
