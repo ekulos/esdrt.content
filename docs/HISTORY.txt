@@ -4,7 +4,7 @@ Changelog
 1.24 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Bug fixes [erral]
 
 
 1.23.3 (2014-12-15)
