@@ -158,7 +158,7 @@ class ReviewFolderView(grok.View):
     def get_review_years(self):
         catalog = api.portal.get_tool('portal_catalog')
         review_years = catalog.uniqueValuesFor('review_year')
-        review_years = [c for c in  catalog.uniqueValuesFor('review_year') if isinstance(c, basestring)]
+        review_years = [c for c in catalog.uniqueValuesFor('review_year') if isinstance(c, basestring)]
         return review_years
 
     def get_inventory_years(self):
@@ -208,8 +208,9 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'observation-phase1-draft' or \
-                            obj.observation_question_status() == 'observation-phase2-draft'):
+                            if obj.observation_question_status() in \
+                                    ['observation-phase1-draft',
+                                     'observation-phase2-draft']:
                                 items.append(obj)
                 except:
                     pass
@@ -230,10 +231,11 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-draft' or \
-                            obj.observation_question_status() == 'phase2-draft' or \
-                            obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                            obj.observation_question_status() == 'phase2-counterpart-comments'):
+                            if obj.observation_question_status() in [
+                                    'phase1-draft',
+                                    'phase2-draft',
+                                    'phase1-counterpart-comments',
+                                    'phase2-counterpart-comments']:
                                 items.append(obj)
                 except:
                     pass
@@ -255,9 +257,10 @@ class InboxReviewFolderView(grok.View):
                     roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                            "CounterPart" in roles:
+                            if obj.observation_question_status() in [
+                                    'phase1-counterpart-comments',
+                                    'phase2-counterpart-comments'] and \
+                                    "CounterPart" in roles:
                                 items.append(obj)
                 except:
                     pass
@@ -279,9 +282,10 @@ class InboxReviewFolderView(grok.View):
                     roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
-                            obj.observation_question_status() == 'phase2-conclusion-discussion') and \
-                            "CounterPart" in roles:
+                            if obj.observation_question_status() in [
+                                    'phase1-conclusion-discussion',
+                                    'phase2-conclusion-discussion'] and \
+                                    "CounterPart" in roles:
                                 items.append(obj)
                 except:
                     pass
@@ -302,8 +306,9 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-answered' or \
-                            obj.observation_question_status() == 'phase2-answered'):
+                            if obj.observation_question_status() in [
+                                    'phase1-answered',
+                                    'phase2-answered']:
                                 items.append(obj)
                 except:
                     pass
@@ -324,7 +329,15 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if obj.observation_question_status() in ['phase1-pending', 'phase2-pending', 'phase1-recalled-msa', 'phase2-recalled-msa', 'phase1-expert-comments', 'phase2-expert-comments', 'phase1-pending-answer-drafting', 'phase2-pending-answer-drafting']:
+                            if obj.observation_question_status() in [
+                                    'phase1-pending',
+                                    'phase2-pending',
+                                    'phase1-recalled-msa',
+                                    'phase2-recalled-msa',
+                                    'phase1-expert-comments',
+                                    'phase2-expert-comments',
+                                    'phase1-pending-answer-drafting',
+                                    'phase2-pending-answer-drafting']:
                                 items.append(obj)
                 except:
                     pass
@@ -345,9 +358,10 @@ class InboxReviewFolderView(grok.View):
                     roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                            "CounterPart" not in roles:
+                            if obj.observation_question_status() in [
+                                    'phase1-counterpart-comments',
+                                    'phase2-counterpart-comments'] and \
+                                    "CounterPart" not in roles:
                                 items.append(obj)
                 except:
                     pass
@@ -368,9 +382,10 @@ class InboxReviewFolderView(grok.View):
                     roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
-                            obj.observation_question_status() == 'phase2-conclusion-discussion') and \
-                            "CounterPart" not in roles:
+                            if obj.observation_question_status() in [
+                                    'phase1-conclusion-discussion',
+                                    'phase2-conclusion-discussion'] and \
+                                    "CounterPart" not in roles:
                                 items.append(obj)
                 except:
                     pass
@@ -391,8 +406,9 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-close-requested' or \
-                            obj.observation_question_status() == 'phase2-close-requested'):
+                            if obj.observation_question_status() in [
+                                    'phase1-close-requested',
+                                    'phase2-close-requested']:
                                 items.append(obj)
                 except:
                     pass
@@ -416,10 +432,11 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-drafted' or \
-                            obj.observation_question_status() == 'phase2-drafted' or \
-                            obj.observation_question_status() == 'phase1-recalled-lr' or \
-                            obj.observation_question_status() == 'phase2-recalled-lr'):
+                            if obj.observation_question_status() in [
+                                    'phase1-drafted',
+                                    'phase2-drafted',
+                                    'phase1-recalled-lr',
+                                    'phase2-recalled-lr']:
                                 items.append(obj)
                 except:
                     pass
@@ -440,8 +457,9 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-close-requested' or \
-                            obj.observation_question_status() == 'phase2-close-requested'):
+                            if obj.observation_question_status() in [
+                                    'phase1-close-requested',
+                                    'phase2-close-requested']:
                                 items.append(obj)
                 except:
                     pass
@@ -463,9 +481,10 @@ class InboxReviewFolderView(grok.View):
                     roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                            "CounterPart" in roles:
+                            if obj.observation_question_status() in [
+                                    'phase1-counterpart-comments',
+                                    'phase2-counterpart-comments'] and \
+                                    "CounterPart" in roles:
                                 items.append(obj)
                 except:
                     pass
@@ -487,9 +506,10 @@ class InboxReviewFolderView(grok.View):
                     roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-conclusion-discussion' or \
-                            obj.observation_question_status() == 'phase2-conclusion-discussion') and \
-                            "CounterPart" in roles:
+                            if obj.observation_question_status() in [
+                                    'phase1-conclusion-discussion',
+                                    'phase2-conclusion-discussion'] and \
+                                    "CounterPart" in roles:
                                 items.append(obj)
                 except:
                     pass
@@ -511,9 +531,10 @@ class InboxReviewFolderView(grok.View):
                     roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-counterpart-comments' or \
-                            obj.observation_question_status() == 'phase2-counterpart-comments') and \
-                            "CounterPart" not in roles:
+                            if obj.observation_question_status() in [
+                                    'phase1-counterpart-comments',
+                                    'phase2-counterpart-comments'] and \
+                                    "CounterPart" not in roles:
                                 items.append(obj)
                 except:
                     pass
@@ -534,8 +555,9 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-answered' or \
-                            obj.observation_question_status() == 'phase2-answered'):
+                            if obj.observation_question_status() in [
+                                    'phase1-answered',
+                                    'phase2-answered']:
                                 items.append(obj)
                 except:
                     pass
@@ -556,15 +578,18 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-pending' or \
-                            obj.observation_question_status() == 'phase2-pending' or \
-                            obj.observation_question_status() == 'phase1-recalled-msa' or \
-                            obj.observation_question_status() == 'phase2-recalled-msa'):
+                            if ['phase1-pending',
+                                    'phase2-pending',
+                                    'phase1-recalled-msa',
+                                    'phase2-recalled-msa',
+                                    'phase1-expert-comments',
+                                    'phase2-expert-comments',
+                                    'phase1-pending-answer-drafting',
+                                    'phase2-pending-answer-drafting']:
                                 items.append(obj)
                 except:
                     pass
         return items
-
 
     """
         MS Coordinator
@@ -584,10 +609,13 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-pending' or \
-                            obj.observation_question_status() == 'phase2-pending' or \
-                            obj.observation_question_status() == 'phase1-recalled-msa' or \
-                            obj.observation_question_status() == 'phase2-recalled-msa'):
+                            if obj.observation_question_status() in [
+                                    'phase1-pending',
+                                    'phase2-pending',
+                                    'phase1-recalled-msa',
+                                    'phase2-recalled-msa',
+                                    'phase1-pending-answer-drafting',
+                                    'phase2-pending-answer-drafting']:
                                 items.append(obj)
                 except:
                     pass
@@ -608,9 +636,10 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                            obj.observation_question_status() == 'phase2-expert-comments') and \
-                            obj.last_answer_reply_number() > 0:
+                            if obj.observation_question_status() in [
+                                    'phase1-expert-comments',
+                                    'phase2-expert-comments'] and \
+                                    obj.last_answer_reply_number() > 0:
                                 items.append(obj)
                 except:
                     pass
@@ -631,8 +660,9 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                            obj.observation_question_status() == 'phase2-expert-comments'):
+                            if obj.observation_question_status() in [
+                                    'phase1-expert-comments',
+                                    'phase2-expert-comments']:
                                 items.append(obj)
                 except:
                     pass
@@ -653,8 +683,9 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-answered' or \
-                            obj.observation_question_status() == 'phase2-answered'):
+                            if obj.observation_question_status() in [
+                                    'phase1-answered',
+                                    'phase2-answered']:
                                 items.append(obj)
                 except:
                     pass
@@ -675,15 +706,16 @@ class InboxReviewFolderView(grok.View):
             with api.env.adopt_roles(['Manager']):
                 try:
                     obj = item.getObject()
-                    roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                            obj.observation_question_status() == 'phase2-expert-comments'):
+                            if obj.observation_question_status() in [
+                                    'phase1-expert-comments',
+                                    'phase2-expert-comments']:
                                 items.append(obj)
                 except:
                     pass
         return items
+
     @memoize
     def get_observations_with_my_comments(self):
         """
@@ -697,14 +729,14 @@ class InboxReviewFolderView(grok.View):
             with api.env.adopt_roles(['Manager']):
                 try:
                     obj = item.getObject()
-                    roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-expert-comments' or \
-                            obj.observation_question_status() == 'phase2-expert-comments' or \
-                            obj.observation_question_status() == 'phase1-pending-answer-drafting' or \
-                            obj.observation_question_status() == 'phase2-pending-answer-drafting') and \
-                            obj.reply_comments_by_mse():
+                            if obj.observation_question_status() in [
+                                    'phase1-expert-comments',
+                                    'phase2-expert-comments',
+                                    'phase1-pending-answer-drafting',
+                                    'phase2-pending-answer-drafting'] and \
+                                    obj.reply_comments_by_mse():
                                 items.append(obj)
                 except:
                     pass
@@ -723,14 +755,14 @@ class InboxReviewFolderView(grok.View):
             with api.env.adopt_roles(['Manager']):
                 try:
                     obj = item.getObject()
-                    roles = api.user.get_roles(username=user.id, obj=obj)
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-answered' or \
-                            obj.observation_question_status() == 'phase2-answered' or \
-                            obj.observation_question_status() == 'phase1-recalled-msa' or \
-                            obj.observation_question_status() == 'phase2-recalled-msa') and \
-                            obj.reply_comments_by_mse():
+                            if obj.observation_question_status() in [
+                                    'phase1-answered',
+                                    'phase2-answered',
+                                    'phase1-recalled-msa',
+                                    'phase2-recalled-msa'] and \
+                                    obj.reply_comments_by_mse():
                                 items.append(obj)
                 except:
                     pass
@@ -753,9 +785,10 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-closed' or \
-                            obj.observation_question_status() == 'phase2-closed') and \
-                            obj.observation_finalisation_reason() == 'no-response-needed':
+                            if obj.observation_question_status() in [
+                                    'phase1-closed',
+                                    'phase2-closed'] and \
+                                    obj.observation_finalisation_reason() == 'no-response-needed':
                                 items.append(obj)
                 except:
                     pass
@@ -775,9 +808,10 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-closed' or \
-                            obj.observation_question_status() == 'phase2-closed') and \
-                            obj.observation_finalisation_reason() == 'resolved':
+                            if obj.observation_question_status() in [
+                                    'phase1-closed',
+                                    'phase2-closed'] and \
+                                    obj.observation_finalisation_reason() == 'resolved':
                                 items.append(obj)
                 except:
                     pass
@@ -797,9 +831,10 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-closed' or \
-                            obj.observation_question_status() == 'phase2-closed') and \
-                            obj.observation_finalisation_reason() == 'unresolved':
+                            if obj.observation_question_status() in [
+                                    'phase1-closed',
+                                    'phase2-closed'] and \
+                                    obj.observation_finalisation_reason() == 'unresolved':
                                 items.append(obj)
                 except:
                     pass
@@ -819,9 +854,10 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-closed' or \
-                            obj.observation_question_status() == 'phase2-closed') and \
-                            obj.observation_finalisation_reason() == 'partly-resolved':
+                            if obj.observation_question_status() in [
+                                    'phase1-closed',
+                                    'phase2-closed'] and \
+                                    obj.observation_finalisation_reason() == 'partly-resolved':
                                 items.append(obj)
                 except:
                     pass
@@ -841,9 +877,10 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-closed' or \
-                            obj.observation_question_status() == 'phase2-closed') and \
-                            obj.observation_finalisation_reason() == 'technical-correction':
+                            if obj.observation_question_status() in [
+                                    'phase1-closed',
+                                    'phase2-closed'] and \
+                                    obj.observation_finalisation_reason() == 'technical-correction':
                                 items.append(obj)
                 except:
                     pass
@@ -863,9 +900,10 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if (obj.observation_question_status() == 'phase1-closed' or \
-                            obj.observation_question_status() == 'phase2-closed') and \
-                            obj.observation_finalisation_reason() == 'revised-estimate':
+                            if obj.observation_question_status() in [
+                                    'phase1-closed',
+                                    'phase2-closed'] and \
+                                    obj.observation_finalisation_reason() == 'revised-estimate':
                                 items.append(obj)
                 except:
                     pass
@@ -906,12 +944,14 @@ class InboxReviewFolderView(grok.View):
     @memoize
     def is_sector_expert_or_review_expert(self):
         user = api.user.get_current()
-        return ("extranet-esd-ghginv-sr" in user.getGroups() or "extranet-esd-esdreview-reviewexp" in user.getGroups())
+        user_groups = user.getGroups()
+        return "extranet-esd-ghginv-sr" in user_groups or "extranet-esd-esdreview-reviewexp" in user_groups
 
     @memoize
     def is_lead_reviewer_or_quality_expert(self):
         user = api.user.get_current()
-        return ("extranet-esd-ghginv-qualityexpert" in user.getGroups() or "extranet-esd-esdreview-leadreview" in user.getGroups())
+        user_groups = user.getGroups()
+        return "extranet-esd-ghginv-qualityexpert" in user_groups or "extranet-esd-esdreview-leadreview" in user_groups
 
     @memoize
     def is_member_state_coordinator(self):
