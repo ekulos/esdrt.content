@@ -1,39 +1,23 @@
-from plone.memoize.view import memoize
-from plone import api
 from AccessControl import getSecurityManager
 from five import grok
+from plone import api
 from plone.directives import dexterity
 from plone.directives import form
+from plone.memoize.view import memoize
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
-from zope import schema
-from esdrt.content import MessageFactory as _
+
+grok.templatedir('templates')
 
 
-# Interface class; used to define content-type schema.
 class IReviewFolder(form.Schema, IImageScaleTraversable):
     """
     Folder to have all observations together
     """
 
-# Custom content-type class; objects created for this content type will
-# be instances of this class. Use this class to add content-type specific
-# methods and properties. Put methods that are mainly useful for rendering
-# in separate view classes.
+
 class ReviewFolder(dexterity.Container):
     grok.implements(IReviewFolder)
-    # Add your class methods and properties here
-
-
-# View class
-# The view will automatically use a similarly named template in
-# templates called reviewfolderview.pt .
-# Template filenames should be all lower case.
-# The view will render when you request a content object with this
-# interface with "/@@view" appended unless specified otherwise
-# using grok.name below.
-# This will make this view the default view for your content-type
-grok.templatedir('templates')
 
 
 class ReviewFolderView(grok.View):
@@ -185,7 +169,7 @@ class InboxReviewFolderView(grok.View):
             'sort_on': 'modified',
             'sort_order': 'reverse',
         }
-        if (freeText != ""):
+        if freeText != "":
             query['SearchableText'] = freeText
         values = catalog.unrestrictedSearchResults(query)
         return values
@@ -208,9 +192,9 @@ class InboxReviewFolderView(grok.View):
                     obj = item.getObject()
                     with api.env.adopt_user(user=user):
                         if mtool.checkPermission('View', obj):
-                            if obj.observation_question_status() in \
-                                    ['observation-phase1-draft',
-                                     'observation-phase2-draft']:
+                            if obj.observation_question_status() in [
+                                    'observation-phase1-draft',
+                                    'observation-phase2-draft']:
                                 items.append(obj)
                 except:
                     pass
