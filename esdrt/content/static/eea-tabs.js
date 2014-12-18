@@ -31,7 +31,7 @@ jQuery(document).ready(
 						}
 						if(!$tab_title.find('a').length){
 							tab_title_text=$tab_title.text();
-							tab_title_id=tab_title_text.toLowerCase().replace(/\s/g,'-');
+							tab_title_id=tab_title_text.toLowerCase().replace(/\s/g,'-').replace('&', '');
 							$tab_title.text("");
 							$('<a />').attr({'href':'#tab-'+tab_title_id,'id':'tab-'+tab_title_id}).html(tab_title_text).appendTo($tab_title)
 						}
