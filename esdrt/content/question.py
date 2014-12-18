@@ -276,6 +276,9 @@ class AddCommentForm(Form):
     ignoreContext = True
     fields = field.Fields(IComment).select('text')
 
+    label = 'Question'
+    description = ''
+
     @button.buttonAndHandler(_('Add question'))
     def create_question(self, action):
         context = aq_inner(self.context)
@@ -307,6 +310,9 @@ class AddAnswerForm(Form):
 
     ignoreContext = True
     fields = field.Fields(IComment).select('text')
+
+    label = 'Answer'
+    description = ''
 
     @button.buttonAndHandler(_('Add answer'))
     def create_question(self, action):

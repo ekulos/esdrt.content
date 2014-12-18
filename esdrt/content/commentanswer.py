@@ -90,6 +90,9 @@ class AddForm(dexterity.AddForm):
     grok.context(ICommentAnswer)
     grok.require('esdrt.content.AddCommentAnswer')
 
+    label = 'Answer'
+    description = ''
+
     def updateFields(self):
         super(AddForm, self).updateFields()
         self.fields = field.Fields(ICommentAnswer).select('text')
@@ -125,6 +128,9 @@ class EditForm(dexterity.EditForm):
     grok.name('edit')
     grok.context(ICommentAnswer)
     grok.require('esdrt.content.EditCommentAnswer')
+
+    label = 'Answer'
+    description = ''
 
     def updateFields(self):
         super(EditForm, self).updateFields()

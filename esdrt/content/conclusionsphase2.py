@@ -138,6 +138,9 @@ class AddForm(dexterity.AddForm):
     grok.context(IConclusionsPhase2)
     grok.require('esdrt.content.AddConclusionsPhase2')
 
+    label = 'Conclusions Step 2'
+    description = ''
+
     def updateFields(self):
         super(AddForm, self).updateFields()
         self.fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text')
@@ -193,6 +196,9 @@ class EditForm(dexterity.EditForm):
     grok.name('edit')
     grok.context(IConclusionsPhase2)
     grok.require('cmf.ModifyPortalContent')
+
+    label = 'Conclusions Step 2'
+    description = ''
 
     def updateFields(self):
         super(EditForm, self).updateFields()

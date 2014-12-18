@@ -8,7 +8,6 @@ from plone.namedfile.field import NamedBlobFile
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import field
-from z3c.form import group
 from zope import schema
 
 
@@ -20,7 +19,7 @@ class IESDRTFile(form.Schema, IImageScaleTraversable):
     title = schema.TextLine(
         title=_(u'Title'),
         required=False,
-        )
+    )
 
     form.primary('file')
     file = NamedBlobFile(
@@ -61,6 +60,9 @@ class AddForm(dexterity.AddForm):
     grok.context(IESDRTFile)
     grok.require('esdrt.content.AddESDRTFile')
 
+    label = 'file'
+    description = ''
+
     def update(self):
         super(AddForm, self).update()
         status = IStatusMessage(self.request)
@@ -79,16 +81,6 @@ class AddForm(dexterity.AddForm):
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
 
-
-
-# View class
-# The view will automatically use a similarly named template in
-# templates called esdrtfileview.pt .
-# Template filenames should be all lower case.
-# The view will render when you request a content object with this
-# interface with "/@@view" appended unless specified otherwise
-# using grok.name below.
-# This will make this view the default view for your content-type
 grok.templatedir('templates')
 
 
