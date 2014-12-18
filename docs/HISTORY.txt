@@ -4,7 +4,11 @@ Changelog
 1.23.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Worfklow fixes [erral]
+
+- My view improvements [erral]
+
+- Highlights editable through the conclusion edit form [erral]
 
 
 1.23.6 (2014-12-16)
