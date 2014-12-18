@@ -54,7 +54,7 @@
               </select>
             </div>
 
-            <input class="standalone" type="submit" name="send" value="Send"/>
+            <input class="standalone standardButton" type="submit" name="send" value="Send"/>
 
             <input tal:replace="structure context/@@authenticator/authenticator" />
 

@@ -223,11 +223,6 @@ class AssignAnswererForm(BrowserView):
             self.revoke_all_roles()
             return self.index()
 
-    def updateActions(self):
-        super(AssignAnswererForm, self).updateActions()
-        for k in self.actions.keys():
-            self.actions[k].addClass('standardButton')
-
 
 class IAssignCounterPartForm(Interface):
     counterpart = schema.TextLine(
@@ -329,11 +324,6 @@ class AssignCounterPartForm(BrowserView):
         else:
             self.revoke_all_roles()
             return self.index()
-
-    def updateActions(self):
-        super(AssignCounterPartForm, self).updateActions()
-        for k in self.actions.keys():
-            self.actions[k].addClass('standardButton')
 
 
 class IAssignConclusionReviewerForm(Interface):
