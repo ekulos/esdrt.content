@@ -740,10 +740,10 @@ class Observation(dexterity.Container):
         if self.get_status() != 'phase1-pending' and self.get_status() != 'phase2-pending':
             return self.get_status()
         else:
-            questions = self.get_values()
+            questions = [q for q in self.get_values() if q.portal_type == 'Question']
             if questions:
                 question = questions[-1]
-                state = question.get_state_api()
+                state = api.content.get_state(question)
                 return state
             else:
                 if self.get_status().startswith('phase1'):
@@ -844,8 +844,25 @@ class Observation(dexterity.Container):
 
         return False
 
+    def observation_already_replied(self):
+
+        questions = [c for c in self.get_values() if c.portal_type == "Question"]
+        if questions:
+            question = questions[0]
+            winfo = question.workflow_history
+            state = self.get_status()
+            for witem in winfo.get('esd-question-review-workflow', []):
+                if state.startswith('phase1-'):
+                    if witem.get('review_state', '') == 'phase1-answered':
+                        return True
+                elif state.startswith('phase2-'):
+                    if witem.get('review_state', '') == 'phase2-answered':
+                        return True
+
+        return False
+
     def observation_phase(self):
-        status = self.get_status()
+        status = api.content.get_state(self)
         if status.startswith('phase1-'):
             return "phase1-observation"
         else:
