@@ -13,12 +13,15 @@ from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from time import time
 from z3c.form import field
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
 from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.schema.interfaces import IVocabularyFactory
+from types import ListType
+from types import TupleType
 
 
 class IConclusion(form.Schema, IImageScaleTraversable):
@@ -143,8 +146,12 @@ class AddForm(dexterity.AddForm):
     description = ''
 
     def updateFields(self):
+        from .observation import IObservation
         super(AddForm, self).updateFields()
-        self.fields = field.Fields(IConclusion).select('closing_reason', 'text')
+        conclusion_fields = field.Fields(IConclusion).select('closing_reason', 'text')
+        observation_fields = field.Fields(IObservation).select('highlight')
+        self.fields = field.Fields(conclusion_fields, observation_fields)
+        self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
     def updateWidgets(self):
@@ -172,6 +179,12 @@ class AddForm(dexterity.AddForm):
         content.closing_reason = reason[0]
         adapted = IAllowDiscussion(content)
         adapted.allow_discussion = True
+
+        # Edit highlighs
+        highlights = self.request.form.get('form.widgets.highlight')
+        container.highlights = highlights
+
+
         return aq_base(content)
 
     def updateActions(self):
@@ -187,10 +200,27 @@ class EditForm(dexterity.EditForm):
 
     label = 'Conclusions Step 1'
     description = ''
+    ignoreContext = False
+
+    def getContent(self):
+        context = aq_inner(self.context)
+        container = aq_parent(context)
+        data = {}
+        data['text'] = context.text
+        if type(context.closing_reason) in (ListType, TupleType):
+            data['closing_reason'] = context.closing_reason[0]
+        else:
+            data['closing_reason'] = context.closing_reason
+        data['highlight'] = container.highlight
+        return data
 
     def updateFields(self):
         super(EditForm, self).updateFields()
-        self.fields = field.Fields(IConclusion).select('closing_reason', 'text')
+        from .observation import IObservation
+        conclusion_fields = field.Fields(IConclusion).select('closing_reason', 'text')
+        observation_fields = field.Fields(IObservation).select('highlight')
+        self.fields = field.Fields(conclusion_fields, observation_fields)
+        self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
     def updateWidgets(self):
@@ -201,3 +231,15 @@ class EditForm(dexterity.EditForm):
         super(EditForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+
+    def applyChanges(self, data):
+        super(EditForm, self).applyChanges(data)
+        context = aq_inner(self.context)
+        container = aq_parent(context)
+        text = self.request.form.get('form.widgets.text')
+        closing_reason = self.request.form.get('form.widgets.closing_reason')
+        context.text = text
+        if type(closing_reason) in (ListType, TupleType):
+            context.closing_reason = closing_reason[0]
+        highlight = self.request.form.get('form.widgets.highlight')
+        container.highlight = highlight
