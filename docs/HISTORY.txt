@@ -4,7 +4,13 @@ Changelog
 1.25 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fix edit history [erral]
+
+- Allow MS Experts to see conclusions [erral]
+
+- Allow 2nd step reviewers to see 1st step observations [erral]
+
+- Show notification names in subscription configuration screen [erral]
 
 
 1.24 (2014-12-18)
