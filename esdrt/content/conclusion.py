@@ -22,6 +22,8 @@ from zope.globalrequest import getRequest
 from zope.schema.interfaces import IVocabularyFactory
 from types import ListType
 from types import TupleType
+from zope.lifecycleevent import ObjectModifiedEvent
+from zope.event import notify
 
 
 class IConclusion(form.Schema, IImageScaleTraversable):
@@ -243,3 +245,5 @@ class EditForm(dexterity.EditForm):
             context.closing_reason = closing_reason[0]
         highlight = self.request.form.get('form.widgets.highlight')
         container.highlight = highlight
+        notify(ObjectModifiedEvent(context))
+        notify(ObjectModifiedEvent(container))
