@@ -30,6 +30,13 @@
         />
 
     <browser:page
+        name="select-new-mse"
+        for="..question.IQuestion"
+        class=".statechange.ReAssignMSExpertsForm"
+        permission="zope2.View"
+        />
+
+    <browser:page
         name="assign_conclusion_reviewer_form"
         for="..observation.IObservation"
         class=".statechange.AssignConclusionReviewerForm"

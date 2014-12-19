@@ -193,7 +193,7 @@ class AssignAnswererForm(BrowserView):
             usernames = self.request.get('counterparts', None)
             if not usernames:
                 status = IStatusMessage(self.request)
-                msg = _(u'You need to select at least one exper for discussion')
+                msg = _(u'You need to select at least one expert for discussion')
                 status.addStatusMessage(msg, "error")
                 return self.index()
 
@@ -221,6 +221,30 @@ class AssignAnswererForm(BrowserView):
 
         else:
             self.revoke_all_roles()
+            return self.index()
+
+
+class ReAssignMSExpertsForm(AssignAnswererForm):
+    def __call__(self):
+
+        target = self.assignation_target()
+        if self.request.form.get('send', None):
+            usernames = self.request.get('counterparts', None)
+            if not usernames:
+                status = IStatusMessage(self.request)
+                msg = _(u'You need to select at least one expert for discussion')
+                status.addStatusMessage(msg, "error")
+                return self.index()
+
+            self.revoke_all_roles()
+            for username in usernames:
+                api.user.grant_roles(username=username,
+                    roles=['MSExpert'],
+                    obj=target)
+
+            return self.request.response.redirect(target.absolute_url())
+
+        else:
             return self.index()
 
 

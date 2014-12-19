@@ -276,6 +276,7 @@
   </permission-map>
  </state>
  <state state_id="phase1-expert-comments" title="Expert Comments">
+  <exit-transition transition_id="phase-reselect-msexperts"/>
   <exit-transition transition_id="phase1-ask-answer-approval"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>MSAuthority</permission-role>
@@ -776,6 +777,7 @@
   </permission-map>
  </state>
  <state state_id="phase2-expert-comments" title="phase2-expert-comments">
+  <exit-transition transition_id="phase-reselect-msexperts"/>
   <exit-transition transition_id="phase2-ask-answer-aproval"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -1076,6 +1078,12 @@
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase-reselect-msexperts" title="Select new Experts" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/select-new-mse?workflow_action=phase-reselect-msexperts" category="workflow" icon="">Select new Experts</action>
+  <guard>
+   <guard-role>MSAuthority</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase1-add-answer" title="Add Answer" new_state="phase1-pending-answer-drafting" trigger="USER" before_script="" after_script="">
