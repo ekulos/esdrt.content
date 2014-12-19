@@ -1,4 +1,4 @@
-no-response-needed,no response needed: issue dropped before MS contact;
-resolved,resolved: issue dropped or clarified;
-unresolved,unresolved: forward to 2nd step review;
-partly-resolved,partly resolved: below treshold, maybe recommendation, but not forwarded to 2nd step review
+"no-response-needed","no response needed: issue dropped before MS contact"
+"resolved","resolved: issue dropped or clarified"
+"unresolved","unresolved: forward to 2nd step review"
+"partly-resolved","partly resolved: below treshold, maybe recommendation, but not forwarded to 2nd step review"

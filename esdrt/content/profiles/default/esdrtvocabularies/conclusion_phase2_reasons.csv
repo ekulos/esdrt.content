@@ -1,5 +1,5 @@
-no-response-needed,no response needed: issue dropped before MS contact;
-resolved,resolved: issue dropped or clarified;
-technical-correction,technical correction: issue above treshold, technical correction provided
-revised-estimate,revised estimate: issue above treshold, revised estimate provided by MS
-partly-resolved,partly resolved: below treshold, maybe recommendation
+"no-response-needed","no response needed: issue dropped before MS contact"
+"resolved","resolved: issue dropped or clarified"
+"technical-correction","technical correction: issue above treshold, technical correction provided"
+"revised-estimate","revised estimate: issue above treshold, revised estimate provided by MS"
+"partly-resolved","partly resolved: below treshold, maybe recommendation"
