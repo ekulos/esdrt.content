@@ -161,10 +161,10 @@
       <a href=""
         tal:define="pcp here/@@plone_context_state;
                     parent pcp/parent"
-        tal:attributes="href parent/absolute_url"
+        tal:attributes="href string:${parent/absolute_url}/inboxview"
         class="standardButton">
           <span class="eea-icon"><!-- --></span>
-            Back to overview list
+            Back to my view
       </a>
     </div>
     <div class="actions">
