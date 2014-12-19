@@ -200,7 +200,7 @@ class SaveSubscriptions(grok.View):
             adapted.unsubscribe(user.getId(), to_delete)
             status = IStatusMessage(self.request)
             status.add('Subscription preferences saved correctly', type='info')
-            url = self.context.absolute_url() + '/subscription-configuration'
+            url = self.context.absolute_url()
             return self.request.response.redirect(url)
 
         status = IStatusMessage(self.request)
