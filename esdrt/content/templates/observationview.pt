@@ -46,9 +46,16 @@
             e.preventDefault();
             var data = $(this).serializeArray();
             url = $(this).attr('action');
-            $('.changes').load(url + ' .changes >*', data=data, function(){
+            var newurl = '';
+            if (url.endswith('diffedview')) {
+              newurl = url + ' .changes >*';
+            }
+            else {
+              newurl = url + '/diffedview .changes >*';
+            }
+            $('.changes').load(newurl, data=data, function(){
               version_set();
-          });
+            });
           });
         }
         version_set();
@@ -729,7 +736,7 @@
                   <label for="two">
                     <span tal:omit-tag="" i18n:translate="">First revision</span>
                     <select id="two" name="two" tal:define="rev request/form/two|string:current">
-                       <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
+                       <!-- <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option> -->
                        <option tal:repeat="version view/history"
                                tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
                                i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
@@ -739,7 +746,7 @@
                   <label for="one">
                     <span tal:omit-tag="" i18n:translate="">Second revision</span>
                     <select id="one" name="one" tal:define="rev request/one|string:current">
-                       <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option>
+                       <!-- <option i18n:translate="label_current" value="current" tal:attributes="selected python:rev=='current' and 'yes' or None">Current</option> -->
                        <option tal:repeat="version view/history"
                                tal:attributes="value version/version_id; selected python:str(rev)==str(version['version_id']) and 'yes' or None"
                                i18n:translate="label_history_version"><tal:version i18n:name="version" content="version/version_id">1</tal:version>
