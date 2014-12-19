@@ -66,6 +66,51 @@ NOTIFICATIONS_PER_ROLE = {
     },
 }
 
+NOTIFICATION_NAMES = {
+    'ReviewerPhase1': {
+        'observation_finalisation_denied': 'Observation finalisation denied by QE',
+        'observation_finalised': 'Observation finalised denied by QE',
+        'question_answered': 'Question answered by MS',
+        'question_to_ms': 'Question sent to MS by QE',
+    },
+    'ReviewerPhase2': {
+        'observation_finalisation_denied': 'Observation finalisation denied by LR',
+        'observation_finalised': 'Observation finalised denied by LR',
+        'observation_to_phase2': 'Observation handed over to step 2',
+        'question_answered': 'Question answered by MS',
+        'question_to_ms': 'Question sent to MS by LR',
+    },
+    'QualityExpert': {
+        'conclusion_to_comment': 'Conclusion to comment by you as QE',
+        'observation_finalisation_request': 'Observation finalisation ready for your approval as QE',
+        'question_answered': 'Question answered by MS',
+        'question_ready_for_approval': 'Question ready for your approval as QE',
+        'question_to_counterpart': 'Question to comment by you as QE',
+    },
+    'LeadReviewer': {
+        'conclusion_to_comment': 'Conclusion to comment by you as LR',
+        'observation_finalisation_request': 'Observation finalisation ready for your approval as LR',
+        'observation_to_phase2': 'Observation handed over to step 2',
+        'question_answered': 'Question answered by MS',
+        'question_ready_for_approval': 'Question ready for your approval as LR',
+        'question_to_counterpart': 'Question to comment by you as LR',
+    },
+    'MSAuthority': {
+        'answer_acknowledged': 'Answer acknowledged by sector expert',
+        'observation_finalised': 'Observation finished by Quality Expert',
+        'question_to_ms': 'Question to be answered by your country',
+    },
+    'CounterPart': {
+        'conclusion_to_comment': 'Conclusion to comment by you as counterpart',
+        'question_to_counterpart': 'Question to comment by you as counterpart',
+    },
+    'MSExpert': {
+        'answer_to_msexperts': 'New question to comment by you as MS expert',
+        'question_answered': 'Question answered by MS',
+    }
+}
+
+
 grok.templatedir('templates')
 
 
@@ -104,6 +149,14 @@ class SubscriptionConfiguration(ObservationView):
 
             items[role] = data
         return items
+
+    def notification_name(self, rolename, notification_name):
+        return NOTIFICATION_NAMES.get(rolename, {}).get(
+            notification_name, notification_name
+        )
+
+    def translate_rolename(self, rolename):
+        return ROLE_TRANSLATOR.get(rolename, rolename)
 
 
 class SaveSubscriptions(grok.View):

@@ -180,7 +180,7 @@
 
       <div class="role" tal:repeat="item python:view.my_subscriptions().items()">
         <h3>
-          Role: <span tal:replace="python:item[0]" />
+          Role: <span tal:replace="python:view.translate_rolename(item[0])" />
         </h3>
         <input type="hidden" name="subscription_data.name:records"
           tal:attributes="value python:item[0]" />
@@ -199,7 +199,7 @@
           <tbody>
             <tr tal:repeat="notification python:item[1].items()">
               <td>
-                <span tal:replace="python:notification[0]" />
+                <span tal:replace="python:view.notification_name(item[0], notification[0])" />
               </td>
               <td>
                 <input type="checkbox"
