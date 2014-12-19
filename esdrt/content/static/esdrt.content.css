@@ -25,7 +25,7 @@
 }
 #qa .questionTitle{
 	color: #00446a;
-	font-size: 1.5em;	
+	font-size: 1.5em;
 }
 .eea-tabs {
 	margin-top: 10px !important;
@@ -135,7 +135,7 @@
 	margin-left:30px;
 }
 .question.commentanswer{
-	margin-right:30px	
+	margin-right:30px
 }
 .question div{
 	padding: 5px;
@@ -207,7 +207,7 @@
 	padding: 4px;
 	text-transform: uppercase;
 	vertical-align: middle !important;
-	border: 0px !important;	
+	border: 0px !important;
 }
 .observationList th:after{
 	content: ' ';
@@ -219,7 +219,7 @@
 	content: '▲';
 }
 /**.observationList thead tr{
-	border-left: 5px solid #e6eff0;	
+	border-left: 5px solid #e6eff0;
 }*/
 .observationList tr{
 	border-bottom: 0px !important;
@@ -345,9 +345,9 @@ div.phase2-observation{
 }
 .collapsiblePanelTitle {
 	/**background-color:#2c8da2; */
-	line-height:30px; 
+	line-height:30px;
 	/**color:white; */
-	cursor:pointer; 
+	cursor:pointer;
 	margin-top:10px;
 	font-weight: bold;
 }
@@ -369,22 +369,22 @@ div.phase2-observation{
 	overflow: hidden;
 }
 .tabs {
-	overflow: hidden;  
-	//*-webkit-box-shadow: 0 1px 0 #FFF inset; -moz-box-shadow: 0 1px 0 #FFF inset; 
+	overflow: hidden;
+	//*-webkit-box-shadow: 0 1px 0 #FFF inset; -moz-box-shadow: 0 1px 0 #FFF inset;
 	//box-shadow: 0 1px 0 #FFF inset;*/
 	background-color: #FBFBFB;
 }
 .tabs>div {
-	display: block; 
-	float: left; 
-	font: 15px/35px Arial, Helvetica, Sans-serif; 
-	padding: 0 10px; 
-	color: #999; 
+	display: block;
+	float: left;
+	font: 15px/35px Arial, Helvetica, Sans-serif;
+	padding: 0 10px;
+	color: #999;
 	text-shadow: 0 1px 0 #FFF;
 	position: relative;
 	overflow: hidden;
-	/**background: #e1e1e1; 
-	background: -moz-linear-gradient(center top , #f2f2f2, #e1e1e1); 
+	/**background: #e1e1e1;
+	background: -moz-linear-gradient(center top , #f2f2f2, #e1e1e1);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f2f2), color-stop(100%,#e1e1e1)); */
 	border-top: 6px solid transparent;
 }
@@ -474,7 +474,7 @@ ul.eea-tabs{
 	border-top: 6px solid #4489A0 !important;
 	box-shadow: 6px 0 15px -4px rgba(31, 73, 125, 0.8), -6px 0 15px -4px rgba(31, 73, 125, 0.8);
 }
-#visual-portal-wrapper ul.eea-tabs li, 
+#visual-portal-wrapper ul.eea-tabs li,
 #visual-portal-wrapper ul.eea-tabs a,
 #visual-portal-wrapper ul.eea-tabs a:hover {
 	color: #427597 !important;
@@ -509,7 +509,7 @@ ul.eea-tabs{
 }
 .progressbar td{
 	color: #918C86;
-	font-size: 75%;	
+	font-size: 75%;
 }
 #collage .row_1 .block_1 {
 	width: 65% !important;
@@ -576,7 +576,7 @@ span.envelope:before{
 	-moz-transform-origin: 40% 100%;
 	-ms-transform-origin: 40% 100%;
 	-o-transform-origin: 40% 100%;
-	transform-origin: 40% 100%;	
+	transform-origin: 40% 100%;
 	/* Should be unset in IE9+ I think. */
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 	border-radius: 0px 0px 8px 8px;
@@ -610,6 +610,22 @@ span.envelope:before{
 #comment-discussion-wrapper{
 	overflow: hidden;
 }
+
+/* Comments (CounterPart/MSExpert) */
+
+.row #commenting {
+	font-size: 100%
+}
+.row #commenting fieldset,
+.row .discussion fieldset{
+	border: 0;
+}
+
+#comment-discussion-wrapper .comment,
+#comment-discussion-wrapper div.documentByLine {
+	font-size: 100%
+}
+
 .potentialTechnicalCorrectionTag,
 .potentialSignificantIssue{
 	background-color: #F6D18B;
