@@ -24,11 +24,13 @@
   <exit-transition transition_id="phase1-recall-msa"/>
   <exit-transition transition_id="phase1-validate-answer-msa"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
   </permission-map>
@@ -37,17 +39,21 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
@@ -71,11 +77,13 @@
   <exit-transition transition_id="phase1-reopen"/>
   <exit-transition transition_id="phase2-reopen"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
   </permission-map>
@@ -84,17 +92,21 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="True">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
@@ -116,9 +128,11 @@
   <exit-transition transition_id="phase1-send-comments"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
    <permission-role>ReviewerPhase1</permission-role>
@@ -127,6 +141,8 @@
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
+  </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
@@ -138,9 +154,11 @@
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
@@ -156,9 +174,10 @@
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-draft" title="Draft">
@@ -169,9 +188,11 @@
   <exit-transition transition_id="phase1-request-for-counterpart-comments"/>
   <exit-transition transition_id="phase1-send-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
    <permission-role>ReviewerPhase1</permission-role>
@@ -192,9 +213,11 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
    <permission-role>Manager</permission-role>
@@ -214,8 +237,10 @@
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-drafted" title="Drafted">
@@ -226,9 +251,11 @@
   <exit-transition transition_id="phase1-redraft"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
    <permission-role>QualityExpert</permission-role>
@@ -251,9 +278,11 @@
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
@@ -271,19 +300,23 @@
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>CounterPart</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-expert-comments" title="Expert Comments">
   <exit-transition transition_id="phase-reselect-msexperts"/>
   <exit-transition transition_id="phase1-ask-answer-approval"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
    <permission-role>MSAuthority</permission-role>
@@ -293,6 +326,8 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
@@ -300,11 +335,13 @@
    <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
@@ -331,11 +368,13 @@
   <exit-transition transition_id="phase1-assign-answerer"/>
   <exit-transition transition_id="phase1-recall-question-lr"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
    <permission-role>MSAuthority</permission-role>
@@ -348,17 +387,21 @@
   <permission-map name="Delete objects" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
    <permission-role>Manager</permission-role>
@@ -388,11 +431,13 @@
   <exit-transition transition_id="phase1-answer-to-lr"/>
   <exit-transition transition_id="phase1-assign-answerer"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
    <permission-role>MSAuthority</permission-role>
@@ -411,11 +456,13 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
@@ -442,9 +489,11 @@
   <exit-transition transition_id="phase1-close-lr"/>
   <exit-transition transition_id="phase1-redraft"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
    <permission-role>QualityExpert</permission-role>
@@ -455,15 +504,19 @@
   <permission-map name="Delete objects" acquired="False">
    <permission-role>QualityExpert</permission-role>
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
@@ -487,10 +540,12 @@
   <exit-transition transition_id="phase1-answer-to-lr"/>
   <exit-transition transition_id="phase1-assign-answerer"/>
   <permission-map name="Access contents information" acquired="False">
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="CMFEditions: Access previous versions" acquired="False">
    <permission-role>MSAuthority</permission-role>
@@ -500,15 +555,19 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
-   <permission-role>QualityExpert</permission-role>
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Comment" acquired="False">
   </permission-map>
