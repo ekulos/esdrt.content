@@ -996,35 +996,6 @@ class ObservationView(grok.View):
 
         return IContentListing(items)
 
-    @property
-    def repo_tool(self):
-        return getToolByName(self.context, "portal_repository")
-
-    def getVersion(self, version):
-        question = self.question()
-        context = question.getFirstComment()
-        if version == "current":
-            return context
-        else:
-            return self.repo_tool.retrieve(context, int(version)).object
-
-    def versionName(self, version):
-        """
-        Copied from @@history_view
-        Translate the version name. This is needed to allow translation
-        when `version` is the string 'current'.
-        """
-        return _CMFE(version)
-
-    def versionTitle(self, version):
-        version_name = self.versionName(version)
-
-        return translate(
-            _CMFE(u"version ${version}",
-              mapping=dict(version=version_name)),
-            context=self.request
-        )
-
     def can_delete_observation(self):
         is_draft = self.context.get_status() in ['phase1-pending', 'phase2-pending']
         questions = len([q for q in self.context.get_values() if q.portal_type == 'Question'])
@@ -1197,56 +1168,114 @@ class ObservationView(grok.View):
             'phase2-closed',
         ]
 
+    def get_last_editable_thing(self):
+        CONCLUSIONS_PHASE_1 = [
+            'phase1-conclusions',
+            'phase1-conclusion-discussion',
+            'phase1-close-requested',
+        ]
+        CONCLUSIONS_PHASE_2 = [
+            'phase2-conclusions',
+            'phase2-conclusion-discussion',
+            'phase2-close-requested',
+        ]
+        MS_OBSERVATION = [
+            'phase1-pending',
+            'phase2-pending',
+        ]
+
+        MS_QUESTION = [
+            'phase1-pending',
+            'phase1-pending-answer-drafting',
+            'phase1-expert-comments',
+            'phase2-pending',
+            'phase2-pending-answer-drafting',
+            'phase2-expert-comments',
+        ]
+        state = self.context.get_status()
+        if state in CONCLUSIONS_PHASE_1:
+            return self.context.get_conclusion()
+        elif state in CONCLUSIONS_PHASE_2:
+            return self.context.get_conclusion_phase2()
+        else:
+            question = self.question()
+            if question is not None:
+                qs = question.get_questions()
+                return qs[-1].getObject()
+
+        return None
+
     def update(self):
-        question = self.question()
-        if question:
-            context = question.getFirstComment()
-            if context:
-                if context.can_edit():
-                    try:
-                        history_metadata = self.repo_tool.getHistoryMetadata(context)
-                    except:
-                        history_metadata = None
-                    if history_metadata:
-                        retrieve = history_metadata.retrieve
-                        getId = history_metadata.getVersionId
-                        history = self.history = []
-                        # Count backwards from most recent to least recent
-                        for i in xrange(history_metadata.getLength(countPurged=False)-1, -1, -1):
-                            version = retrieve(i, countPurged=False)['metadata'].copy()
-                            version['version_id'] = getId(i, countPurged=False)
-                            history.append(version)
-                        dt = getToolByName(self.context, "portal_diff")
+        context = self.get_last_editable_thing()
+        if context is not None:
+            if context.can_edit():
+                try:
+                    history_metadata = self.repo_tool.getHistoryMetadata(context)
+                except:
+                    history_metadata = None
+                if history_metadata:
+                    retrieve = history_metadata.retrieve
+                    getId = history_metadata.getVersionId
+                    history = self.history = []
+                    # Count backwards from most recent to least recent
+                    for i in xrange(history_metadata.getLength(countPurged=False)-1, -1, -1):
+                        version = retrieve(i, countPurged=False)['metadata'].copy()
+                        version['version_id'] = getId(i, countPurged=False)
+                        history.append(version)
+                    dt = getToolByName(self.context, "portal_diff")
 
-                        version1 = self.request.get("one", None)
-                        version2 = self.request.get("two", None)
+                    version1 = self.request.get("one", None)
+                    version2 = self.request.get("two", None)
 
-                        if version1 is None and version2 is None:
-                            self.history.sort(lambda x,y: cmp(x.get('version_id', ''), y.get('version_id')), reverse=True)
-                            version1 = self.history[-1].get('version_id', 'current')
-                            if len(self.history) > 1:
-                                version2 = self.history[-2].get('version_id', 'current')
-                            else:
-                                version2 = 'current'
-                        elif version1 is None:
-                            version1 = 'current'
-                        elif version2 is None:
+                    if version1 is None and version2 is None:
+                        self.history.sort(lambda x,y: cmp(x.get('version_id', ''), y.get('version_id')), reverse=True)
+                        version1 = self.history[-1].get('version_id', 'current')
+                        if len(self.history) > 1:
+                            version2 = self.history[-2].get('version_id', 'current')
+                        else:
                             version2 = 'current'
+                    elif version1 is None:
+                        version1 = 'current'
+                    elif version2 is None:
+                        version2 = 'current'
 
-                        self.request.set('one', version1)
-                        self.request.set('two', version2)
-                        changeset = dt.createChangeSet(
-                                self.getVersion(version2),
-                                self.getVersion(version1),
-                                id1=self.versionTitle(version2),
-                                id2=self.versionTitle(version1))
-                        self.changes = [change for change in changeset.getDiffs()
-                                       if not change.same]
+                    self.request.set('one', version1)
+                    self.request.set('two', version2)
+                    changeset = dt.createChangeSet(
+                        self.getVersion(version2),
+                        self.getVersion(version1),
+                        id1=self.versionTitle(version2),
+                        id2=self.versionTitle(version1))
+                    self.changes = [change for change in changeset.getDiffs()
+                                   if not change.same]
 
-    # def get_chat(self):
-    #    question = self.question()
-    #    if question:
-    #        return question.get_questions()
+    @property
+    def repo_tool(self):
+        return getToolByName(self.context, "portal_repository")
+
+    def getVersion(self, version):
+        context = self.get_last_editable_thing()
+        if version == "current":
+            return context
+        else:
+            return self.repo_tool.retrieve(context, int(version)).object
+
+    def versionName(self, version):
+        """
+        Copied from @@history_view
+        Translate the version name. This is needed to allow translation
+        when `version` is the string 'current'.
+        """
+        return _CMFE(version)
+
+    def versionTitle(self, version):
+        version_name = self.versionName(version)
+
+        return translate(
+            _CMFE(u"version ${version}",
+              mapping=dict(version=version_name)),
+            context=self.request
+        )
 
     def isChatCurrent(self):
         status = api.content.get_state(self.context)
