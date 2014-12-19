@@ -138,7 +138,6 @@
   </permission-map>
  </state>
  <state state_id="phase1-conclusions" title="Conclusions">
-  <exit-transition transition_id="phase1-edit-highlights"/>
   <exit-transition transition_id="phase1-reopen"/>
   <exit-transition transition_id="phase1-request-close"/>
   <exit-transition transition_id="phase1-request-comments"/>
