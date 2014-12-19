@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from esdrt.content.setuphandlers import prepareVocabularies
-
+from Products.CMFPlone import PloneMessageFactory as _PMF
 
 PROFILE_ID = 'profile-esdrt.content:default'
 
@@ -12,6 +12,7 @@ def upgrade(context, logger=None):
 
     install_workflow(context, logger)
     reimport_vocabularies(context, logger)
+    set_versioning(context, logger)
     logger.info('Upgrade steps executed')
 
 
@@ -44,3 +45,44 @@ def install_workflow(context, logger):
     logger.info('Reinstalled Workflows, Roles and Permissions ')
     wtool.updateRoleMappings()
     logger.info('Security settings updated')
+
+VERSION_POLICIES = [
+    dict(id="off",
+         policy=(),
+         title=_PMF(u"versioning_off",
+                 default=u"No versioning")),
+
+    dict(id="manual",
+         policy=("version_on_revert",),
+         title=_PMF(u"versioning_manual",
+                 default=u"Manual")),
+
+    dict(id="automatic",
+         policy=("at_edit_autoversion", "version_on_revert"),
+         title=_PMF(u"versioning_automatic",
+                 default=u"Automatic")),
+]
+
+
+def set_versioning(context, logger):
+    version_policy = 'automatic'
+    portal_repository = getToolByName(context, 'portal_repository')
+    newpolicy = [p for p in VERSION_POLICIES if p["id"] == version_policy][0]
+    versionable_types = list(portal_repository.getVersionableContentTypes())
+    for type_id in ['Conclusion', 'ConclusionsPhase2']:
+        if not newpolicy["policy"]:
+            if type_id in versionable_types:
+                versionable_types.remove(type_id)
+        else:
+            if type_id not in versionable_types:
+                versionable_types.append(type_id)
+
+        for policy in portal_repository.listPolicies():
+            policy_id = policy.getId()
+            if policy_id in newpolicy["policy"]:
+                portal_repository.addPolicyForContentType(type_id, policy_id)
+            else:
+                portal_repository.removePolicyFromContentType(type_id,
+                    policy_id)
+
+    portal_repository.setVersionableContentTypes(versionable_types)
