@@ -814,7 +814,7 @@ class Observation(dexterity.Container):
         return False
 
     def observation_is_potential_technical_correction(self):
-        if self.highlight::
+        if self.highlight:
             return 'ptc' in self.highlight
         return False
 
