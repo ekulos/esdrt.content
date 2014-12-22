@@ -282,6 +282,14 @@ class Observation(dexterity.Container):
         """
         return self.values()
 
+    def get_values_cat(self, portal_type=None):
+        if portal_type is not None:
+            return self.getFolderContents({'portal_type': portal_type},
+                full_objects=True)
+        else:
+            return self.getFolderContents(full_objects=True)
+
+
     def get_crf_code(self):
         """ stupid method to avoid name-clashes with the existing
         vocabularies when cataloging """
@@ -361,7 +369,7 @@ class Observation(dexterity.Container):
         return api.content.get_state(self)
 
     def can_draft_conclusions(self):
-        questions = [v for v in self.get_values() if v.portal_type == 'Question']
+        questions = self.get_values_cat('Question')
         if len(questions) > 0:
             q = questions[0]
             return q.get_state_api() in [
@@ -379,7 +387,7 @@ class Observation(dexterity.Container):
 
     def can_close(self):
         if self.get_status() in ['phase1-pending', 'phase2-pending']:
-            questions = [v for v in self.get_values() if v.portal_type == 'Question']
+            questions = self.get_values_cat('Question')
             if len(questions) > 0:
                 for q in questions:
                     if q.get_state_api() not in [
@@ -412,7 +420,7 @@ class Observation(dexterity.Container):
         elif self.get_status() == 'phase2-close-requested':
             return 'Lead reviewer'
         else:
-            questions = [q for q in self.get_values() if q.portal_type == 'Question']
+            questions = self.get_values_cat('Question')
             if questions:
                 question = questions[0]
                 state = question.get_state_api()
@@ -459,7 +467,7 @@ class Observation(dexterity.Container):
                 'phase2-conclusion-discussion']:
             return ["Counterparts comments requested", "conclusionIcon"]
         else:
-            questions = self.get_values()
+            questions = self.get_values_cat('Question')
             if questions:
                 question = questions[-1]
                 state = question.get_state_api()
@@ -628,7 +636,7 @@ class Observation(dexterity.Container):
                 observation_wf.append(item)
 
         history = list(observation_wf)
-        questions = self.get_values()
+        questions = self.get_values_cat()
 
         if questions:
             question = questions[0]
@@ -771,7 +779,7 @@ class Observation(dexterity.Container):
 
     @instance.memoize
     def get_question(self):
-        questions = [q for q in self.get_values() if q.portal_type == 'Question']
+        questions = self.get_values_cat('Question')
 
         if questions:
             question = questions[0]
@@ -782,7 +790,7 @@ class Observation(dexterity.Container):
                 self.get_status() != 'phase2-pending':
             return self.get_status()
         else:
-            questions = [q for q in self.get_values() if q.portal_type == 'Question']
+            questions = self.get_values_cat('Question')
             if questions:
                 question = questions[-1]
                 state = api.content.get_state(question)
@@ -837,21 +845,21 @@ class Observation(dexterity.Container):
             return conclusion and conclusion.closing_reason or ' '
 
     def get_conclusion(self):
-        conclusions = [c for c in self.get_values() if c.portal_type == "Conclusion"]
+        conclusions = self.get_values_cat('Conclusion')
         mtool = api.portal.get_tool('portal_membership')
         if conclusions and mtool.checkPermission('View', conclusions[0]):
             return conclusions[0]
         return None
 
     def get_conclusion_phase2(self):
-        conclusions = [c for c in self.get_values() if c.portal_type == "ConclusionsPhase2"]
+        conclusions = self.get_values_cat('ConclusionsPhase2')
         mtool = api.portal.get_tool('portal_membership')
         if conclusions and mtool.checkPermission('View', conclusions[0]):
             return conclusions[0]
         return None
 
     def last_question_reply_number(self):
-        questions = [c for c in self.get_values() if c.portal_type == "Question"]
+        questions = self.get_values_cat('Question')
         replynum = 0
         if questions:
             comments = [c for c in questions[-1].values() if c.portal_type == "Comment"]
@@ -863,7 +871,7 @@ class Observation(dexterity.Container):
         return replynum
 
     def last_answer_reply_number(self):
-        questions = [c for c in self.get_values() if c.portal_type == "Question"]
+        questions = self.get_values_cat('Question')
         replynum = 0
         if questions:
             comments = [c for c in questions[-1].values() if c.portal_type == "CommentAnswer"]
@@ -875,7 +883,7 @@ class Observation(dexterity.Container):
         return replynum
 
     def reply_comments_by_mse(self):
-        questions = [c for c in self.get_values() if c.portal_type == "Question"]
+        questions = self.get_values_cat('Question')
         user = api.user.get_current().id
         if questions:
             comments = [c for c in questions[-1].values() if c.portal_type == "CommentAnswer"]
@@ -888,7 +896,7 @@ class Observation(dexterity.Container):
 
     def observation_already_replied(self):
 
-        questions = [c for c in self.get_values() if c.portal_type == "Question"]
+        questions = self.get_values_cat('Question')
         if questions:
             question = questions[0]
             winfo = question.workflow_history
@@ -991,25 +999,17 @@ class ObservationView(grok.View):
         return [mitem for mitem in menu_items if not hidden(mitem)]
 
     def get_questions(self):
-        context = aq_inner(self.context)
-        items = []
-        mtool = api.portal.get_tool('portal_membership')
-        for item in context.get_values():
-            if item.portal_type == 'Question' and \
-                    mtool.checkPermission('View', item):
-                items.append(item)
-
-        return IContentListing(items)
+        return IContentListing(self.context.get_values_cat('Question'))
 
     def can_delete_observation(self):
         is_draft = self.context.get_status() in ['phase1-pending', 'phase2-pending']
-        questions = len([q for q in self.context.get_values() if q.portal_type == 'Question'])
+        questions = len(self.context.get_values_cat('Question'))
 
         return is_draft and not questions
 
     def can_add_question(self):
         sm = getSecurityManager()
-        questions = len([q for q in self.context.get_values() if q.portal_type == 'Question'])
+        questions = len(self.context.get_values_cat('Question'))
         return sm.checkPermission('esdrt.content: Add Question', self) and not questions
 
     def can_edit(self):
@@ -1018,7 +1018,7 @@ class ObservationView(grok.View):
 
     def get_conclusion(self):
         sm = getSecurityManager()
-        conclusions = [c for c in self.context.get_values() if c.portal_type == 'Conclusion']
+        conclusions = self.context.get_values_cat('Conclusion')
         if conclusions and sm.checkPermission('View', conclusions[0]):
             return conclusions[0]
 
@@ -1026,7 +1026,7 @@ class ObservationView(grok.View):
 
     def get_conclusion_phase2(self):
         sm = getSecurityManager()
-        conclusions = [c for c in self.context.get_values() if c.portal_type == 'ConclusionsPhase2']
+        conclusions = self.context.get_values_cat('ConclusionsPhase2')
         if conclusions and sm.checkPermission('View', conclusions[0]):
             return conclusions[0]
 
@@ -1308,7 +1308,7 @@ class AddQuestionForm(Form):
         if not text.strip():
             raise ActionExecutionError(Invalid(u"Question text is empty"))
 
-        qs = [item for item in self.context.get_values() if item.portal_type == 'Question']
+        qs = self.context.get_values_cat('Question')
         if qs:
             question = qs[0]
         else:
@@ -1542,7 +1542,7 @@ class EditConclusionAndCloseComments(grok.View):
             obj=self.context,
             transition='phase1-finish-comments'
         )
-        conclusions = [c for c in self.context.get_values() if c.portal_type == 'Conclusion']
+        conclusions = self.context.get_values_cat('Conclusion')
         conclusion = conclusions[0]
         url = '%s/edit' % conclusion.absolute_url()
         return self.request.response.redirect(url)
@@ -1567,7 +1567,7 @@ class EditConclusionP2AndCloseComments(grok.View):
             obj=self.context,
             transition='phase2-finish-comments'
         )
-        conclusions = [c for c in self.context.get_values() if c.portal_type == 'ConclusionsPhase2']
+        conclusions = self.context.get_values_cat('ConclusionsPhase2')
         conclusion = conclusions[0]
         url = '%s/edit' % conclusion.absolute_url()
         return self.request.response.redirect(url)
@@ -1603,7 +1603,7 @@ class AddConclusions(grok.View):
                 obj=context
             )
             if 'ReviewerPhase1' in user_roles:
-                cs = [cs for cs in context.get_values() if cs.portal_type == 'Conclusion']
+                cs = self.context.get_values_cat('Conclusion')
                 if cs:
                     conclusion = cs[0]
                     if 'ReviewerPhase1' in user_roles:
@@ -1631,7 +1631,7 @@ class AddConclusions(grok.View):
                 obj=context
             )
             if 'ReviewerPhase2' in user_roles:
-                csp2 = [cs for cs in context.get_values() if cs.portal_type == 'ConclusionsPhase2']
+                csp2 = self.context.get_values_cat('ConclusionsPhase2')
                 if csp2:
                     conclusionsphase2 = csp2[0]
                     url = conclusionsphase2.absolute_url() + '/edit'
