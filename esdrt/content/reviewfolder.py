@@ -1,10 +1,13 @@
 from AccessControl import getSecurityManager
+from esdrt.content.timeit import timeit
 from five import grok
 from plone import api
 from plone.directives import dexterity
 from plone.directives import form
+from plone.memoize import ram
 from plone.memoize.view import memoize
 from plone.namedfile.interfaces import IImageScaleTraversable
+from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 
 grok.templatedir('templates')
@@ -25,7 +28,7 @@ class ReviewFolderView(grok.View):
     grok.require('zope2.View')
     grok.name('view')
 
-    @memoize
+    @timeit
     def get_questions(self):
         country = self.request.form.get('country', '')
         reviewYear = self.request.form.get('reviewYear', '')
@@ -88,7 +91,7 @@ class ReviewFolderView(grok.View):
         if freeText != "":
             query['SearchableText'] = freeText
 
-        return [b.getObject() for b in catalog.searchResults(query)]
+        return [b.getObject() for b in catalog(query)]
 
     def can_add_observation(self):
         sm = getSecurityManager()
@@ -134,6 +137,19 @@ class ReviewFolderView(grok.View):
         return inventory_years
 
 
+def _item_user(fun, self, user, item):
+    return (user.getId(), item.getId(), item.modified())
+
+
+
+def decorate(item):
+    user = api.user.get_current()
+    roles = api.user.get_roles(username=user.getId(), obj=item, inherit=False)
+    item.isCP = 'CounterPart' in roles
+    item.isMSA = 'MSAuthority' in roles
+    return item
+
+
 class InboxReviewFolderView(grok.View):
     grok.context(IReviewFolder)
     grok.require('zope2.View')
@@ -143,6 +159,7 @@ class InboxReviewFolderView(grok.View):
         freeText = self.request.form.get('freeText', '')
         self.observations = self.get_all_observations(freeText)
 
+    @timeit
     def get_all_observations(self, freeText):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
@@ -155,20 +172,18 @@ class InboxReviewFolderView(grok.View):
         if freeText != "":
             query['SearchableText'] = freeText
 
-        return [b.getObject() for b in catalog.searchResults(query)]
-
+        return map(decorate, [b.getObject() for b in catalog.searchResults(query)])
 
     """
         Sector expert / Review expert
     """
-    @memoize
+
+    @timeit
     def get_draft_observations(self):
         """
          Role: Sector expert / Review expert
          without actions for LR, counterpart or MS
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
             if item.observation_question_status() in [
@@ -177,14 +192,12 @@ class InboxReviewFolderView(grok.View):
                 items.append(item)
         return items
 
-    @memoize
+    @timeit
     def get_draft_questions(self):
         """
          Role: Sector expert / Review expert
          with comments from counterpart or LR
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
             if item.observation_question_status() in [
@@ -195,51 +208,50 @@ class InboxReviewFolderView(grok.View):
                 items.append(item)
         return items
 
-    @memoize
+    @ram.cache(_item_user)
+    def get_roles_for_item(self, user, item):
+        return api.user.get_roles(username=user.id, obj=item, inherit=False)
+
+    @timeit
     def get_counterpart_questions_to_comment(self):
         """
          Role: Sector expert / Review expert
          needing comment from me
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for item in self.observations:
-            roles = api.user.get_roles(username=user.id, obj=item)
+            # roles = self.get_roles_for_item(user, item)
             if item.observation_question_status() in [
                     'phase1-counterpart-comments',
                     'phase2-counterpart-comments'] and \
-                    "CounterPart" in roles:
+                    item.isCP:
                 items.append(item)
         return items
 
-    @memoize
+    @timeit
     def get_counterpart_conclusion_to_comment(self):
         """
          Role: Sector expert / Review expert
          needing comment from me
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
-        for item in self.observations:
-            obj = item.getObject()
-            roles = api.user.get_roles(username=user.id, obj=obj)
+        for obj in self.observations:
+            # roles = self.get_roles_for_item(user, obj)
             if obj.observation_question_status() in [
                     'phase1-conclusion-discussion',
                     'phase2-conclusion-discussion'] and \
-                    "CounterPart" in roles:
+                    obj.isCP:
                 items.append(item)
         return items
 
-    @memoize
+    @timeit
     def get_ms_answers_to_review(self):
         """
          Role: Sector expert / Review expert
          that need review
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
+        # user = api.user.get_current()
+        # mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -257,14 +269,12 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_unanswered_questions(self):
         """
          Role: Sector expert / Review expert
          my questions sent to LR and MS and waiting for reply
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
 
         statuses = [
@@ -293,70 +303,65 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_waiting_for_comment_from_counterparts_for_question(self):
         """
          Role: Sector expert / Review expert
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
+        # user = api.user.get_current()
+        # mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
-            roles = api.user.get_roles(username=user.id, obj=obj)
+            # roles = self.get_roles_for_item(user, obj)
             if obj.observation_question_status() in [
                     'phase1-counterpart-comments',
                     'phase2-counterpart-comments'] and \
-                    "CounterPart" not in roles:
+                    obj.isCP:
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_waiting_for_comment_from_counterparts_for_conclusion(self):
         """
          Role: Sector expert / Review expert
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
+        # user = api.user.get_current()
+        # mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
-            roles = api.user.get_roles(username=user.id, obj=obj)
+            # roles = self.get_roles_for_item(user, obj)
             if obj.observation_question_status() in [
                     'phase1-conclusion-discussion',
                     'phase2-conclusion-discussion'] and \
-                    "CounterPart" not in roles:
+                    obj.isCP:
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_observation_for_finalisation(self):
         """
          Role: Sector expert / Review expert
          waiting approval from LR
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
                     'phase1-conclusions',
                     'phase2-conclusions',
                     'phase1-close-requested',
-                    'phase2-close-requested',
-                    ]:
+                    'phase2-close-requested',]:
                 items.append(obj)
         return items
 
     """
         Lead Reviewer / Quality expert
     """
-    @memoize
+    @timeit
     def get_questions_to_be_sent(self):
         """
          Role: Lead Reviewer / Quality expert
          Questions waiting for me to send to the MS
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -367,14 +372,12 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_observations_to_finalise(self):
         """
          Role: Lead Reviewer / Quality expert
          Observations waiting for me to confirm finalisation
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -383,68 +386,60 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_questions_to_comment(self):
         """
          Role: Lead Reviewer / Quality expert
          Questions waiting for my comments
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
-            roles = api.user.get_roles(username=user.id, obj=obj)
+            # roles = self.get_roles_for_item(user, obj)
             if obj.observation_question_status() in [
                     'phase1-counterpart-comments',
                     'phase2-counterpart-comments'] and \
-                    "CounterPart" in roles:
+                    obj.isCP:
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_conclusions_to_comment(self):
         """
          Role: Lead Reviewer / Quality expert
          Conclusions waiting for my comments
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
-            roles = api.user.get_roles(username=user.id, obj=obj)
+            # roles = self.get_roles_for_item(user, obj)
             if obj.observation_question_status() in [
                     'phase1-conclusion-discussion',
                     'phase2-conclusion-discussion'] and \
-                    "CounterPart" in roles:
+                    obj.isCP:
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_questions_with_comments_from_reviewers(self):
         """
          Role: Lead Reviewer / Quality expert
          Questions waiting for comments by counterpart
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
-            roles = api.user.get_roles(username=user.id, obj=obj)
+            # roles = self.get_roles_for_item(user, obj)
             if obj.observation_question_status() in [
                     'phase1-counterpart-comments',
                     'phase2-counterpart-comments'] and \
-                    "CounterPart" not in roles:
+                    obj.isCP:
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_answers_from_ms(self):
         """
          Role: Lead Reviewer / Quality expert
          that need review by Sector Expert/Review expert
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -453,14 +448,12 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_unanswered_questions_lr_qe(self):
         """
          Role: Lead Reviewer / Quality expert
          questions waiting for comments from MS
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -478,36 +471,31 @@ class InboxReviewFolderView(grok.View):
     """
         MS Coordinator
     """
-    @memoize
+    @timeit
     def get_questions_to_be_answered(self):
         """
          Role: MS Coordinator
          Questions from the SE/RE to be answered
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
-            roles = api.user.get_roles(user=user, obj=obj)
-            if 'MSAuthority' in roles:
-                if obj.observation_question_status() in [
-                        'phase1-pending',
-                        'phase2-pending',
-                        'phase1-recalled-msa',
-                        'phase2-recalled-msa',
-                        'phase1-pending-answer-drafting',
-                        'phase2-pending-answer-drafting']:
-                    items.append(obj)
+            # roles = self.get_roles_for_item(user, obj)
+            if obj.observation_question_status() in [
+                    'phase1-pending',
+                    'phase2-pending',
+                    'phase1-recalled-msa',
+                    'phase2-recalled-msa',
+                    'phase1-pending-answer-drafting',
+                    'phase2-pending-answer-drafting'] and obj.isMSA:
+                items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_questions_with_comments_received_from_mse(self):
         """
          Role: MS Coordinator
          Comments received from MS Experts
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -517,14 +505,12 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_answers_requiring_comments_from_mse(self):
         """
          Role: MS Coordinator
          Answers requiring comments/discussion from MS experts
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -533,14 +519,12 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_answers_sent_to_se_re(self):
         """
          Role: MS Coordinator
          Answers sent to SE/RE
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if (obj.observation_question_status() in [
@@ -554,14 +538,12 @@ class InboxReviewFolderView(grok.View):
     """
         MS Expert
     """
-    @memoize
+    @timeit
     def get_questions_with_comments_for_answer_needed_by_msc(self):
         """
          Role: MS Expert
          Comments for answer needed by MS Coordinator
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -570,14 +552,12 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_observations_with_my_comments(self):
         """
          Role: MS Expert
          Observation I have commented on
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -589,14 +569,12 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_observations_with_my_comments_sent_to_se_re(self):
         """
          Role: MS Expert
          Answers that I commented on sent to Sector Expert/Review expert
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -611,13 +589,11 @@ class InboxReviewFolderView(grok.View):
     """
         Finalised observations
     """
-    @memoize
+    @timeit
     def get_no_response_needed_observations(self):
         """
          Finalised with 'no response needed'
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -627,13 +603,11 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_resolved_observations(self):
         """
          Finalised with 'resolved'
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -643,13 +617,11 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_unresolved_observations(self):
         """
          Finalised with 'unresolved'
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -659,13 +631,11 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_partly_resolved_observations(self):
         """
          Finalised with 'partly resolved'
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -675,13 +645,11 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_technical_correction_observations(self):
         """
          Finalised with 'technical correction'
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
@@ -691,13 +659,11 @@ class InboxReviewFolderView(grok.View):
                 items.append(obj)
         return items
 
-    @memoize
+    @timeit
     def get_revised_estimate_observations(self):
         """
          Finalised with 'partly resolved'
         """
-        user = api.user.get_current()
-        mtool = api.portal.get_tool('portal_membership')
         items = []
         for obj in self.observations:
             if obj.observation_question_status() in [
