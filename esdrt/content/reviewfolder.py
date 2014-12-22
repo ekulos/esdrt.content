@@ -410,7 +410,7 @@ class InboxReviewFolderView(grok.View):
         user = api.user.get_current()
         mtool = api.portal.get_tool('portal_membership')
         items = []
-        for item in self.observations:
+        for obj in self.observations:
             roles = api.user.get_roles(username=user.id, obj=obj)
             if obj.observation_question_status() in [
                     'phase1-conclusion-discussion',
