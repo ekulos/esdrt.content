@@ -818,14 +818,12 @@ class Observation(dexterity.Container):
 
     def observation_is_potential_significant_issue(self):
         if self.highlight:
-            if self.get_status().startswith('phase1'):
-                return 'psi' in self.highlight
+            return 'psi' in self.highlight
         return False
 
     def observation_is_potential_technical_correction(self):
         if self.highlight:
-            if self.get_status().startswith('phase2'):
-                return 'ptc' in self.highlight
+            return 'ptc' in self.highlight
         return False
 
     def observation_is_technical_correction(self):
