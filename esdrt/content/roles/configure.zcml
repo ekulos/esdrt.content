@@ -2,7 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:zcml="http://namespaces.zope.org/zcml">
 
-  <include package="borg.localrole" />
+<!--   <include package="borg.localrole" />
 
   <adapter
       factory=".localroles.ObservationRoleAdapter"
@@ -32,7 +32,7 @@
   <adapter
       factory=".localroles.ConclusionPhase2RoleAdapter"
       name="conclusion_phase2_role_adapter"
-      />
+      /> -->
 
 
 </configure>
