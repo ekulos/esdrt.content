@@ -6,6 +6,7 @@ from .crf_code_matching import get_category_value_from_crf_code
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from esdrt.content.roles.localrolesubscriber import grant_local_roles
 from five import grok
 from plone import api
 from plone.app.contentlisting.interfaces import IContentListing
@@ -31,10 +32,10 @@ from z3c.form.interfaces import ActionExecutionError
 from zope import schema
 from zope.browsermenu.menu import getMenu
 from zope.component import getUtility
-from zope.container.interfaces import IObjectAddedEvent
 from zope.i18n import translate
 from zope.interface import alsoProvides
 from zope.interface import Invalid
+from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
 
@@ -245,12 +246,30 @@ def default_year(data):
 
 @grok.subscribe(IObservation, IObjectAddedEvent)
 @grok.subscribe(IObservation, IObjectModifiedEvent)
-def add_observation(object, event):
+def set_title_to_observation(object, event):
     sector = safe_unicode(object.ghg_source_category_value())
     gas = safe_unicode(object.gas_value())
     inventory_year = safe_unicode(str(object.year))
     parameter = safe_unicode(object.parameter_value())
     object.title = u' '.join([sector, gas, inventory_year, parameter])
+    grant_local_roles(object)
+
+
+@grok.subscribe(IObservation, IObjectAddedEvent)
+def add_observation(context, event):
+    """ When adding an observation, go directly to
+        'open' status on the observation
+    """
+    observation = context
+    review_folder = aq_parent(observation)
+    with api.env.adopt_roles(roles=['Manager']):
+        if api.content.get_state(obj=review_folder) == 'ongoing-review-phase2':
+            api.content.transition(obj=observation, transition='go-to-phase2')
+            return
+        elif api.content.get_state(obj=observation) == 'phase1-draft':
+            api.content.transition(
+                obj=observation, transition='phase1-approve'
+            )
 
 
 class Observation(dexterity.Container):
@@ -932,21 +951,7 @@ class AddForm(dexterity.AddForm):
             self.actions[k].addClass('standardButton')
 
 
-@grok.subscribe(IObservation, IObjectAddedEvent)
-def add_question(context, event):
-    """ When adding a question, go directly to
-        'open' status on the observation
-    """
-    observation = context
-    review_folder = aq_parent(observation)
-    with api.env.adopt_roles(roles=['Manager']):
-        if api.content.get_state(obj=review_folder) == 'ongoing-review-phase2':
-            api.content.transition(obj=observation, transition='go-to-phase2')
-            return
-        elif api.content.get_state(obj=observation) == 'phase1-draft':
-            api.content.transition(
-                obj=observation, transition='phase1-approve'
-            )
+
 
 
 class ObservationView(grok.View):
