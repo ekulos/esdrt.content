@@ -4,7 +4,11 @@ Changelog
 1.26 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Change local role assignment from dynamic adapter to manual
+  local role assignment on observation creation [erral]
+
+- Improve inbox and overview list [erral]
+
 
 
 1.25 (2014-12-19)
