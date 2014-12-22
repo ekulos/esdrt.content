@@ -66,8 +66,13 @@ def get_users_in_context(observation, role, notification_name):
 
     for username in usernames:
         user = api.user.get(username=username)
-        if not exclude_user_from_notification(observation, user, role, notification_name):
-            users.append(user)
+        if user is not None:
+            if not exclude_user_from_notification(observation, user, role, notification_name):
+                users.append(user)
+        else:
+            from logging import getLogger
+            log = getLogger(__name__)
+            log.info('Username %s has no user object' % username)
 
     return users
 
