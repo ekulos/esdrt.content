@@ -1,27 +1,33 @@
 <sharing xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="plone">
     <role
-        id="ExpertReviewer"
-        title="ExpertReviewer"
+        id="ReviewerPhase1"
+        title="ReviewerPhase1"
         permission="Sharing page: Delegate roles"
-        i18n:attributes="title"
+        />
+    <role
+        id="ReviewerPhase2"
+        title="ReviewerPhase2"
+        permission="Sharing page: Delegate roles"
+        />
+    <role
+        id="QualityExpert"
+        title="QualityExpert"
+        permission="Sharing page: Delegate roles"
         />
     <role
         id="LeadReviewer"
         title="LeadReviewer"
         permission="Sharing page: Delegate roles"
-        i18n:attributes="title"
-        />
-    <role
-        id="MSExpert"
-        title="MSExpert"
-        permission="Sharing page: Delegate roles"
-        i18n:attributes="title"
         />
     <role
         id="MSAuthority"
         title="MSAuthority"
         permission="Sharing page: Delegate roles"
-        i18n:attributes="title"
+        />
+    <role
+        id="MSExpert"
+        title="MSExpert"
+        permission="Sharing page: Delegate roles"
         />
     <role
         id="CounterPart"
@@ -40,6 +46,25 @@
         title="Manager"
         permission="Sharing page: Delegate roles"
         i18n:attributes="title"
+        />
+    <role
+        remove="True"
+        id="ReviewExpert"
+        title="ReviewExpert"
+        permission="Sharing page: Delegate roles"
+        i18n:attributes="title"
+        />
+    <role
+        remove="True"
+        id="ExpertReviewer"
+        title="ExpertReviewer"
+        permission="Sharing page: Delegate roles"
+        i18n:attributes="title"
+        />
+    <role
+        remove="True"
+        id="Counterpart"
+        title="Can edit"
         />
     <role
         remove="True"
