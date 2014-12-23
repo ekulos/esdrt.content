@@ -18,10 +18,11 @@ from z3c.form import button
 from z3c.form import field
 from z3c.form.form import Form
 from z3c.form.interfaces import ActionExecutionError
-from zope.app.container.interfaces import IObjectAddedEvent
 from zope.component import createObject
 from zope.component import getUtility
 from zope.interface import Invalid
+from zope.lifecycleevent import IObjectAddedEvent
+from zope.lifecycleevent import IObjectModifiedEvent
 
 
 class IQuestion(form.Schema, IImageScaleTraversable):
@@ -269,6 +270,17 @@ def add_question(context, event):
     with api.env.adopt_roles(roles=['Manager']):
         if api.content.get_state(obj=review_folder) == 'ongoing-review-phase2':
             api.content.transition(obj=context, transition='go-to-phase2')
+
+    observation.reindexObject()
+
+
+@grok.subscribe(IQuestion, IObjectModifiedEvent)
+def add_question(context, event):
+    """ When adding a question, go directly to
+        'open' status on the observation
+    """
+    observation = aq_parent(context)
+    observation.reindexObject()
 
 
 class AddCommentForm(Form):
