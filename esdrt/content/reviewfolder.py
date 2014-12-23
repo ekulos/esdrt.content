@@ -788,7 +788,7 @@ class Inbox2ReviewFolderView(grok.View):
 class InboxReviewFolderView(grok.View):
     grok.context(IReviewFolder)
     grok.require('zope2.View')
-    grok.name('inboxview')
+    grok.name('inboxview4')
 
     def can_add_observation(self):
         sm = getSecurityManager()
@@ -801,12 +801,13 @@ def decorate2(item):
     roles = api.user.get_roles(username=user.getId(), obj=item, inherit=False)
     item.isCP = 'CounterPart' in roles
     item.isMSA = 'MSAuthority' in roles
-    return new_item
+    return item
+
 
 class Inbox3ReviewFolderView(grok.View):
     grok.context(IReviewFolder)
     grok.require('zope2.View')
-    grok.name('inboxview3')
+    grok.name('inboxview')
 
     @cache(_catalog_change)
     @timeit
@@ -852,9 +853,9 @@ class Inbox3ReviewFolderView(grok.View):
                 """
                 def myfilter(x):
                     if rolename == 'CounterPart':
-                        return x.isCP()
+                        return x.isCP
                     elif rolename == 'MSAuthority':
-                        return x.isMSA()
+                        return x.isMSA
                     return False
                 return myfilter
 
