@@ -4,7 +4,7 @@ Changelog
 1.27 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Another way to create the inbox view [erral]
 
 
 1.26.1 (2014-12-22)
