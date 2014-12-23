@@ -52,6 +52,8 @@ def question_transition(question, event):
         if comment is not None:
             api.content.transition(obj=comment, transition='retract')
 
+    observation = aq_parent(question)
+    observation.reindexObject()
 #    if api.content.get_state(obj=event.object) == 'phase1-closed':
 #        parent = aq_parent(event.object)
 #        with api.env.adopt_roles(roles=['Manager']):
