@@ -58,6 +58,27 @@
  </index>
 
 
+ <index name="observation_question_status" meta_type="KeywordIndex">
+    <indexed_attr value="observation_question_status" />
+ </index>
+
+ <index name="last_answer_has_replies" meta_type="BooleanIndex">
+    <indexed_attr value="last_answer_has_replies" />
+ </index>
+
+ <index name="observation_already_replied" meta_type="BooleanIndex">
+    <indexed_attr value="observation_already_replied" />
+ </index>
+
+ <index name="reply_comments_by_mse" meta_type="BooleanIndex">
+    <indexed_attr value="reply_comments_by_mse" />
+ </index>
+
+ <index name="observation_finalisation_reason" meta_type="FieldIndex">
+    <indexed_attr value="observation_finalisation_reason" />
+ </index>
+
+
  <column value="observation_status" />
  <column value="country" />
  <column value="get_ghg_source_sectors" />

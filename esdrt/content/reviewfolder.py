@@ -793,3 +793,541 @@ class InboxReviewFolderView(grok.View):
     def can_add_observation(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Add Observation', self)
+
+
+def decorate2(item):
+    """ prepare a plain object, so that we can cache it in a RAM cache """
+    user = api.user.get_current()
+    roles = api.user.get_roles(username=user.getId(), obj=item, inherit=False)
+    item.isCP = 'CounterPart' in roles
+    item.isMSA = 'MSAuthority' in roles
+    return new_item
+
+class Inbox3ReviewFolderView(grok.View):
+    grok.context(IReviewFolder)
+    grok.require('zope2.View')
+    grok.name('inboxview3')
+
+    @cache(_catalog_change)
+    @timeit
+    def get_all_observations(self, freeText):
+        catalog = api.portal.get_tool('portal_catalog')
+        path = '/'.join(self.context.getPhysicalPath())
+        query = {
+            'path': path,
+            'portal_type': 'Observation',
+            'sort_on': 'modified',
+            'sort_order': 'reverse',
+        }
+        if freeText != "":
+            query['SearchableText'] = freeText
+
+        return map(decorate, [b.getObject() for b in catalog.searchResults(query)])
+
+    def get_observations(self, freeText=None, rolecheck=None, **kw):
+        catalog = api.portal.get_tool('portal_catalog')
+        path = '/'.join(self.context.getPhysicalPath())
+        query = {
+            'path': path,
+            'portal_type': 'Observation',
+            'sort_on': 'modified',
+            'sort_order': 'reverse',
+        }
+        if freeText:
+            query['SearchableText'] = freeText
+
+        query.update(kw)
+
+        from logging import getLogger
+        log = getLogger(__name__)
+        if rolecheck is None:
+            log.info('Querying Catalog: %s' % query)
+            return [b.getObject() for b in catalog.searchResults(query)]
+        else:
+            log.info('Querying Catalog with Rolecheck %s: %s ' % (rolecheck, query))
+
+            def makefilter(rolename):
+                """
+                https://stackoverflow.com/questions/7045754/python-list-filtering-with-arguments
+                """
+                def myfilter(x):
+                    if rolename == 'CounterPart':
+                        return x.isCP()
+                    elif rolename == 'MSAuthority':
+                        return x.isMSA()
+                    return False
+                return myfilter
+
+            filterfunc = makefilter(rolecheck)
+
+            return filter(
+                filterfunc,
+                map(decorate2,
+                    [b.getObject() for b in catalog.searchResults(query)])
+            )
+
+    @timeit
+    def get_draft_observations(self):
+        """
+         Role: Sector expert / Review expert
+         without actions for LR, counterpart or MS
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'observation-phase1-draft', 'observation-phase2-draft'])
+
+    @timeit
+    def get_draft_questions(self):
+        """
+         Role: Sector expert / Review expert
+         with comments from counterpart or LR
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-draft',
+                'phase2-draft',
+                'phase1-counterpart-comments',
+                'phase2-counterpart-comments'])
+
+    @timeit
+    def get_counterpart_questions_to_comment(self):
+        """
+         Role: Sector expert / Review expert
+         needing comment from me
+        """
+        return self.get_observations(
+            rolecheck='CounterPart',
+            observation_question_status=[
+                'phase1-counterpart-comments',
+                'phase2-counterpart-comments'])
+
+    @timeit
+    def get_counterpart_conclusion_to_comment(self):
+        """
+         Role: Sector expert / Review expert
+         needing comment from me
+        """
+        return self.get_observations(
+            rolecheck='CounterPart',
+            observation_question_status=[
+                'phase1-conclusion-discussion',
+                'phase2-conclusion-discussion'])
+
+    @timeit
+    def get_ms_answers_to_review(self):
+        """
+         Role: Sector expert / Review expert
+         that need review
+        """
+        # user = api.user.get_current()
+        # mtool = api.portal.get_tool('portal_membership')
+
+        answered = self.get_observations(
+            observation_question_status=[
+                'phase1-answered',
+                'phase2-answered'])
+
+        pending = self.get_observations(
+            observation_question_status=['phase1-closed', 'phase2-closed'],
+            review_state=['phase1-pending', 'phase2-pending'])
+
+        return answered + pending
+
+    @timeit
+    def get_unanswered_questions(self):
+        """
+         Role: Sector expert / Review expert
+         my questions sent to LR and MS and waiting for reply
+        """
+        statuses = [
+            'phase1-pending',
+            'phase2-pending',
+            'phase1-recalled-msa',
+            'phase2-recalled-msa',
+            'phase1-expert-comments',
+            'phase2-expert-comments',
+            'phase1-pending-answer-drafting',
+            'phase2-pending-answer-drafting'
+        ]
+
+        # For a SE/RE, those on QE/LR pending to be sent to the MS
+        # or recalled by him, are unanswered questions
+        if self.is_sector_expert_or_review_expert():
+            statuses.extend([
+                'phase1-drafted',
+                'phase2-drafted',
+                'phase1-recalled-lr',
+                'phase2-recalled-lr']
+            )
+
+        return self.get_observations(observation_question_status=statuses)
+
+    @timeit
+    def get_waiting_for_comment_from_counterparts_for_question(self):
+        """
+         Role: Sector expert / Review expert
+        """
+
+        return self.get_observations(
+            rolecheck='CounterPart',
+            observation_question_status=[
+                'phase1-counterpart-comments',
+                'phase2-counterpart-comments'])
+
+    @timeit
+    def get_waiting_for_comment_from_counterparts_for_conclusion(self):
+        """
+         Role: Sector expert / Review expert
+        """
+        return self.get_observations(
+            rolecheck='CounterPart',
+            observation_question_status=[
+                'phase1-conclusion-discussion',
+                'phase2-conclusion-discussion'])
+
+    @timeit
+    def get_observation_for_finalisation(self):
+        """
+         Role: Sector expert / Review expert
+         waiting approval from LR
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-conclusions',
+                'phase2-conclusions',
+                'phase1-close-requested',
+                'phase2-close-requested'])
+
+    """
+        Lead Reviewer / Quality expert
+    """
+    @timeit
+    def get_questions_to_be_sent(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Questions waiting for me to send to the MS
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-drafted',
+                'phase2-drafted',
+                'phase1-recalled-lr',
+                'phase2-recalled-lr'])
+
+    @timeit
+    def get_observations_to_finalise(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Observations waiting for me to confirm finalisation
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-close-requested',
+                'phase2-close-requested'])
+
+    @timeit
+    def get_questions_to_comment(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Questions waiting for my comments
+        """
+        return self.get_observations(
+            rolecheck='CounterPart',
+            observation_question_status=[
+                'phase1-counterpart-comments',
+                'phase2-counterpart-comments'])
+
+    @timeit
+    def get_conclusions_to_comment(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Conclusions waiting for my comments
+        """
+        return self.get_observations(
+            rolecheck='CounterPart',
+            observation_question_status=[
+                'phase1-conclusion-discussion',
+                'phase2-conclusion-discussion'])
+
+    @timeit
+    def get_questions_with_comments_from_reviewers(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         Questions waiting for comments by counterpart
+        """
+        return self.get_observations(
+            rolecheck='CounterPart',
+            observation_question_status=[
+                'phase1-counterpart-comments',
+                'phase2-counterpart-comments'])
+
+    @timeit
+    def get_answers_from_ms(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         that need review by Sector Expert/Review expert
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-answered',
+                'phase2-answered'])
+
+    @timeit
+    def get_unanswered_questions_lr_qe(self):
+        """
+         Role: Lead Reviewer / Quality expert
+         questions waiting for comments from MS
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-pending',
+                'phase2-pending',
+                'phase1-recalled-msa',
+                'phase2-recalled-msa',
+                'phase1-expert-comments',
+                'phase2-expert-comments',
+                'phase1-pending-answer-drafting',
+                'phase2-pending-answer-drafting'])
+
+    """
+        MS Coordinator
+    """
+    @timeit
+    def get_questions_to_be_answered(self):
+        """
+         Role: MS Coordinator
+         Questions from the SE/RE to be answered
+        """
+        return self.get_observations(
+            rolecheck='MSAuthority',
+            observation_question_status=[
+                'phase1-pending',
+                'phase2-pending',
+                'phase1-recalled-msa',
+                'phase2-recalled-msa',
+                'phase1-pending-answer-drafting',
+                'phase2-pending-answer-drafting'])
+
+    @timeit
+    def get_questions_with_comments_received_from_mse(self):
+        """
+         Role: MS Coordinator
+         Comments received from MS Experts
+        """
+        return self.get_observations(
+            rolecheck='MSAuthority',
+            observation_question_status=[
+                'phase1-expert-comments',
+                'phase2-expert-comments'],
+            last_answer_has_replies=True,
+            # last_answer_reply_number > 0
+        )
+
+    @timeit
+    def get_answers_requiring_comments_from_mse(self):
+        """
+         Role: MS Coordinator
+         Answers requiring comments/discussion from MS experts
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-expert-comments',
+                'phase2-expert-comments'],
+        )
+
+    @timeit
+    def get_answers_sent_to_se_re(self):
+        """
+         Role: MS Coordinator
+         Answers sent to SE/RE
+        """
+        answered = self.get_observations(
+            observation_question_status=['phase1-answered', 'phase2-answered'])
+        cat = api.portal.get_tool('portal_catalog')
+        statuses = list(cat.uniqueValuesFor('review_state'))
+        try:
+            statuses.remove('phase1-closed')
+        except ValueError:
+            pass
+        try:
+            statuses.remove('phase2-closed')
+        except ValueError:
+            pass
+        not_closed = self.get_observations(
+            review_state=statuses,
+            observation_already_replied=True)
+
+        return answered + not_closed
+
+    """
+        MS Expert
+    """
+    @timeit
+    def get_questions_with_comments_for_answer_needed_by_msc(self):
+        """
+         Role: MS Expert
+         Comments for answer needed by MS Coordinator
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-expert-comments',
+                'phase2-expert-comments'])
+
+    @timeit
+    def get_observations_with_my_comments(self):
+        """
+         Role: MS Expert
+         Observation I have commented on
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-expert-comments',
+                'phase2-expert-comments',
+                'phase1-pending-answer-drafting',
+                'phase2-pending-answer-drafting'],
+            reply_comments_by_mse=True,
+        )
+
+    @timeit
+    def get_observations_with_my_comments_sent_to_se_re(self):
+        """
+         Role: MS Expert
+         Answers that I commented on sent to Sector Expert/Review expert
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-answered',
+                'phase2-answered',
+                'phase1-recalled-msa',
+                'phase2-recalled-msa'],
+            reply_comments_by_mse=True,
+        )
+
+    """
+        Finalised observations
+    """
+    @timeit
+    def get_no_response_needed_observations(self):
+        """
+         Finalised with 'no response needed'
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-closed',
+                'phase2-closed'],
+            observation_finalisation_reason='no-response-needed',
+        )
+
+    @timeit
+    def get_resolved_observations(self):
+        """
+         Finalised with 'resolved'
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-closed',
+                'phase2-closed'],
+            observation_finalisation_reason='resolved',
+        )
+
+    @timeit
+    def get_unresolved_observations(self):
+        """
+         Finalised with 'unresolved'
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-closed',
+                'phase2-closed'],
+            observation_finalisation_reason='unresolved',
+        )
+
+    @timeit
+    def get_partly_resolved_observations(self):
+        """
+         Finalised with 'partly resolved'
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-closed',
+                'phase2-closed'],
+            observation_finalisation_reason='partly-resolved',
+        )
+
+    @timeit
+    def get_technical_correction_observations(self):
+        """
+         Finalised with 'technical correction'
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-closed',
+                'phase2-closed'],
+            observation_finalisation_reason='technical-correction',
+        )
+
+    @timeit
+    def get_revised_estimate_observations(self):
+        """
+         Finalised with 'partly resolved'
+        """
+        return self.get_observations(
+            observation_question_status=[
+                'phase1-closed',
+                'phase2-closed'],
+            observation_finalisation_reason='revised-estimate',
+        )
+
+    def can_add_observation(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: Add Observation', self)
+
+    def is_secretariat(self):
+        user = api.user.get_current()
+        return 'Manager' in user.getRoles()
+
+    def get_author_name(self, userid):
+        user = api.user.get(userid)
+        return user.getProperty('fullname', userid)
+
+    def get_countries(self):
+        vtool = getToolByName(self, 'portal_vocabularies')
+        voc = vtool.getVocabularyByName('eea_member_states')
+        countries = []
+        voc_terms = voc.getDisplayList(self).items()
+        for term in voc_terms:
+            countries.append((term[0], term[1]))
+
+        return countries
+
+    def get_sectors(self):
+        vtool = getToolByName(self, 'portal_vocabularies')
+        voc = vtool.getVocabularyByName('ghg_source_sectors')
+        sectors = []
+        voc_terms = voc.getDisplayList(self).items()
+        for term in voc_terms:
+            sectors.append((term[0], term[1]))
+
+        return sectors
+
+    def is_sector_expert_or_review_expert(self):
+        user = api.user.get_current()
+        user_groups = user.getGroups()
+        is_se = 'extranet-esd-ghginv-sr' in user_groups
+        is_re = 'extranet-esd-esdreview-reviewexp' in user_groups
+        return is_se or is_re
+
+    def is_lead_reviewer_or_quality_expert(self):
+        user = api.user.get_current()
+        user_groups = user.getGroups()
+        is_qe = 'extranet-esd-ghginv-qualityexpert' in user_groups
+        is_lr = 'extranet-esd-esdreview-leadreview' in user_groups
+        return is_qe or is_lr
+
+    def is_member_state_coordinator(self):
+        user = api.user.get_current()
+        return "extranet-esd-countries-msa" in user.getGroups()
+
+    def is_member_state_expert(self):
+        user = api.user.get_current()
+        return "extranet-esd-countries-msexpert" in user.getGroups()

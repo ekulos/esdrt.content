@@ -186,3 +186,28 @@ def to_unicode(value):
     elif type(value) in [ListType, TupleType]:
         return [' '.join(to_unicode(v)) for v in value if v]
     return []
+
+
+@indexer(IObservation)
+def observation_question_status(context):
+    return context.observation_question_status()
+
+
+@indexer(IObservation)
+def last_answer_has_replies(context):
+    return context.last_answer_reply_number() > 0
+
+
+@indexer(IObservation)
+def observation_already_replied(context):
+    return context.observation_already_replied()
+
+
+@indexer(IObservation)
+def reply_comments_by_mse(context):
+    return context.reply_comments_by_mse()
+
+
+@indexer(IObservation)
+def observation_finalisation_reason(context):
+    return context.observation_finalisation_reason()
