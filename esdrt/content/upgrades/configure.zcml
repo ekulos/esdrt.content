@@ -240,4 +240,12 @@
          handler=".30_31.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 32."
+         description="Optimize local role assignment"
+         source="31"
+         destination="32"
+         handler=".31_32.upgrade"
+         profile="esdrt.content:default" />
+
 </configure>
