@@ -11,7 +11,7 @@ def timeit(method):
         from logging import getLogger
         log = getLogger(__name__)
 
-        log.info('%r (%r, %r) %2.2f sec' % (method.__name__, args, kw, te - ts))
+        log.debug('%r (%r, %r) %2.2f sec' % (method.__name__, args, kw, te - ts))
         return result
 
     return timed
