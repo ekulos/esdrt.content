@@ -195,17 +195,26 @@ def observation_question_status(context):
 
 @indexer(IObservation)
 def last_answer_has_replies(context):
-    return context.last_answer_reply_number() > 0
+    try:
+        return context.last_answer_reply_number() > 0
+    except:
+        return False
 
 
 @indexer(IObservation)
 def observation_already_replied(context):
-    return context.observation_already_replied()
+    try:
+        return context.observation_already_replied()
+    except:
+        return False
 
 
 @indexer(IObservation)
 def reply_comments_by_mse(context):
-    return context.reply_comments_by_mse()
+    try:
+        return context.reply_comments_by_mse()
+    except:
+        return False
 
 
 @indexer(IObservation)
