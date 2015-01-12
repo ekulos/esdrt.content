@@ -798,7 +798,7 @@ class InboxReviewFolderView(grok.View):
 def decorate2(item):
     """ prepare a plain object, so that we can cache it in a RAM cache """
     user = api.user.get_current()
-    roles = api.user.get_roles(username=user.getId(), obj=item, inherit=False)
+    roles = api.user.get_roles(username=user.getId(), obj=item, inherit=True)
     item.isCP = 'CounterPart' in roles
     item.isMSA = 'MSAuthority' in roles
     return item
