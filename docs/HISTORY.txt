@@ -1,10 +1,31 @@
 Changelog
 =========
 
-1.27 (unreleased)
+1.27 (2015-01-19)
 -----------------
 
-- Nothing changed yet.
+- use correct parameter for request [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- show Sector Expert or Review Expert depending when the question was created. Fixes #22547 [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- reindex the my view index on upgrade [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- change label for observation closing actor. Fixes #22544 [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- remove duplicated observations in myview. Fixes #22541+ [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- upgrade step [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- add tooltips for end of phase1 actions. Fixes #22539 [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- show tooltips when available [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- force reindex of observation after transition change. Refs #22217 [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- show key category in the correct place. Fixes #22262 [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
+- show modification date of the observation in my view. Fixes #22532 [Mikel Larreategi <mlarreategi@codesyntax.com>]
+
 
 
 1.26.5 (2015-01-12)
