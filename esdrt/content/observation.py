@@ -561,7 +561,7 @@ class Observation(dexterity.Container):
                 observation_wf.append(item)
             elif item['review_state'] == 'phase1-closed':
                 item['state'] = 'Closed observation'
-                item['role'] = "Sector expert"
+                item['role'] = "Quality expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'phase1-close-requested':
                 item['state'] = 'Finalisation requested'
@@ -606,7 +606,7 @@ class Observation(dexterity.Container):
                 # Do not add
             elif item['review_state'] == 'phase2-closed':
                 item['state'] = 'Closed observation'
-                item['role'] = "Review expert"
+                item['role'] = "Lead Reviewer"
                 observation_wf.append(item)
             elif item['review_state'] == 'phase2-close-requested':
                 item['state'] = 'Finalisation requested'
