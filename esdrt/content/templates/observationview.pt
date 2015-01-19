@@ -345,7 +345,9 @@
       <div class="actions" tal:condition="view/in_conclusions_phase1">
         <tal:block tal:repeat="action view/actions">
           <a href=""
-            tal:attributes="href action/action"
+            tal:attributes="href action/action;
+                            title action/description|nothing;
+                            "
             class="standardButton"
             tal:content="action/title">
             Action
@@ -378,7 +380,8 @@
       <div class="actions" tal:condition="view/in_conclusions_phase2">
         <tal:block tal:repeat="action view/actions">
           <a href=""
-            tal:attributes="href action/action"
+            tal:attributes="href action/action;
+                            title action/description|nothing;"
             class="standardButton"
             tal:content="action/title">
             Action
@@ -1111,7 +1114,8 @@
 
           <tal:block tal:repeat="action view/actions">
             <a href=""
-              tal:attributes="href string:${action/action}&amp;comment=${question/getId}"
+              tal:attributes="href string:${action/action}&amp;comment=${question/getId};
+                              title action/description|nothing;"
               class="standardButton"
               tal:content="action/title">
               Action
