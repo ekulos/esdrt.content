@@ -656,6 +656,7 @@
   </guard>
  </transition>
  <transition transition_id="phase1-close" title="Confirm finishing observation" new_state="phase1-closed" trigger="USER" before_script="" after_script="">
+  <description>Don't confirm finishing observation for'unresolved' issues. 'Unresolved' observations shall be handed over to team 2.</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=phase1-close" category="workflow" icon="">Confirm finishing observation</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
@@ -709,6 +710,7 @@
   </guard>
  </transition>
  <transition transition_id="phase1-send-to-team-2" title="Hand over to Team 2" new_state="phase2-draft" trigger="USER" before_script="" after_script="">
+  <description>'Unresolved' observations shall be handed over to team 2</description>
   <action url="%(content_url)s/content_status_modify?workflow_action=phase1-send-to-team-2" category="workflow" icon="">Hand over to Team 2</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
