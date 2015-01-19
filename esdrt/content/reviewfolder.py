@@ -1158,7 +1158,7 @@ class Inbox3ReviewFolderView(grok.View):
             review_state=statuses,
             observation_already_replied=True)
 
-        return answered + not_closed
+        return set(answered + not_closed)
 
     """
         MS Expert
