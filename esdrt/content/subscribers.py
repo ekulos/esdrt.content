@@ -1,3 +1,4 @@
+from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from Acquisition import aq_parent
 from DateTime import DateTime
 from esdrt.content.comment import IComment
@@ -54,6 +55,7 @@ def question_transition(question, event):
 
     observation = aq_parent(question)
     observation.reindexObject()
+
 #    if api.content.get_state(obj=event.object) == 'phase1-closed':
 #        parent = aq_parent(event.object)
 #        with api.env.adopt_roles(roles=['Manager']):
@@ -221,3 +223,5 @@ def observation_transition(observation, event):
                     obj=conclusion,
                     transition='retract'
                 )
+
+    observation.reindexObject()

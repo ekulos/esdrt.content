@@ -1649,4 +1649,5 @@ class AddConclusions(grok.View):
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
 
+        self.context.reindexObject()
         return self.request.response.redirect(url)
