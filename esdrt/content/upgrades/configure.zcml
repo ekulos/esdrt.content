@@ -248,4 +248,13 @@
          handler=".31_32.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 33."
+         description="Optimize local role assignment"
+         source="32"
+         destination="33"
+         handler=".32_33.upgrade"
+         profile="esdrt.content:default" />
+
+
 </configure>
