@@ -15,9 +15,10 @@ def upgrade(context, logger=None):
 
 
 def reindex_myview_index(context, logger):
+    logger.info('Reindexing indexes')
     catalog = getToolByName(context, 'portal_catalog')
     catalog.reindexIndex(name='observation_question_status',
-        request=getRequest())
+        REQUEST=getRequest())
 
 
 def install_workflow(context, logger):
