@@ -1,3 +1,4 @@
+from zope.globalrequest import getRequest
 from Products.CMFCore.utils import getToolByName
 
 PROFILE_ID = 'profile-esdrt.content:default'
@@ -9,7 +10,14 @@ def upgrade(context, logger=None):
         logger = getLogger('esdrt.content.upgrades.32_33')
 
     install_workflow(context, logger)
+    reindex_myview_index(context, logger)
     logger.info('Upgrade steps executed')
+
+
+def reindex_myview_index(context, logger):
+    catalog = getToolByName(context, 'portal_catalog')
+    catalog.reindexIndex(name='observation_question_status',
+        request=getRequest())
 
 
 def install_workflow(context, logger):
