@@ -400,10 +400,10 @@ class EditAnswerAndCloseComments(grok.View):
         comment = self.request.get('comment')
         if waction not in ['phase1-ask-answer-approval', 'phase2-ask-answer-aproval'] and \
             comment not in self.context.keys():
-                status = IStatusMessage(self.request)
-                msg = _(u'There was an error, try again please')
-                status.addStatusMessage(msg, "error")
-                return
+            status = IStatusMessage(self.request)
+            msg = _(u'There was an error, try again please')
+            status.addStatusMessage(msg, "error")
+            return
         else:
             self.comment = comment
 
