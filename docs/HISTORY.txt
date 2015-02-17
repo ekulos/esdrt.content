@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.28 (unreleased)
------------------
+1.27.1 (2015-02-17)
+-------------------
 
 - Helper methods to be used in tests [erral]
 
