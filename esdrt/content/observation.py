@@ -1477,7 +1477,7 @@ class AddCommentForm(Form):
         comment = context.get(item_id)
         comment.text = text
 
-        return self.request.response.redirect(context.absolute_url())
+        return self.request.response.redirect(observation.absolute_url())
 
     def updateWidgets(self):
         super(AddCommentForm, self).updateWidgets()
