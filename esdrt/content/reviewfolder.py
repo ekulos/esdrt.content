@@ -1332,3 +1332,21 @@ class Inbox3ReviewFolderView(grok.View):
     def is_member_state_expert(self):
         user = api.user.get_current()
         return "extranet-esd-countries-msexpert" in user.getGroups()
+
+
+class FirstObservation(Inbox3ReviewFolderView):
+    grok.context(IReviewFolder)
+    grok.name('get-first-reviewable-observation')
+    grok.require('zope2.View')
+
+    def update(self):
+        super(FirstObservation, self).update()
+        url = ''
+        obs = self.get_draft_observations()
+        if obs:
+            url = obs[0].absolute_url()
+
+        return self.request.response.redirect(url)
+
+    def render(self):
+        return ''
