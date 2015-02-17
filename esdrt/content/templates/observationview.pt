@@ -603,6 +603,7 @@
             class="addfile standardButton">
             Upload file
           </a>
+
           <tal:block tal:repeat="action conclusion/get_actions">
               <a href=""
                 tal:attributes="href action/action"
@@ -1111,6 +1112,13 @@
                 class="standardButton addfile">
                   Upload file
           </a>
+          <span
+                tal:condition="question/can_add_files"
+                tal:content="string:${question/absolute_url}/++add++ESDRTFile"
+                id="upload-file-url"
+                style="display:none">
+                  Upload file
+          </span>
 
           <tal:block tal:repeat="action view/actions">
             <a href=""
