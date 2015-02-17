@@ -4,7 +4,9 @@ Changelog
 1.28 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Helper methods to be used in tests [erral]
+
+- Clean whitespace [erral]
 
 
 1.27 (2015-01-19)
