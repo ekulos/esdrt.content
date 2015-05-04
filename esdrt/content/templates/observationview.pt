@@ -200,7 +200,7 @@
         <div class="cell position-3 width-2 esdLabel">Sector</div>
         <div class="cell position-5 width-2 esdLabel">Gases</div>
         <div class="cell position-7 width-3 esdLabel">Inventory year</div>
-        <div class="cell position-10 width-3 esdLabel">WF Location</div>
+        <div class="cell position-10 width-3 esdLabel">Workflow location</div>
         <div class="cell position-13 width-3">
           <div tal:attributes="class python:context.observation_phase()">&nbsp;</div>
         </div>
@@ -220,17 +220,18 @@
       </div>
       <div class="row observation-details" style="display:none;padding-top:15px">
         <div class="cell position-0 width-8 esdLabel">CRF code</div>
-        <div class="cell position-12 width-4 esdLabel">Parameter</div>
+        <div class="cell position-8 width-4 esdLabel">Parameter</div>
+        <div class="cell position-12 width-4 esdLabel">Last update</div>        
       </div>
       <div class="row observation-details" style="display:none">
         <div class="cell position-0 width-8" tal:content="context/crf_code_value">CRF code</div>
-        <div class="cell position-12 width-4" tal:content="context/parameter_value">Parameter</div>
+        <div class="cell position-8 width-4" tal:content="context/parameter_value">Parameter</div>
+        <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.modified(), True)">Last update</div>        
       </div>
       <div class="row observation-details" style="display:none;padding-top:15px">
         <div class="cell position-0 width-4 esdLabel">Review Year</div>
         <div class="cell position-4 width-4 esdLabel">Key category</div>
-        <div class="cell position-8 width-4 esdLabel">Key flags</div>
-        <div class="cell position-12 width-4 esdLabel">Last update</div>
+        <div class="cell position-8 width-4 esdLabel">Key flags</div> 
       </div>
       <div class="row observation-details" style="display:none">
         <div class="cell position-0 width-4" tal:content="context/review_year">Year</div>
@@ -242,10 +243,8 @@
               EU Key category
           </span>
         </div>
-        <div class="cell position-8 width-4" tal:content="context/highlight_value">Status flag</div>
-        <div class="cell position-12 width-4" tal:content="python:toLocalizedTime(context.modified(), True)">Last update</div>
+        <div class="cell position-8 width-8" tal:content="context/highlight_value">Status flag</div>
       </div>
-
       <div class="row observation-details" style="display:none;padding-top:15px" tal:condition="view/show_description">
         <div class="cell position-0 width-4 esdLabel">Description</div>
       </div>
