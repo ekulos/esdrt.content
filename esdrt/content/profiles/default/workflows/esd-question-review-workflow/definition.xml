@@ -66,6 +66,8 @@
   <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
+    <permission-role>MSAuthority</permission-role>
+    <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
   </permission-map>
@@ -633,6 +635,8 @@
   <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
+    <permission-role>MSAuthority</permission-role>
+    <permission-role>MSExpert</permission-role>    
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
   </permission-map>
