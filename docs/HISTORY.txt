@@ -4,7 +4,9 @@ Changelog
 1.28 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Ticket #24546: Structure better Observations details
+
+- Ticket #24556: SR, RE, LR, QE, MSC and MSE do not see their comments after discussion
 
 
 1.27.1 (2015-02-17)
