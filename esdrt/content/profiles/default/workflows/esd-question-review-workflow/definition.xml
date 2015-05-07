@@ -70,6 +70,10 @@
     <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>    
   </permission-map>
  </state>
  <state state_id="phase1-closed" title="Closed">
@@ -125,6 +129,10 @@
    <permission-role>MSExpert</permission-role>    
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>        
   </permission-map>
  </state>
  <state state_id="phase1-counterpart-comments" title="Counterpart comments">
@@ -364,6 +372,10 @@
    <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>        
   </permission-map>
  </state>
  <state state_id="phase1-pending" title="Pending">
@@ -427,7 +439,6 @@
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
-   <permission-role>Manager</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-pending-answer-drafting" title="Pending Answer Validation">
@@ -485,6 +496,10 @@
    <permission-role>MSExpert</permission-role>   
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>        
   </permission-map>
  </state>
  <state state_id="phase1-recalled-lr" title="Recalled (LR)">
@@ -537,7 +552,10 @@
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>    
   </permission-map>
  </state>
  <state state_id="phase1-recalled-msa" title="Recalled (MSA)">
@@ -592,6 +610,10 @@
    <permission-role>MSExpert</permission-role>   
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>        
   </permission-map>
  </state>
  <state state_id="phase2-answered" title="phase2-answered">
@@ -642,6 +664,10 @@
     <permission-role>MSExpert</permission-role>    
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>        
   </permission-map>
  </state>
  <state state_id="phase2-closed" title="phase2-closed">
@@ -896,6 +922,10 @@
    <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>        
   </permission-map>
  </state>
  <state state_id="phase2-pending" title="phase2-pending">
@@ -957,7 +987,6 @@
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
-   <permission-role>Manager</permission-role>
   </permission-map>
  </state>
  <state state_id="phase2-pending-answer-drafting" title="phase2-pending-answer-drafting">
@@ -1012,6 +1041,10 @@
    <permission-role>MSExpert</permission-role>   
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>        
   </permission-map>
  </state>
  <state state_id="phase2-recalled-lr" title="phase2-recalled-lr">
@@ -1063,6 +1096,8 @@
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>    
   </permission-map>
  </state>
  <state state_id="phase2-recalled-msa" title="phase2-recalled-msa">
@@ -1115,6 +1150,10 @@
    <permission-role>MSExpert</permission-role>   
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
+   <permission-role>QualityExpert</permission-role>
+   <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>ReviewerPhase2</permission-role>        
   </permission-map>
  </state>
  <transition transition_id="finish-observation-lr" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
