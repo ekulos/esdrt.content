@@ -256,5 +256,12 @@
          handler=".32_33.upgrade"
          profile="esdrt.content:default" />
 
+    <genericsetup:upgradeStep
+         title="Upgrade to 34."
+         description="Update workflow"
+         source="32"
+         destination="34"
+         handler=".33_34.upgrade"
+         profile="esdrt.content:default" />
 
 </configure>
