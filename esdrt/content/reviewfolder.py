@@ -994,8 +994,6 @@ class Inbox3ReviewFolderView(grok.View):
         """
         return self.get_observations(
             observation_question_status=[
-                'phase1-conclusions',
-                'phase2-conclusions',
                 'phase1-close-requested',
                 'phase2-close-requested'])
 
