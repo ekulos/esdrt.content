@@ -537,6 +537,7 @@
  </state>
  <state state_id="phase2-draft" title="phase2-draft">
   <exit-transition transition_id="phase2-open"/>
+  <exit-transition transition_id="phase2-draft-conclusions"/>
   <exit-transition transition_id="recall-from-phase2"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -547,6 +548,8 @@
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="Delete objects" acquired="True">
+  </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
   </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>LeadReviewer</permission-role>
@@ -573,6 +576,8 @@
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Add ConclusionsPhase2" acquired="True">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
   </permission-map>
