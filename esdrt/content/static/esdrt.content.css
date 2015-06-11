@@ -654,3 +654,10 @@ span.envelope:before{
 #btnFilter{
 	top: -10px;
 }
+
+#formfield-form-widgets-eu_key_catagory{
+  width: 20%;
+  float: right;
+  margin-top: -29px;
+  margin-right: 678px;
+}
