@@ -66,7 +66,7 @@ class Question(dexterity.Container):
     def get_questions(self):
         sm = getSecurityManager()
         values = [v for v in self.values() if sm.checkPermission('View', v)]
-        return values
+        return IContentListing(values)
 
     def getFirstComment(self):
         comments = [v for v in self.values() if v.portal_type == 'Comment']
