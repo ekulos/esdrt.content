@@ -21,9 +21,10 @@
  <permission>esdrt.content: View Answer Discussion</permission>
  <permission>esdrt.content: View Comment Discussion</permission>
  <state state_id="phase1-answered" title="Answered">
-  <exit-transition transition_id="phase1-recall-msa"/>
   <exit-transition transition_id="phase1-validate-answer-msa"/>
+  <exit-transition transition_id="phase1-recall-msa"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -47,6 +48,7 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -66,23 +68,24 @@
   <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
-    <permission-role>MSAuthority</permission-role>
-    <permission-role>MSExpert</permission-role>
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>    
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-closed" title="Closed">
-  <exit-transition transition_id="phase1-add-folowup-question"/>
-  <exit-transition transition_id="phase1-draft-conclusions"/>
   <exit-transition transition_id="phase1-go-to-conclusions"/>
+  <exit-transition transition_id="phase1-add-folowup-question"/>
   <exit-transition transition_id="phase1-reopen"/>
   <exit-transition transition_id="phase2-reopen"/>
+  <exit-transition transition_id="phase1-draft-conclusions"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -106,6 +109,7 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -126,13 +130,13 @@
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
    <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>    
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>        
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-counterpart-comments" title="Counterpart comments">
@@ -193,13 +197,14 @@
   </permission-map>
  </state>
  <state state_id="phase1-draft" title="Draft">
+  <exit-transition transition_id="phase1-request-for-counterpart-comments"/>
+  <exit-transition transition_id="phase1-delete-question"/>
   <exit-transition transition_id="finish-observation-sr"/>
   <exit-transition transition_id="go-to-phase2"/>
   <exit-transition transition_id="phase1-close"/>
-  <exit-transition transition_id="phase1-delete-question"/>
-  <exit-transition transition_id="phase1-request-for-counterpart-comments"/>
   <exit-transition transition_id="phase1-send-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -225,6 +230,7 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -319,9 +325,10 @@
   </permission-map>
  </state>
  <state state_id="phase1-expert-comments" title="Expert Comments">
-  <exit-transition transition_id="phase-reselect-msexperts"/>
   <exit-transition transition_id="phase1-ask-answer-approval"/>
+  <exit-transition transition_id="phase-reselect-msexperts"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -347,6 +354,7 @@
    <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -375,15 +383,16 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>        
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-pending" title="Pending">
   <exit-transition transition_id="phase1-add-answer"/>
-  <exit-transition transition_id="phase1-answer-to-lr"/>
-  <exit-transition transition_id="phase1-assign-answerer"/>
   <exit-transition transition_id="phase1-recall-question-lr"/>
+  <exit-transition transition_id="phase1-assign-answerer"/>
+  <exit-transition transition_id="phase1-answer-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -411,6 +420,7 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -442,9 +452,10 @@
   </permission-map>
  </state>
  <state state_id="phase1-pending-answer-drafting" title="Pending Answer Validation">
-  <exit-transition transition_id="phase1-answer-to-lr"/>
   <exit-transition transition_id="phase1-assign-answerer"/>
+  <exit-transition transition_id="phase1-answer-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -470,6 +481,7 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -493,21 +505,22 @@
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
    <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>   
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>        
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-recalled-lr" title="Recalled (LR)">
-  <exit-transition transition_id="finish-observation-qe"/>
-  <exit-transition transition_id="phase1-approve-question"/>
   <exit-transition transition_id="phase1-close-lr"/>
+  <exit-transition transition_id="finish-observation-qe"/>
   <exit-transition transition_id="phase1-redraft"/>
+  <exit-transition transition_id="phase1-approve-question"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -531,6 +544,7 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -555,13 +569,14 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>    
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase1-recalled-msa" title="Recalled (MSA)">
-  <exit-transition transition_id="phase1-answer-to-lr"/>
   <exit-transition transition_id="phase1-assign-answerer"/>
+  <exit-transition transition_id="phase1-answer-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
@@ -584,6 +599,7 @@
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
@@ -607,19 +623,20 @@
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
    <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>   
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>        
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase2-answered" title="phase2-answered">
   <exit-transition transition_id="phase2-recall-msa"/>
   <exit-transition transition_id="phase2-validate-answer-msa"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -635,12 +652,15 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -660,14 +680,14 @@
   <permission-map name="esdrt.content: Edit CommentAnswer" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
-    <permission-role>MSAuthority</permission-role>
-    <permission-role>MSExpert</permission-role>    
+   <permission-role>MSAuthority</permission-role>
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>        
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase2-closed" title="phase2-closed">
@@ -724,7 +744,7 @@
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
    <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>    
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>CounterPart</permission-role>
@@ -736,12 +756,13 @@
  </state>
  <state state_id="phase2-draft" title="phase2-draft">
   <exit-transition transition_id="finish-observation-re"/>
-  <exit-transition transition_id="phase2-close"/>
   <exit-transition transition_id="phase2-delete-question"/>
-  <exit-transition transition_id="phase2-recall"/>
   <exit-transition transition_id="phase2-request-for-counterpart-comments"/>
+  <exit-transition transition_id="phase2-recall"/>
+  <exit-transition transition_id="phase2-close"/>
   <exit-transition transition_id="phase2-send-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -771,6 +792,7 @@
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -873,6 +895,7 @@
   <exit-transition transition_id="phase-reselect-msexperts"/>
   <exit-transition transition_id="phase2-ask-answer-aproval"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -889,6 +912,8 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
@@ -896,6 +921,7 @@
    <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -925,15 +951,16 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>        
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase2-pending" title="phase2-pending">
-  <exit-transition transition_id="phase2-add-answer"/>
-  <exit-transition transition_id="phase2-answer-to-lr"/>
   <exit-transition transition_id="phase2-assign-answerer"/>
+  <exit-transition transition_id="phase2-add-answer"/>
   <exit-transition transition_id="phase2-recall-question-lr"/>
+  <exit-transition transition_id="phase2-answer-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -953,12 +980,15 @@
   <permission-map name="Delete objects" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -990,9 +1020,10 @@
   </permission-map>
  </state>
  <state state_id="phase2-pending-answer-drafting" title="phase2-pending-answer-drafting">
-  <exit-transition transition_id="phase2-answer-to-lr"/>
   <exit-transition transition_id="phase2-assign-answerer"/>
+  <exit-transition transition_id="phase2-answer-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -1010,11 +1041,14 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>MSExpert</permission-role>
@@ -1038,20 +1072,21 @@
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
    <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>   
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>        
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase2-recalled-lr" title="phase2-recalled-lr">
+  <exit-transition transition_id="phase2-redraft"/>
   <exit-transition transition_id="phase2-approve-question"/>
   <exit-transition transition_id="phase2-close-lr"/>
-  <exit-transition transition_id="phase2-redraft"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -1067,12 +1102,15 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
@@ -1097,13 +1135,14 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>    
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <state state_id="phase2-recalled-msa" title="phase2-recalled-msa">
   <exit-transition transition_id="phase2-assign-answerer"/>
   <exit-transition transition_id="phase2-answer-to-lr"/>
   <permission-map name="Access contents information" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
@@ -1119,11 +1158,14 @@
   </permission-map>
   <permission-map name="Delete objects" acquired="False">
   </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="Modify portal content" acquired="False">
   </permission-map>
   <permission-map name="Reply to item" acquired="False">
   </permission-map>
   <permission-map name="View" acquired="False">
+   <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
    <permission-role>Manager</permission-role>
@@ -1147,13 +1189,13 @@
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="False">
    <permission-role>MSAuthority</permission-role>
-   <permission-role>MSExpert</permission-role>   
+   <permission-role>MSExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
-   <permission-role>ReviewerPhase2</permission-role>        
+   <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
  </state>
  <transition transition_id="finish-observation-lr" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
