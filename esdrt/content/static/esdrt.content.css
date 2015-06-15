@@ -554,6 +554,16 @@ ul.eea-tabs{
 	background-color: #E6EEF2;
 	font-weight: bold;
 }
+#collage .documentFirstHeading{
+	margin-bottom: 15px;
+}
+#collage div.row_1 div.block_1 div.collage_item_1 {
+	margin-right: 30px;
+}
+#collage div.row_2 div.block_1 h2{
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
 span.envelope:before{
 	content: "\f0e0";
 }
