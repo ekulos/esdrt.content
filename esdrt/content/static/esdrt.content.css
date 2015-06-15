@@ -559,9 +559,10 @@ ul.eea-tabs{
 }
 #collage div.row_1 div.block_1 div.collage_item_1 {
 	margin-right: 30px;
+	text-align: justify;
 }
 #collage div.row_2 div.block_1 h2{
-	margin-top: 15px;
+	margin-top: 20x;
 	margin-bottom: 15px;
 }
 span.envelope:before{
