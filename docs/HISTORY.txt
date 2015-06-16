@@ -4,7 +4,17 @@ Changelog
 1.29 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fix vocabulary typos [MikelS]
+
+- Ticket #22547: Add "Go to conclusions" transtion from phase2-draft [MikelS]
+
+- Ticket #22167: Align key categories [MikelS]
+
+- Ticket #26252: Tool-tip info icon [MikelS]
+
+- Tickets #22538 & #22546: Fix counterparts permissions [MikelS]
+
+- Ticket #26234: Improve home layout [MikelS]
 
 
 1.28 (2015-05-07)
