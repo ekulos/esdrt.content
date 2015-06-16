@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.29'
+version = '1.30.dev0'
 
 setup(name='esdrt.content',
       version=version,
