@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.29 (unreleased)
+1.29 (2015-06-16)
 -----------------
 
 - Fix vocabulary typos [MikelS]
