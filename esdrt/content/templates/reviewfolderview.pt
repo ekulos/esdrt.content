@@ -203,7 +203,7 @@
         <table class="observationList listing" tal:condition="view/get_questions">
           <thead>
             <tr>
-              <th>
+              <th style="width:17%">
                 Observation
               </th>
               <th style="width:45%">

@@ -94,7 +94,7 @@
               <table class="my-actions observationList listing">
                 <thead>
                   <tr>
-                    <th>
+                    <th style="width:17%">
                       Observation
                     </th>
                     <th style="width:45%">
@@ -167,7 +167,7 @@
             <table class="my-actions observationList listing" tal:condition="view/get_draft_questions">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -239,7 +239,7 @@
             <table class="my-actions observationList listing" tal:condition="view/get_counterpart_questions_to_comment">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -312,7 +312,7 @@
             <table class="my-actions observationList listing" tal:condition="view/get_ms_answers_to_review">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -393,7 +393,7 @@
             <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_unanswered_questions">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -466,7 +466,7 @@
             <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_waiting_for_comment_from_counterparts_for_question">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -539,7 +539,7 @@
             <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_waiting_for_comment_from_counterparts_for_conclusion">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -612,7 +612,7 @@
             <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_observation_for_finalisation">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -696,7 +696,7 @@
             <table class="observationList listing my-actions" tal:condition="view/get_questions_to_be_sent">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -769,7 +769,7 @@
             <table class="observationList listing my-actions" tal:condition="view/get_observations_to_finalise">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -842,7 +842,7 @@
             <table class="observationList listing my-actions" tal:condition="view/get_questions_to_comment">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -915,7 +915,7 @@
             <table class="observationList listing my-actions" tal:condition="view/get_conclusions_to_comment">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -996,7 +996,7 @@
             <table class="observationList listing my-teams-actions" tal:condition="view/get_questions_with_comments_from_reviewers">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1069,7 +1069,7 @@
             <table class="observationList listing my-teams-actions" tal:condition="view/get_answers_from_ms">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1150,7 +1150,7 @@
             <table class="observationList listing my-ms-actions" tal:condition="view/get_unanswered_questions_lr_qe">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1234,7 +1234,7 @@
             <table class="observationList listing my-actions" tal:condition="view/get_questions_to_be_answered">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1307,7 +1307,7 @@
             <table class="observationList listing my-actions" tal:condition="view/get_questions_with_comments_received_from_mse">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1388,7 +1388,7 @@
             <table class="observationList listing mse-actions" tal:condition="view/get_answers_requiring_comments_from_mse">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1469,7 +1469,7 @@
             <table class="observationList listing se-re-actions" tal:condition="view/get_answers_sent_to_se_re">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1553,7 +1553,7 @@
             <table class="observationList listing my-actions" tal:condition="view/get_questions_with_comments_for_answer_needed_by_msc">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1634,7 +1634,7 @@
             <table class="observationList listing msc-actions" tal:condition="view/get_observations_with_my_comments">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1715,7 +1715,7 @@
             <table class="observationList listing sr-re-actions" tal:condition="view/get_observations_with_my_comments_sent_to_se_re">
               <thead>
                 <tr>
-                  <th>
+                  <th style="width:17%">
                     Observation
                   </th>
                   <th style="width:45%">
@@ -1797,7 +1797,7 @@
           <table class="observationList listing finalised-observations" tal:condition="view/get_no_response_needed_observations">
             <thead>
               <tr>
-                <th>
+                <th style="width:17%">
                   Observation
                 </th>
                 <th style="width:45%">
@@ -1870,7 +1870,7 @@
           <table class="observationList listing finalised-observations" tal:condition="view/get_resolved_observations">
             <thead>
               <tr>
-                <th>
+                <th style="width:17%">
                   Observation
                 </th>
                 <th style="width:45%">
@@ -1943,7 +1943,7 @@
           <table class="observationList listing finalised-observations" tal:condition="view/get_unresolved_observations">
             <thead>
               <tr>
-                <th>
+                <th style="width:17%">
                   Observation
                 </th>
                 <th style="width:45%">
@@ -2016,7 +2016,7 @@
           <table class="observationList listing finalised-observations" tal:condition="view/get_partly_resolved_observations">
             <thead>
               <tr>
-                <th>
+                <th style="width:17%">
                   Observation
                 </th>
                 <th style="width:45%">
@@ -2089,7 +2089,7 @@
           <table class="observationList listing finalised-observations" tal:condition="view/get_technical_correction_observations">
             <thead>
               <tr>
-                <th>
+                <th style="width:17%">
                   Observation
                 </th>
                 <th style="width:45%">
@@ -2162,7 +2162,7 @@
           <table class="observationList listing finalised-observations" tal:condition="view/get_revised_estimate_observations">
             <thead>
               <tr>
-                <th>
+                <th style="width:17%">
                   Observation
                 </th>
                 <th style="width:45%">
