@@ -687,3 +687,28 @@ span.envelope:before{
 	content: "\f05a";
 	cursor: help;
 }
+.tooltipIconBlue:after {
+	display: inline-block;
+	font-family: 'FontAwesome';
+	font-weight: normal;
+	font-style: normal;
+	line-height: inherit;
+	text-decoration: inherit;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	speak: none;
+	margin: 0 .3em;
+	color: #427597;
+	content: "\f05a";
+	cursor: help;
+}
+#rolesList li{
+	display: block;
+	margin-left: 10px
+}
+#rolesList span{
+	font-weight: bold;
+}
+#rolesList .country{
+	margin-left: 10px
+}
