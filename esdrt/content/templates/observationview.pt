@@ -181,7 +181,7 @@
           <i class="eea-icon eea-icon-4x observation"></i>
         </div>
         <div class="cell position-1 width-4 esdLabel">Ref. Number</div>
-        <div class="cell position-5 width-11 esdLabel">Observation</div>
+        <!--div class="cell position-5 width-11 esdLabel">Observation</div-->
       </div>
       <div class="row">
         <div class="cell position-1 width-4 value">
@@ -189,11 +189,11 @@
              UK-WAS-13-001
           </span>
         </div>
-        <div class="cell position-5 width-13 value">
+        <!--div class="cell position-5 width-13 value">
           <span tal:content="context/title">
              Title
           </span>
-        </div>
+        </div-->
       </div>
       <div class="row" style="margin-top:15px">
         <div class="cell position-1 width-2 esdLabel">Country</div>
