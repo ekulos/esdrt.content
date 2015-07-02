@@ -241,11 +241,6 @@
                           tal:content="observation/getId">
                           UK-WAS-13-001
                         </span>
-                        /
-                        <span class="obs-title"
-                          tal:content="observation/Title">
-                          Observation title
-                        </span>
                         <br/>
                         <div class="potentialSignificantIssue"
                              tal:condition="observation/observation_is_potential_significant_issue">
