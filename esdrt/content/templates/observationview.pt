@@ -310,8 +310,7 @@
       tal:condition="nocall:conclusion"
       >Conclusions Phase 1</li>
     <li style="width:200px;max-width:200px"
-      id="questionChatRoom"
-      tal:condition="view/get_questions">Q&amp;A</li>
+      id="questionChatRoom">Q&amp;A</li>
   </ul>
 
   <div class="eea-tabs-panels" style="overflow:hidden">
