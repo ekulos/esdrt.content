@@ -208,7 +208,7 @@
         <div class="cell position-1 width-2" tal:content="context/country_value">Country</div>
         <div class="cell position-3 width-5" tal:content="context/ghg_source_sectors_value">Sector</div>
         <div class="cell position-8 width-2" tal:content="context/gas_value">Gas</div>
-        <div class="cell position-10 width-3" tal:content="context/wf_location">Review expert</div>
+        <div class="cell position-10 width-3" tal:content="context/year">Year of emission</div>
       </div>
       <div class="row collapsiblePanelTitle collapsed" data-panel="observation-details" style="margin-top:15px">
         <div class="cell position-0 width-16">
