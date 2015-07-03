@@ -233,7 +233,7 @@
               EU Key category
           </span>
         </div>
-        <div class="cell position-11 width-4" tal:content="python:toLocalizedTime(context.modified(), True)">Last update</div>  
+        <div class="cell position-11 width-4" tal:content="python:context.modified().strftime('%d %b %Y, %H:%M CET')">Last update</div>  
       </div>
       <div class="row observation-details" style="display:none;padding-top:15px">
         <div class="cell position-0 width-16 esdLabel">Key flags</div> 
@@ -278,7 +278,7 @@
                       tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg wfStep', item['object']])"><!-- --></span>
                     <span tal:content="item/state"></span><br/>
                     <span class="eea-icon eea-icon-lg wfTime"><!-- --></span>
-                    <span tal:attributes="title python:toLocalizedTime(item['time'], True)" class="datetimeWF">
+                    <span tal:attributes="title python:item['time'].strftime('%d %b %Y, %H:%M CET')" class="datetimeWF">
                       <span tal:replace="item/time"></span>
                     </span><br/>
                 </td>
@@ -862,10 +862,10 @@
           <!--span class="value" tal:content="python:view.get_user_name(question.Creator(), question)">John Smith</span-->
           <span class="messageDate">
             <tal:effective condition="question/effective_date">
-              Sent on: <span tal:content="python:toLocalizedTime(question.EffectiveDate(), True)">11/12/2013 12:00</span>
+              Sent on: <span tal:content="python:question.EffectiveDate().strftime('%d %b %Y, %H:%M CET')">11/12/2013 12:00</span>
             </tal:effective>
             <tal:noteffective condition="not:question/effective_date">
-              Created on: <span tal:content="python:toLocalizedTime(question.created(), True)">11/12/2013 12:00</span>
+              Created on: <span tal:content="python:question.created().strftime('%d %b %Y, %H:%M CET')">11/12/2013 12:00</span>
             </tal:noteffective>
          </span>
         </div>

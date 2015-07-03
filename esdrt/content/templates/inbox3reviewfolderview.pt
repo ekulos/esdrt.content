@@ -144,7 +144,7 @@
                         <td tal:content="observation/crf_code_value">
                           1A1 Energy industries
                         </td>
-                        <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                        <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                             tal:attributes="data-sorter python:observation.modified()">
                           20 Jun 2014, 11:35 AM
                         </td>
@@ -217,7 +217,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -290,7 +290,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -363,7 +363,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -444,7 +444,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -517,7 +517,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -590,7 +590,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -663,7 +663,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -747,7 +747,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -820,7 +820,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -893,7 +893,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -966,7 +966,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1047,7 +1047,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1120,7 +1120,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1201,7 +1201,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1285,7 +1285,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1358,7 +1358,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1439,7 +1439,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1520,7 +1520,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1604,7 +1604,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1685,7 +1685,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1766,7 +1766,7 @@
                       <td tal:content="observation/crf_code_value">
                         1A1 Energy industries
                       </td>
-                      <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                      <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                           tal:attributes="data-sorter python:observation.modified()">
                         20 Jun 2014, 11:35 AM
                       </td>
@@ -1848,7 +1848,7 @@
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                    <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
                     </td>
@@ -1921,7 +1921,7 @@
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                    <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
                     </td>
@@ -1994,7 +1994,7 @@
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                    <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
                     </td>
@@ -2067,7 +2067,7 @@
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                    <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
                     </td>
@@ -2140,7 +2140,7 @@
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                    <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
                     </td>
@@ -2213,7 +2213,7 @@
                     <td tal:content="observation/crf_code_value">
                       1A1 Energy industries
                     </td>
-                    <td tal:content="python:toLocalizedTime(observation.modified(), True)"
+                    <td tal:content="python:observation.modified().strftime('%d %b %Y, %H:%M CET')"
                         tal:attributes="data-sorter python:observation.modified()">
                       20 Jun 2014, 11:35 AM
                     </td>
