@@ -1002,8 +1002,9 @@ class ObservationView(grok.View):
     def can_delete_observation(self):
         is_draft = self.context.get_status() in ['phase1-pending', 'phase2-pending']
         questions = len(self.context.get_values_cat('Question'))
-
-        return is_draft and not questions
+        #If observation has conclusion cannot be deleted (Ticket #26992)
+        conclusions = len(self.context.get_values_cat('Conclusion'))
+        return is_draft and not questions and not conclusions
 
     def can_add_question(self):
         sm = getSecurityManager()
@@ -1012,7 +1013,9 @@ class ObservationView(grok.View):
 
     def can_edit(self):
         sm = getSecurityManager()
-        return sm.checkPermission('Modify portal content', self.context)
+        #If observation has conclusion cannot be edited (Ticket #26992)
+        conclusions = len(self.context.get_values_cat('Conclusion'))
+        return sm.checkPermission('Modify portal content', self.context) and not conclusions
 
     def get_conclusion(self):
         sm = getSecurityManager()
