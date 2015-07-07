@@ -69,13 +69,13 @@ NOTIFICATIONS_PER_ROLE = {
 NOTIFICATION_NAMES = {
     'ReviewerPhase1': {
         'observation_finalisation_denied': 'Observation finalisation denied by QE',
-        'observation_finalised': 'Observation finalised denied by QE',
+        'observation_finalised': 'Observation finalised by QE',
         'question_answered': 'Question answered by MS',
         'question_to_ms': 'Question sent to MS by QE',
     },
     'ReviewerPhase2': {
         'observation_finalisation_denied': 'Observation finalisation denied by LR',
-        'observation_finalised': 'Observation finalised denied by LR',
+        'observation_finalised': 'Observation finalised by LR',
         'observation_to_phase2': 'Observation handed over to step 2',
         'question_answered': 'Question answered by MS',
         'question_to_ms': 'Question sent to MS by LR',
