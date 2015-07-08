@@ -712,3 +712,6 @@ span.envelope:before{
 #rolesList .country{
 	margin-left: 10px
 }
+body.portaltype-conclusion #form-buttons-cancel {
+	display: none;
+}
