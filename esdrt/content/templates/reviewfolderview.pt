@@ -172,8 +172,8 @@
               <option></option>
              <option tal:attributes="selected python:'open'==status"
                 value="open">Open</option>
-              <option tal:attributes="selected python:'finished'==status"
-                value="finished">Finished</option>
+              <option tal:attributes="selected python:'closed'==status"
+                value="closed">Closed</option>
             </select>
           </div>
           <div class="cell position-4 width-6 esdLabel">

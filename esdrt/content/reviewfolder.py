@@ -50,7 +50,7 @@ class ReviewFolderView(grok.View):
         if (country != ""):
             query['Country'] = country
         if (status != ""):
-            if status == "finished":
+            if status == "closed":
                 query['review_state'] = [
                     'phase1-closed',
                     'phase2-closed'
