@@ -86,12 +86,13 @@
             tal:define="observations view/get_draft_observations"
             tal:condition="observations">
             <metal:obslist define-macro="observationlist">
-              <div class="row">
+              <div class="row collapsibleListTitle" data-list="draft-observations">
                 <div>
                   Draft observations
+                  <span class="eea-icon eea-icon-left"></span>
                 </div>
               </div>
-              <table class="my-actions observationList listing">
+              <table class="my-actions observationList listing draft-observations">
                 <thead>
                   <tr>
                     <th style="width:17%">
@@ -159,12 +160,13 @@
             </metal:obslist>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="draft-questions">
               <div>
                 Draft questions
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="my-actions observationList listing" tal:condition="view/get_draft_questions">
+            <table class="my-actions observationList listing draft-questions" tal:condition="view/get_draft_questions">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -231,12 +233,13 @@
             </table>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="counterpart-questions-to-comment">
               <div>
                 Counterpart questions to comment
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="my-actions observationList listing" tal:condition="view/get_counterpart_questions_to_comment">
+            <table class="my-actions observationList listing counterpart-questions-to-comment" tal:condition="view/get_counterpart_questions_to_comment">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -304,12 +307,13 @@
             </table>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="ms-answers-to-review">
               <div>
                 MS answers to review
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="my-actions observationList listing" tal:condition="view/get_ms_answers_to_review">
+            <table class="my-actions observationList listing ms-answers-to-review" tal:condition="view/get_ms_answers_to_review">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -385,12 +389,13 @@
             </div>
           </div>
           <div class="other-actions-for-my-observations inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="unanswered-questions">
               <div>
                 Unanswered questions
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_unanswered_questions">
+            <table class="observationList listing other-actions-for-my-observations unanswered-questions" tal:condition="view/get_unanswered_questions">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -458,12 +463,13 @@
             </table>
           </div>
           <div class="other-actions-for-my-observations inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="waiting-for-comment-from-counterparts-for-question">
               <div>
                 Waiting for comment from counterparts for question
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_waiting_for_comment_from_counterparts_for_question">
+            <table class="observationList listing other-actions-for-my-observations waiting-for-comment-from-counterparts-for-question" tal:condition="view/get_waiting_for_comment_from_counterparts_for_question">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -531,12 +537,13 @@
             </table>
           </div>
           <div class="other-actions-for-my-observations inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="waiting-for-comment-from-counterparts-for-conclusion">
               <div>
                 Waiting for comment from counterparts for conclusion
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_waiting_for_comment_from_counterparts_for_conclusion">
+            <table class="observationList listing other-actions-for-my-observations waiting-for-comment-from-counterparts-for-conclusion" tal:condition="view/get_waiting_for_comment_from_counterparts_for_conclusion">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -604,12 +611,13 @@
             </table>
           </div>
           <div class="other-actions-for-my-observations inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="observation-for-finalisation">
               <div>
                 Observation for finalisation
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing other-actions-for-my-observations" tal:condition="view/get_observation_for_finalisation">
+            <table class="observationList listing other-actions-for-my-observations observation-for-finalisation" tal:condition="view/get_observation_for_finalisation">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -688,12 +696,13 @@
             </div>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="questions-to-be-sent">
               <div>
                 Questions to be sent
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing my-actions" tal:condition="view/get_questions_to_be_sent">
+            <table class="observationList listing my-actions questions-to-be-sent" tal:condition="view/get_questions_to_be_sent">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -761,12 +770,12 @@
             </table>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="observations-to-finalise">
               <div>
                 Observations to finalise
               </div>
             </div>
-            <table class="observationList listing my-actions" tal:condition="view/get_observations_to_finalise">
+            <table class="observationList listing my-actions observations-to-finalise" tal:condition="view/get_observations_to_finalise">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -834,12 +843,12 @@
             </table>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="questions-to-comment">
               <div>
                 Questions to comment
               </div>
             </div>
-            <table class="observationList listing my-actions" tal:condition="view/get_questions_to_comment">
+            <table class="observationList listing my-actions questions-to-comment" tal:condition="view/get_questions_to_comment">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -907,12 +916,12 @@
             </table>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="conclusions-to-comment">
               <div>
                 Conclusions to comment
               </div>
             </div>
-            <table class="observationList listing my-actions" tal:condition="view/get_conclusions_to_comment">
+            <table class="observationList listing my-actions conclusions-to-comment" tal:condition="view/get_conclusions_to_comment">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -988,12 +997,12 @@
             </div>
           </div>
           <div class="my-teams-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="questions-with-comments-from-reviewers">
               <div>
                 Questions with comments from reviewers
               </div>
             </div>
-            <table class="observationList listing my-teams-actions" tal:condition="view/get_questions_with_comments_from_reviewers">
+            <table class="observationList listing my-teams-actions questions-with-comments-from-reviewers" tal:condition="view/get_questions_with_comments_from_reviewers">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1061,12 +1070,12 @@
             </table>
           </div>
           <div class="my-teams-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="answers-from-ms">
               <div>
                 Answers from MS
               </div>
             </div>
-            <table class="observationList listing my-teams-actions" tal:condition="view/get_answers_from_ms">
+            <table class="observationList listing my-teams-actions answers-from-ms" tal:condition="view/get_answers_from_ms">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1142,12 +1151,12 @@
             </div>
           </div>
           <div class="my-ms-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="unanswered-questions-lr-que">
               <div>
                 Unanswered questions
               </div>
             </div>
-            <table class="observationList listing my-ms-actions" tal:condition="view/get_unanswered_questions_lr_qe">
+            <table class="observationList listing my-ms-actions unanswered-questions-lr-que" tal:condition="view/get_unanswered_questions_lr_qe">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1226,12 +1235,12 @@
             </div>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="questions-to-be-answered">
               <div>
                 Questions from Sector expert / Review expert to be answered
               </div>
             </div>
-            <table class="observationList listing my-actions" tal:condition="view/get_questions_to_be_answered">
+            <table class="observationList listing my-actions questions-to-be-answered" tal:condition="view/get_questions_to_be_answered">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1299,12 +1308,13 @@
             </table>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="questions-with-comments-received-from-mse">
               <div>
                 Comments received from MS experts
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing my-actions" tal:condition="view/get_questions_with_comments_received_from_mse">
+            <table class="observationList listing my-actions" tal:condition="view/get_questions_with_comments_received_from_mse questions-with-comments-received-from-mse">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1380,12 +1390,13 @@
             </div>
           </div>
           <div class="mse-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="answers-requiring-comments-from-mse">
               <div>
                 Answers requiring comments/discussion from MS experts
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing mse-actions" tal:condition="view/get_answers_requiring_comments_from_mse">
+            <table class="observationList listing mse-actions answers-requiring-comments-from-mse" tal:condition="view/get_answers_requiring_comments_from_mse">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1461,12 +1472,13 @@
             </div>
           </div>
           <div class="se-re-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="answers-sent-to-se-re">
               <div>
                 Answers sent to Sector expert / Review expert
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing se-re-actions" tal:condition="view/get_answers_sent_to_se_re">
+            <table class="observationList listing se-re-actions answers-sent-to-se-re" tal:condition="view/get_answers_sent_to_se_re">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1545,12 +1557,13 @@
             </div>
           </div>
           <div class="my-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="questions-with-comments-for-answer-needed-by-msc">
               <div>
                 Comments for answer needed by MS coordinator
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing my-actions" tal:condition="view/get_questions_with_comments_for_answer_needed_by_msc">
+            <table class="observationList listing my-actions questions-with-comments-for-answer-needed-by-msc" tal:condition="view/get_questions_with_comments_for_answer_needed_by_msc">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1626,12 +1639,13 @@
             </div>
           </div>
           <div class="msc-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="observations-with-my-comments">
               <div>
                 Observations with my comments still with MSC
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing msc-actions" tal:condition="view/get_observations_with_my_comments">
+            <table class="observationList listing msc-actions observations-with-my-comments" tal:condition="view/get_observations_with_my_comments">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1707,12 +1721,13 @@
             </div>
           </div>
           <div class="sr-re-actions inboxSection">
-            <div class="row">
+            <div class="row collapsibleListTitle" data-list="observations-with-my-comments-sent-to-se-re">
               <div>
                 Answers that I commented on sent to Sector expert/Review expert
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing sr-re-actions" tal:condition="view/get_observations_with_my_comments_sent_to_se_re">
+            <table class="observationList listing sr-re-actions observations-with-my-comments-sent-to-se-re" tal:condition="view/get_observations_with_my_comments_sent_to_se_re">
               <thead>
                 <tr>
                   <th style="width:17%">
@@ -1789,12 +1804,13 @@
           </div>
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row">
+          <div class="row collapsibleListTitle" data-list="no-response-needed-observations">
             <div>
               Finalised with 'no response needed'
+              <span class="eea-icon eea-icon-left"></span>
             </div>
           </div>
-          <table class="observationList listing finalised-observations" tal:condition="view/get_no_response_needed_observations">
+          <table class="observationList listing finalised-observations no-response-needed-observations" tal:condition="view/get_no_response_needed_observations">
             <thead>
               <tr>
                 <th style="width:17%">
@@ -1862,12 +1878,13 @@
           </table>
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row">
+          <div class="row collapsibleListTitle" data-list="resolved-observations">
             <div>
               Finalised with 'resolved'
+              <span class="eea-icon eea-icon-left"></span>
             </div>
           </div>
-          <table class="observationList listing finalised-observations" tal:condition="view/get_resolved_observations">
+          <table class="observationList listing finalised-observations resolved-observations" tal:condition="view/get_resolved_observations">
             <thead>
               <tr>
                 <th style="width:17%">
@@ -1935,12 +1952,13 @@
           </table>
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row">
+          <div class="row collapsibleListTitle" data-list="unresolved-observations">
             <div>
               Finalised with 'unresolved'
+              <span class="eea-icon eea-icon-left"></span>
             </div>
           </div>
-          <table class="observationList listing finalised-observations" tal:condition="view/get_unresolved_observations">
+          <table class="observationList listing finalised-observations unresolved-observations" tal:condition="view/get_unresolved_observations">
             <thead>
               <tr>
                 <th style="width:17%">
@@ -2008,12 +2026,13 @@
           </table>
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row">
+          <div class="row collapsibleListTitle" data-list="party-resolved-observations">
             <div>
               Finalised with 'partly resolved'
+              <span class="eea-icon eea-icon-left"></span>
             </div>
           </div>
-          <table class="observationList listing finalised-observations" tal:condition="view/get_partly_resolved_observations">
+          <table class="observationList listing finalised-observations party-resolved-observations" tal:condition="view/get_partly_resolved_observations">
             <thead>
               <tr>
                 <th style="width:17%">
@@ -2081,12 +2100,13 @@
           </table>
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row">
+          <div class="row collapsibleListTitle" data-list="technical-correction-observations">
             <div>
               Finalised with 'technical correction'
+              <span class="eea-icon eea-icon-left"></span>
             </div>
           </div>
-          <table class="observationList listing finalised-observations" tal:condition="view/get_technical_correction_observations">
+          <table class="observationList listing finalised-observations technical-correction-observations" tal:condition="view/get_technical_correction_observations">
             <thead>
               <tr>
                 <th style="width:17%">
@@ -2154,12 +2174,13 @@
           </table>
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row">
+          <div class="row collapsibleListTitle" data-list="revised-estimate-observations">
             <div>
               Finalised with 'revised estimate'
+              <span class="eea-icon eea-icon-left"></span>
             </div>
           </div>
-          <table class="observationList listing finalised-observations" tal:condition="view/get_revised_estimate_observations">
+          <table class="observationList listing finalised-observations revised-estimate-observations" tal:condition="view/get_revised_estimate_observations">
             <thead>
               <tr>
                 <th style="width:17%">

@@ -368,6 +368,21 @@ div.phase2-observation{
 	content: "\f078";
 	color:#2c8da2;
 }
+.collapsibleListTitle {
+	cursor:pointer;
+}
+.collapsibleListTitle .eea-icon-left:before {
+	content: "\f077";
+}
+.collapsibleListTitle.collapsed .eea-icon-left:before {
+	content: "\f078";
+	color: black;
+	background-color: white;
+}
+.collapsibleListTitle.collapsed span {
+	color: black;
+	background-color: white !important;
+}
 #tabs {
 	/**border: 1px solid #DEDEDE;
     height: 205px;*/
