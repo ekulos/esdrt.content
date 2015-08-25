@@ -1314,7 +1314,7 @@
                 <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <table class="observationList listing my-actions" tal:condition="view/get_questions_with_comments_received_from_mse questions-with-comments-received-from-mse">
+            <table class="observationList listing my-actions questions-with-comments-received-from-mse" tal:condition="view/get_questions_with_comments_received_from_mse">
               <thead>
                 <tr>
                   <th style="width:17%">
