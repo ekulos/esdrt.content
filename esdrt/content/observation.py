@@ -1612,12 +1612,12 @@ class AddConclusions(grok.View):
                     if 'ReviewerPhase1' in user_roles:
                         url = conclusion.absolute_url() + '/edit'
                 else:
-                    with api.env.adopt_roles(['ReviewerPhase1']):
-                        id = context.invokeFactory(
-                            id=str(int(time())),
-                            type_name='Conclusion',
-                            text=u''
-                        )      
+                    #with api.env.adopt_roles(['ReviewerPhase1']):
+                    id = context.invokeFactory(
+                        id=str(int(time())),
+                        type_name='Conclusion',
+                        text=u''
+                    )      
                     cs = self.context.get_values_cat('Conclusion')
                     conclusion = cs[0]  
                     url = conclusion.absolute_url() + '/edit'         
@@ -1649,12 +1649,12 @@ class AddConclusions(grok.View):
                     url = conclusionsphase2.absolute_url() + '/edit'
 
                 else:
-                    with api.env.adopt_roles(['ReviewerPhase2']):
-                        id = context.invokeFactory(
-                            id=str(int(time())),
-                            type_name='ConclusionsPhase2',
-                            text=u''
-                        )      
+                    #with api.env.adopt_roles(['ReviewerPhase2']):
+                    id = context.invokeFactory(
+                        id=str(int(time())),
+                        type_name='ConclusionsPhase2',
+                        text=u''
+                    )      
                     cs = self.context.get_values_cat('Conclusion')
                     conclusion = cs[0]  
                     url = conclusion.absolute_url() + '/edit'                       
