@@ -1623,13 +1623,13 @@ class AddConclusions(grok.View):
                     url = conclusion.absolute_url() + '/edit'         
                     #url = '%s/++add++Conclusion' % context.absolute_url()
             else:
-                with api.env.adopt_roles(['ReviewerPhase1']):
-                    id = context.invokeFactory(
-                        id=str(int(time())),
-                        type_name='Conclusion',
-                        text=u'<p>Draft conclusions</p>'
-                    )
-                url = context.absolute_url()
+                #with api.env.adopt_roles(['ReviewerPhase1']):
+                id = context.invokeFactory(
+                    id=str(int(time())),
+                    type_name='Conclusion',
+                    text=u'<p>Draft conclusions</p>'
+                )
+                url = context.absolute_url() + '/edit'
 
         elif context.get_status().startswith('phase2-'):
             api.content.transition(
@@ -1661,13 +1661,13 @@ class AddConclusions(grok.View):
                     #url = '%s/++add++ConclusionsPhase2' % context.absolute_url()
 
             else:
-                with api.env.adopt_roles(['ReviewerPhase2']):
-                    id = context.invokeFactory(
-                        id=str(int(time())),
-                        type_name='ConclusionsPhase2',
-                        text=u'<p>Draft conclusions</p>'
-                    )
-                url = context.absolute_url()
+                #with api.env.adopt_roles(['ReviewerPhase2']):
+                id = context.invokeFactory(
+                    id=str(int(time())),
+                    type_name='ConclusionsPhase2',
+                    text=u'<p>Draft conclusions</p>'
+                )
+                url = context.absolute_url() + '/edit'
 
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
