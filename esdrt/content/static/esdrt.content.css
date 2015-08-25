@@ -87,17 +87,18 @@
 	display: inline-block;
 	border: 1px solid #346F83;
 }
+.standardButton.defaultWFButton {
+	background-color:#f6a800 !important;
+	border-color: #999999;
+	-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	-ms-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	-o-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);	
+}
 .standardButton:hover,
 #content a.standardButton:hover{
 	background-color:#f6a800;
-	background-image: -webkit-gradient(linear,0% 40%,0% 70%,from(orange),to(#FF9123));
-	background: -webkit-linear-gradient(orange, #FF9123); /* */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='orange', endColorstr='#FF9123'); /* */
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='orange', endColorstr='#FF9123')"; /* */
-	background-image: -moz-linear-gradient(270deg, orange, #FF9123);
-	background-image: -ms-linear-gradient(top,orange,#FF9123);
-	background-image: -o-linear-gradient(top,orange,#FF9123);
-	background-image: linear-gradient(top,orange,#FF9123);
 	color: #FFFFFF !important;
 	cursor:pointer;
 	border-color: #999999;
@@ -107,6 +108,11 @@
 	-o-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
 	box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
 	text-shadow: none;
+}
+.standardButton.defaultWFButton:hover,
+#content a.standardButton.defaultWFButton:hover {
+	background-color:#38758a !important;
+	border: 1px solid #346F83;
 }
 .standardButton a, .standardButton a:hover, .standardButton a:visited {
 	color: #FFFFFF !important;

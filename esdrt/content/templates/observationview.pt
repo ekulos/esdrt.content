@@ -338,14 +338,26 @@
 
       <div class="actions" tal:condition="view/in_conclusions_phase1">
         <tal:block tal:repeat="action view/actions">
-          <a href=""
-            tal:attributes="href action/action;
-                            title action/description|nothing;
-                            "
-            class="standardButton"
-            tal:content="action/title">
-            Action
-          </a>
+          <tal:block tal:condition="python: 'phase1-close' in action['action'] or 'phase2-close' in action['action'] or 'send-to-team-2' in action['action']">   
+            <a href=""
+              tal:attributes="href action/action;
+                              title action/description|nothing;
+                              "
+              class="standardButton defaultWFButton"
+              tal:content="action/title">
+              Action
+            </a>
+          </tal:block>
+          <tal:block tal:condition="python: 'phase1-close' not in action['action'] and 'phase2-close' not in action['action'] and 'send-to-team-2' not in action['action']">   
+            <a href=""
+              tal:attributes="href action/action;
+                              title action/description|nothing;
+                              "
+              class="standardButton"
+              tal:content="action/title">
+              Action
+            </a>            
+          </tal:block>
         </tal:block>
       </div>
     </div>
@@ -780,12 +792,22 @@
             Upload file
           </a>
           <tal:block tal:repeat="action conclusion/get_actions">
+            <tal:block tal:condition="python: 'request-close' in action['action']">       
+              <a href=""
+                tal:attributes="href action/action"
+                class="standardButton defaultWFButton"
+                tal:content="action/title">
+                Action
+              </a>
+            </tal:block>
+            <tal:block tal:condition="python: 'request-close' not in action['action']">       
               <a href=""
                 tal:attributes="href action/action"
                 class="standardButton"
                 tal:content="action/title">
                 Action
               </a>
+            </tal:block>            
           </tal:block>
         </div>
       </div>
@@ -806,7 +828,7 @@
       <div class="actions" tal:condition="view/can_add_question">
         <a id="add-question-link"
           tal:attributes="href string:${here/absolute_url}/++add++Question"
-          class="standardButton">
+          class="standardButton defaultWFButton">
           Add question
         </a>
         <tal:block condition="view/can_edit">
@@ -1115,13 +1137,24 @@
           </span>
 
           <tal:block tal:repeat="action view/actions">
-            <a href=""
-              tal:attributes="href string:${action/action}&amp;comment=${question/getId};
-                              title action/description|nothing;"
-              class="standardButton"
-              tal:content="action/title">
-              Action
-            </a>
+            <tal:block tal:condition="python: '/assign_counterpart_form' in action['action'] or 'send-comment' in action['action'] or 'send-to-lr' in action['action'] or 'approve-question' in action['action'] or 'ask-answer-approval' in action['action'] or 'answer-to-lr' in action['action'] or 'validate-answer-msa' in action['action'] or 'draft-conclusions' in action['action']">
+              <a href=""
+                tal:attributes="href string:${action/action}&amp;comment=${question/getId};
+                                title action/description|nothing;"
+                class="standardButton defaultWFButton"
+                tal:content="action/title">
+                Action
+              </a>              
+            </tal:block>
+            <tal:block tal:condition="python: '/assign_counterpart_form' not in action['action'] and 'send-comment' not in action['action'] and 'send-to-lr' not in action['action'] and 'approve-question' not in action['action'] and 'ask-answer-approval' not in action['action'] and 'answer-to-lr' not in action['action'] and 'validate-answer-msa' not in action['action'] and 'draft-conclusions' not in action['action']">            
+              <a href=""
+                tal:attributes="href string:${action/action}&amp;comment=${question/getId};
+                                title action/description|nothing;"
+                class="standardButton"
+                tal:content="action/title">
+                Action
+              </a>
+            </tal:block>
           </tal:block>
         </div>
       </tal:qactions>
@@ -1146,7 +1179,7 @@
           id="no-answer-link"
           tal:attributes="href string:${here/absolute_url}/add-answer-and-request-comments"
           title="To consult your Member States expert(s) without drafting an answer first. You ask your Member states experts to suggest an answer and you draft the answer after your discussions."
-          class="standardButton">
+          class="standardButton defaultWFButton">
             Request input for answer
         </a>
 

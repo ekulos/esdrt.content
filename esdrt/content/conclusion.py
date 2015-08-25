@@ -191,6 +191,7 @@ class AddForm(dexterity.AddForm):
 
     def updateActions(self):
         super(AddForm, self).updateActions()
+        self.actions['save'].addClass('defaultWFButton')
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
 

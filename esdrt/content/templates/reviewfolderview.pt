@@ -85,7 +85,7 @@
       <div class="actions" tal:condition="view/can_add_observation">
         <a href="./++add++Observation"
           tal:attributes="href string:${here/absolute_url}/++add++Observation"
-          class="standardButton">
+          class="standardButton defaultWFButton">
             New observation
         </a>
       </div>
@@ -288,7 +288,7 @@
       <div class="actions" tal:condition="python:view.can_add_observation() and view.get_questions()">
         <a href="./++add++Observation"
           tal:attributes="href string:${here/absolute_url}/++add++Observation"
-          class="standardButton">
+          class="standardButton defaultWFButton">
             New observation
         </a>
       </div>

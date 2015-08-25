@@ -951,6 +951,7 @@ class AddForm(dexterity.AddForm):
     def updateActions(self):
         super(AddForm, self).updateActions()
         self.actions['save'].title = u'Save Observation'
+        self.actions['save'].addClass('defaultWFButton')
         self.actions['cancel'].title = u'Delete Observation'
 
         for k in self.actions.keys():
@@ -1338,6 +1339,7 @@ class AddQuestionForm(Form):
         super(AddQuestionForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+            self.actions[k].addClass('defaultWFButton')
 
 
 class ModificationForm(dexterity.EditForm):

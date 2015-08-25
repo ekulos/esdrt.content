@@ -86,6 +86,7 @@ class FinishObservationReasonForm(Form):
         super(FinishObservationReasonForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+            self.actions[k].addClass('defaultWFButton')
 
 
 class IDenyFinishObservationReasonForm(Interface):

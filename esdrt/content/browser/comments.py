@@ -13,6 +13,7 @@ class CommentForm(BaseForm):
         self.actions['comment'].title = u'Save Comment'
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+            self.actions[k].addClass('defaultWFButton')
 
 
 class CommentsViewlet(BaseViewlet):
