@@ -1623,15 +1623,20 @@ class AddConclusions(grok.View):
                     url = conclusion.absolute_url() + '/edit'         
                     #url = '%s/++add++Conclusion' % context.absolute_url()
             else:
-                #with api.env.adopt_roles(['ReviewerPhase1']):
-                id = context.invokeFactory(
-                    id=str(int(time())),
-                    type_name='Conclusion',
-                    text=u''
-                )  
                 cs = self.context.get_values_cat('Conclusion')
-                conclusion = cs[0]                                     
-                url = conclusion.absolute_url() + '/edit'   
+                if cs:
+                    conclusion = cs[0]       
+                    url = conclusion.absolute_url() + '/edit'
+                else:         
+                    #with api.env.adopt_roles(['ReviewerPhase1']):
+                    id = context.invokeFactory(
+                        id=str(int(time())),
+                        type_name='Conclusion',
+                        text=u''
+                    )  
+                    cs = self.context.get_values_cat('Conclusion')
+                    conclusion = cs[0]                                     
+                    url = conclusion.absolute_url() + '/edit'   
 
         elif context.get_status().startswith('phase2-'):
             api.content.transition(
@@ -1663,15 +1668,21 @@ class AddConclusions(grok.View):
                     #url = '%s/++add++ConclusionsPhase2' % context.absolute_url()
 
             else:
-                #with api.env.adopt_roles(['ReviewerPhase2']):
-                id = context.invokeFactory(
-                    id=str(int(time())),
-                    type_name='ConclusionsPhase2',
-                    text=u''
-                )
-                cs = self.context.get_values_cat('ConclusionsPhase2')
-                conclusion = cs[0]                        
-                url = conclusion.absolute_url() + '/edit'
+                csp2 = self.context.get_values_cat('ConclusionsPhase2')
+                if csp2:
+                    conclusionsphase2 = csp2[0]
+                    url = conclusionsphase2.absolute_url() + '/edit'
+
+                else:                
+                    #with api.env.adopt_roles(['ReviewerPhase2']):
+                    id = context.invokeFactory(
+                        id=str(int(time())),
+                        type_name='ConclusionsPhase2',
+                        text=u''
+                    )
+                    cs = self.context.get_values_cat('ConclusionsPhase2')
+                    conclusion = cs[0]                        
+                    url = conclusion.absolute_url() + '/edit'
 
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
