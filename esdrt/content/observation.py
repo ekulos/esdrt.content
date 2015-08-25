@@ -1662,7 +1662,7 @@ class AddConclusions(grok.View):
                         type_name='ConclusionsPhase2',
                         text=u''
                     )      
-                    cs = self.context.get_values_cat('Conclusion')
+                    cs = self.context.get_values_cat('ConclusionsPhase2')
                     conclusion = cs[0]  
                     url = conclusion.absolute_url() + '/edit'                       
                     #url = '%s/++add++ConclusionsPhase2' % context.absolute_url()
