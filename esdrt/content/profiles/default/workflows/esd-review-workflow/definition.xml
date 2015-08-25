@@ -209,6 +209,7 @@
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>QualityExpert</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
   </permission-map>
@@ -223,6 +224,7 @@
   </permission-map>
   <permission-map name="esdrt.content: Add Conclusion" acquired="False">
    <permission-role>ReviewerPhase1</permission-role>
+   <permission-role>QualityExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ConclusionsPhase2" acquired="True">
   </permission-map>
@@ -506,6 +508,7 @@
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>ReviewerPhase2</permission-role>
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
   </permission-map>
@@ -522,6 +525,7 @@
   </permission-map>
   <permission-map name="esdrt.content: Add ConclusionsPhase2" acquired="False">
    <permission-role>ReviewerPhase2</permission-role>
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
   </permission-map>

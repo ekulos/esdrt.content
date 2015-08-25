@@ -1627,9 +1627,11 @@ class AddConclusions(grok.View):
                 id = context.invokeFactory(
                     id=str(int(time())),
                     type_name='Conclusion',
-                    text=u'<p>Draft conclusions</p>'
-                )
-                url = context.absolute_url() + '/edit'
+                    text=u''
+                )  
+                cs = self.context.get_values_cat('Conclusion')
+                conclusion = cs[0]                                     
+                url = conclusion.absolute_url() + '/edit'   
 
         elif context.get_status().startswith('phase2-'):
             api.content.transition(
@@ -1665,9 +1667,11 @@ class AddConclusions(grok.View):
                 id = context.invokeFactory(
                     id=str(int(time())),
                     type_name='ConclusionsPhase2',
-                    text=u'<p>Draft conclusions</p>'
+                    text=u''
                 )
-                url = context.absolute_url() + '/edit'
+                cs = self.context.get_values_cat('ConclusionsPhase2')
+                conclusion = cs[0]                        
+                url = conclusion.absolute_url() + '/edit'
 
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
