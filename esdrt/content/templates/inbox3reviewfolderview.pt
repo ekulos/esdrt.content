@@ -773,6 +773,7 @@
             <div class="row collapsibleListTitle" data-list="observations-to-finalise">
               <div>
                 Observations to finalise
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
             <table class="observationList listing my-actions observations-to-finalise" tal:condition="view/get_observations_to_finalise">
@@ -846,6 +847,7 @@
             <div class="row collapsibleListTitle" data-list="questions-to-comment">
               <div>
                 Questions to comment
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
             <table class="observationList listing my-actions questions-to-comment" tal:condition="view/get_questions_to_comment">
@@ -919,6 +921,7 @@
             <div class="row collapsibleListTitle" data-list="conclusions-to-comment">
               <div>
                 Conclusions to comment
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
             <table class="observationList listing my-actions conclusions-to-comment" tal:condition="view/get_conclusions_to_comment">
@@ -1000,6 +1003,7 @@
             <div class="row collapsibleListTitle" data-list="questions-with-comments-from-reviewers">
               <div>
                 Questions with comments from reviewers
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
             <table class="observationList listing my-teams-actions questions-with-comments-from-reviewers" tal:condition="view/get_questions_with_comments_from_reviewers">
@@ -1073,6 +1077,7 @@
             <div class="row collapsibleListTitle" data-list="answers-from-ms">
               <div>
                 Answers from MS
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
             <table class="observationList listing my-teams-actions answers-from-ms" tal:condition="view/get_answers_from_ms">
@@ -1154,6 +1159,7 @@
             <div class="row collapsibleListTitle" data-list="unanswered-questions-lr-que">
               <div>
                 Unanswered questions
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
             <table class="observationList listing my-ms-actions unanswered-questions-lr-que" tal:condition="view/get_unanswered_questions_lr_qe">
@@ -1238,6 +1244,7 @@
             <div class="row collapsibleListTitle" data-list="questions-to-be-answered">
               <div>
                 Questions from Sector expert / Review expert to be answered
+                <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
             <table class="observationList listing my-actions questions-to-be-answered" tal:condition="view/get_questions_to_be_answered">
