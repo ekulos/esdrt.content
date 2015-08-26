@@ -83,8 +83,7 @@
             </div>
           </div>
           <div class="my-actions inboxSection"
-            tal:define="observations view/get_draft_observations"
-            tal:condition="observations">
+            tal:define="observations view/get_draft_observations">
             <metal:obslist define-macro="observationlist">
               <div class="row collapsibleListTitle" data-list="draft-observations">
                 <div>
@@ -92,7 +91,7 @@
                   <span class="eea-icon eea-icon-left"></span>
                 </div>
               </div>
-              <table class="my-actions observationList listing draft-observations">
+              <table class="my-actions observationList listing draft-observations" tal:condition="view/get_draft_observations">
                 <thead>
                   <tr>
                     <th style="width:17%">
