@@ -334,7 +334,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item view/get_counterpart_questions_to_comment">
+                <tal:block tal:repeat="item view/get_counterpart_conclusion_to_comment">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
