@@ -827,7 +827,8 @@ class Inbox3ReviewFolderView(grok.View):
 
         return map(decorate, [b.getObject() for b in catalog.searchResults(query)])
 
-    def get_observations(self, freeText=None, rolecheck=None, **kw):
+    def get_observations(self, rolecheck=None, **kw):
+        freeText = self.request.form.get('freeText', '')
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         query = {
@@ -840,7 +841,6 @@ class Inbox3ReviewFolderView(grok.View):
             query['SearchableText'] = freeText
 
         query.update(kw)
-
         from logging import getLogger
         log = getLogger(__name__)
         if rolecheck is None:
@@ -1009,29 +1009,6 @@ class Inbox3ReviewFolderView(grok.View):
             observation_question_status=statuses_phase2)
 
         return phase1 + phase2        
-
-        statuses = [
-            'phase1-pending',
-            'phase2-pending',
-            'phase1-recalled-msa',
-            'phase2-recalled-msa',
-            'phase1-expert-comments',
-            'phase2-expert-comments',
-            'phase1-pending-answer-drafting',
-            'phase2-pending-answer-drafting'
-        ]
-
-        # For a SE/RE, those on QE/LR pending to be sent to the MS
-        # or recalled by him, are unanswered questions
-        if self.is_sector_expert_or_review_expert():
-            statuses.extend([
-                'phase1-drafted',
-                'phase2-drafted',
-                'phase1-recalled-lr',
-                'phase2-recalled-lr']
-            )
-
-        return self.get_observations(observation_question_status=statuses)
 
     @timeit
     def get_waiting_for_comment_from_counterparts_for_question(self):
