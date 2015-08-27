@@ -904,12 +904,12 @@ class Inbox3ReviewFolderView(grok.View):
             rolecheck='SectorExpert',
             observation_question_status=[
                 'phase1-draft',
-                'phase1-counterpart-comments'])
+                'phase1-drafted'])
         phase2 = self.get_observations(
             rolecheck='ReviewExpert',
             observation_question_status=[
                 'phase2-draft',
-                'phase2-counterpart-comments'])  
+                'phase2-drafted'])  
                 
         return phase1 + phase2      
 
@@ -992,11 +992,9 @@ class Inbox3ReviewFolderView(grok.View):
         # or recalled by him, are unanswered questions
         if self.is_sector_expert_or_review_expert():
             statuses_phase1.extend([
-                'phase1-drafted'
                 'phase1-recalled-lr']
             )
             statuses_phase2.extend([
-                'phase2-drafted',
                 'phase2-recalled-lr']
             )            
 
