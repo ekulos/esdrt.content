@@ -803,6 +803,8 @@ def decorate2(item):
     item.isMSA = 'MSAuthority' in roles
     item.isSE = 'SectorExpert' in roles
     item.isRE = 'ReviewExpert' in roles
+    item.isLR = 'LeadReviewer' in roles
+    item.isQE = "QualityExpert" in roles
     return item
 
 
@@ -865,7 +867,11 @@ class Inbox3ReviewFolderView(grok.View):
                     elif rolename == 'NotCounterPartPhase1':
                         return not x.isCP and x.isSE
                     elif rolename == 'NotCounterPartPhase2':
-                        return not x.isCP and x.isRE                        
+                        return not x.isCP and x.isRE   
+                    elif rolename == 'LeadReviewer':
+                        return x.isLR
+                    elif rolename == 'QualityExpert':
+                        return x.isQE
                     return False
                 return myfilter
 
@@ -1069,12 +1075,18 @@ class Inbox3ReviewFolderView(grok.View):
          Role: Lead Reviewer / Quality expert
          Questions waiting for me to send to the MS
         """
-        return self.get_observations(
+        phase1 = self.get_observations(
+            rolecheck='QualityExpert',
             observation_question_status=[
                 'phase1-drafted',
+                'phase1-recalled-lr'])
+        phase2 = self.get_observations(
+            rolecheck='LeadReviewer',
+            observation_question_status=[
                 'phase2-drafted',
-                'phase1-recalled-lr',
                 'phase2-recalled-lr'])
+
+        return phase1 + phase2
 
     @timeit
     def get_observations_to_finalise(self):
@@ -1082,10 +1094,17 @@ class Inbox3ReviewFolderView(grok.View):
          Role: Lead Reviewer / Quality expert
          Observations waiting for me to confirm finalisation
         """
-        return self.get_observations(
+        phase1 = self.get_observations(
+            rolecheck='QualityExpert',
             observation_question_status=[
-                'phase1-close-requested',
+                'phase1-close-requested'])
+
+        phase2 = self.get_observations(
+            rolecheck='LeadReviewer',
+            observation_question_status=[
                 'phase2-close-requested'])
+
+        return phase1 + phase2
 
     @timeit
     def get_questions_to_comment(self):
@@ -1129,10 +1148,15 @@ class Inbox3ReviewFolderView(grok.View):
          Role: Lead Reviewer / Quality expert
          that need review by Sector Expert/Review expert
         """
-        return self.get_observations(
+        phase1 = self.get_observations(
+            rolecheck='QualityExpert',
             observation_question_status=[
-                'phase1-answered',
+                'phase1-answered'])
+        phase2 = self.get_observations(
+            rolecheck='LeadReviewer',
+            observation_question_status=[
                 'phase2-answered'])
+        return phase1 + phase2
 
     @timeit
     def get_unanswered_questions_lr_qe(self):
@@ -1140,16 +1164,24 @@ class Inbox3ReviewFolderView(grok.View):
          Role: Lead Reviewer / Quality expert
          questions waiting for comments from MS
         """
-        return self.get_observations(
+        phase1 = self.get_observations(
+            rolecheck='QualityExpert',
             observation_question_status=[
                 'phase1-pending',
-                'phase2-pending',
                 'phase1-recalled-msa',
-                'phase2-recalled-msa',
                 'phase1-expert-comments',
+                'phase1-pending-answer-drafting'])
+
+
+        phase2 = self.get_observations(
+            rolecheck='LeadReviewer',
+            observation_question_status=[
+                'phase2-pending',
+                'phase2-recalled-msa',
                 'phase2-expert-comments',
-                'phase1-pending-answer-drafting',
                 'phase2-pending-answer-drafting'])
+
+        return phase1 + phase2
 
     """
         MS Coordinator
