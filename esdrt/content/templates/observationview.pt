@@ -488,12 +488,12 @@
         <div id="conclusion-discussion-wrapper"
           tal:define="context nocall:conclusion">
         <div class="changes" tal:condition="context/can_edit">
-          <div class="row collapsiblePanelTitle collapsed" data-panel="question-history">
+          <!--div class="row collapsiblePanelTitle collapsed" data-panel="question-history">
             <div class="cell position-0 width-16">
               History
               <span class="eea-icon eea-icon-left"></span>
             </div>
-          </div>
+          </div-->
           <div class="question-history" style="display:none">
             <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
               This object has no revision information.
@@ -669,12 +669,12 @@
         <div id="conclusion-discussion-wrapper"
           tal:define="context nocall:conclusion">
         <div class="changes" tal:condition="context/can_edit">
-          <div class="row collapsiblePanelTitle collapsed" data-panel="question-history">
+          <!--div class="row collapsiblePanelTitle collapsed" data-panel="question-history">
             <div class="cell position-0 width-16">
               History
               <span class="eea-icon eea-icon-left"></span>
             </div>
-          </div>
+          </div-->
           <div class="question-history" style="display:none">
             <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
               This object has no revision information.
@@ -921,12 +921,12 @@
           </div>
         </div>
         <div class="changes" tal:condition="question/can_edit">
-          <div class="row collapsiblePanelTitle collapsed" data-panel="question-history">
+          <!--div class="row collapsiblePanelTitle collapsed" data-panel="question-history">
             <div class="cell position-0 width-16">
               History
               <span class="eea-icon eea-icon-left"></span>
             </div>
-          </div>
+          </div-->
           <div class="question-history" style="display:none">
             <p tal:condition="not:view/history|nothing" i18n:translate="no_history">
               This object has no revision information.
