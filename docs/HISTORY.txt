@@ -4,7 +4,7 @@ Changelog
 1.36 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Log error [MikelS]
 
 
 1.35 (2015-08-31)
