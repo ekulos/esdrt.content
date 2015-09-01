@@ -308,6 +308,11 @@ class AssignCounterPartForm(BrowserView):
                 from logging import getLogger
                 log = getLogger(__name__)
                 log.info('There is not such a group %s' % groupname)
+            except:
+                from logging import getLogger
+                import sys
+                log = getLogger(__name__)
+                log.info('Unexpected error: %s' % sys.exc_info()[0])
 
         return users
 
