@@ -4,7 +4,7 @@ Changelog
 1.35.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Bug  #28615: CRF code missing [MikelS]
 
 
 1.35.1 (2015-09-01)
