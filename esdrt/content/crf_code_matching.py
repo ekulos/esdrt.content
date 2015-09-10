@@ -589,5 +589,119 @@ CRF_CODES = {
     "code": "4E2",
     "name": "LULUCF",
     "title": "Land Converted to Settlements"
-  }
+  },
+  "1": {
+    "ldap": "sector1",
+    "code": "1",
+    "name": "1A1 Energy industries",
+    "title": "Energy"
+  },
+  "1D": {
+    "ldap": "sector3",
+    "code": "1D",
+    "name": "1A3 Transport, including international bunkers and 1D - memo items international aviation, shipping etc",
+    "title": "Memo Items"
+  },
+  "2": {
+    "ldap": "sector5",
+    "code": "2",
+    "name": "2A, 2B Mineral and chemical industry",
+    "title": "Industrial processes and product use"
+  },
+  "2A": {
+    "ldap": "sector5",
+    "code": "2A",
+    "name": "2A, 2B Mineral and chemical industry",
+    "title": "Mineral industry"
+  },
+  "2B": {
+    "ldap": "sector5",
+    "code": "2B",
+    "name": "2A, 2B Mineral and chemical industry",
+    "title": "Chemical industry"
+  },
+  "2C": {
+    "ldap": "sector6",
+    "code": "2C",
+    "name": "2C, 2D, 2H Non-energy use of fuels, metal & electronics production",
+    "title": "Metal industry"
+  },
+  "2F": {
+    "ldap": "sector7",
+    "code": "2F",
+    "name": "2E, 2F, 2G F-gases",
+    "title": "Product uses as substitutes for Ozone Depleting Substances"
+  },
+  "3": {
+    "ldap": "sector8",
+    "code": "3",
+    "name": "3A, 3B Agriculture (animal production)",
+    "title": "Agriculture"
+  },
+  "3D": {
+    "ldap": "sector9",
+    "code": "3D",
+    "name": "3C-3J Agriculture (soils)",
+    "title": "Agricultural soils"
+  },
+  "3J": {
+    "ldap": "sector9",
+    "code": "3J",
+    "name": "3C-3J Agriculture (soils)",
+    "title": "Other"
+  }, 
+  "4": {
+    "ldap": "sector10",
+    "code": "4",
+    "name": "LULUCF",
+    "title": "Land use, land-use change and forestry"
+  },
+  "4A": {
+    "ldap": "sector10",
+    "code": "4A",
+    "name": "LULUCF",
+    "title": "Forest land"
+  },   
+  "4B": {
+    "ldap": "sector10",
+    "code": "4B",
+    "name": "LULUCF",
+    "title": "Cropland"
+  }, 
+  "4C": {
+    "ldap": "sector10",
+    "code": "4C",
+    "name": "LULUCF",
+    "title": "Grassland"
+  },   
+  "4D": {
+    "ldap": "sector10",
+    "code": "4D",
+    "name": "LULUCF",
+    "title": "Wetlands"
+  },  
+  "4E": {
+    "ldap": "sector10",
+    "code": "4D",
+    "name": "LULUCF",
+    "title": "Settlements"
+  },
+  "4F": {
+    "ldap": "sector10",
+    "code": "4F",
+    "name": "LULUCF",
+    "title": "Other land"
+  },
+  "5": {
+    "ldap": "sector11",
+    "code": "5",
+    "name": "5A-5F Waste",
+    "title": "Waste"
+  },    
+  "0": {
+    "ldap": "sector12",
+    "code": "0",
+    "name": "Other and cross-cutting",
+    "title": "Cross-cutting"
+  }         
 }
