@@ -2,3 +2,4 @@
 "resolved","resolved: issue dropped or clarified"
 "unresolved","unresolved: forward to 2nd step review"
 "partly-resolved","partly resolved: below treshold, maybe recommendation, but not forwarded to 2nd step review"
+"no-conclusion-yet","no conclusion yet"

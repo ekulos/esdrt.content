@@ -916,8 +916,19 @@ class Inbox3ReviewFolderView(grok.View):
             observation_question_status=[
                 'phase2-draft',
                 'phase2-drafted'])  
+
+        """
+         Add also finalised observations with "no conclusion yet"
+         https://taskman.eionet.europa.eu/issues/28813#note-5
+        """
+        no_conclusion_yet = self.get_observations(
+            observation_question_status=[
+                'phase1-closed',
+                'phase2-closed'],
+            observation_finalisation_reason='no-conclusion-yet',
+        )
                 
-        return phase1 + phase2      
+        return phase1 + phase2 + no_conclusion_yet  
 
     @timeit
     def get_counterpart_questions_to_comment(self):
