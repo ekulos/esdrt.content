@@ -285,5 +285,12 @@
          source="36"
          destination="37"
          handler=".36_37.upgrade"
-         profile="esdrt.content:default" />               
+         profile="esdrt.content:default" />     
+    <genericsetup:upgradeStep
+         title="Upgrade to 38."
+         description="Update vocabularies"
+         source="37"
+         destination="38"
+         handler=".37_38.upgrade"
+         profile="esdrt.content:default" />                      
 </configure>
