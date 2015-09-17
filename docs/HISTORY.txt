@@ -4,7 +4,8 @@ Changelog
 1.37 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Task #28813: Add reason for conclusion [MikelS]
+- Typos [MikelS]
 
 
 1.36 (2015-09-10)
