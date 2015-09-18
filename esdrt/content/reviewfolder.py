@@ -43,7 +43,7 @@ class ReviewFolderView(grok.View):
         path = '/'.join(self.context.getPhysicalPath())
         query = {
             'path': path,
-            'portal_type': ['Observation', 'Question'],
+            'portal_type': ['Observation'],
             'sort_on': 'modified',
             'sort_order': 'reverse',
         }

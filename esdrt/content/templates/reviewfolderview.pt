@@ -200,37 +200,41 @@
 
 
       <div id="observations">
-        <table class="observationList listing" tal:condition="view/get_questions">
-          <thead>
-            <tr>
-              <th style="width:17%">
-                Observation
-              </th>
-              <th style="width:45%">
-                In short
-              </th>
-              <th>
-                CRF code
-              </th>
-              <th style="width:47px">
-                Review year
-              </th>
-              <th>
-                Status
-              </th>
-              <th>
-                Step
-              </th>
-              <th tal:condition="view/is_secretariat">
-                Author
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tal:block tal:repeat="item view/get_questions">
-
-              <tal:item condition="python:item.portal_type == 'Observation'">
+        <tal:block tal:define="liste python:view.get_questions();
+             Batch python:modules['Products.CMFPlone'].Batch;
+             b_size python:10;
+             b_start python:0;
+             b_start request/b_start | b_start;
+             batch python:Batch(liste, b_size, int(b_start), orphan=1);"
+              tal:condition="liste">
+          <table class="observationList listing">
+            <thead>
+              <tr>
+                <th style="width:17%">
+                  Observation
+                </th>
+                <th style="width:45%">
+                  In short
+                </th>
+                <th>
+                  CRF code
+                </th>
+                <th style="width:47px">
+                  Review year
+                </th>
+                <th>
+                  Status
+                </th>
+                <th>
+                  Step
+                </th>
+                <th tal:condition="view/is_secretariat">
+                  Author
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tal:block tal:repeat="item batch">
                 <tal:item define="observation nocall:item;
                                   toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                   <tr tal:attributes="data-href observation/absolute_url;
@@ -277,14 +281,15 @@
                     <td tal:condition="view/is_secretariat">
                       <span tal:replace="python:view.get_author_name(observation.Creator())" />
                     </td>
-                </tr>
+                  </tr>
                 </tal:item>
-              </tal:item>
-            </tal:block>
-          </tbody>
-
-        </table>
+              </tal:block>
+            </tbody>
+          </table>
+          <div metal:use-macro="here/batch_macros/macros/navigation" />
+        </tal:block>
       </div>
+
       <div class="actions" tal:condition="python:view.can_add_observation() and view.get_questions()">
         <a href="./++add++Observation"
           tal:attributes="href string:${here/absolute_url}/++add++Observation"
