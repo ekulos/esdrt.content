@@ -4,7 +4,7 @@ Changelog
 1.38 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Paginate observation list to improve performance
 
 
 1.37 (2015-09-17)
