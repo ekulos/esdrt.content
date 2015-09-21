@@ -4,7 +4,8 @@ Changelog
 1.38.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Create a new tab for "Finalised observations" to speed up the "My view" load time
+- Cache for an hour the LDAP requests (counterparts, member state experts and conclusion counterparts)
 
 
 1.38.1 (2015-09-18)
