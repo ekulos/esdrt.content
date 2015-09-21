@@ -97,6 +97,9 @@
           <div>
             <a class="eea-icon inbox" tal:attributes="href string:${here/absolute_url}/inboxview">My view</a>
           </div>
+          <div>
+            <a class="eea-icon inbox" tal:attributes="href string:${here/absolute_url}/finalisedfolderview">Finalised observations</a>
+          </div>            
         </div>
       </div>
       <div id="filters">
