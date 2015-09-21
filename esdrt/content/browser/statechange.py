@@ -12,6 +12,7 @@ from zope import schema
 from zope.interface import Interface
 from esdrt.content.notifications.utils import notify
 from Products.Five.browser.pagetemplatefile import PageTemplateFile
+from eea.cache import cache
 
 
 def revoke_roles(username=None, user=None, obj=None, roles=None, inherit=True):
@@ -151,14 +152,23 @@ class AssignAnswererForm(BrowserView):
           Revoke all existing roles
         """
         target = self.assignation_target()
-        for user, cp in self.get_counterpart_users():
+        for userId, username, cp in self.get_counterpart_users():
             if cp:
                 revoke_roles(
-                    username=user.getId(),
+                    username=userId,
                     obj=target,
                     roles=['MSExpert'],
                     inherit=False,
                 )
+
+    def cache_get_users(fun, self, groupname):
+        import time
+        return (groupname, time.time() // 3600)
+
+    @cache(cache_get_users)
+    def get_users(self, groupname):
+        users = api.user.get_users(groupname=groupname)
+        return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
 
     def assignation_target(self):
         return aq_parent(aq_inner(self.context))
@@ -176,10 +186,10 @@ class AssignAnswererForm(BrowserView):
 
         def isMSE(u):
             target = self.assignation_target()
-            return 'MSExpert' in api.user.get_roles(user=u, obj=target, inherit=False)
+            return 'MSExpert' in api.user.get_roles(username=u, obj=target, inherit=False)
 
         try:
-            return [(u, isMSE(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+            return [(u[0], u[1], isMSE(u[0])) for u in self.get_users(groupname=groupname) if current_id != u]
         except api.user.GroupNotFoundError:
             from logging import getLogger
             log = getLogger(__name__)
@@ -270,10 +280,10 @@ class AssignCounterPartForm(BrowserView):
         """
         with api.env.adopt_roles(['Manager']):
             target = self.assignation_target()
-            for user, cp in self.get_counterpart_users():
+            for userId, username, cp in self.get_counterpart_users():
                 if cp:
                     revoke_roles(
-                        username=user.getId(),
+                        username=userId,
                         obj=target,
                         roles=['CounterPart'],
                         inherit=False,
@@ -287,6 +297,15 @@ class AssignCounterPartForm(BrowserView):
             'extranet-esd-esdreview-leadreview',
         ]
 
+    def cache_get_users(fun, self, groupname):
+        import time
+        return (groupname, time.time() // 3600)
+
+    @cache(cache_get_users)
+    def get_users(self, groupname):  
+        users = api.user.get_users(groupname=groupname)
+        return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
+
     def assignation_target(self):
         return aq_parent(aq_inner(self.context))
 
@@ -296,13 +315,13 @@ class AssignCounterPartForm(BrowserView):
 
         users = []
 
-        def isCP(u):
+        def isCP(userId):
             target = self.assignation_target()
-            return 'CounterPart' in api.user.get_roles(username=u.getId(), obj=target, inherit=False)
+            return 'CounterPart' in api.user.get_roles(username=userId, obj=target, inherit=False)
 
         for groupname in self.target_groupnames():
             try:
-                data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+                data = [(u[0], u[1], isCP(u[0])) for u in self.get_users(groupname) if current_id != u]
                 users.extend(data)
             except api.user.GroupNotFoundError:
                 from logging import getLogger
@@ -419,14 +438,23 @@ class AssignConclusionReviewerForm(BrowserView):
           Revoke all existing roles
         """
         target = self.assignation_target()
-        for user, cp in self.get_counterpart_users():
+        for userId, username, cp in self.get_counterpart_users():
             if cp:
                 revoke_roles(
-                    username=user.getId(),
+                    username=userId,
                     obj=target,
                     roles=['CounterPart'],
                     inherit=False,
                 )
+
+    def cache_get_users(fun, self, groupname):
+        import time
+        return (groupname, time.time() // 3600)
+
+    @cache(cache_get_users)
+    def get_users(self, groupname):  
+        users = api.user.get_users(groupname=groupname)
+        return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
 
     def assignation_target(self):
         return aq_inner(self.context)
@@ -447,11 +475,11 @@ class AssignConclusionReviewerForm(BrowserView):
 
         def isCP(u):
             target = self.assignation_target()
-            return 'CounterPart' in api.user.get_roles(user=u, obj=target, inherit=False)
+            return 'CounterPart' in api.user.get_roles(username=u, obj=target, inherit=False)
 
         for groupname in self.target_groupnames():
             try:
-                data = [(u, isCP(u)) for u in api.user.get_users(groupname=groupname) if current_id != u.getId()]
+                data = [(u[0], u[1], isCP(u[0])) for u in self.get_users(groupname=groupname) if current_id != u]
                 users.extend(data)
             except api.user.GroupNotFoundError:
                 from logging import getLogger

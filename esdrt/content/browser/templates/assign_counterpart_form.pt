@@ -49,9 +49,9 @@
                 data-placeholder="Click here or type the name to select counterparts">
                 <option
                   tal:repeat="member view/get_counterpart_users"
-                  tal:content="python:member[0].getProperty('fullname', member[0].getId())"
-                  tal:attributes="value python:member[0].getId();
-                                  selected python:member[1] and 'selected' or None;">
+                  tal:content="python: member[1]"
+                  tal:attributes="value python:member[0];
+                                  selected python:member[2] and 'selected' or None;">
                 </option>
 
               </select>
