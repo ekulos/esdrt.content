@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.40 (unreleased)
+1.40 (2015-09-22)
 -----------------
 
 - Missing fuel type [MikelS]
