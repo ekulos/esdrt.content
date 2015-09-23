@@ -741,7 +741,7 @@ class Observation(dexterity.Container):
                     item['state'] = 'Answer sent'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
-                elif item['review_state'] == 'phase1-expert-comments':
+                elif item['review_state'] == 'phase2-expert-comments':
                     item['state'] = 'MS expert comments requested'
                     item['role'] = "Member state coordinator"
                     question_wf.append(item)
