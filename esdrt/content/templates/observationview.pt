@@ -1214,14 +1214,14 @@
           id="add-answer-link"
           tal:attributes="href string:${here/absolute_url}/++add++CommentAnswer"
           title="To draft an answer and save it.You can request comments on your draft answer from your Member States expert(s) if needed or send your answer back to the review team without consulting your experts."
-          class="standardButton">
+          class="standardButton defaultWFButton">
             Create answer
         </a>
         <a href="./add-answer-and-request-comments"
           id="no-answer-link"
           tal:attributes="href string:${here/absolute_url}/add-answer-and-request-comments"
           title="To consult your Member States expert(s) without drafting an answer first. You ask your Member states experts to suggest an answer and you draft the answer after your discussions."
-          class="standardButton defaultWFButton">
+          class="standardButton">
             Request input for answer
         </a>
 
