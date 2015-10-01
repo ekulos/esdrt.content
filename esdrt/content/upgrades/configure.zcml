@@ -292,5 +292,12 @@
          source="37"
          destination="38"
          handler=".37_38.upgrade"
-         profile="esdrt.content:default" />                      
+         profile="esdrt.content:default" />     
+    <genericsetup:upgradeStep
+         title="Upgrade to 39."
+         description="Update index"
+         source="38"
+         destination="39"
+         handler=".38_39.upgrade"
+         profile="esdrt.content:default" />                            
 </configure>
