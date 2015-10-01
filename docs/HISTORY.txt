@@ -4,7 +4,10 @@ Changelog
 1.41 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Task #29238: Change colour of a button
+- Task #29229: Please change misleading guidance
+- Task #29223: Change visibility of draft observations
+- Task #29235: Please change colour of button
 
 
 1.40 (2015-09-22)
