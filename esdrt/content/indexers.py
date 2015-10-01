@@ -220,3 +220,18 @@ def reply_comments_by_mse(context):
 @indexer(IObservation)
 def observation_finalisation_reason(context):
     return context.observation_finalisation_reason()
+
+
+@indexer(IObservation)
+def observation_sent_to_msc(context):
+    try:
+        return context.observation_sent_to_msc()
+    except:
+        return False
+
+@indexer(IObservation)
+def observation_sent_to_mse(context):
+    try:
+        return context.observation_sent_to_mse()
+    except:
+        return False

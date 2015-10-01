@@ -78,6 +78,13 @@
     <indexed_attr value="observation_finalisation_reason" />
  </index>
 
+ <index name="observation_sent_to_msc" meta_type="BooleanIndex">
+    <indexed_attr value="observation_sent_to_msc" />
+ </index>
+
+ <index name="observation_sent_to_mse" meta_type="BooleanIndex">
+    <indexed_attr value="observation_sent_to_mse" />
+ </index>
 
  <column value="observation_status" />
  <column value="country" />

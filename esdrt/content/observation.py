@@ -909,6 +909,28 @@ class Observation(dexterity.Container):
 
         return False
 
+    def observation_sent_to_msc(self):
+        questions = self.get_values_cat('Question')
+        if questions:
+            question = questions[0]
+            winfo = question.workflow_history
+            state = self.get_status()
+            for witem in winfo.get('esd-question-review-workflow', []):
+                if witem.get('review_state', '').endswith('-pending'):
+                    return True
+        return False        
+
+    def observation_sent_to_mse(self):
+        questions = self.get_values_cat('Question')
+        if questions:
+            question = questions[0]
+            winfo = question.workflow_history
+            state = self.get_status()
+            for witem in winfo.get('esd-question-review-workflow', []):
+                if witem.get('review_state', '').endswith('-expert-comments'):
+                    return True
+        return False   
+
     def observation_phase(self):
         status = api.content.get_state(self)
         if status.startswith('phase1-'):

@@ -55,21 +55,63 @@ class ReviewFolderView(grok.View):
                     'phase1-closed',
                     'phase2-closed'
                 ]
-            # if status == "draft":
-            #     query['review_state'] = [
-            #         'phase1-draft',
-            #         'phase2-draft'
-            #     ]
-            # elif status == "conclusion-1":
-            #     query['review_state'] = [
-            #         'phase1-conclusions',
-            #         'phase1-conclusion-discussion'
-            #     ]
-            # elif status == "conclusion-2":
-            #     query['review_state'] = [
-            #         'phase2-conclusions',
-            #         'phase2-conclusion-discussion'
-            #     ]
+            else:
+                query['review_state'] = [
+                    'phase1-pending',
+                    'phase2-pending',
+                    'phase1-close-requested',
+                    'phase2-close-requested',
+                    'phase1-draft',
+                    'phase2-draft',
+                    'phase1-conclusions',
+                    'phase1-conclusion-discussion',
+                    'phase2-conclusions',
+                    'phase2-conclusion-discussion',
+                ]
+
+        if reviewYear != "":
+            query['review_year'] = reviewYear
+        if inventoryYear != "":
+            query['year'] = inventoryYear
+        if highlights != "":
+            query['highlight'] = highlights.split(",")
+        if freeText != "":
+            query['SearchableText'] = freeText
+
+        return [b.getObject() for b in catalog(query)]
+
+    @memoize
+    def get_questions(self):
+        country = self.request.form.get('country', '')
+        reviewYear = self.request.form.get('reviewYear', '')
+        inventoryYear = self.request.form.get('inventoryYear', '')
+        status = self.request.form.get('status', '')
+        highlights = self.request.form.get('highlights', '')
+        freeText = self.request.form.get('freeText', '')
+
+        catalog = api.portal.get_tool('portal_catalog')
+        path = '/'.join(self.context.getPhysicalPath())
+        query = {
+            'path': path,
+            'portal_type': ['Observation'],
+            'sort_on': 'modified',
+            'sort_order': 'reverse',
+        }
+
+        if self.is_member_state_coordinator():
+            query['observation_sent_to_msc'] = bool(True)
+
+        if self.is_member_state_expert():
+            query['observation_sent_to_mse'] = bool(True)
+
+        if (country != ""):
+            query['Country'] = country
+        if (status != ""):
+            if status == "closed":
+                query['review_state'] = [
+                    'phase1-closed',
+                    'phase2-closed'
+                ]
             else:
                 query['review_state'] = [
                     'phase1-pending',
@@ -138,6 +180,13 @@ class ReviewFolderView(grok.View):
         inventory_years = catalog.uniqueValuesFor('year')
         return inventory_years
 
+    def is_member_state_coordinator(self):
+        user = api.user.get_current()
+        return "extranet-esd-countries-msa" in user.getGroups()
+
+    def is_member_state_expert(self):
+        user = api.user.get_current()
+        return "extranet-esd-countries-msexpert" in user.getGroups()
 
 def _item_user(fun, self, user, item):
     return (user.getId(), item.getId(), item.modified())
