@@ -135,7 +135,10 @@
             width:'50%'
         });
 
-
+        if ($(".commentanswer:last .answerContent").text() == "For MS coordinator: please draft, edit and finalise your consolidated reply here."){
+          $(".standardButton:contains('Edit answer')").addClass("defaultWFButton");
+          $(".standardButton:contains('Submit Answer')").removeClass("defaultWFButton")
+        }
 
 
 
@@ -893,7 +896,7 @@
          </span>
         </div>
         <!--h3 tal:condition="question/can_edit">Current text</h3-->
-        <div tal:content="structure question/text/output|question/text|string:">
+        <div tal:content="structure question/text/output|question/text|string:" class="answerContent">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </div>
         <div class="files" tal:condition="question/get_files">
