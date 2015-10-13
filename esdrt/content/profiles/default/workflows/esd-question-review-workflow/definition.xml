@@ -1252,7 +1252,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=phase1-answer-to-lr" category="workflow" icon="">Submit Answer</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
-   <guard-expression>object/one_pending_answer</guard-expression>
+   <guard-expression>object/has_answers</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-approve-question" title="Approve question and send" new_state="phase1-pending" trigger="USER" before_script="" after_script="">
@@ -1271,7 +1271,7 @@
   <action url="%(content_url)s/assign_answerer_form?workflow_action=phase1-assign-answerer" category="workflow" icon="">Request Comments</action>
   <guard>
    <guard-role>MSAuthority</guard-role>
-   <guard-expression>object/one_pending_answer</guard-expression>
+   <guard-expression>object/has_answers</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase1-close" title="Finish Observation" new_state="phase1-closed" trigger="USER" before_script="" after_script="">
