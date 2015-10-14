@@ -4,7 +4,9 @@ Changelog
 1.42 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Task #29664: please add another to the CRF categories
+- Bug #29308: Observation look locked. Remove validation that allows only the answer author to submit it
+-Task #29635: missing fuel type: peat
 
 
 1.41 (2015-10-01)
