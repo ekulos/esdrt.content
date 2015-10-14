@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.42 (unreleased)
+1.42 (2015-10-14)
 -----------------
 
 - Task #29664: please add another to the CRF categories
