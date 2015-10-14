@@ -299,5 +299,12 @@
          source="38"
          destination="39"
          handler=".38_39.upgrade"
-         profile="esdrt.content:default" />                            
+         profile="esdrt.content:default" />    
+    <genericsetup:upgradeStep
+         title="Upgrade to 40."
+         description="Update workflow"
+         source="39"
+         destination="40"
+         handler=".39_40.upgrade"
+         profile="esdrt.content:default" />                                    
 </configure>

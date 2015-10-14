@@ -15,8 +15,5 @@ def upgrade(context, logger=None):
 def reindex_index(context, logger):
     logger.info('Reindexing indexes')
     catalog = getToolByName(context, 'portal_catalog')
-    catalog.reindexIndex(name='observation_sent_to_msc',
-        REQUEST=getRequest())
-    catalog.reindexIndex(name='observation_sent_to_mse',
-        REQUEST=getRequest())
+    catalog.clearFindAndRebuild()
 
