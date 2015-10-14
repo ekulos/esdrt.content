@@ -152,6 +152,12 @@ CRF_CODES = {
     "name": "1B, 1C Fugitive emissions, CO2 transport and storage",
     "title": "1B2a Fugitive Emissions from Fuels - Oil and Natural Gas and Other Emissions from Energy Production - Oil"
   },
+  "1B2c": {
+    "ldap": "sector4",
+    "code": "1B2c",
+    "name": "1B, 1C Fugitive emissions, CO2 transport and storage",
+    "title": "1B2c Venting Flaring"
+  },
   "3I": {
     "ldap": "sector9",
     "code": "3I",
