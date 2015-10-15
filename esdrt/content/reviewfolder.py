@@ -47,56 +47,6 @@ class ReviewFolderView(grok.View):
             'sort_on': 'modified',
             'sort_order': 'reverse',
         }
-        if (country != ""):
-            query['Country'] = country
-        if (status != ""):
-            if status == "closed":
-                query['review_state'] = [
-                    'phase1-closed',
-                    'phase2-closed'
-                ]
-            else:
-                query['review_state'] = [
-                    'phase1-pending',
-                    'phase2-pending',
-                    'phase1-close-requested',
-                    'phase2-close-requested',
-                    'phase1-draft',
-                    'phase2-draft',
-                    'phase1-conclusions',
-                    'phase1-conclusion-discussion',
-                    'phase2-conclusions',
-                    'phase2-conclusion-discussion',
-                ]
-
-        if reviewYear != "":
-            query['review_year'] = reviewYear
-        if inventoryYear != "":
-            query['year'] = inventoryYear
-        if highlights != "":
-            query['highlight'] = highlights.split(",")
-        if freeText != "":
-            query['SearchableText'] = freeText
-
-        return [b.getObject() for b in catalog(query)]
-
-    @memoize
-    def get_questions(self):
-        country = self.request.form.get('country', '')
-        reviewYear = self.request.form.get('reviewYear', '')
-        inventoryYear = self.request.form.get('inventoryYear', '')
-        status = self.request.form.get('status', '')
-        highlights = self.request.form.get('highlights', '')
-        freeText = self.request.form.get('freeText', '')
-
-        catalog = api.portal.get_tool('portal_catalog')
-        path = '/'.join(self.context.getPhysicalPath())
-        query = {
-            'path': path,
-            'portal_type': ['Observation'],
-            'sort_on': 'modified',
-            'sort_order': 'reverse',
-        }
 
         if self.is_member_state_coordinator():
             query['observation_sent_to_msc'] = bool(True)
