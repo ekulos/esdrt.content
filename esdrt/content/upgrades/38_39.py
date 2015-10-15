@@ -13,6 +13,8 @@ def upgrade(context, logger=None):
 
 
 def reindex_index(context, logger):
+    setup = getToolByName(context, 'portal_setup')
+    setup.runImportStepFromProfile(PROFILE_ID, 'catalog')	
     logger.info('Reindexing indexes')
     catalog = getToolByName(context, 'portal_catalog')
     catalog.clearFindAndRebuild()
