@@ -205,7 +205,7 @@
       <div id="observations">
         <tal:block tal:define="liste python:view.get_questions();
              Batch python:modules['Products.CMFPlone'].Batch;
-             b_size python:10;
+             b_size python:20;
              b_start python:0;
              b_start request/b_start | b_start;
              batch python:Batch(liste, b_size, int(b_start), orphan=1);"
