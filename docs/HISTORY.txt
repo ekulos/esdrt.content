@@ -4,7 +4,7 @@ Changelog
 1.43 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Higher default number of observations in list
 
 
 1.42.2 (2015-10-15)
