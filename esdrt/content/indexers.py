@@ -225,13 +225,29 @@ def observation_finalisation_reason(context):
 @indexer(IObservation)
 def observation_sent_to_msc(context):
     try:
-        return context.observation_sent_to_msc()
+        #return context.observation_sent_to_msc()
+        questions = context.values(['Question'])
+        if questions:
+            question = questions[0]
+            winfo = question.workflow_history
+            for witem in winfo.get('esd-question-review-workflow', []):
+                if witem.get('review_state', '').endswith('-pending'):
+                    return True
+        return False                
     except:
         return False
 
 @indexer(IObservation)
 def observation_sent_to_mse(context):
     try:
-        return context.observation_sent_to_mse()
+        #return context.observation_sent_to_mse()
+        questions = context.values(['Question'])
+        if questions:
+            question = questions[0]
+            winfo = question.workflow_history
+            for witem in winfo.get('esd-question-review-workflow', []):
+                if witem.get('review_state', '').endswith('-expert-comments'):
+                    return True
+        return False                
     except:
-        return False
+        return False 
