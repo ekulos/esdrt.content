@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.44 (unreleased)
+1.44 (2015-10-20)
 -----------------
 
 - Avoid creation of two or more draft answers
