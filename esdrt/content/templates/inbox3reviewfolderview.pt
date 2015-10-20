@@ -697,7 +697,7 @@
               </div>
             </div>
             <tal:block tal:condition="view/get_waiting_for_comment_from_counterparts_for_conclusion"
-              tal:define="observations view/get_waiting_for_comment_from_counterparts_for_question;
+              tal:define="observations view/get_waiting_for_comment_from_counterparts_for_conclusion;
                   b_size python:5;
                   b_size request/b_size | b_size;
                   b_start8 python:0;
