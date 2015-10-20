@@ -38,6 +38,7 @@ from zope.interface import Invalid
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
+from esdrt.content import MessageFactory as _
 
 import datetime
 
@@ -499,18 +500,34 @@ class Observation(dexterity.Container):
         return ['Unknown', 'observationIcon']
 
     def observation_status(self):
-        status = self.get_status()
-        if status in ['phase1-draft', 'phase2-draft']:
-            return 'draft'
-        elif status in ['phase1-closed', 'phase2-closed']:
-            return 'closed'
-        elif status in ['phase1-close-requested', 'phase2-close-requested']:
-            return 'open'
-        elif status in ['phase1-conclusions', 'phase1-conclusion-discussion',
-                        'phase2-conclusions', 'phase2-conclusion-discussion']:
-            return 'conclusion'
+        status = self.observation_question_status()
+        if status in ['phase1-draft', 'phase2-draft',
+                      'phase1-counterpart-comments', 'phase2-counterpart-comments',
+                      'observation-phase1-draft', 'observation-phase2-draft']:
+            return 'SRRE'
+        elif status in ['phase1-drafted', 'phase2-drafted',
+                        'phase1-recalled-lr', 'phase2-recalled-lr']:
+            return 'LRQE'
+        elif status in ['phase1-pending', 'phase2-pending',
+                        'phase1-pending-answer-drafting', 'phase1-pending-answer-drafting',
+                        'phase1-expert-comments', 'phase2-expert-comments',
+                        'phase1-recalled-msa', 'phase1-recalled-msa']:
+            return 'MSC'
+        elif status in ['phase1-answered', 'phase2-answered']:
+            return 'answered'
+        elif status in ['phase1-conclusions', 'phase2-conclusions',
+                        'phase1-conclusion-discussion', 'phase2-conclusion-discussion',
+                        'phase1-close-requested', 'phase2-close-requested']:
+            return 'conclusions'            
         else:
-            return 'open'
+            return status
+
+    def observation_step(self):
+        status = self.observation_question_status()
+        if status.startswith('phase1'):
+            return 'step1'
+        else:
+            return 'step2'
 
     def overview_status(self):
         status = self.get_status()
@@ -1461,7 +1478,19 @@ class AddAnswerAndRequestComments(grok.View):
         if questions:
             context = questions[0]
         else:
-            raise ActionExecutionError(Invalid(u"Invalid context"))
+            raise ActionExecutionError(Invalid(u"Invalid context")) 
+
+        comments = [q for q in context.values() if q.portal_type == 'Comment']
+        answers = [q for q in context.values() if q.portal_type == 'CommentAnswer']
+
+        if (len(comments) == len(answers)):
+            status = IStatusMessage(self.request)
+            msg = _(u'There is a draft answer created for the question.')
+            status.addStatusMessage(msg, "error")
+            return self.request.response.redirect(observation.absolute_url())
+
+        context = questions[0]
+        
         text = u'For MS coordinator: please draft, edit and finalise your consolidated reply here.'
 
         id = str(int(time()))
