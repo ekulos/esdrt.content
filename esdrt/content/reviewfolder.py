@@ -9,6 +9,7 @@ from plone.memoize.view import memoize
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
 from eea.cache import cache
+from plone.batching import Batch
 
 
 
@@ -812,6 +813,12 @@ class Inbox3ReviewFolderView(grok.View):
     grok.require('zope2.View')
     grok.name('inboxview')
 
+    def batch(self, observations, b_size, b_start, orphan, b_start_str):
+        observationsBatch = Batch(observations, int(b_size), int(b_start), orphan=1)
+        observationsBatch.batchformkeys = []
+        observationsBatch.b_start_str = b_start_str
+        return observationsBatch
+
     @cache(_catalog_change)
     @timeit
     def get_all_observations(self, freeText):
@@ -1384,6 +1391,12 @@ class FinalisedFolderView(grok.View):
     grok.require('zope2.View')
     grok.name('finalisedfolderview')
 
+    def batch(self, observations, b_size, b_start, orphan, b_start_str):
+        observationsBatch = Batch(observations, int(b_size), int(b_start), orphan=1)
+        observationsBatch.batchformkeys = []
+        observationsBatch.b_start_str = b_start_str
+        return observationsBatch
+
     @cache(_catalog_change)
     @timeit
     def get_all_observations(self, freeText):
@@ -1572,7 +1585,7 @@ class FinalisedFolderView(grok.View):
         user = api.user.get_current()
         user_groups = user.getGroups()
         is_qe = 'extranet-esd-ghginv-qualityexpert' in user_groups
-        is_lr = 'extranet-esd-esdreview-leadreview' in user_groups
+        is_lr = 'extranet-esd-esdreview-leadreview' in user_groups       
         return is_qe or is_lr
 
     def is_member_state_coordinator(self):
