@@ -1499,13 +1499,7 @@
                 <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <tal:block tal:condition="view/get_questions_to_be_answered"
-              tal:define="observations view/get_questions_to_be_answered;
-                  b_size python:5;
-                  b_size request/b_size | b_size;
-                  b_start17 python:0;
-                  b_start17 request/b_start17 | b_start17;
-                  batch17 python:view.batch(observations, int(b_size), int(b_start17), orphan=1, b_start_str='b_start17');">              
+            <tal:block tal:condition="view/get_questions_to_be_answered">              
             <table class="observationList listing my-actions questions-to-be-answered">
               <thead>
                 <tr>
@@ -1528,7 +1522,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item batch17">
+                <tal:block tal:repeat="item view/get_questions_to_be_answered">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
@@ -1572,9 +1566,6 @@
                 </tal:block>
               </tbody>
             </table>
-            <tal:batchnavigation
-                  define="batchnavigation nocall:context/@@batchnavigation"
-                  replace="structure python:batchnavigation(batch17)" />
             </tal:block>               
           </div>
           <div class="my-actions inboxSection">
@@ -1584,13 +1575,7 @@
                 <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <tal:block tal:condition="view/get_questions_with_comments_received_from_mse"
-              tal:define="observations view/get_questions_with_comments_received_from_mse;
-                  b_size python:5;
-                  b_size request/b_size | b_size;
-                  b_start18 python:0;
-                  b_start18 request/b_start18 | b_start18;
-                  batch18 python:view.batch(observations, int(b_size), int(b_start18), orphan=1, b_start_str='b_start18');">               
+            <tal:block tal:condition="view/get_questions_with_comments_received_from_mse">               
             <table class="observationList listing my-actions questions-with-comments-received-from-mse">
               <thead>
                 <tr>
@@ -1613,7 +1598,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item batch18">
+                <tal:block tal:repeat="item view/get_questions_with_comments_received_from_mse">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
@@ -1657,9 +1642,6 @@
                 </tal:block>
               </tbody>
             </table>
-            <tal:batchnavigation
-                  define="batchnavigation nocall:context/@@batchnavigation"
-                  replace="structure python:batchnavigation(batch18)" />
             </tal:block>               
           </div>
           <div>
@@ -1677,13 +1659,7 @@
                 <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <tal:block tal:condition="view/get_answers_requiring_comments_from_mse"
-              tal:define="observations view/get_answers_requiring_comments_from_mse;
-                  b_size python:5;
-                  b_size request/b_size | b_size;
-                  b_start19 python:0;
-                  b_start19 request/b_start19 | b_start19;
-                  batch19 python:view.batch(observations, int(b_size), int(b_start19), orphan=1, b_start_str='b_start19');">               
+            <tal:block tal:condition="view/get_answers_requiring_comments_from_mse">               
             <table class="observationList listing mse-actions answers-requiring-comments-from-mse">
               <thead>
                 <tr>
@@ -1706,7 +1682,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item batch19">
+                <tal:block tal:repeat="item view/get_answers_requiring_comments_from_mse">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
@@ -1750,9 +1726,6 @@
                 </tal:block>
               </tbody>
             </table>
-            <tal:batchnavigation
-                  define="batchnavigation nocall:context/@@batchnavigation"
-                  replace="structure python:batchnavigation(batch19)" />
             </tal:block>              
           </div>
           <div>
@@ -1770,13 +1743,7 @@
                 <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <tal:block tal:condition="view/get_answers_sent_to_se_re"
-              tal:define="observations view/get_answers_sent_to_se_re;
-                  b_size python:5;
-                  b_size request/b_size | b_size;
-                  b_start20 python:0;
-                  b_start20 request/b_start20 | b_start20;
-                  batch20 python:view.batch(observations, int(b_size), int(b_start20), orphan=1, b_start_str='b_start20');">               
+            <tal:block tal:condition="view/get_answers_sent_to_se_re">               
             <table class="observationList listing se-re-actions answers-sent-to-se-re">
               <thead>
                 <tr>
@@ -1799,7 +1766,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item batch20">
+                <tal:block tal:repeat="item view/get_answers_sent_to_se_re">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
@@ -1843,9 +1810,6 @@
                 </tal:block>
               </tbody>
             </table>
-            <tal:batchnavigation
-                  define="batchnavigation nocall:context/@@batchnavigation"
-                  replace="structure python:batchnavigation(batch20)" />
             </tal:block>              
           </div>
         </tal:block>
@@ -1866,13 +1830,7 @@
                 <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <tal:block tal:condition="view/get_questions_with_comments_for_answer_needed_by_msc"
-              tal:define="observations view/get_questions_with_comments_for_answer_needed_by_msc;
-                  b_size python:5;
-                  b_size request/b_size | b_size;
-                  b_start21 python:0;
-                  b_start21 request/b_start21 | b_start21;
-                  batch21 python:view.batch(observations, int(b_size), int(b_start21), orphan=1, b_start_str='b_start21');">              
+            <tal:block tal:condition="view/get_questions_with_comments_for_answer_needed_by_msc">              
             <table class="observationList listing my-actions questions-with-comments-for-answer-needed-by-msc">
               <thead>
                 <tr>
@@ -1895,7 +1853,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item batch21">
+                <tal:block tal:repeat="item view/get_questions_with_comments_for_answer_needed_by_msc">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
@@ -1939,9 +1897,6 @@
                 </tal:block>
               </tbody>
             </table>
-            <tal:batchnavigation
-                  define="batchnavigation nocall:context/@@batchnavigation"
-                  replace="structure python:batchnavigation(batch21)" />
             </tal:block>              
           </div>
           <div>
@@ -1959,13 +1914,7 @@
                 <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <tal:block tal:condition="view/get_observations_with_my_comments"
-              tal:define="observations view/get_observations_with_my_comments;
-                  b_size python:5;
-                  b_size request/b_size | b_size;
-                  b_start22 python:0;
-                  b_start22 request/b_start22 | b_start22;
-                  batch22 python:view.batch(observations, int(b_size), int(b_start22), orphan=1, b_start_str='b_start22');">               
+            <tal:block tal:condition="view/get_observations_with_my_comments">               
             <table class="observationList listing msc-actions observations-with-my-comments">
               <thead>
                 <tr>
@@ -1988,7 +1937,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item batch22">
+                <tal:block tal:repeat="item view/get_observations_with_my_comments">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
@@ -2032,9 +1981,6 @@
                 </tal:block>
               </tbody>
             </table>
-            <tal:batchnavigation
-                  define="batchnavigation nocall:context/@@batchnavigation"
-                  replace="structure python:batchnavigation(batch22)" />
             </tal:block>               
           </div>
           <div>
@@ -2052,13 +1998,7 @@
                 <span class="eea-icon eea-icon-left"></span>
               </div>
             </div>
-            <tal:block tal:condition="view/get_observations_with_my_comments_sent_to_se_re"
-              tal:define="observations view/get_observations_with_my_comments_sent_to_se_re;
-                  b_size python:5;
-                  b_size request/b_size | b_size;
-                  b_start23 python:0;
-                  b_start23 request/b_start23 | b_start23;
-                  batch23 python:view.batch(observations, int(b_size), int(b_start23), orphan=1, b_start_str='b_start23');">               
+            <tal:block tal:condition="view/get_observations_with_my_comments_sent_to_se_re">               
             <table class="observationList listing sr-re-actions observations-with-my-comments-sent-to-se-re">
               <thead>
                 <tr>
@@ -2081,7 +2021,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item batch23">
+                <tal:block tal:repeat="item view/get_observations_with_my_comments_sent_to_se_re">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
@@ -2125,9 +2065,6 @@
                 </tal:block>
               </tbody>
             </table>
-            <tal:batchnavigation
-                  define="batchnavigation nocall:context/@@batchnavigation"
-                  replace="structure python:batchnavigation(batch23)" />
             </tal:block>              
           </div>
         </tal:block>
