@@ -736,3 +736,37 @@ span.envelope:before{
 body.portaltype-conclusion #form-buttons-cancel {
 	display: none;
 }
+#statisticsPhase {   
+    margin-left: auto; 
+    margin-right: auto;
+	text-align: center;
+}
+#statisticsPhase a {
+	margin-left:10%;
+	zoom: 1.5;
+}
+#statisticsPhase a.selected img {
+	border: 2px solid blue;
+}
+
+.template-statistics table tbody tr:even{
+	background-color: white;
+}
+
+.template-statistics table thead tr th,
+.template-statistics table tfoot tr td{
+	background-color: rgb(221, 221, 221) !important;
+	font-weight: bold !important;
+	color:black;
+}
+
+.observation_highlights_pgf th,
+.observation_highlights_pgf td,
+.observation_highlights_psi th,
+.observation_highlights_psi td,
+.observation_highlights_ptc th,
+.observation_highlights_ptc td
+ {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+}

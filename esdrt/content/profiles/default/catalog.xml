@@ -86,12 +86,21 @@
     <indexed_attr value="observation_sent_to_mse" />
  </index>
 
+ <index name="observation_status" meta_type="FieldIndex">
+    <indexed_attr value="observation_status" />
+ </index>
+
+ <index name="observation_step" meta_type="FieldIndex">
+    <indexed_attr value="observation_step" />
+ </index> 
+
  <column value="observation_status" />
  <column value="country" />
  <column value="get_ghg_source_sectors" />
  <column value="get_status" />
  <column value="get_crf_code" />
  <column value="get_highlight" />
+ <column value="observation_step" />
 
 
 </object>

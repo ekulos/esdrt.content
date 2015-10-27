@@ -518,16 +518,25 @@ class Observation(dexterity.Container):
         elif status in ['phase1-conclusions', 'phase2-conclusions',
                         'phase1-conclusion-discussion', 'phase2-conclusion-discussion',
                         'phase1-close-requested', 'phase2-close-requested']:
-            return 'conclusions'            
+            return 'conclusions'  
+        elif status in ['phase1-closed', 'phase2-closed']:
+            if status == 'phase1-closed':
+                conclusion = self.get_conclusion()
+                conclusion_reason = conclusion and conclusion.closing_reason or ' '
+                if (conclusion_reason == 'no-conclusion-yet'):
+                    return "SRRE"
+                else:
+                    return "finalised"
+            elif status == 'phase2-closed':
+                conclusion = self.get_conclusion_phase2()
+                conclusion_reason =  conclusion and conclusion.closing_reason or ' '
+                if (conclusion_reason == 'no-conclusion-yet'):
+                    return "SRRE"
+                else:
+                    return "finalised"
         else:
             return status
 
-    def observation_step(self):
-        status = self.observation_question_status()
-        if status.startswith('phase1'):
-            return 'step1'
-        else:
-            return 'step2'
 
     def overview_status(self):
         status = self.get_status()
@@ -850,14 +859,14 @@ class Observation(dexterity.Container):
                 return con_phase2.closing_reason == "technical-correction"
         return False
 
-    def observation_finalisation_reason(self):
-        status = self.get_status()
-        if status == 'phase1-closed':
-            conclusion = self.get_conclusion()
-            return conclusion and conclusion.closing_reason or ' '
-        elif status == 'phase2-closed':
-            conclusion = self.get_conclusion_phase2()
-            return conclusion and conclusion.closing_reason or ' '
+    #def observation_finalisation_reason(self):
+    #    status = self.get_status()
+    #    if status == 'phase1-closed':
+    #        conclusion = self.get_conclusion()
+    #        return conclusion and conclusion.closing_reason or ' '
+    #    elif status == 'phase2-closed':
+    #        conclusion = self.get_conclusion_phase2()
+    #        return conclusion and conclusion.closing_reason or ' '
 
     def get_conclusion(self):
         conclusions = self.get_values_cat('Conclusion')

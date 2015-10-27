@@ -188,10 +188,79 @@ def to_unicode(value):
     return []
 
 
+def question_status(context):
+    if context.get_status() != 'phase1-pending' and context.get_status() != 'phase2-pending':
+        return context.get_status()
+    else:
+        questions = [c for c in context.values() if c.portal_type == "Question"]
+        if questions:
+            question = questions[0]
+            state = api.content.get_state(question)
+            return state
+        else:
+            if context.get_status().startswith('phase1'):
+                return "observation-phase1-draft"
+            else:
+                return "observation-phase2-draft"    
+
 @indexer(IObservation)
 def observation_question_status(context):
-    return context.observation_question_status()
+    #return context.observation_question_status()
+    return question_status(context)
 
+@indexer(IObservation)
+def observation_status(context):
+    #return context.observation_status()
+    status = question_status(context)
+    if status in ['phase1-draft', 'phase2-draft',
+                  'phase1-counterpart-comments', 'phase2-counterpart-comments',
+                  'observation-phase1-draft', 'observation-phase2-draft']:
+        return 'SRRE'
+    elif status in ['phase1-drafted', 'phase2-drafted',
+                    'phase1-recalled-lr', 'phase2-recalled-lr']:
+        return 'LRQE'
+    elif status in ['phase1-pending', 'phase2-pending',
+                    'phase1-pending-answer-drafting', 'phase1-pending-answer-drafting',
+                    'phase1-expert-comments', 'phase2-expert-comments',
+                    'phase1-recalled-msa', 'phase1-recalled-msa']:
+        return 'MSC'
+    elif status in ['phase1-answered', 'phase2-answered']:
+        return 'answered'
+    elif status in ['phase1-conclusions', 'phase2-conclusions',
+                    'phase1-conclusion-discussion', 'phase2-conclusion-discussion',
+                    'phase1-close-requested', 'phase2-close-requested']:
+        return 'conclusions'  
+    elif status in ['phase1-closed', 'phase2-closed']:
+        if status == 'phase1-closed':
+            conclusion = context.get_conclusion()
+            conclusion_reason = conclusion and conclusion.closing_reason or ' '
+            if (conclusion_reason == 'no-conclusion-yet'):
+                return "SRRE"
+            else:
+                return "finalised"
+        elif status == 'phase2-closed':
+            conclusion = context.get_conclusion_phase2()
+            conclusion_reason =  conclusion and conclusion.closing_reason or ' '
+            if (conclusion_reason == 'no-conclusion-yet'):
+                return "SRRE"
+            else:
+                return "finalised"
+    else:
+        return status    
+
+@indexer(IObservation)
+def observation_step(context):
+    try:
+        #return context.observation_step()
+        status = context.get_status()
+        if status.startswith("phase1"):
+            return "step1"
+        elif status.startwith("phase2"):
+            return "step2"
+        else:
+            return status
+    except:
+        return None
 
 @indexer(IObservation)
 def last_answer_has_replies(context):
@@ -217,9 +286,6 @@ def reply_comments_by_mse(context):
         return False
 
 
-@indexer(IObservation)
-def observation_finalisation_reason(context):
-    return context.observation_finalisation_reason()
 
 
 @indexer(IObservation)
@@ -233,9 +299,9 @@ def observation_sent_to_msc(context):
             for witem in winfo.get('esd-question-review-workflow', []):
                 if witem.get('review_state', '').endswith('-pending'):
                     return True
-        return False                
-    except:
         return False
+    except:
+        return False     
 
 @indexer(IObservation)
 def observation_sent_to_mse(context):
@@ -248,6 +314,21 @@ def observation_sent_to_mse(context):
             for witem in winfo.get('esd-question-review-workflow', []):
                 if witem.get('review_state', '').endswith('-expert-comments'):
                     return True
-        return False                
+        return False
     except:
-        return False 
+        return False
+
+@indexer(IObservation)
+def observation_finalisation_reason(context):
+    try:
+        status = context.get_status()
+        if status == 'phase1-closed':
+            conclusions = [c for c in context.values() if c.portal_type == "Conclusion"]
+            return conclusions[0] and conclusions[0].closing_reason or ' '
+        elif status == 'phase2-closed':
+            conclusions = [c for c in context.values() if c.portal_type == "ConclusionsPhase2"]
+            return conclusions[0] and conclusions[0].closing_reason or ' '
+        else:
+            return None
+    except:
+        return None
