@@ -17,7 +17,7 @@ grok.templatedir('templates')
 class StatisticsView(grok.View):
     grok.context(IReviewFolder)
     grok.name('statistics')
-    grok.require('zope2.View')
+    grok.require('cmf.ManagePortal')
 
     def update(self):
         
@@ -222,7 +222,7 @@ class StatisticsView(grok.View):
 class DownloadStatisticsView(grok.View):
     grok.context(IReviewFolder)
     grok.name('download-statistics')
-    grok.require('zope2.View')
+    grok.require('cmf.ManagePortal')
 
     def get_all_observations(self):
         catalog = getToolByName(self.context, 'portal_catalog')
