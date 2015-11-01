@@ -4,7 +4,7 @@ Changelog
 1.46 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Add missing metadata
 
 
 1.45 (2015-11-01)
