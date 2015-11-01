@@ -101,6 +101,6 @@
  <column value="get_crf_code" />
  <column value="get_highlight" />
  <column value="observation_step" />
-
+ <column value="observation_finalisation_reason" />
 
 </object>
