@@ -4,7 +4,10 @@ Changelog
 1.45 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Task #30190: Add reason for conclusion and change text
+- Update statistics
+- Paginate 'My view'
+- Export statistics to excel
 
 
 1.44.1 (2015-10-20)
