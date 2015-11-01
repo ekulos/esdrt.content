@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.45 (unreleased)
+1.45 (2015-11-01)
 -----------------
 
 - Task #30190: Add reason for conclusion and change text
