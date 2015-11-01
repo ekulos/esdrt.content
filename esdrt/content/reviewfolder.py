@@ -849,13 +849,13 @@ class Inbox3ReviewFolderView(grok.View):
             query['SearchableText'] = freeText
 
         query.update(kw)
-        from logging import getLogger
-        log = getLogger(__name__)
+        #from logging import getLogger
+        #log = getLogger(__name__)
         if rolecheck is None:
-            log.info('Querying Catalog: %s' % query)
+            #log.info('Querying Catalog: %s' % query)
             return [b.getObject() for b in catalog.searchResults(query)]
         else:
-            log.info('Querying Catalog with Rolecheck %s: %s ' % (rolecheck, query))
+            #log.info('Querying Catalog with Rolecheck %s: %s ' % (rolecheck, query))
 
             def makefilter(rolename):
                 """
@@ -1427,13 +1427,13 @@ class FinalisedFolderView(grok.View):
             query['SearchableText'] = freeText
 
         query.update(kw)
-        from logging import getLogger
-        log = getLogger(__name__)
+        #from logging import getLogger
+        #log = getLogger(__name__)
         if rolecheck is None:
-            log.info('Querying Catalog: %s' % query)
+            #log.info('Querying Catalog: %s' % query)
             return [b.getObject() for b in catalog.searchResults(query)]
         else:
-            log.info('Querying Catalog with Rolecheck %s: %s ' % (rolecheck, query))
+            #log.info('Querying Catalog with Rolecheck %s: %s ' % (rolecheck, query))
 
             def makefilter(rolename):
                 """
