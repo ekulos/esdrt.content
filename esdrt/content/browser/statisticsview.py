@@ -172,14 +172,14 @@ class StatisticsView(grok.View):
         return self._generic_observation(
             key='country',
             value='finalisation_reason',
-            columns=['no-conclusion-yet1', 'no-response-needed', 'partly-resolved', 'resolved', 'unresolved']
+            columns=['no-conclusion-yet', 'no-response-needed', 'partly-resolved', 'resolved', 'unresolved', 'significant-issue']
         )
 
     def finalised_reason_per_sector(self):
         return self._generic_observation(
             key='sector',
             value='finalisation_reason',
-            columns=['no-conclusion-yet', 'no-response-needed', 'partly-resolved', 'resolved', 'unresolved']
+            columns=['no-conclusion-yet', 'no-response-needed', 'partly-resolved', 'resolved', 'unresolved', 'significant-issue']
         )
 
     def question_status_per_country(self):
@@ -400,17 +400,18 @@ class DownloadStatisticsView(grok.View):
         observations = self._generic_observation(
             key='country',
             value='finalisation_reason',
-            columns=['no-conclusion-yet1', 'no-response-needed', 'partly-resolved', 'resolved', 'unresolved']
+            columns=['no-conclusion-yet', 'no-response-needed', 'partly-resolved', 'resolved', 'unresolved', 'significant-issue']
         ) 
         for observation in observations:
             data.append([observation['country'], 
-                observation['no-conclusion-yet1'],
+                observation['no-conclusion-yet'],
                 observation['no-response-needed'],
                 observation['partly-resolved'],
                 observation['resolved'], 
                 observation['unresolved'],
+                observation['significant-issue'],
                 observation['sum']])
-        data.headers = ['Country', 'No conclusion yet', 'No response needed', 'Party resolved', 'Resolved', 'Unresolved', 'Sum']  
+        data.headers = ['Country', 'No conclusion yet', 'No response needed', 'Party resolved', 'Resolved', 'Unresolved', 'Significant issue', 'Sum']  
 
         return data 
 
@@ -421,7 +422,7 @@ class DownloadStatisticsView(grok.View):
         observations = self._generic_observation(
             key='sector',
             value='finalisation_reason',
-            columns=['no-conclusion-yet', 'no-response-needed', 'partly-resolved', 'resolved', 'unresolved']
+            columns=['no-conclusion-yet', 'no-response-needed', 'partly-resolved', 'resolved', 'unresolved', 'significant-issue']
         )
         for observation in observations:
             data.append([observation['sector'], 
@@ -430,8 +431,9 @@ class DownloadStatisticsView(grok.View):
                 observation['partly-resolved'],
                 observation['resolved'], 
                 observation['unresolved'],
+                observation['significant-issue'],
                 observation['sum']])
-        data.headers = ['Sector', 'No conclusion yet', 'No response needed', 'Party resolved', 'Resolved', 'Unresolved', 'Sum']  
+        data.headers = ['Sector', 'No conclusion yet', 'No response needed', 'Party resolved', 'Resolved', 'Unresolved', 'Significant issue', 'Sum']  
 
         return data                 
 
