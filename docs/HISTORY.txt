@@ -4,7 +4,7 @@ Changelog
 1.46 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fix finalised observation view
 
 
 1.45.1 (2015-11-01)
