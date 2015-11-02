@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.46 (unreleased)
------------------
+1.45.2 (2015-11-02)
+-------------------
 
 - Fix finalised observation view
 
