@@ -204,7 +204,7 @@
             </thead>
 
             <tbody>
-              <tal:block tal:repeat="item view/get_resolved_observations">
+              <tal:block tal:repeat="item batch2">
                 <tal:item define="observation nocall:item;
                                   toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                   <tr tal:attributes="data-href observation/absolute_url;
