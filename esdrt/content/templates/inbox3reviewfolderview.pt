@@ -1432,7 +1432,7 @@
               </thead>
 
               <tbody>
-                <tal:block tal:repeat="item block16">
+                <tal:block tal:repeat="item batch16">
                   <tal:item define="observation nocall:item;
                                     toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
                     <tr tal:attributes="data-href observation/absolute_url;
