@@ -1,7 +1,7 @@
 ne,'not estimated' (NE)('initial checks')
 pgf,gap-filling ('initial checks')
 psi,potential significant issue (step 1)
-ptc,technical correction (step 2)
+ptc,potential technical correction (step 2)
 recalc-prev,Recalculation (compared to previous year submission)
 recalc-same,Recalculation (compared to same year submission)
 unfccc,UNFCCC Recommendation
