@@ -4,7 +4,9 @@ Changelog
 1.46 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Bug #30304: Lead reviewer cannot access observations
+- Bug #30303: Update Observation History
+- Bug #30301: Update highlights and conclusion for step2
 
 
 1.45.2 (2015-11-02)
