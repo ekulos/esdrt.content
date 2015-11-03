@@ -576,7 +576,10 @@ class Observation(dexterity.Container):
             item['author'] = self.get_author_name(item['actor'])
             if item['review_state'] == 'phase1-draft':
                 item['state'] = 'Draft observation'
-                item['role'] = "Sector expert"
+                if self.observation_phase() == "phase1-observation":
+                    item['role'] = "Sector expert"
+                else:
+                    item['role'] = "Review expert"
                 observation_wf.append(item)
             elif item['review_state'] == 'phase1-pending' and item['action'] == "phase1-approve":
                 item['state'] = 'Pending'
@@ -674,7 +677,10 @@ class Observation(dexterity.Container):
                 item['author'] = self.get_author_name(item['actor'])
                 if item['review_state'] == 'phase1-draft' and item['action'] is None:
                     item['state'] = 'Draft question'
-                    item['role'] = "Sector expert"
+                    if self.observation_phase() == "phase1-observation":
+                        item['role'] = "Sector expert"
+                    else:
+                        item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-counterpart-comments':
                     item['state'] = 'Requested counterparts comments'
@@ -754,7 +760,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-draft':
-                    # Do not add
+                    # Do not add                    
                     pass
                 elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
                     item['state'] = 'Question approved and sent to MS coordinator'
