@@ -680,7 +680,7 @@ class Observation(dexterity.Container):
                     if self.observation_phase() == "phase1-observation":
                         item['role'] = "Sector expert"
                     else:
-                        item['role'] = "Review expert"
+                        item['role'] = "Quality expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase1-counterpart-comments':
                     item['state'] = 'Requested counterparts comments'
