@@ -4,7 +4,7 @@ Changelog
 1.48 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Bug #30712: Question was editet, time unchanged
 
 
 1.47 (2015-11-16)
