@@ -255,7 +255,7 @@ def observation_step(context):
         status = context.get_status()
         if status.startswith("phase1"):
             return "step1"
-        elif status.startwith("phase2"):
+        elif status.startswith("phase2"):
             return "step2"
         else:
             return status
