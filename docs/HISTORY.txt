@@ -4,7 +4,7 @@ Changelog
 1.47 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fix typo
 
 
 1.46 (2015-11-03)
