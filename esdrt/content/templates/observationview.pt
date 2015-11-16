@@ -275,10 +275,9 @@
                     <span class="eea-icon eea-icon-lg wfRole"><!-- --></span>
                     <span tal:content="item/role"></span><br/>
                     <a
-                      tal:condition="context/is_secretariat"
                       tal:attributes="href python:'http://www.eionet.europa.eu/directory/user?uid='+item['actor']"
                       tal:content="item/author"></a>
-                    <br tal:condition="context/is_secretariat"/>
+                    <br/>
                     <span
                       tal:attributes="class python: ' '.join(['eea-icon eea-icon-lg wfStep', item['object']])"><!-- --></span>
                     <span tal:content="item/state"></span><br/>
