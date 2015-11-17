@@ -16,7 +16,10 @@ from plone.directives import form
 from plone.namedfile.interfaces import IImageScaleTraversable
 from time import time
 from types import IntType
+from types import ListType
+from types import TupleType
 from z3c.form import field
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
 from zope.browsermenu.menu import getMenu
 from zope.component import createObject
@@ -24,6 +27,8 @@ from zope.component import getUtility
 from zope.globalrequest import getRequest
 from zope.interface import Invalid
 from zope.schema.interfaces import IVocabularyFactory
+from zope.lifecycleevent import ObjectModifiedEvent
+from zope.event import notify
 
 
 class ITableRowSchema(form.Schema):
@@ -199,13 +204,31 @@ class EditForm(dexterity.EditForm):
 
     label = 'Conclusions Step 2'
     description = ''
+    ignoreContext = False
+
+    def getContent(self):
+        context = aq_inner(self.context)
+        container = aq_parent(context)
+        data = {}
+        data['text'] = context.text
+        if type(context.closing_reason) in (ListType, TupleType):
+            data['closing_reason'] = context.closing_reason[0]
+        else:
+            data['closing_reason'] = context.closing_reason
+        data['ghg_estimations'] = context.ghg_estimations
+        data['highlight'] = container.highlight
+        return data
 
     def updateFields(self):
         super(EditForm, self).updateFields()
-        self.fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text', 'ghg_estimations')
-        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
+        from .observation import IObservation
+        conclusion_fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text', 'ghg_estimations')
+        observation_fields = field.Fields(IObservation).select('highlight')
+        self.fields = field.Fields(conclusion_fields, observation_fields)
+        self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
         self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
         self.fields['text'].rows = 15
+        self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
     def updateWidgets(self):
         super(EditForm, self).updateWidgets()
@@ -215,3 +238,18 @@ class EditForm(dexterity.EditForm):
         super(EditForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+
+    def applyChanges(self, data):
+        super(EditForm, self).applyChanges(data)
+        context = aq_inner(self.context)
+        container = aq_parent(context)
+        text = self.request.form.get('form.widgets.text')
+        closing_reason = self.request.form.get('form.widgets.closing_reason')
+        context.text = text
+        if type(closing_reason) in (ListType, TupleType):
+            context.closing_reason = closing_reason[0]
+        context.ghg_estimations = data['ghg_estimations']
+        highlight = self.request.form.get('form.widgets.highlight')
+        container.highlight = highlight
+        notify(ObjectModifiedEvent(context))
+        notify(ObjectModifiedEvent(container))
