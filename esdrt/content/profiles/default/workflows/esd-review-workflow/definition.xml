@@ -547,7 +547,6 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
-   <permission-role>ReviewExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
@@ -559,7 +558,6 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
-   <permission-role>ReviewExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
@@ -575,7 +573,6 @@
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>QualityExpert</permission-role>
-   <permission-role>ReviewExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
