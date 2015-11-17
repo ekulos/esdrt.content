@@ -518,7 +518,7 @@ class Observation(dexterity.Container):
         elif status in ['phase1-conclusions', 'phase2-conclusions',
                         'phase1-conclusion-discussion', 'phase2-conclusion-discussion',
                         'phase1-close-requested', 'phase2-close-requested']:
-            return 'conclusions'  
+            return 'conclusions'
         elif status in ['phase1-closed', 'phase2-closed']:
             if status == 'phase1-closed':
                 conclusion = self.get_conclusion()
@@ -562,7 +562,8 @@ class Observation(dexterity.Container):
     def get_author_name(self, userid):
         if userid:
             user = api.user.get(username=userid)
-            return user.getProperty('fullname', userid)
+            if user:
+                return user.getProperty('fullname', userid)
         return userid
 
     def myHistory(self):
@@ -760,7 +761,7 @@ class Observation(dexterity.Container):
                     item['role'] = "Review expert"
                     question_wf.append(item)
                 elif item['review_state'] == 'phase2-draft':
-                    # Do not add                    
+                    # Do not add
                     pass
                 elif item['review_state'] == 'phase2-pending' and item['action'] == 'phase2-approve-question':
                     item['state'] = 'Question approved and sent to MS coordinator'
@@ -950,7 +951,7 @@ class Observation(dexterity.Container):
             for witem in winfo.get('esd-question-review-workflow', []):
                 if witem.get('review_state', '').endswith('-pending'):
                     return True
-        return False        
+        return False
 
     def observation_sent_to_mse(self):
         questions = self.get_values_cat('Question')
@@ -961,7 +962,7 @@ class Observation(dexterity.Container):
             for witem in winfo.get('esd-question-review-workflow', []):
                 if witem.get('review_state', '').endswith('-expert-comments'):
                     return True
-        return False   
+        return False
 
     def observation_phase(self):
         status = api.content.get_state(self)
@@ -1493,7 +1494,7 @@ class AddAnswerAndRequestComments(grok.View):
         if questions:
             context = questions[0]
         else:
-            raise ActionExecutionError(Invalid(u"Invalid context")) 
+            raise ActionExecutionError(Invalid(u"Invalid context"))
 
         comments = [q for q in context.values() if q.portal_type == 'Comment']
         answers = [q for q in context.values() if q.portal_type == 'CommentAnswer']
@@ -1505,7 +1506,7 @@ class AddAnswerAndRequestComments(grok.View):
             return self.request.response.redirect(observation.absolute_url())
 
         context = questions[0]
-        
+
         text = u'For MS coordinator: please draft, edit and finalise your consolidated reply here.'
 
         id = str(int(time()))
@@ -1683,26 +1684,26 @@ class AddConclusions(grok.View):
                         id=str(int(time())),
                         type_name='Conclusion',
                         text=u''
-                    )      
+                    )
                     cs = self.context.get_values_cat('Conclusion')
-                    conclusion = cs[0]  
-                    url = conclusion.absolute_url() + '/edit'         
+                    conclusion = cs[0]
+                    url = conclusion.absolute_url() + '/edit'
                     #url = '%s/++add++Conclusion' % context.absolute_url()
             else:
                 cs = self.context.get_values_cat('Conclusion')
                 if cs:
-                    conclusion = cs[0]       
+                    conclusion = cs[0]
                     url = conclusion.absolute_url() + '/edit'
-                else:         
+                else:
                     #with api.env.adopt_roles(['ReviewerPhase1']):
                     id = context.invokeFactory(
                         id=str(int(time())),
                         type_name='Conclusion',
                         text=u''
-                    )  
+                    )
                     cs = self.context.get_values_cat('Conclusion')
-                    conclusion = cs[0]                                     
-                    url = conclusion.absolute_url() + '/edit'   
+                    conclusion = cs[0]
+                    url = conclusion.absolute_url() + '/edit'
 
         elif context.get_status().startswith('phase2-'):
             api.content.transition(
@@ -1727,10 +1728,10 @@ class AddConclusions(grok.View):
                         id=str(int(time())),
                         type_name='ConclusionsPhase2',
                         text=u''
-                    )      
+                    )
                     cs = self.context.get_values_cat('ConclusionsPhase2')
-                    conclusion = cs[0]  
-                    url = conclusion.absolute_url() + '/edit'                       
+                    conclusion = cs[0]
+                    url = conclusion.absolute_url() + '/edit'
                     #url = '%s/++add++ConclusionsPhase2' % context.absolute_url()
 
             else:
@@ -1739,7 +1740,7 @@ class AddConclusions(grok.View):
                     conclusionsphase2 = csp2[0]
                     url = conclusionsphase2.absolute_url() + '/edit'
 
-                else:                
+                else:
                     #with api.env.adopt_roles(['ReviewerPhase2']):
                     id = context.invokeFactory(
                         id=str(int(time())),
@@ -1747,7 +1748,7 @@ class AddConclusions(grok.View):
                         text=u''
                     )
                     cs = self.context.get_values_cat('ConclusionsPhase2')
-                    conclusion = cs[0]                        
+                    conclusion = cs[0]
                     url = conclusion.absolute_url() + '/edit'
 
         else:
