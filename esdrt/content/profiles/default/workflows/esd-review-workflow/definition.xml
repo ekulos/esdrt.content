@@ -783,6 +783,12 @@
    <guard-role>QualityExpert</guard-role>
   </guard>
  </transition>
+ <transition transition_id="phase2-edit-highlights" title="Edit Key Flags" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/edit-highlights" category="workflow" icon="">Edit Key Flags</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition> 
  <worklist worklist_id="reviewer_queue" title="">
   <description>Reviewer tasks</description>
   <action url="%(portal_url)s/search?review_state=pending" category="global" icon="">Pending (%(count)d)</action>
