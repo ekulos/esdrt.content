@@ -73,6 +73,7 @@
   </permission-map>
  </state>
  <state state_id="phase1-closed" title="Closed">
+  <exit-transition transition_id="recall-from-closed"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -742,6 +743,12 @@
    <guard-expression>here/can_draft_conclusions</guard-expression>
   </guard>
  </transition>
+ <transition transition_id="phase2-edit-highlights" title="Edit Key Flags" new_state="" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/edit-highlights" category="workflow" icon="">Edit Key Flags</action>
+  <guard>
+   <guard-role>ReviewerPhase2</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase2-finish-comments" title="Close Comments" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/content_status_modify?workflow_action=phase2-finish-comments" category="workflow" icon="">Close Comments</action>
   <guard>
@@ -774,18 +781,18 @@
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
+ <transition transition_id="recall-from-closed" title="Recall from closed" new_state="phase1-close-requested" trigger="USER" before_script="" after_script="">
+  <action url="" category="workflow" icon="%(content_url)s/content_status_modify?workflow_action=recall-from-closed">Recall from closed</action>
+  <guard>
+   <guard-role>Manager</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="recall-from-phase2" title="Recall Observation" new_state="phase1-close-requested" trigger="USER" before_script="" after_script="">
   <action url="" category="workflow" icon="%(content_url)s/content_status_modify?workflow_action=recall-from-phase2">Recall Observation</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
   </guard>
  </transition>
- <transition transition_id="phase2-edit-highlights" title="Edit Key Flags" new_state="" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/edit-highlights" category="workflow" icon="">Edit Key Flags</action>
-  <guard>
-   <guard-role>ReviewerPhase2</guard-role>
-  </guard>
- </transition> 
  <worklist worklist_id="reviewer_queue" title="">
   <description>Reviewer tasks</description>
   <action url="%(portal_url)s/search?review_state=pending" category="global" icon="">Pending (%(count)d)</action>
