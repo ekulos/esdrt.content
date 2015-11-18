@@ -509,7 +509,7 @@ class Observation(dexterity.Container):
                         'phase1-recalled-lr', 'phase2-recalled-lr']:
             return 'LRQE'
         elif status in ['phase1-pending', 'phase2-pending',
-                        'phase1-pending-answer-drafting', 'phase1-pending-answer-drafting',
+                        'phase1-pending-answer-drafting', 'phase2-pending-answer-drafting',
                         'phase1-expert-comments', 'phase2-expert-comments',
                         'phase1-recalled-msa', 'phase1-recalled-msa']:
             return 'MSC'
