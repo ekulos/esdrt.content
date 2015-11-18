@@ -73,7 +73,6 @@
   </permission-map>
  </state>
  <state state_id="phase1-closed" title="Closed">
-  <exit-transition transition_id="recall-from-closed"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -279,6 +278,7 @@
   </permission-map>
  </state>
  <state state_id="phase1-pending" title="Pending question">
+  <exit-transition transition_id="phase1-edit-highlights"/>
   <exit-transition transition_id="phase1-draft-conclusions"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
@@ -301,6 +301,7 @@
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
+   <permission-role>QualityExpert</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
   </permission-map>
   <permission-map name="Sharing page: Delegate roles" acquired="False">
@@ -542,8 +543,8 @@
  </state>
  <state state_id="phase2-draft" title="phase2-draft">
   <exit-transition transition_id="phase2-open"/>
-  <exit-transition transition_id="phase2-draft-conclusions"/>
   <exit-transition transition_id="recall-from-phase2"/>
+  <exit-transition transition_id="phase2-draft-conclusions"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
@@ -596,6 +597,7 @@
  </state>
  <state state_id="phase2-pending" title="phase2-pending">
   <exit-transition transition_id="phase2-draft-conclusions"/>
+  <exit-transition transition_id="phase2-edit-highlights"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
@@ -606,12 +608,17 @@
    <permission-role>ReviewerPhase1</permission-role>
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
+  <permission-map name="Delete objects" acquired="True">
+  </permission-map>
+  <permission-map name="Delete portal content" acquired="True">
+  </permission-map>
   <permission-map name="List folder contents" acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>ReviewerPhase1</permission-role>
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
+   <permission-role>LeadReviewer</permission-role>
    <permission-role>Manager</permission-role>
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
@@ -630,6 +637,8 @@
    <permission-role>ReviewerPhase2</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add Conclusion" acquired="False">
+  </permission-map>
+  <permission-map name="esdrt.content: Add ConclusionsPhase2" acquired="True">
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
   </permission-map>
@@ -687,6 +696,7 @@
   <action url="%(content_url)s/edit-highlights" category="workflow" icon="">Edit Key Flags</action>
   <guard>
    <guard-role>ReviewerPhase1</guard-role>
+   <guard-role>QualityExpert</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase1-finish-comments" title="Close Comments" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
@@ -747,6 +757,7 @@
   <action url="%(content_url)s/edit-highlights" category="workflow" icon="">Edit Key Flags</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
+   <guard-role>LeadReviewer</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-finish-comments" title="Close Comments" new_state="phase2-conclusions" trigger="USER" before_script="" after_script="">
@@ -791,6 +802,13 @@
   <action url="" category="workflow" icon="%(content_url)s/content_status_modify?workflow_action=recall-from-phase2">Recall Observation</action>
   <guard>
    <guard-role>QualityExpert</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="reopen-finished-observation" title="Reopen finished observation" new_state="phase1-conclusions" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=reopen-finished-observation" category="workflow" icon="">Reopen finished observation</action>
+  <guard>
+   <guard-role>Site Administrator</guard-role>
+   <guard-role>Manager</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="reviewer_queue" title="">
