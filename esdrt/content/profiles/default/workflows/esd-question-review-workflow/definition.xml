@@ -1199,7 +1199,7 @@
   </permission-map>
  </state>
  <transition transition_id="finish-observation-lr" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase2-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
    <guard-role>LeadReviewer</guard-role>
   </guard>
@@ -1211,7 +1211,7 @@
   </guard>
  </transition>
  <transition transition_id="finish-observation-re" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase2-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
