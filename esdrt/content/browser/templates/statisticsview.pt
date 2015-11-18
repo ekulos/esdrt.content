@@ -62,6 +62,7 @@
             <th>MSC</th>
             <th>Answer received</th>
             <th>Conclusions</th>
+            <th>Close requested</th>
             <th>Finalised</th>
             <th>Sum</th>
           </tr>
@@ -75,6 +76,7 @@
               <td tal:content="country/MSC|string:0">1</td>
               <td tal:content="country/answered|string:0">1</td>
               <td tal:content="country/conclusions|string:0">1</td>
+              <td tal:content="country/close-requested|string:0">1</td>
               <td tal:content="country/finalised|string:0">1</td>
               <td tal:content="country/sum|string:0">6</td>
             </tr>  
@@ -88,7 +90,8 @@
               <td tal:content="country/LRQE|string:0">1</td>
               <td tal:content="country/MSC|string:0">1</td>
               <td tal:content="country/answered|string:0">1</td>
-              <td tal:content="country/conclusions|string:0">1</td>
+              <td tal:content="country/conclusions|string:0">1</td>  
+              <td tal:content="country/close-requested|string:0">1</td>
               <td tal:content="country/finalised|string:0">1</td>
               <td tal:content="country/sum|string:0">1</td>
             </tr>  
@@ -105,6 +108,7 @@
             <th>MSC</th>
             <th>Answer received</th>
             <th>Conclusions</th>
+            <th>Close requested</th>
             <th>Finalised</th>
             <th>Sum</th>
           </tr>
@@ -118,6 +122,7 @@
               <td tal:content="country/MSC|string:0">1</td>
               <td tal:content="country/answered|string:0">1</td>
               <td tal:content="country/conclusions|string:0">1</td>
+              <td tal:content="country/close-requested|string:0">1</td>
               <td tal:content="country/finalised|string:0">1</td>
               <td tal:content="country/sum|string:0">6</td>
             </tr>
@@ -132,6 +137,7 @@
               <td tal:content="country/MSC|string:0">1</td>
               <td tal:content="country/answered|string:0">1</td>
               <td tal:content="country/conclusions|string:0">1</td>
+              <td tal:content="country/close-requested|string:0">1</td>
               <td tal:content="country/finalised|string:0">1</td>
               <td tal:content="country/sum|string:0">6</td>
             </tr>

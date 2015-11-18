@@ -158,14 +158,14 @@ class StatisticsView(grok.View):
         return self._generic_observation(
             key='country',
             value='status',
-            columns=['SRRE', 'LRQE', 'MSC', 'answered', 'conclusions', 'finalised']
+            columns=['SRRE', 'LRQE', 'MSC', 'answered', 'conclusions', 'close-requested', 'finalised']
         )
 
     def observation_status_per_sector(self):
         return self._generic_observation(
             key='sector',
             value='status',
-            columns=['SRRE', 'LRQE', 'MSC', 'answered', 'conclusions', 'finalised']
+            columns=['SRRE', 'LRQE', 'MSC', 'answered', 'conclusions', 'close-requested', 'finalised']
         )
 
     def finalised_reason_per_country(self):
