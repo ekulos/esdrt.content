@@ -4,7 +4,10 @@ Changelog
 1.49 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- add highlight edition for conclusions in step2. Refs #30764 [MikelL]
+- Task #30779: Please add 'unresolved' [MikelS]
+- Bug #30778: "Go to conclusion" locks observations
+- Open observations in new tab
 
 
 1.48 (2015-11-16)
