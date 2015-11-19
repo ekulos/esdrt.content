@@ -230,7 +230,7 @@
               <option tal:attributes="selected python:'MSC'==wfStatus"
                 value="MSC">MS Coordinator</option>  
               <option tal:attributes="selected python:'answered'==wfStatus"
-                value="conclusions">Answered</option>                 
+                value="answered">Answered</option>                 
               <option tal:attributes="selected python:'conclusions'==wfStatus"
                 value="conclusions">Conclusions</option>    
               <option tal:attributes="selected python:'close-requested'==wfStatus"
