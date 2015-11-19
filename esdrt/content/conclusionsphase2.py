@@ -18,6 +18,7 @@ from time import time
 from types import IntType
 from types import ListType
 from types import TupleType
+from types import FloatType
 from z3c.form import field
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope import schema
@@ -34,13 +35,13 @@ from zope.event import notify
 class ITableRowSchema(form.Schema):
 
     line_title = schema.TextLine(title=_(u'Title'), required=True)
-    co2 = schema.Int(title=_(u'CO\u2082'), required=False)
-    ch4 = schema.Int(title=_(u'CH\u2084'), required=False)
-    n2o = schema.Int(title=_(u'N\u2082O'), required=False)
-    nox = schema.Int(title=_(u'NO\u2093'), required=False)
-    co = schema.Int(title=_(u'CO'), required=False)
-    nmvoc = schema.Int(title=_(u'NMVOC'), required=False)
-    so2 = schema.Int(title=_(u'SO\u2082'), required=False)
+    co2 = schema.Float(title=_(u'CO\u2082'), required=False)
+    ch4 = schema.Float(title=_(u'CH\u2084'), required=False)
+    n2o = schema.Float(title=_(u'N\u2082O'), required=False)
+    nox = schema.Float(title=_(u'NO\u2093'), required=False)
+    co = schema.Float(title=_(u'CO'), required=False)
+    nmvoc = schema.Float(title=_(u'NMVOC'), required=False)
+    so2 = schema.Float(title=_(u'SO\u2082'), required=False)
 
 
 class IConclusionsPhase2(form.Schema, IImageScaleTraversable):
@@ -78,7 +79,7 @@ class IConclusionsPhase2(form.Schema, IImageScaleTraversable):
 def check_ghg_estimations(value):
     for item in value:
         for val in item.values():
-            if type(val) is IntType and val < 0:
+            if type(val) is FloatType and val < 0:
                 raise Invalid(u'Estimation values must be positive numbers')
 
 
