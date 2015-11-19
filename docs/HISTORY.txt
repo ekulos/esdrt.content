@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.52 (unreleased)
+1.52 (2015-11-19)
 -----------------
 
 - Nothing changed yet.
