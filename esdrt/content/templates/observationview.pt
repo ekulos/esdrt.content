@@ -414,7 +414,7 @@
               <table class="estTable">
               <thead>
               <tr>
-              <th>Public Electricity and Heat Production (Gg CO<sub>2</sub> eq)</th>
+              <th>(Gg CO<sub>2</sub> eq)</th>
               <th>CO<sub>2</sub></th>
               <th>CH<sub>4</sub></th>
               <th>N<sub>2</sub>O</th>
