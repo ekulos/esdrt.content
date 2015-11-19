@@ -39,6 +39,8 @@ class ReviewFolderView(grok.View):
         status = self.request.form.get('status', '')
         highlights = self.request.form.get('highlights', '')
         freeText = self.request.form.get('freeText', '')
+        step = self.request.form.get('step', '')
+        wfStatus = self.request.form.get('wfStatus', '')
 
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
@@ -85,6 +87,10 @@ class ReviewFolderView(grok.View):
             query['highlight'] = highlights.split(",")
         if freeText != "":
             query['SearchableText'] = freeText
+        if step != "":
+            query['observation_step'] = step
+        if wfStatus != "":
+            query['observation_status'] = wfStatus                        
 
         return [b.getObject() for b in catalog(query)]
 

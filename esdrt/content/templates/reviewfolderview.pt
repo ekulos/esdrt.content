@@ -72,6 +72,22 @@
               }
               filter += "highlights=" + highlights;
             }
+            if ($('#stepFilter').val() != ""){
+              if (filter == ""){
+                filter += "?";
+              }else{
+                filter += "&";
+              }
+              filter += "step=" + $('#stepFilter').val();
+            }
+            if ($('#wfStatusFilter').val() != ""){
+              if (filter == ""){
+                filter += "?";
+              }else{
+                filter += "&";
+              }
+              filter += "wfStatus=" + $('#wfStatusFilter').val();
+            }                        
             window.location.href = window.location.pathname + filter;
 
         })
@@ -186,6 +202,44 @@
                 tal:attributes="value python:freeText"/>
           </div>
         </div>
+        <div class="row" style="padding-top:20px">
+          <div class="cell position-1 width-3 esdLabel">Step</div>
+          <div class="cell position-4 width-6 esdLabel">WF Status</div>
+        </div>     
+        <div class="row">
+          <div class="cell position-1 width-3">
+            <select id="stepFilter"  class="chosen-select" data-placeholder="Select step"
+                tal:define="step python:'';
+                            step request/step | step">
+              <option></option>
+             <option tal:attributes="selected python:'step1'==step"
+                value="step1">Step1</option>
+              <option tal:attributes="selected python:'step2'==step"
+                value="step2">Step2</option>
+            </select>
+          </div>  
+          <div class="cell position-4 width-6">
+            <select id="wfStatusFilter"  class="chosen-select" data-placeholder="Select status"
+                tal:define="wfStatus python:'';
+                            wfStatus request/wfStatus | wfStatus">
+              <option></option>
+             <option tal:attributes="selected python:'SRRE'==wfStatus"
+                value="SRRE">Sector Reviewer / Review Expert</option>
+              <option tal:attributes="selected python:'LRQE'==wfStatus"
+                value="LRQE">Lead Reviewer / Quality Expert</option>
+              <option tal:attributes="selected python:'MSC'==wfStatus"
+                value="MSC">MS Coordinator</option>  
+              <option tal:attributes="selected python:'answered'==wfStatus"
+                value="conclusions">Answered</option>                 
+              <option tal:attributes="selected python:'conclusions'==wfStatus"
+                value="conclusions">Conclusions</option>    
+              <option tal:attributes="selected python:'close-requested'==wfStatus"
+                value="close-requested">Close requested</option>              
+              <option tal:attributes="selected python:'finalised'==wfStatus"
+                value="finalised">Finalised</option>                                            
+            </select>
+          </div>                   
+        </div>   
         <div class="row" style="padding-top:30px">
           <div class="cell position-1 width-1">
             <a class="standardButton" id="btnFilter">Search</a>
