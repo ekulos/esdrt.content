@@ -196,7 +196,13 @@ def question_status(context):
         if questions:
             question = questions[0]
             state = api.content.get_state(question)
-            return state
+            if state in ['phase1-closed', 'phase2-closed']:
+                if state in ['phase1-closed']:
+                    return 'phase1-answered'
+                else:
+                    return 'phase2-answered'
+            else:
+                return state
         else:
             if context.get_status().startswith('phase1'):
                 return "observation-phase1-draft"
@@ -220,7 +226,7 @@ def observation_status(context):
                     'phase1-recalled-lr', 'phase2-recalled-lr']:
         return 'LRQE'
     elif status in ['phase1-pending', 'phase2-pending',
-                    'phase1-pending-answer-drafting', 'phase1-pending-answer-drafting',
+                    'phase1-pending-answer-drafting', 'phase2-pending-answer-drafting',
                     'phase1-expert-comments', 'phase2-expert-comments',
                     'phase1-recalled-msa', 'phase1-recalled-msa']:
         return 'MSC'
