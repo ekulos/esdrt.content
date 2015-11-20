@@ -418,10 +418,11 @@
               <th>CO<sub>2</sub></th>
               <th>CH<sub>4</sub></th>
               <th>N<sub>2</sub>O</th>
-              <th>NO<sub>x</sub></th>
-              <th>CO</th>
-              <th>NMVOC</th>
-              <th>SO<sub>2</sub></th>
+              <th>SF<sub>6</sub></th>
+              <th>HFCs</th>
+              <th>PFCs</th>
+              <th>NF<sub>3</sub></th>
+              <th>Aggregate (all gases)</th>
               </tr>
               </thead>
               <tbody>
@@ -429,27 +430,30 @@
               <td class="esdesdLabel" tal:content="row/line_title">
               Original estimate
               </td>
-              <td style="text-align:center" tal:content="row/co2">
+              <td style="text-align:center" tal:content="row/co2|python:'0.0'">
               10.492,24
               </td>
-              <td style="text-align:center" tal:content="row/ch4">
+              <td style="text-align:center" tal:content="row/ch4|python:'0.0'">
               0,41
               </td>
-              <td style="text-align:center" tal:content="row/n2o">
+              <td style="text-align:center" tal:content="row/n2o|python:'0.0'">
               0,36
               </td>
-              <td style="text-align:center" tal:content="row/nox">
+              <td style="text-align:center" tal:content="row/sf6|python:'0.0'">
               11,36
               </td>
-              <td style="text-align:center" tal:content="row/co">
+              <td style="text-align:center" tal:content="row/hfcs|python:'0.0'">
               5,32
               </td>
-              <td style="text-align:center" tal:content="row/nmvoc">
+              <td style="text-align:center" tal:content="row/pfcs|python:'0.0'">
               0,95
               </td>
-              <td style="text-align:center" tal:content="row/so2">
+              <td style="text-align:center" tal:content="row/nf3|python:'0.0'">
               2,96
               </td>
+              <td style="text-align:center" tal:content="row/aggregate|python:'0.0'">
+              2,96
+              </td>              
               </tr>
               </tbody>
               </table>

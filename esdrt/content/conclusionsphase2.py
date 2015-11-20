@@ -38,10 +38,16 @@ class ITableRowSchema(form.Schema):
     co2 = schema.Float(title=_(u'CO\u2082'), required=False)
     ch4 = schema.Float(title=_(u'CH\u2084'), required=False)
     n2o = schema.Float(title=_(u'N\u2082O'), required=False)
-    nox = schema.Float(title=_(u'NO\u2093'), required=False)
-    co = schema.Float(title=_(u'CO'), required=False)
-    nmvoc = schema.Float(title=_(u'NMVOC'), required=False)
-    so2 = schema.Float(title=_(u'SO\u2082'), required=False)
+    sf6 = schema.Float(title=_(u'SF\u20826'), required=False)
+    hfcs = schema.Float(title=_(u'HFCs'), required=False)
+    pfcs = schema.Float(title=_(u'PFCs'), required=False)
+    nf3 = schema.Float(title=_(u'NF\u20823'), required=False)
+    aggregate = schema.Float(title=_(u'Aggregate (all gases)'), required=False)
+
+    #nox = schema.Float(title=_(u'NO\u2093'), required=False)
+    #co = schema.Float(title=_(u'CO'), required=False)
+    #nmvoc = schema.Float(title=_(u'NMVOC'), required=False)
+    #so2 = schema.Float(title=_(u'SO\u2082'), required=False)
 
 
 class IConclusionsPhase2(form.Schema, IImageScaleTraversable):
@@ -66,10 +72,10 @@ class IConclusionsPhase2(form.Schema, IImageScaleTraversable):
         title=_(u'GHG estimates [Gg CO2 eq.]'),
         value_type=DictRow(title=u"tablerow", schema=ITableRowSchema),
         default=[
-            {'line_title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'line_title': 'Technical correction proposed by  TERT', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'line_title': 'Revised estimate by MS', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
-            {'line_title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'nox': 0, 'co': 0, 'nmvoc': 0, 'so2': 0},
+            {'line_title': 'Original estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'sf6': 0, 'hfcs': 0, 'pfcs': 0, 'nf3': 0, 'aggregate': 0},
+            {'line_title': 'Technical correction proposed by  TERT', 'co2': 0, 'ch4': 0, 'n2o': 0, 'sf6': 0, 'hfcs': 0, 'pfcs': 0, 'nf3': 0, 'aggregate': 0},
+            {'line_title': 'Revised estimate by MS', 'co2': 0, 'ch4': 0, 'n2o': 0, 'sf6': 0, 'hfcs': 0, 'pfcs': 0, 'nf3': 0, 'aggregate': 0},
+            {'line_title': 'Corrected estimate', 'co2': 0, 'ch4': 0, 'n2o': 0, 'sf6': 0, 'hfcs': 0, 'pfcs': 0, 'nf3': 0, 'aggregate': 0},
 
         ],
     )
