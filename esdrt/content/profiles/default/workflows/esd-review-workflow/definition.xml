@@ -73,6 +73,7 @@
   </permission-map>
  </state>
  <state state_id="phase1-closed" title="Closed">
+  <exit-transition transition_id="phase1-reopen-closed-observation"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -388,6 +389,7 @@
   </permission-map>
  </state>
  <state state_id="phase2-closed" title="phase2-closed">
+  <exit-transition transition_id="phase2-reopen-closed-observation"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>LeadReviewer</permission-role>
    <permission-role>MSAuthority</permission-role>
@@ -711,6 +713,12 @@
    <guard-role>ReviewerPhase1</guard-role>
   </guard>
  </transition>
+ <transition transition_id="phase1-reopen-closed-observation" title="Reopen closed observation" new_state="phase1-close-requested" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase1-reopen-closed-observation" category="workflow" icon="">Reopen closed observation</action>
+  <guard>
+   <guard-role>Manager</guard-role>
+  </guard>
+ </transition>
  <transition transition_id="phase1-request-close" title="Finish Observation" new_state="phase1-close-requested" trigger="USER" before_script="" after_script="">
   <action url="%(content_url)s/request-finish-observation?workflow_action=phase1-request-close" category="workflow" icon="">Request finalisation of the observation</action>
   <guard>
@@ -778,6 +786,12 @@
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase2</guard-role>
    <guard-role>LeadReviewer</guard-role>
+  </guard>
+ </transition>
+ <transition transition_id="phase2-reopen-closed-observation" title="Reopen closed observation" new_state="phase2-close-requested" trigger="USER" before_script="" after_script="">
+  <action url="%(content_url)s/content_status_modify?workflow_action=phase2-reopen-closed-observation" category="workflow" icon="">Reopen closed observation</action>
+  <guard>
+   <guard-role>Manager</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase2-reopen-qa-chat" title="Reopen Q&amp;A Chat" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
