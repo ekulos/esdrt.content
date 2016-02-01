@@ -87,7 +87,15 @@
                 filter += "&";
               }
               filter += "wfStatus=" + $('#wfStatusFilter').val();
-            }                        
+            }       
+            if ($('#crfFilter').val() != ""){
+              if (filter == ""){
+                filter += "?";
+              }else{
+                filter += "&";
+              }
+              filter += "crfCode=" + $('#crfFilter').val();
+            }                              
             window.location.href = window.location.pathname + filter;
 
         })
@@ -180,7 +188,25 @@
           </div>
         </div>
         <div class="row" style="padding-top:30px">
-          <div class="cell position-1 width-3 esdLabel">Status</div>
+          <div class="cell position-1 width-3 esdLabel">CRF category code</div>
+        </div>      
+        <div class="row">
+          <div class="cell position-1 width-9 esdLabel">
+            <select id="crfFilter" class="chosen-select" data-placeholder="Select CRF category code">
+              <option></option>
+              <tal:block tal:repeat="item view/get_crf_categories">
+                <option
+                  tal:define="category python:'';
+                              category request/crfCode | category"
+                  tal:attributes="value python:item[0];
+                                  selected python:item[0]==category"
+                  tal:content="python:item[1]"></option>
+              </tal:block>
+            </select>
+          </div>
+        </div>  
+        <div class="row" style="padding-top:30px">
+          <div class="cell position-1 width-3 esdLabel">Status of observation</div>
           <div class="cell position-4 width-6 esdLabel">Free text</div>
         </div>
         <div class="row">
@@ -204,7 +230,7 @@
         </div>
         <div class="row" style="padding-top:20px">
           <div class="cell position-1 width-3 esdLabel">Step</div>
-          <div class="cell position-4 width-6 esdLabel">WF Status</div>
+          <div class="cell position-4 width-6 esdLabel">Workflow</div>
         </div>     
         <div class="row">
           <div class="cell position-1 width-3">
@@ -285,6 +311,9 @@
                 <th>
                   Step
                 </th>
+                <th>
+                  Workflow
+                </th>                
                 <th tal:condition="view/is_secretariat">
                   Author
                 </th>
@@ -334,6 +363,9 @@
                     </td>
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
+                    </td>
+                    <td tal:content="observation/observation_status">
+                      1A1 Energy industries
                     </td>
                     <td tal:condition="view/is_secretariat">
                       <span tal:replace="python:view.get_author_name(observation.Creator())" />

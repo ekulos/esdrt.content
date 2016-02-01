@@ -41,6 +41,7 @@ class ReviewFolderView(grok.View):
         freeText = self.request.form.get('freeText', '')
         step = self.request.form.get('step', '')
         wfStatus = self.request.form.get('wfStatus', '')
+        crfCode = self.request.form.get('crfCode', '')
 
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
@@ -90,7 +91,9 @@ class ReviewFolderView(grok.View):
         if step != "":
             query['observation_step'] = step
         if wfStatus != "":
-            query['observation_status'] = wfStatus                        
+            query['observation_status'] = wfStatus  
+        if crfCode != "":
+            query['crf_code'] = crfCode
 
         return [b.getObject() for b in catalog(query)]
 
@@ -136,6 +139,16 @@ class ReviewFolderView(grok.View):
         catalog = api.portal.get_tool('portal_catalog')
         inventory_years = catalog.uniqueValuesFor('year')
         return inventory_years
+
+    def get_crf_categories(self):
+        vtool = getToolByName(self, 'portal_vocabularies')
+        voc = vtool.getVocabularyByName('crf_code')
+        categories = []
+        voc_terms = voc.getDisplayList(self).items()
+        for term in voc_terms:
+            categories.append((term[0], term[1]))
+
+        return categories
 
     def is_member_state_coordinator(self):
         user = api.user.get_current()

@@ -112,6 +112,7 @@ def SearchableText(context):
         questions = context.getFolderContents({'portal_type': 'Question'},
             full_objects=True
         )
+        items.extend(to_unicode(context.id))
     except:
         questions = []
     try:
