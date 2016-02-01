@@ -247,7 +247,7 @@
         <div class="cell position-0 width-16" tal:content="context/highlight_value">Status flag</div>
       </div>
       <div class="row observation-details" style="display:none;padding-top:15px" tal:condition="view/show_description">
-        <div class="cell position-0 width-4 esdLabel">Description</div>
+        <div class="cell position-0 width-4 esdLabel">Short description by expert/reviewer</div>
       </div>
       <div class="row observation-details" style="display:none" tal:condition="view/show_description">
         <div class="cell position-0 width-16">
@@ -308,11 +308,11 @@
     <li style="width:165px;max-width:165px"
       tal:define="conclusion view/get_conclusion_phase2"
       tal:condition="nocall:conclusion"
-      >Conclusions Phase 2</li>
+      >Conclusions Step 2</li>
     <li style="width:165px;max-width:165px"
       tal:define="conclusion view/get_conclusion"
       tal:condition="nocall:conclusion"
-      >Conclusions Phase 1</li>
+      >Conclusions Step 1</li>
     <li style="width:200px;max-width:200px"
       id="questionChatRoom">Q&amp;A</li>
   </ul>
@@ -405,9 +405,9 @@
       <div class="row">
         <div id="conclusions">
           <dl>
-            <dt>Reason:</dt>
+            <dt>Final status of observation:</dt>
             <dd><span tal:replace="conclusion/reason_value" /></dd>
-            <dt>RE comments on conclusion:</dt>
+            <dt>Internal note for expert/reviewers:</dt>
             <dd><span tal:replace="structure conclusion/text/output|conclusion/text|nothing" /></dd>
             <dt>GHG estimates:</dt>
             <dd>
@@ -418,11 +418,10 @@
               <th>CO<sub>2</sub></th>
               <th>CH<sub>4</sub></th>
               <th>N<sub>2</sub>O</th>
-              <th>SF<sub>6</sub></th>
-              <th>HFCs</th>
-              <th>PFCs</th>
-              <th>NF<sub>3</sub></th>
-              <th>Aggregate (all gases)</th>
+              <th>NO<sub>x</sub></th>
+              <th>CO</th>
+              <th>NMVOC</th>
+              <th>SO<sub>2</sub></th>
               </tr>
               </thead>
               <tbody>
@@ -439,21 +438,18 @@
               <td style="text-align:center" tal:content="row/n2o|python:'0.0'">
               0,36
               </td>
-              <td style="text-align:center" tal:content="row/sf6|python:'0.0'">
+              <td style="text-align:center" tal:content="row/nox|python:'0.0'">
               11,36
               </td>
-              <td style="text-align:center" tal:content="row/hfcs|python:'0.0'">
+              <td style="text-align:center" tal:content="row/co|python:'0.0'">
               5,32
               </td>
-              <td style="text-align:center" tal:content="row/pfcs|python:'0.0'">
+              <td style="text-align:center" tal:content="row/nmvoc|python:'0.0'">
               0,95
               </td>
-              <td style="text-align:center" tal:content="row/nf3|python:'0.0'">
+              <td style="text-align:center" tal:content="row/so2|python:'0.0'">
               2,96
               </td>
-              <td style="text-align:center" tal:content="row/aggregate|python:'0.0'">
-              2,96
-              </td>              
               </tr>
               </tbody>
               </table>
@@ -597,7 +593,7 @@
             <div>
               <div class="row collapsiblePanelTitle collapsed" data-panel="conclusion-discussion">
                 <div class="cell position-0 width-16">
-                  Conclusion comments
+                  Internal comments on conclusion between experts/reviewers/QE/LR
                   <span class="eea-icon eea-icon-left"></span>
                 </div>
               </div>
@@ -886,8 +882,12 @@
         </tal:block>
         <div class="from"  tal:define="portalType question/portal_type/lower">
           <span class="esdLabel">from</span>
-          <span class="value" tal:condition="python:portalType == 'comment'" tal:content="python:question.getProperty('creator_role', 'Review expert')">Review expert</span>
-          <span class="value" tal:condition="python:portalType == 'commentanswer'">Member state coordinator</span>
+          <span class="value" tal:condition="python:portalType == 'comment'">expert/reviewer</span>
+          <span class="value" tal:condition="python:portalType == 'commentanswer'">Member State</span>
+          <span class="esdLabel">to</span>
+          <span class="value" tal:condition="python:portalType == 'comment'">Member State</span>
+          <span class="value" tal:condition="python:portalType == 'commentanswer'">expert/reviewer</span>
+          <span class="tooltipIconBlue" tal:condition="python:portalType == 'comment'" title="Draft a question for the MS. MS can only see the question once it has been approved and sent by the QE/LR">&nbsp;</span>
           <!--span class="value" tal:content="python:view.get_user_name(question.Creator(), question)">John Smith</span-->
           <span class="messageDate">
             <tal:effective condition="question/effective_date">
@@ -1032,8 +1032,9 @@
               <tal:block tal:condition="python:portalType == 'comment' and question.can_see_comment_discussion()">
                 <div class="row collapsiblePanelTitle collapsed" data-panel="question-comments">
                   <div class="cell position-0 width-16">
-                    Comments
+                    Internal comments on question between experts/reviewers/QE/LR
                     <span class="eea-icon eea-icon-left"></span>
+                    <span class="tooltipIconBlue" title="Expert/reviewer starts the discussion with the selected colleagues with a specific request or with the default sentence: 'Do you have any comment to the question?' The counterpart experts/reviewers/QE/LR engage in the discussion or reply with the default phrase 'Ok, no comment.' If a discussion took place offline or per email the expert/reviewer should use the default sentence: 'Discussed with ...' in the first text field">&nbsp;</span>
                   </div>
                 </div>
                 <div class="question-comments" tal:content="structure provider:esdrt.content.commentmanager" style="display:none" />

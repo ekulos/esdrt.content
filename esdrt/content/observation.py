@@ -62,8 +62,9 @@ class IObservation(form.Schema, IImageScaleTraversable):
     """
 
     text = schema.Text(
-        title=u'Short description',
+        title=u'Short description by expert/reviewer',
         required=True,
+        description=u"Describe the issue identified. Keep it short, you cannot change this description once you have sent it to the QE/LR. MS can only see the question once it has been approved and sent by the QE/LR. The question to the MS should be asked in the Q&A tab, not here.",
     )
 
     country = schema.Choice(

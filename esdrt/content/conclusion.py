@@ -32,14 +32,14 @@ class IConclusion(form.Schema, IImageScaleTraversable):
     """
 
     closing_reason = schema.Choice(
-        title=_(u'Conclusion'),
+        title=_(u'Status of observation'),
         vocabulary='esdrt.content.conclusionreasons',
         required=True,
 
     )
 
     text = schema.Text(
-        title=_(u'Text'),
+        title=_(u'Internal note for expert/reviewers'),
         required=True,
         )
 
