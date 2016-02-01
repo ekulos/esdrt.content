@@ -291,10 +291,8 @@ class AssignCounterPartForm(BrowserView):
 
     def target_groupnames(self):
         return [
-            'extranet-esd-ghginv-sr',
-            'extranet-esd-ghginv-qualityexpert',
-            'extranet-esd-esdreview-reviewexp',
-            'extranet-esd-esdreview-leadreview',
+            'extranet-esd-ghginv',
+            'extranet-esd-esdreview',
         ]
 
     def cache_get_users(fun, self, groupname):
@@ -461,10 +459,8 @@ class AssignConclusionReviewerForm(BrowserView):
 
     def target_groupnames(self):
         return [
-            'extranet-esd-ghginv-sr',
-            'extranet-esd-ghginv-qualityexpert',
-            'extranet-esd-esdreview-reviewexp',
-            'extranet-esd-esdreview-leadreview',
+            'extranet-esd-ghginv'
+            'extranet-esd-esdreview',
         ]
 
     def get_counterpart_users(self):
