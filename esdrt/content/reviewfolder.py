@@ -61,11 +61,8 @@ class ReviewFolderView(grok.View):
         if (country != ""):
             query['Country'] = country
         if (status != ""):
-            if status == "closed":
-                query['review_state'] = [
-                    'phase1-closed',
-                    'phase2-closed'
-                ]
+            if status != "open":
+                query['observation_finalisation_reason'] = status
             else:
                 query['review_state'] = [
                     'phase1-pending',
@@ -149,6 +146,19 @@ class ReviewFolderView(grok.View):
             categories.append((term[0], term[1]))
 
         return categories
+
+    def get_finalisation_reasons(self):
+        vtool = getToolByName(self, 'portal_vocabularies')
+        voc = vtool.getVocabularyByName('conclusion_reasons')
+        reasons = [('open', 'open')]
+        voc_terms = voc.getDisplayList(self).items()
+        for term in voc_terms:
+            reasons.append((term[0], term[1]))
+        voc = vtool.getVocabularyByName('conclusion_phase2_reasons')
+        voc_terms = voc.getDisplayList(self).items()
+        for term in voc_terms:
+            reasons.append((term[0], term[1]))        
+        return reasons    
 
     def is_member_state_coordinator(self):
         user = api.user.get_current()

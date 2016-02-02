@@ -211,14 +211,16 @@
         </div>
         <div class="row">
           <div class="cell position-1 width-3">
-            <select id="statusFilter"  class="chosen-select" data-placeholder="Select status"
-                tal:define="status python:'';
-                            status request/status | status">
+            <select id="statusFilter" class="chosen-select" data-placeholder="Select status">
               <option></option>
-             <option tal:attributes="selected python:'open'==status"
-                value="open">Open</option>
-              <option tal:attributes="selected python:'closed'==status"
-                value="closed">Closed</option>
+              <tal:block tal:repeat="item view/get_finalisation_reasons">
+                <option
+                  tal:define="status python:'';
+                              status request/status | status"
+                  tal:attributes="value python:item[0];
+                                  selected python:item[0]==status"
+                  tal:content="python:item[1]"></option>
+              </tal:block>
             </select>
           </div>
           <div class="cell position-4 width-6 esdLabel">
@@ -364,8 +366,28 @@
                     <td>
                       <div tal:attributes="class observation/observation_phase">&nbsp;</div>
                     </td>
-                    <td tal:content="observation/observation_status">
-                      1A1 Energy industries
+                    <td >
+                      <span tal:condition="python: observation.observation_status() == 'SRRE'">
+                        Sector Reviewer / Review Expert
+                      </span>
+                      <span tal:condition="python: observation.observation_status() == 'LRQE'">
+                        Lead Reviewer / Quality Expert
+                      </span>
+                      <span tal:condition="python: observation.observation_status() == 'MSC'">
+                        MS Coordinator
+                      </span>
+                      <span tal:condition="python: observation.observation_status() == 'answered'">
+                        Answered
+                      </span>
+                      <span tal:condition="python: observation.observation_status() == 'conclusions'">
+                        Conclusions
+                      </span>
+                      <span tal:condition="python: observation.observation_status() == 'close-requested'">
+                        Close requested
+                      </span>
+                      <span tal:condition="python: observation.observation_status() == 'finalised'">
+                        Finalised
+                      </span>
                     </td>
                     <td tal:condition="view/is_secretariat">
                       <span tal:replace="python:view.get_author_name(observation.Creator())" />
