@@ -241,7 +241,7 @@
         <div class="cell position-11 width-4" tal:content="python:context.modified().strftime('%d %b %Y, %H:%M CET')">Last update</div>  
       </div>
       <div class="row observation-details" style="display:none;padding-top:15px">
-        <div class="cell position-0 width-16 esdLabel">Key flags</div> 
+        <div class="cell position-0 width-16 esdLabel">Description flags</div> 
       </div>
       <div class="row observation-details" style="display:none">
         <div class="cell position-0 width-16" tal:content="context/highlight_value">Status flag</div>

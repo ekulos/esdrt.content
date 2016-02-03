@@ -138,8 +138,8 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     form.widget(highlight=CheckBoxFieldWidget)
     highlight = schema.List(
-        title=u"Key flags",
-        description=u"Key flags highlight important information that is closely related to the main purpose of 'initial checks' and ESD review",
+        title=u"Description flags",
+        description=u"Description flags highlight important information that is closely related to the main purpose of 'initial checks' and ESD review",
         value_type=schema.Choice(
             vocabulary='esdrt.content.highlight',
         ),
