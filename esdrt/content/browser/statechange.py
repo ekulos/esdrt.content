@@ -297,7 +297,7 @@ class AssignCounterPartForm(BrowserView):
 
     def cache_get_users(fun, self, groupname):
         import time
-        return (groupname, time.time() // 3600)
+        return (groupname, time.time() // 86400)
 
     @cache(cache_get_users)
     def get_users(self, groupname):  
