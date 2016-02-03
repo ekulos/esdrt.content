@@ -149,16 +149,31 @@ class ReviewFolderView(grok.View):
 
     def get_finalisation_reasons(self):
         vtool = getToolByName(self, 'portal_vocabularies')
-        voc = vtool.getVocabularyByName('conclusion_reasons')
         reasons = [('open', 'open')]
-        voc_terms = voc.getDisplayList(self).items()
-        for term in voc_terms:
-            reasons.append((term[0], term[1]))
-        voc = vtool.getVocabularyByName('conclusion_phase2_reasons')
-        voc_terms = voc.getDisplayList(self).items()
-        for term in voc_terms:
-            reasons.append((term[0], term[1]))        
-        return reasons    
+        if self.context.Title() == '2015':
+            voc = vtool.getVocabularyByName('conclusion_reasons')
+            voc_terms = voc.getDisplayList(self).items()
+            for term in voc_terms:
+                if "2016" not in term[0]:
+                    reasons.append((term[0], term[1]))
+            voc = vtool.getVocabularyByName('conclusion_phase2_reasons')
+            voc_terms = voc.getDisplayList(self).items()
+            for term in voc_terms:
+                if "2016" not in term[0]:
+                    reasons.append((term[0], term[1]))        
+            return reasons    
+        else:
+            voc = vtool.getVocabularyByName('conclusion_reasons')
+            voc_terms = voc.getDisplayList(self).items()
+            for term in voc_terms:
+                if "2016" in term[0]:
+                    reasons.append((term[0], term[1]))
+            voc = vtool.getVocabularyByName('conclusion_phase2_reasons')
+            voc_terms = voc.getDisplayList(self).items()
+            for term in voc_terms:
+                if "2016" in term[0]:
+                    reasons.append((term[0], term[1]))        
+            return reasons    
 
     def is_member_state_coordinator(self):
         user = api.user.get_current()
