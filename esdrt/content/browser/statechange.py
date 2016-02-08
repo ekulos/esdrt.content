@@ -13,6 +13,7 @@ from zope.interface import Interface
 from esdrt.content.notifications.utils import notify
 from Products.Five.browser.pagetemplatefile import PageTemplateFile
 from eea.cache import cache
+from Products.CMFCore.utils import getToolByName
 
 
 def revoke_roles(username=None, user=None, obj=None, roles=None, inherit=True):
@@ -301,9 +302,17 @@ class AssignCounterPartForm(BrowserView):
 
     @cache(cache_get_users)
     def get_users(self, groupname):  
-        users = api.user.get_users(groupname=groupname)
-        return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
+        #users = api.user.get_users(groupname=groupname)
+        #return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
 
+        vtool = getToolByName(self, 'portal_vocabularies')
+        voc = vtool.getVocabularyByName(groupname)
+        users = []
+        voc_terms = voc.getDisplayList(self).items()
+        for term in voc_terms:
+            users.append((term[0], term[1]))
+
+        return users
     def assignation_target(self):
         return aq_parent(aq_inner(self.context))
 
