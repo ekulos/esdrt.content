@@ -300,7 +300,7 @@ class AssignCounterPartForm(BrowserView):
         import time
         return (groupname, time.time() // 86400)
 
-    @cache(cache_get_users)
+    #@cache(cache_get_users)
     def get_users(self, groupname):  
         #users = api.user.get_users(groupname=groupname)
         #return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
@@ -458,10 +458,16 @@ class AssignConclusionReviewerForm(BrowserView):
         import time
         return (groupname, time.time() // 3600)
 
-    @cache(cache_get_users)
+    #@cache(cache_get_users)
     def get_users(self, groupname):  
         users = api.user.get_users(groupname=groupname)
         return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
+        vtool = getToolByName(self, 'portal_vocabularies')
+        voc = vtool.getVocabularyByName(groupname)
+        users = []
+        voc_terms = voc.getDisplayList(self).items()
+        for term in voc_terms:
+            users.append((term[0], term[1]))
 
     def assignation_target(self):
         return aq_inner(self.context)
