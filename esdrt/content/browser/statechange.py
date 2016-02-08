@@ -324,7 +324,8 @@ class AssignCounterPartForm(BrowserView):
 
         def isCP(userId):
             target = self.assignation_target()
-            return 'CounterPart' in api.user.get_roles(username=userId, obj=target, inherit=False)
+            return False
+            #return 'CounterPart' in api.user.get_roles(username=userId, obj=target, inherit=False)
 
         for groupname in self.target_groupnames():
             try:
@@ -486,7 +487,8 @@ class AssignConclusionReviewerForm(BrowserView):
 
         def isCP(u):
             target = self.assignation_target()
-            return 'CounterPart' in api.user.get_roles(username=u, obj=target, inherit=False)
+            return False
+            #return 'CounterPart' in api.user.get_roles(username=u, obj=target, inherit=False)
 
         for groupname in self.target_groupnames():
             try:
