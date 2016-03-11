@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.2 (unreleased)
+1.59.2 (2016-03-11)
 -------------------
 
 - Fix indexing method [erral]
