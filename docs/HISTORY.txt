@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.3 (unreleased)
+1.59.3 (2016-03-11)
 -------------------
 
 - Brown bag release [erral]
