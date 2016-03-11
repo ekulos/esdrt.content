@@ -11,9 +11,14 @@ from Products.CMFCore.utils import getToolByName
 from eea.cache import cache
 from plone.batching import Batch
 
-
+import time
 
 grok.templatedir('templates')
+
+
+# Cache helper methods
+def _user_name(fun, self, userid):
+    return (userid, time.time() // 86400)
 
 
 class IReviewFolder(form.Schema, IImageScaleTraversable):
@@ -102,6 +107,7 @@ class ReviewFolderView(grok.View):
         user = api.user.get_current()
         return 'Manager' in user.getRoles()
 
+    @cache(_user_name)
     def get_author_name(self, userid):
         user = api.user.get(userid)
         return user.getProperty('fullname', userid)
@@ -782,6 +788,7 @@ class Inbox2ReviewFolderView(grok.View):
         user = api.user.get_current()
         return 'Manager' in user.getRoles()
 
+    @cache(_user_name)
     def get_author_name(self, userid):
         user = api.user.get(userid)
         return user.getProperty('fullname', userid)
@@ -1366,6 +1373,7 @@ class Inbox3ReviewFolderView(grok.View):
         user = api.user.get_current()
         return 'Manager' in user.getRoles()
 
+    @cache(_user_name)
     def get_author_name(self, userid):
         user = api.user.get(userid)
         return user.getProperty('fullname', userid)
@@ -1594,6 +1602,7 @@ class FinalisedFolderView(grok.View):
         user = api.user.get_current()
         return 'Manager' in user.getRoles()
 
+    @cache(_user_name)
     def get_author_name(self, userid):
         user = api.user.get(userid)
         return user.getProperty('fullname', userid)
