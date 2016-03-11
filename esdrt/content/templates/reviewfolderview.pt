@@ -87,7 +87,7 @@
                 filter += "&";
               }
               filter += "wfStatus=" + $('#wfStatusFilter').val();
-            }       
+            }
             if ($('#crfFilter').val() != ""){
               if (filter == ""){
                 filter += "?";
@@ -95,7 +95,7 @@
                 filter += "&";
               }
               filter += "crfCode=" + $('#crfFilter').val();
-            }                              
+            }
             window.location.href = window.location.pathname + filter;
 
         })
@@ -123,7 +123,7 @@
           </div>
           <div>
             <a class="eea-icon inbox" tal:attributes="href string:${here/absolute_url}/finalisedfolderview">Finalised observations</a>
-          </div>            
+          </div>
         </div>
       </div>
       <div id="filters">
@@ -185,14 +185,14 @@
                   tal:content="python:item[1]"></label><br/>
                   <br tal:condition="python:item[0]=='ur'"/>
                 <div tal:condition="python:item[0]=='ur'" class="esdLabel">Draft/final conclusion flags</div>
-                
+
               </tal:block>
             </tal:block>
           </div>
         </div>
         <div class="row" style="padding-top:30px">
           <div class="cell position-1 width-3 esdLabel">CRF category code</div>
-        </div>      
+        </div>
         <div class="row">
           <div class="cell position-1 width-9 esdLabel">
             <select id="crfFilter" class="chosen-select" data-placeholder="Select CRF category code">
@@ -207,7 +207,7 @@
               </tal:block>
             </select>
           </div>
-        </div>  
+        </div>
         <div class="row" style="padding-top:30px">
           <div class="cell position-1 width-3 esdLabel">Status of observation</div>
           <div class="cell position-4 width-6 esdLabel">Free text</div>
@@ -236,7 +236,7 @@
         <div class="row" style="padding-top:20px">
           <div class="cell position-1 width-3 esdLabel">Step</div>
           <div class="cell position-4 width-6 esdLabel">Workflow</div>
-        </div>     
+        </div>
         <div class="row">
           <div class="cell position-1 width-3">
             <select id="stepFilter"  class="chosen-select" data-placeholder="Select step"
@@ -248,7 +248,7 @@
               <option tal:attributes="selected python:'step2'==step"
                 value="step2">Step2</option>
             </select>
-          </div>  
+          </div>
           <div class="cell position-4 width-6">
             <select id="wfStatusFilter"  class="chosen-select" data-placeholder="Select status"
                 tal:define="wfStatus python:'';
@@ -259,42 +259,41 @@
               <option tal:attributes="selected python:'LRQE'==wfStatus"
                 value="LRQE">Lead Reviewer / Quality Expert</option>
               <option tal:attributes="selected python:'MSC'==wfStatus"
-                value="MSC">MS Coordinator</option>  
+                value="MSC">MS Coordinator</option>
               <option tal:attributes="selected python:'answered'==wfStatus"
-                value="answered">Answered</option>                 
+                value="answered">Answered</option>
               <option tal:attributes="selected python:'conclusions'==wfStatus"
-                value="conclusions">Conclusions</option>    
+                value="conclusions">Conclusions</option>
               <option tal:attributes="selected python:'close-requested'==wfStatus"
-                value="close-requested">Close requested</option>              
+                value="close-requested">Close requested</option>
               <option tal:attributes="selected python:'finalised'==wfStatus"
-                value="finalised">Finalised</option>                                            
+                value="finalised">Finalised</option>
             </select>
-          </div>                   
-        </div>   
+          </div>
+        </div>
         <div class="row" style="padding-top:30px">
           <div class="cell position-1 width-1">
             <a class="standardButton" id="btnFilter">Search</a>
           </div>
         </div>
       </div>
-      <div id="no-content" tal:condition="not: view/get_questions">
 
-        <p>
-          There are no observations to review.
-        </p>
+      <tal:questions define="liste view/get_questions">
 
-      </div>
+        <div id="no-content" tal:condition="not:liste">
 
+          <p>
+            There are no observations to review.
+          </p>
 
+        </div>
 
-      <div id="observations">
-        <tal:block tal:define="liste python:view.get_questions();
-             Batch python:modules['Products.CMFPlone'].Batch;
+      <div id="observations" tal:condition="liste">
+        <tal:block tal:define="Batch python:modules['Products.CMFPlone'].Batch;
              b_size python:20;
              b_start python:0;
              b_start request/b_start | b_start;
-             batch python:Batch(liste, b_size, int(b_start), orphan=1);"
-              tal:condition="liste">
+             batch python:Batch(liste, b_size, int(b_start), orphan=1);">
           <table class="observationList listing">
             <thead>
               <tr>
@@ -318,7 +317,7 @@
                 </th>
                 <th>
                   Workflow
-                </th>                
+                </th>
                 <th tal:condition="view/is_secretariat">
                   Author
                 </th>
@@ -404,7 +403,7 @@
         </tal:block>
       </div>
 
-      <div class="actions" tal:condition="python:view.can_add_observation() and view.get_questions()">
+      <div class="actions" tal:condition="python:view.can_add_observation() and liste">
         <a href="./++add++Observation"
           tal:attributes="href string:${here/absolute_url}/++add++Observation"
           class="standardButton defaultWFButton">
@@ -414,9 +413,9 @@
       <div id="workflowhelp">
         WORKFLOW
       </div>
+    </tal:questions>
     </metal:content-core>
   </metal:main>
 
 </body>
 </html>
-
