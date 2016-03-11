@@ -4,7 +4,7 @@ Changelog
 1.59.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Brown bag release [erral]
 
 
 1.59.2 (2016-03-11)
