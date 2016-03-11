@@ -300,7 +300,7 @@ def reply_comments_by_mse(context):
 def observation_sent_to_msc(context):
     try:
         #return context.observation_sent_to_msc()
-        questions = context.values(['Question'])
+        questions = context.get_values_cat(['Question'])
         if questions:
             question = questions[0]
             winfo = question.workflow_history
@@ -315,7 +315,7 @@ def observation_sent_to_msc(context):
 def observation_sent_to_mse(context):
     try:
         #return context.observation_sent_to_mse()
-        questions = context.values(['Question'])
+        questions = context.get_values_cat(['Question'])
         if questions:
             question = questions[0]
             winfo = question.workflow_history
