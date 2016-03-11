@@ -39,6 +39,7 @@ from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
 from esdrt.content import MessageFactory as _
+from eea.cache import cache
 
 import datetime
 
@@ -53,6 +54,11 @@ def hidden(menuitem):
         if menuitem.get('action').endswith(action):
             return True
     return False
+
+
+# Cache helper methods
+def _user_name(fun, self, userid):
+    return (userid, time() // 86400)
 
 
 # Interface class; used to define content-type schema.
@@ -560,6 +566,7 @@ class Observation(dexterity.Container):
         user = api.user.get_current()
         return 'Manager' in user.getRoles()
 
+    @cache(_user_name)
     def get_author_name(self, userid):
         if userid:
             user = api.user.get(username=userid)
