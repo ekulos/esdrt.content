@@ -4,7 +4,7 @@ Changelog
 1.59.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Refs #70377 Anon users doesn't have a group [nituacor]
 
 
 1.59.3 (2016-03-11)
