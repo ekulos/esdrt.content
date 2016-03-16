@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.4 (unreleased)
+1.59.4 (2016-03-16)
 -------------------
 
 - Refs #70377 Anon users doesn't have a group [nituacor]
