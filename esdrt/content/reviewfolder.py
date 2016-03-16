@@ -1,5 +1,5 @@
 from esdrt.content.timeit import timeit
-from AccessControl import getSecurityManager
+from AccessControl import getSecurityManager, Unauthorized
 from five import grok
 from plone import api
 from plone.directives import dexterity
@@ -93,7 +93,7 @@ class ReviewFolderView(grok.View):
         if step != "":
             query['observation_step'] = step
         if wfStatus != "":
-            query['observation_status'] = wfStatus  
+            query['observation_status'] = wfStatus
         if crfCode != "":
             query['crf_code'] = crfCode
 
@@ -166,8 +166,8 @@ class ReviewFolderView(grok.View):
             voc_terms = voc.getDisplayList(self).items()
             for term in voc_terms:
                 if "2016" not in term[0]:
-                    reasons.append((term[0], term[1]))        
-            return reasons    
+                    reasons.append((term[0], term[1]))
+            return reasons
         else:
             voc = vtool.getVocabularyByName('conclusion_reasons')
             voc_terms = voc.getDisplayList(self).items()
@@ -178,10 +178,12 @@ class ReviewFolderView(grok.View):
             voc_terms = voc.getDisplayList(self).items()
             for term in voc_terms:
                 if "2016" in term[0]:
-                    reasons.append((term[0], term[1]))        
-            return reasons    
+                    reasons.append((term[0], term[1]))
+            return reasons
 
     def is_member_state_coordinator(self):
+        if api.user.is_anonymous():
+            raise Unauthorized
         user = api.user.get_current()
         return "extranet-esd-countries-msa" in user.getGroups()
 
@@ -924,7 +926,7 @@ class Inbox3ReviewFolderView(grok.View):
                     elif rolename == 'NotCounterPartPhase1':
                         return not x.isCP and x.isSE
                     elif rolename == 'NotCounterPartPhase2':
-                        return not x.isCP and x.isRE   
+                        return not x.isCP and x.isRE
                     elif rolename == 'LeadReviewer':
                         return x.isLR
                     elif rolename == 'QualityExpert':
@@ -972,7 +974,7 @@ class Inbox3ReviewFolderView(grok.View):
             rolecheck='ReviewExpert',
             observation_question_status=[
                 'phase2-draft',
-                'phase2-drafted'])  
+                'phase2-drafted'])
 
         """
          Add also finalised observations with "no conclusion yet"
@@ -984,8 +986,8 @@ class Inbox3ReviewFolderView(grok.View):
                 'phase2-closed'],
             observation_finalisation_reason='no-conclusion-yet',
         )
-                
-        return phase1 + phase2 + no_conclusion_yet  
+
+        return phase1 + phase2 + no_conclusion_yet
 
     @timeit
     def get_counterpart_questions_to_comment(self):
@@ -1070,7 +1072,7 @@ class Inbox3ReviewFolderView(grok.View):
             )
             statuses_phase2.extend([
                 'phase2-recalled-lr']
-            )            
+            )
 
         phase1 = self.get_observations(
             rolecheck="SectorExpert",
@@ -1080,7 +1082,7 @@ class Inbox3ReviewFolderView(grok.View):
             rolecheck="ReviewExpert",
             observation_question_status=statuses_phase2)
 
-        return phase1 + phase2        
+        return phase1 + phase2
 
     @timeit
     def get_waiting_for_comment_from_counterparts_for_question(self):
@@ -1113,7 +1115,7 @@ class Inbox3ReviewFolderView(grok.View):
         phase2 =  self.get_observations(
             rolecheck='NotCounterPartPhase2',
             observation_question_status=[
-                'phase2-conclusion-discussion'])        
+                'phase2-conclusion-discussion'])
         return phase1 + phase2
 
     @timeit
@@ -1130,9 +1132,9 @@ class Inbox3ReviewFolderView(grok.View):
         phase2 =  self.get_observations(
             rolecheck='ReviewExpert',
             observation_question_status=[
-                'phase2-close-requested']) 
+                'phase2-close-requested'])
 
-        return phase1 + phase2       
+        return phase1 + phase2
 
     """
         Lead Reviewer / Quality expert
@@ -1503,7 +1505,7 @@ class FinalisedFolderView(grok.View):
                     elif rolename == 'NotCounterPartPhase1':
                         return not x.isCP and x.isSE
                     elif rolename == 'NotCounterPartPhase2':
-                        return not x.isCP and x.isRE   
+                        return not x.isCP and x.isRE
                     elif rolename == 'LeadReviewer':
                         return x.isLR
                     elif rolename == 'QualityExpert':
@@ -1638,7 +1640,7 @@ class FinalisedFolderView(grok.View):
         user = api.user.get_current()
         user_groups = user.getGroups()
         is_qe = 'extranet-esd-ghginv-qualityexpert' in user_groups
-        is_lr = 'extranet-esd-esdreview-leadreview' in user_groups       
+        is_lr = 'extranet-esd-esdreview-leadreview' in user_groups
         return is_qe or is_lr
 
     def is_member_state_coordinator(self):
