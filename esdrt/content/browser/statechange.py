@@ -341,7 +341,7 @@ class AssignCounterPartForm(BrowserView):
                 log = getLogger(__name__)
                 log.info('Unexpected error: %s' % sys.exc_info()[0])
 
-        return users
+        return list(set(users))
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
@@ -469,13 +469,14 @@ class AssignConclusionReviewerForm(BrowserView):
         voc_terms = voc.getDisplayList(self).items()
         for term in voc_terms:
             users.append((term[0], term[1]))
+        return users
 
     def assignation_target(self):
         return aq_inner(self.context)
 
     def target_groupnames(self):
         return [
-            'extranet-esd-ghginv'
+            'extranet-esd-ghginv',
             'extranet-esd-esdreview',
         ]
 
@@ -499,7 +500,7 @@ class AssignConclusionReviewerForm(BrowserView):
                 log = getLogger(__name__)
                 log.info('There is not such a group %s' % groupname)
 
-        return users
+        return list(set(users))
 
     def __call__(self):
         """Perform the update and redirect if necessary, or render the page
