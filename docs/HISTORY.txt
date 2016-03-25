@@ -4,7 +4,10 @@ Changelog
 1.59.5.dev0 (unreleased)
 ------------------------
 
-- Nothing changed yet
+- Refs #69147 added cron view to update ldap users
+  configure the cron like
+  0 1 * * * root /usr/bin/wget -O /dev/null -q http://localhost:8080/Plone/cron_update_vocabularies
+  [lucas]
 
 1.59.4 (2016-03-16)
 -------------------
