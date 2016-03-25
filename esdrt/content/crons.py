@@ -82,4 +82,4 @@ class UpdateLDAPUsersVocabulariesCron(BrowserView):
                     logger.info(
                         "Term (%s, %s) added into %s" % (userid, fullname, groupname)
                     )
-            return 'Done'
+        return 'Done'
