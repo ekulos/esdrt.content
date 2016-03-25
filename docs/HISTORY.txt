@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.6 (unreleased)
+1.59.6 (2016-03-25)
 -------------------
 
 - Refs #69147 added cron view to update ldap users
