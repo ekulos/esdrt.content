@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.59.7 (unreleased)
+1.59.7 (2016-03-31)
 -------------------
 
-- Nothing changed yet.
+- refs #70899 fix patch after update CMFDiffTool
+  [lucas]
 
 
 1.59.6 (2016-03-25)
