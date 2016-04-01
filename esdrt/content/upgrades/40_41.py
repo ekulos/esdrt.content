@@ -31,5 +31,5 @@ def catalog_metadata(context, logger):
         obj.edit()
         logger.info('%s/%s: %s reindexed' % (count, length, obj.getId()))
         if count % 100 == 0:
-            logger.info('transaction committed')
             transaction.commit()
+            logger.info('transaction committed')
