@@ -567,12 +567,19 @@ class Observation(dexterity.Container):
         return 'Manager' in user.getRoles()
 
     @cache(_user_name)
-    def get_author_name(self, userid):
+    def _author_name(self, userid):
         if userid:
             user = api.user.get(username=userid)
             if user:
                 return user.getProperty('fullname', userid)
+
         return userid
+
+    def get_author_name(self, userid=None):
+        if not userid:
+            userid = self.Creator()
+
+        return self._author_name(userid)
 
     def myHistory(self):
         observation_history = self.workflow_history.get(

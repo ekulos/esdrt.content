@@ -97,7 +97,7 @@ class ReviewFolderView(grok.View):
         if crfCode != "":
             query['crf_code'] = crfCode
 
-        return [b.getObject() for b in catalog(query)]
+        return catalog(query)
 
     def can_add_observation(self):
         sm = getSecurityManager()
@@ -106,11 +106,6 @@ class ReviewFolderView(grok.View):
     def is_secretariat(self):
         user = api.user.get_current()
         return 'Manager' in user.getRoles()
-
-    @cache(_user_name)
-    def get_author_name(self, userid):
-        user = api.user.get(userid)
-        return user.getProperty('fullname', userid)
 
     def get_countries(self):
         vtool = getToolByName(self, 'portal_vocabularies')

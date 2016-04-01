@@ -4,7 +4,9 @@ Changelog
 1.59.8 (unreleased)
 -------------------
   		  
-- Nothing changed yet.
+- refs #70788 refactoring view
+  Upgrade steps: added some metadata into catalog
+  [lucas]
 
 
 1.59.7 (2016-03-31)

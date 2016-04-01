@@ -306,5 +306,12 @@
          source="39"
          destination="40"
          handler=".39_40.upgrade"
-         profile="esdrt.content:default" />                                    
+         profile="esdrt.content:default" />
+    <genericsetup:upgradeStep
+         title="Upgrade to 41."
+         description="Update metadata"
+         source="40"
+         destination="41"
+         handler=".40_41.upgrade"
+         profile="esdrt.content:default" />        
 </configure>
