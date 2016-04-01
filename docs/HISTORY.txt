@@ -7,6 +7,8 @@ Changelog
 - refs #70788 refactoring view
   Upgrade steps: added some metadata into catalog
   [lucas]
+- refs #70969 checking added to test the state of comment before transition
+  [lucas]
 
 
 1.59.7 (2016-03-31)

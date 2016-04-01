@@ -20,8 +20,10 @@ def question_transition(question, event):
             'comments', wf_id='esd-question-review-workflow')
         comment = question.get(comment_id, None)
         if comment is not None:
+            comment_state = api.content.get_state(obj=comment)
             comment.setEffectiveDate(DateTime())
-            api.content.transition(obj=comment, transition='publish')
+            if comment_state in ['initial']:
+                api.content.transition(obj=comment, transition='publish')
 
     if event.action in ['phase2-approve-question']:
         observation = aq_parent(question)
@@ -34,7 +36,9 @@ def question_transition(question, event):
             'comments', wf_id='esd-question-review-workflow')
         comment = question.get(comment_id, None)
         if comment is not None:
-            api.content.transition(obj=comment, transition='retract')
+            comment_state = api.content.get_state(obj=comment)
+            if comment_state in ['public']:
+                api.content.transition(obj=comment, transition='retract')
 
     if event.action in ['phase1-answer-to-lr', 'phase2-answer-to-lr']:
         wf = getToolByName(question, 'portal_workflow')
@@ -42,8 +46,10 @@ def question_transition(question, event):
             'comments', wf_id='esd-question-review-workflow')
         comment = question.get(comment_id, None)
         if comment is not None:
+            comment_state = api.content.get_state(obj=comment)
             comment.setEffectiveDate(DateTime())
-            api.content.transition(obj=comment, transition='publish')
+            if comment_state in ['initial']:
+                api.content.transition(obj=comment, transition='publish')
 
     if event.action in ['phase1-recall-msa', 'phase2-recall-msa']:
         wf = getToolByName(question, 'portal_workflow')
@@ -51,7 +57,9 @@ def question_transition(question, event):
             'comments', wf_id='esd-question-review-workflow')
         comment = question.get(comment_id, None)
         if comment is not None:
-            api.content.transition(obj=comment, transition='retract')
+            comment_state = api.content.get_state(obj=comment)
+            if comment_state in ['public']:
+                api.content.transition(obj=comment, transition='retract')
 
     observation = aq_parent(question)
     observation.reindexObject()
@@ -246,6 +254,6 @@ def observation_transition(observation, event):
                 api.content.transition(
                     obj=conclusion,
                     transition='ask-approval'
-                )                
+                )
 
     observation.reindexObject()
