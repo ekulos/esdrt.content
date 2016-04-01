@@ -1,5 +1,5 @@
 from Products.CMFCore.utils import getToolByName
-
+import transaction
 
 PROFILE_ID = 'profile-esdrt.content:default'
 
@@ -9,14 +9,27 @@ def upgrade(context, logger=None):
         from logging import getLogger
         logger = getLogger('esdrt.content.upgrades.40_41')
 
+    update_catalog(context, logger)
     catalog_metadata(context, logger)
     logger.info('Upgrade steps executed')
 
 
-def catalog_metadata(context, logger):
+def update_catalog(context, logger):
     setup = getToolByName(context, 'portal_setup')
     setup.runImportStepFromProfile(PROFILE_ID, 'catalog')
+    transaction.commit()
 
+def catalog_metadata(context, logger):
     catalog = getToolByName(context, 'portal_catalog')
     logger.info('Reindexing')
-    catalog.clearFindAndRebuild()
+    brains = catalog(portal_type='Observation')
+    length = len(brains)
+    count = 0
+    for b in brains:
+        count = count + 1
+        obj = b.getObject()
+        obj.edit()
+        logger.info('%s/%s: %s reindexed' % (count, length, obj.getId()))
+        if count % 100 == 0:
+            logger.info('transaction committed')
+            transaction.commit()
