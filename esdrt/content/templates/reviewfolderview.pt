@@ -48,7 +48,7 @@
               }else{
                 filter += "&";
               }
-              filter += "inventoryYear=" + $('#inventoryYearFilter').val();
+              filter += "inventoryYear=" + escape($('#inventoryYearFilter').val());
             }
             if ($('#freeTextFilter').val() != ""){
               if (filter == ""){
@@ -167,9 +167,9 @@
                 <option
                   tal:define="inventoryYear python:'';
                               inventoryYear request/inventoryYear | inventoryYear"
-                  tal:attributes="value python:item;
+                  tal:attributes="value item;
                                   selected python:item==inventoryYear"
-                  tal:content="python:item"></option>
+                  tal:content="item"></option>
               </tal:block>
             </select>
           </div>
