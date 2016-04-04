@@ -192,6 +192,14 @@
                   Configure notifications
             </a>
           </li>
+          <li class="deleteButton" tal:condition="context/is_secretariat">
+            <a href=""
+              tal:attributes="href string:${here/absolute_url}/delete_confirmation"
+              class="standardButton removeButton">
+                <span class="eea-icon"><!-- --></span>
+                  Remove this observation
+            </a>
+          </li>
         </ul>
       </div>
     </div>

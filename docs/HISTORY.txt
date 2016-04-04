@@ -8,7 +8,8 @@ Changelog
   [lucas]
 - refs #68705 added "back to overview list" button
   [lucas]
-
+- refs #29798 added "Delete button" for Secretariat
+  [lucas]
 
 1.59.9 (2016-04-01)
 -------------------
@@ -19,7 +20,7 @@ Changelog
 
 1.59.8 (2016-04-01)
 -------------------
-  		  
+
 - refs #70788 refactoring view
   Upgrade steps: added some metadata into catalog
   [lucas]

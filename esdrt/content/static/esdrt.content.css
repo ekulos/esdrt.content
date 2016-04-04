@@ -87,6 +87,7 @@
 	display: inline-block;
 	border: 1px solid #346F83;
 }
+.standardButton.removeButton,
 .standardButton.defaultWFButton {
 	background-color:#f6a800 !important;
 	border-color: #999999;
@@ -109,6 +110,7 @@
 	box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
 	text-shadow: none;
 }
+.standardButton.removeButton:hover,
 .standardButton.defaultWFButton:hover,
 #content a.standardButton.defaultWFButton:hover {
 	background-color:#38758a !important;
@@ -119,6 +121,12 @@
 }
 .backButton .eea-icon:before{
   content: "\f053";
+}
+.removeButton{
+	color: ;#d9534f;
+}
+.removeButton .eea-icon:before{
+  content: "\f00d";
 }
 .actions{
 	text-align: right;
