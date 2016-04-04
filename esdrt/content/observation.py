@@ -70,7 +70,12 @@ class IObservation(form.Schema, IImageScaleTraversable):
     text = schema.Text(
         title=u'Short description by expert/reviewer',
         required=True,
-        description=u"Describe the issue identified. Keep it short, you cannot change this description once you have sent it to the QE/LR. MS can only see the question once it has been approved and sent by the QE/LR. The question to the MS should be asked in the Q&A tab, not here.",
+        description=u"Describe the issue identified. Keep it short, you " \
+                    u"cannot change this description once you have sent it " \
+                    u"to the QE/LR. MS can only see the question once it " \
+                    u"has been approved and sent by the QE/LR. The " \
+                    u"question to the MS should be asked in the Q&A " \
+                    u"tab, not here.",
     )
 
     country = schema.Choice(
@@ -87,7 +92,10 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     year = schema.TextLine(
         title=u'Inventory year',
-        description=u"Inventory year is the year or a range of years (e.g. '2012', '2009-2012') when the emissions had occured for which an issue was observed in the review.",
+        description=u"Inventory year is the year, a range or a list " \
+                    u"of years or a (e.g. '2012', '2009-2012', " \
+                    u"'2009, 2012, 2013') when the emissions had " \
+                    u"occured for which an issue was observed in the review.",
         required=True
     )
 
@@ -102,7 +110,8 @@ class IObservation(form.Schema, IImageScaleTraversable):
 
     review_year = schema.Int(
         title=u'Review year',
-        description=u'Review year is the year in which the inventory was submitted and the review was carried out',
+        description=u'Review year is the year in which the inventory was ' \
+                    u'submitted and the review was carried out',
         required=True,
     )
 
@@ -145,7 +154,9 @@ class IObservation(form.Schema, IImageScaleTraversable):
     form.widget(highlight=CheckBoxFieldWidget)
     highlight = schema.List(
         title=u"Description flags",
-        description=u"Description flags highlight important information that is closely related to the main purpose of 'initial checks' and ESD review",
+        description=u"Description flags highlight important information " \
+                    u"that is closely related to the main purpose of " \
+                    u"'initial checks' and ESD review",
         value_type=schema.Choice(
             vocabulary='esdrt.content.highlight',
         ),
@@ -206,7 +217,9 @@ def check_crf_code(value):
             valid = True
 
     if not valid:
-        raise Invalid(u'You are not allowed to add observations for this sector category')
+        raise Invalid(
+            u'You are not allowed to add observations for this sector category'
+        )
 
 
 @form.validator(field=IObservation['country'])
@@ -223,25 +236,39 @@ def check_country(value):
             valid = True
 
     if not valid:
-        raise Invalid(u'You are not allowed to add observations for this country')
+        raise Invalid(
+            u'You are not allowed to add observations for this country'
+        )
 
 
 @form.validator(field=IObservation['year'])
 def inventory_year(value):
     """
-    Inventory year can be a given year (2014) or a range of years (2012-2014)
+    Inventory year can be a given year (2014), a range of years (2012-2014)
+    or a list of the years (2012, 2014, 2016)
     """
+    def string_analyzer(string, separator):
+        """ return True is each element of string are Integer
+            return False otherwise
+        """
+        for item in value.split(separator):
+            try:
+                _ = int(item.strip())
+            except ValueError:
+                return False
+        return True
+
     try:
         _ = int(value)
         valid = True
     except ValueError:
-        # Let's see if it's a range of years:
-        for item in value.split('-'):
-            try:
-                _ = int(item.strip())
-                valid = True
-            except ValueError:
-                valid = False
+        # Let's see if it's a range of years or a list of year:
+        if '-' in value:
+            valid = string_analyzer(value, '-')
+        elif ',' in value:
+            valid = string_analyzer(value, ',')
+        else:
+            valid = string_analyzer(value, ';')
 
     if not valid:
         raise Invalid(u'Inventory year format is not correct. ')
@@ -509,21 +536,24 @@ class Observation(dexterity.Container):
     def observation_status(self):
         status = self.observation_question_status()
         if status in ['phase1-draft', 'phase2-draft',
-                      'phase1-counterpart-comments', 'phase2-counterpart-comments',
+                      'phase1-counterpart-comments',
+                      'phase2-counterpart-comments',
                       'observation-phase1-draft', 'observation-phase2-draft']:
             return 'SRRE'
         elif status in ['phase1-drafted', 'phase2-drafted',
                         'phase1-recalled-lr', 'phase2-recalled-lr']:
             return 'LRQE'
         elif status in ['phase1-pending', 'phase2-pending',
-                        'phase1-pending-answer-drafting', 'phase2-pending-answer-drafting',
+                        'phase1-pending-answer-drafting',
+                        'phase2-pending-answer-drafting',
                         'phase1-expert-comments', 'phase2-expert-comments',
                         'phase1-recalled-msa', 'phase1-recalled-msa']:
             return 'MSC'
         elif status in ['phase1-answered', 'phase2-answered']:
             return 'answered'
         elif status in ['phase1-conclusions', 'phase2-conclusions',
-                        'phase1-conclusion-discussion', 'phase2-conclusion-discussion',
+                        'phase1-conclusion-discussion',
+                        'phase2-conclusion-discussion',
                         'phase1-close-requested', 'phase2-close-requested']:
             return 'conclusions'
         elif status in ['phase1-closed', 'phase2-closed']:
