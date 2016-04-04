@@ -94,7 +94,7 @@
 	-moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
 	-ms-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
 	-o-box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
-	box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);	
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
 }
 .standardButton:hover,
 #content a.standardButton:hover{
@@ -123,6 +123,22 @@
 .actions{
 	text-align: right;
 	margin-top: 10px;
+}
+.observationActions{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.observationActions .position-0{
+	margin-left: -100%;
+}
+.observationActions .position-1\3a 2 {
+    margin-left: -47.75%;
+}
+#content .observationActions ul li{
+	display: inline;
+}
+.observationActions .observationActionsMenu{
+	text-align: right;
 }
 #qa{
 	margin-top: 10px;
@@ -736,8 +752,8 @@ span.envelope:before{
 body.portaltype-conclusion #form-buttons-cancel {
 	display: none;
 }
-#statisticsPhase {   
-    margin-left: auto; 
+#statisticsPhase {
+    margin-left: auto;
     margin-right: auto;
 	text-align: center;
 }
