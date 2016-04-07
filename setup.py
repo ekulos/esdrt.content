@@ -36,7 +36,8 @@ setup(name='esdrt.content',
           'plone.app.workflowmanager',
           'cs.htmlmailer',
           'collective.deletepermission',
-          'tablib'
+          'tablib',
+          'python-docx == 0.8.5'
       ],
       entry_points="""
       # -*- Entry points: -*-

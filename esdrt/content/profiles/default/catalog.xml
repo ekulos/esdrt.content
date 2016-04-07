@@ -114,9 +114,7 @@
  <column value="observation_phase" />
  <column value="observation_question_status" />
  <column value="last_answer_reply_number" />
- <column value="get_status" />
  <column value="observation_already_replied" />
  <column value="reply_comments_by_mse" />
- <column value="observation_finalisation_reason" />
- 
+
 </object>
