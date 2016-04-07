@@ -112,6 +112,12 @@
         class=".attachmentdownload.Download"
         permission="zope2.View"
         />
-
+    
+    <browser:page
+        name="manage_forcing_workflow_state"
+        for="*"
+        class=".statechange.UpdateWorkflow"
+        permission="cmf.ManagePortal"
+        />
 
 </configure>

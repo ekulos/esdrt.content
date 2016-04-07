@@ -1,4 +1,4 @@
-from Acquisition import aq_inner
+
 from Acquisition import aq_parent
 from esdrt.content import MessageFactory as _
 from plone import api
@@ -14,6 +14,7 @@ from esdrt.content.notifications.utils import notify
 from Products.Five.browser.pagetemplatefile import PageTemplateFile
 from eea.cache import cache
 from Products.CMFCore.utils import getToolByName
+from DateTime import DateTime
 
 
 def revoke_roles(username=None, user=None, obj=None, roles=None, inherit=True):
@@ -301,7 +302,7 @@ class AssignCounterPartForm(BrowserView):
         return (groupname, time.time() // 86400)
 
     @cache(cache_get_users)
-    def get_users(self, groupname):  
+    def get_users(self, groupname):
         #users = api.user.get_users(groupname=groupname)
         #return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
 
@@ -460,7 +461,7 @@ class AssignConclusionReviewerForm(BrowserView):
         return (groupname, time.time() // 3600)
 
     @cache(cache_get_users)
-    def get_users(self, groupname):  
+    def get_users(self, groupname):
         #users = api.user.get_users(groupname=groupname)
         #return [(u.getId(), u.getProperty('fullname', u.getId())) for u in users]
         vtool = getToolByName(self, 'portal_vocabularies')
@@ -544,3 +545,28 @@ class AssignConclusionReviewerForm(BrowserView):
         super(AssignConclusionReviewerForm, self).updateActions()
         for k in self.actions.keys():
             self.actions[k].addClass('standardButton')
+
+
+class UpdateWorkflow(BrowserView):
+    def __call__(self):
+        state_id = self.request.form.get('state_id', None)
+        workflow_id = self.request.form.get('workflow_id', None)
+
+        if not (state_id and workflow_id):
+            return 'Nothing!'
+
+        wft = self.context.portal_workflow
+        workflow = wft.getWorkflowById(workflow_id)
+        state_variable = workflow.state_var
+        wf_state = {
+            'action': None,
+            'actor': None,
+            'comments': "Setting state to %s" % state_id,
+            state_variable: state_id,
+            'time': DateTime(),
+            }
+
+        wft.setStatusOf(workflow_id, self.context, wf_state)
+        workflow.updateRoleMappingsFor(self.context)
+
+        return 'Success!'

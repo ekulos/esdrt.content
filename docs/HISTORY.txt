@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.59.11 (unrelease)
+1.59.11 (2016-04-07)
 -----------------
 
-- Nothing changed yet.
+- refs #71016 add view to manage objects states
+  [lucas]
 
 1.59.10 (2016-04-04)
 -----------------
