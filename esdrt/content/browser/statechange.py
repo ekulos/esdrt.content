@@ -1,5 +1,4 @@
-
-from Acquisition import aq_parent
+from Acquisition import aq_parent, aq_inner
 from esdrt.content import MessageFactory as _
 from plone import api
 from Products.Five.browser import BrowserView
