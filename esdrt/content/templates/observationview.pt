@@ -204,6 +204,9 @@
       </div>
     </div>
     <div class="visualClear"><!-- --></div>
+    <div style="text-align: right;" tal:condition="view/has_local_notifications_settings">
+      <span class="eea-icon eea-icon-exclamation-triangle"> local notifications present</span>
+    </div>
     <div class="esdDiv">
       <div class="row" style="margin-top:15px">
         <div class="cell position-0 width-1">

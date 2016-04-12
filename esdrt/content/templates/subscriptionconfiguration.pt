@@ -170,9 +170,11 @@
 
     <p>
       You are subscribed to receive the following notifications.<br/>
-
       If you want to subscribe or unsubscribe from receiving those notifications, please check
       the relevant box and then click on save.
+    </p>
+    <p tal:condition="view/has_local_notifications_settings">
+      Or "Clear" your local preferences, so to use the global preferences set on this area
     </p>
 
     <form method="post" action=""
@@ -218,6 +220,12 @@
         <button type="submit" class="standardButton">
           Save
         </button>
+
+        <a class="standardButton removeButton" href=""
+           tal:condition="view/has_local_notifications_settings"
+           tal:attributes="href string:${here/absolute_url}/clear-subscriptions">
+          Clear
+        </a>
 
       </div>
 

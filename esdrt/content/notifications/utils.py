@@ -1,4 +1,7 @@
 from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
+from esdrt.content.reviewfolder import IReviewFolder
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from cs.htmlmailer.mailer import create_html_mail
 from plone import api
 from Products.CMFPlone.utils import safe_unicode
@@ -11,11 +14,13 @@ def notify(observation, template, subject, role, notification_name):
     content = template(**dict(observation=observation))
     send_mail(subject, safe_unicode(content), users)
 
-
 def send_mail(subject, email_content, users=[]):
     """
     Effectively send the e-mail message
     """
+    from logging import getLogger
+    log = getLogger(__name__)
+
     from_addr = api.portal.get().email_from_address
     user_emails = extract_emails(users)
     if user_emails:
@@ -35,6 +40,7 @@ def send_mail(subject, email_content, users=[]):
             mailhost = api.portal.get_tool('MailHost')
             mailhost.send(mail.as_string())
             message = u'Users have been notified by e-mail'
+            log.info('Emails sent to users %s' % ', '.join(users))
             IStatusMessage(request).add(message)
         except:
             message = u'There was an error sending the notification, but your action was completed succesfuly. Contact the EEA Secretariat for further instructions.'
@@ -62,7 +68,13 @@ def get_users_in_context(observation, role, notification_name):
     usernames = []
     for username, userroles in local_roles:
         if role in userroles:
-            usernames.append(username)
+            group = api.group.get(username)
+            if group:
+                usernames.extend(group.getMemberIds())
+            else:
+                usernames.append(username)
+
+    usernames = list(set(usernames))
 
     for username in usernames:
         user = api.user.get(username=username)
@@ -80,5 +92,10 @@ def get_users_in_context(observation, role, notification_name):
 def exclude_user_from_notification(observation, user, role, notification):
     adapted = INotificationUnsubscriptions(observation)
     data = adapted.get_user_data(user.getId())
+    if not data:
+        area = aq_parent(aq_inner(observation))
+        if IReviewFolder.providedBy(area):
+            adapted = INotificationUnsubscriptions(area)
+            data = adapted.get_user_data(user.getId())
     excluded_notifications = data.get(role, [])
     return notification in excluded_notifications

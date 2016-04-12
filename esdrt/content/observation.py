@@ -40,7 +40,7 @@ from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
 from esdrt.content import MessageFactory as _
 from eea.cache import cache
-
+from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
 import datetime
 
 HIDDEN_ACTIONS = [
@@ -1164,6 +1164,13 @@ class ObservationView(grok.View):
         form_instance = AddQuestionForm(self.context, self.request)
         alsoProvides(form_instance, IWrappedForm)
         return form_instance()
+
+    def has_local_notifications_settings(self):
+        user = api.user.get_current()
+        adapted = INotificationUnsubscriptions(self.context)
+        data = adapted.get_user_data(user.getId())
+
+        return data and True or False
 
     # Question view
     def question(self):
