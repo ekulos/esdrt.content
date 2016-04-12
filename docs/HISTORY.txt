@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.13 (unrelease)
+1.59.13 (2016-04-12)
 -----------------
 
 - refs #28230 added area subscribe notifications configurations
