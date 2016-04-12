@@ -136,7 +136,7 @@ class SubscriptionConfigurationMixin(grok.View):
         return "extranet-esd-countries-msexpert" in self.user().getGroups()
 
     @memoize
-    def get_observations(self):
+    def get_observations(self, limit=0):
         catalog = api.portal.get_tool('portal_catalog')
         path = '/'.join(self.context.getPhysicalPath())
         query = {
@@ -152,7 +152,9 @@ class SubscriptionConfigurationMixin(grok.View):
         if self.is_member_state_expert:
             query['observation_sent_to_mse'] = bool(True)
 
-        return [obs.getObject() for obs in catalog(query)]
+        if limit > 0:
+            return catalog(query)[:limit]
+        return catalog(query)
 
     def user_roles(self, context=None, translated_roles=True):
         if context is None:
@@ -171,12 +173,13 @@ class SubscriptionConfigurationMixin(grok.View):
         return roles
 
     def user_area_roles(self, translated_roles=True):
-        user = self.user()
         roles = []
+        observations = self.get_observations(limit=20)
 
-        for obs in self.get_observations():
+        for obs in observations:
+            obj = obs.getObject()
             obs_roles = self.user_roles(
-                context=obs, translated_roles=translated_roles
+                context=obj, translated_roles=translated_roles
             )
             for r in obs_roles:
                 if r not in roles:

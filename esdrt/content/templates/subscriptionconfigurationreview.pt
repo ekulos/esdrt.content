@@ -26,11 +26,11 @@
             Back to list
       </a>
     </div>
-    <div class="esdDiv">
-      <span tal:content="context/title">
-             Title
-      </span>
-    </div>
+
+    <h1 class="documentFirstHeading" tal:content="context/title">
+           Title
+    </h1>
+
   </metal:observation>
 
 
