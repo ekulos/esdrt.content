@@ -42,7 +42,7 @@
     </p>
 
       <ul>
-        <tal:role repeat="role view/user_area_roles">
+        <tal:role repeat="role view/user_roles">
           <li tal:content="role">
             Lead Reviewer
           </li>

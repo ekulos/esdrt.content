@@ -127,35 +127,6 @@ class SubscriptionConfigurationMixin(grok.View):
             raise Unauthorized
         return api.user.get_current()
 
-    @property
-    def is_member_state_coordinator(self):
-        return "extranet-esd-countries-msa" in self.user().getGroups()
-
-    @property
-    def is_member_state_expert(self):
-        return "extranet-esd-countries-msexpert" in self.user().getGroups()
-
-    @memoize
-    def get_observations(self, limit=0):
-        catalog = api.portal.get_tool('portal_catalog')
-        path = '/'.join(self.context.getPhysicalPath())
-        query = {
-            'path': path,
-            'portal_type': ['Observation'],
-            'sort_on': 'modified',
-            'sort_order': 'reverse',
-        }
-
-        if self.is_member_state_coordinator:
-            query['observation_sent_to_msc'] = bool(True)
-
-        if self.is_member_state_expert:
-            query['observation_sent_to_mse'] = bool(True)
-
-        if limit > 0:
-            return catalog(query)[:limit]
-        return catalog(query)
-
     def user_roles(self, context=None, translated_roles=True):
         if context is None:
             context = self.context
@@ -170,21 +141,6 @@ class SubscriptionConfigurationMixin(grok.View):
             else:
                 if role in ROLE_TRANSLATOR.keys():
                     roles.append(role)
-        return roles
-
-    def user_area_roles(self, translated_roles=True):
-        roles = []
-        observations = self.get_observations(limit=20)
-
-        for obs in observations:
-            obj = obs.getObject()
-            obs_roles = self.user_roles(
-                context=obj, translated_roles=translated_roles
-            )
-            for r in obs_roles:
-                if r not in roles:
-                    roles.append(r)
-
         return roles
 
     def get_unsubscribed_notifications(self, context=None):
@@ -213,10 +169,7 @@ class SubscriptionConfigurationMixin(grok.View):
     def my_subscriptions(self):
         roles = []
 
-        if IReviewFolder.providedBy(self.context):
-            roles = self.user_area_roles(translated_roles=False)
-        else:
-            roles = self.user_roles(translated_roles=False)
+        roles = self.user_roles(translated_roles=False)
 
         unsubscribed_notifications = self.get_unsubscribed_notifications()
 
@@ -266,10 +219,7 @@ class SaveSubscriptionsReview(SubscriptionConfigurationMixin):
             user = self.user()
             data = self.request.get('subscription_data')
             adapted = INotificationUnsubscriptions(self.context)
-            if IReviewFolder.providedBy(self.context):
-                user_roles = self.user_area_roles(translated_roles=False)
-            else:
-                user_roles = self.user_roles(translated_roles=False)
+            user_roles = self.user_roles(translated_roles=False)
             to_delete = {}
             for item in data:
                 copied_item = dict(item)
