@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.59.14 (unrelease)
+1.59.13.2 (2016-04-15)
 -------------------
 
-- Nothing changed yet.
+- refs #28230 added upgraded steps
+  [lucas]
 
 1.59.13 (2016-04-12)
 -----------------
