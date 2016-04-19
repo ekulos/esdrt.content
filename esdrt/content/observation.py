@@ -1066,6 +1066,13 @@ class ObservationView(grok.View):
     grok.require('zope2.View')
     grok.name('view')
 
+    @property
+    def user_roles(self):
+        user = api.user.get_current()
+        return api.user.get_roles(
+            username=user.getId(), obj=self.context
+        )
+
     def wf_info(self):
         context = aq_inner(self.context)
         wf = getToolByName(context, 'portal_workflow')

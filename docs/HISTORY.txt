@@ -4,7 +4,10 @@ Changelog
 1.59.14 (unrelease)
 -------------------
 
-- Nothing changed yet.
+- refs #71051 fix rules to show "Edit Key Flags"
+  [lucas]
+- refs #71375 table in phase2 removed from the view
+  [lucas]
 
 1.59.13.2 (2016-04-15)
 -------------------
