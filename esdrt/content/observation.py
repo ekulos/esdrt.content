@@ -1765,11 +1765,6 @@ class AddConclusions(grok.View):
                     url = conclusion.absolute_url() + '/edit'
 
         elif context.get_status().startswith('phase2-'):
-            api.content.transition(
-                obj=context,
-                transition='phase2-draft-conclusions'
-            )
-
             current_user_id = api.user.get_current().getId()
             user_roles = api.user.get_roles(
                 username=current_user_id,
@@ -1809,7 +1804,10 @@ class AddConclusions(grok.View):
                     cs = self.context.get_values_cat('ConclusionsPhase2')
                     conclusion = cs[0]
                     url = conclusion.absolute_url() + '/edit'
-
+            api.content.transition(
+                obj=context,
+                transition='phase2-draft-conclusions'
+            )
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
 
