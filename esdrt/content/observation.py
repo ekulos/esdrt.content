@@ -1804,10 +1804,12 @@ class AddConclusions(grok.View):
                     cs = self.context.get_values_cat('ConclusionsPhase2')
                     conclusion = cs[0]
                     url = conclusion.absolute_url() + '/edit'
-            api.content.transition(
-                obj=context,
-                transition='phase2-draft-conclusions'
-            )
+
+            if context.get_status() != 'phase2-conclusions':
+                api.content.transition(
+                    obj=context,
+                    transition='phase2-draft-conclusions'
+                )
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
 

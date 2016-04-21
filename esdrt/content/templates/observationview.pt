@@ -1100,7 +1100,7 @@
         <div class="actions">
         <a href=""
             id="add-conclusion-link"
-            tal:condition="view/can_add_conclusion_phase2"
+            tal:condition="view/can_add_conclusion"
             tal:attributes="href string:${here/absolute_url}/++add++ConclusionsPhase2"
             class="standardButton">
             Add conclusions
