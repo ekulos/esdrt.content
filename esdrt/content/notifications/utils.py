@@ -71,11 +71,11 @@ def get_users_in_context(observation, role, notification_name):
     usernames = []
     for username, userroles in local_roles:
         if role in userroles:
-            #group = api.group.get(username)
-            #if group:
-            #    usernames.extend(group.getMemberIds())
-            #else:
-            usernames.append(username)
+            group = api.group.get(username)
+            if group:
+                usernames.extend(group.getMemberIds())
+            else:
+                usernames.append(username)
 
     usernames = list(set(usernames))
 
