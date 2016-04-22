@@ -1179,23 +1179,25 @@
 
           <tal:block tal:repeat="action view/actions">
             <tal:block tal:condition="python:'draft-conclusions' in action['action']">
-              <tal:block tal:condition="question/has_answers">
-                <a href=""
-                  tal:attributes="href string:${action/action}&amp;comment=${question/getId};
-                                  title action/description|nothing;"
-                  class="standardButton defaultWFButton"
-                  tal:content="action/title">
-                  Action
-                </a>
-              </tal:block>
-              <tal:block tal:condition="not: question/has_answers ">
-                <a href=""
-                  tal:attributes="href string:${action/action}&amp;comment=${question/getId};
-                                  title action/description|nothing;"
-                  class="standardButton"
-                  tal:content="action/title">
-                  Action
-                </a>
+              <tal:block tal:condition="python: view.existing_conclusion() or view.can_add_conclusion()">
+                <tal:block tal:condition="question/has_answers">
+                  <a href=""
+                    tal:attributes="href string:${action/action}&amp;comment=${question/getId};
+                                    title action/description|nothing;"
+                    class="standardButton defaultWFButton"
+                    tal:content="action/title">
+                    Action
+                  </a>
+                </tal:block>
+                <tal:block tal:condition="not: question/has_answers ">
+                  <a href=""
+                    tal:attributes="href string:${action/action}&amp;comment=${question/getId};
+                                    title action/description|nothing;"
+                    class="standardButton"
+                    tal:content="action/title">
+                    Action
+                  </a>
+                </tal:block>
               </tal:block>
             </tal:block>
             <tal:block tal:condition="python:'/assign_counterpart_form' in action['action']">
