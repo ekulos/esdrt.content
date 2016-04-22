@@ -4,7 +4,9 @@ Changelog
 1.59.17 (unrelease)
 -------------------
 
-- Nothing changed yet.
+- refs #71532 check if the user can create a conclusion
+- refs #71619 Extraction of step 1 conclusions for observation in step 2
+  [lucas]
 
 1.59.16 (2016-04-21)
 -----------------
