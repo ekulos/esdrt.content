@@ -1141,6 +1141,15 @@ class ObservationView(grok.View):
 
         return None
 
+    def existing_conclusion(self):
+        status = self.context.get_status()
+        if status.startswith('phase1-'):
+            conclusion = self.get_conclusion()
+        else:
+            conclusion = self.get_conclusion_phase2()
+
+        return conclusion and True or False
+
     def can_add_conclusion(self):
         sm = getSecurityManager()
         status = self.context.get_status()

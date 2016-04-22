@@ -208,7 +208,7 @@ def question_status(context):
             if context.get_status().startswith('phase1'):
                 return "observation-phase1-draft"
             else:
-                return "observation-phase2-draft"    
+                return "observation-phase2-draft"
 
 @indexer(IObservation)
 def observation_question_status(context):
@@ -237,7 +237,7 @@ def observation_status(context):
                     'phase1-conclusion-discussion', 'phase2-conclusion-discussion']:
         return 'conclusions'
     elif status in ['phase1-close-requested', 'phase2-close-requested']:
-        return 'close-requested'  
+        return 'close-requested'
     elif status in ['phase1-closed', 'phase2-closed']:
         if status == 'phase1-closed':
             conclusion = context.get_conclusion()
@@ -254,7 +254,7 @@ def observation_status(context):
             else:
                 return "finalised"
     else:
-        return status    
+        return status
 
 @indexer(IObservation)
 def observation_step(context):
@@ -294,8 +294,6 @@ def reply_comments_by_mse(context):
         return False
 
 
-
-
 @indexer(IObservation)
 def observation_sent_to_msc(context):
     try:
@@ -309,7 +307,7 @@ def observation_sent_to_msc(context):
                     return True
         return False
     except:
-        return False     
+        return False
 
 @indexer(IObservation)
 def observation_sent_to_mse(context):
@@ -338,5 +336,14 @@ def observation_finalisation_reason(context):
             return conclusions[0] and conclusions[0].closing_reason or ' '
         else:
             return None
+    except:
+        return None
+
+
+@indexer(IObservation)
+def observation_finalisation_reason_step1(context):
+    try:
+        conclusions = [c for c in context.values() if c.portal_type == "Conclusion"]
+        return conclusions[0] and conclusions[0].closing_reason or ' '
     except:
         return None
