@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.59.12'
+version = '1.59.17'
 
 setup(name='esdrt.content',
       version=version,
@@ -18,7 +18,7 @@ setup(name='esdrt.content',
       keywords='',
       author='Mikel Larreategi',
       author_email='mlarreategi@codesyntax.com',
-      url='https://github.com/eea/eea.esdrt.content/',
+      url='https://github.com/eea/esdrt.content/',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['esdrt'],

@@ -49,7 +49,8 @@ from .commentanswer import ICommentAnswer
 from .conclusion import IConclusion
 from .crf_code_matching import get_category_ldap_from_crf_code
 from .crf_code_matching import get_category_value_from_crf_code
-
+from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
+import datetime
 
 HIDDEN_ACTIONS = [
     '/content_status_history',
@@ -1069,6 +1070,13 @@ class AddForm(dexterity.AddForm):
 class ObservationMixin(grok.View):
     grok.baseclass()
 
+    @property
+    def user_roles(self):
+        user = api.user.get_current()
+        return api.user.get_roles(
+            username=user.getId(), obj=self.context
+        )
+
     def wf_info(self):
         context = aq_inner(self.context)
         wf = getToolByName(context, 'portal_workflow')
@@ -1137,6 +1145,15 @@ class ObservationMixin(grok.View):
 
         return None
 
+    def existing_conclusion(self):
+        status = self.context.get_status()
+        if status.startswith('phase1-'):
+            conclusion = self.get_conclusion()
+        else:
+            conclusion = self.get_conclusion_phase2()
+
+        return conclusion and True or False
+
     def can_add_conclusion(self):
         sm = getSecurityManager()
         status = self.context.get_status()
@@ -1167,6 +1184,13 @@ class ObservationMixin(grok.View):
         form_instance = AddQuestionForm(self.context, self.request)
         alsoProvides(form_instance, IWrappedForm)
         return form_instance()
+
+    def has_local_notifications_settings(self):
+        user = api.user.get_current()
+        adapted = INotificationUnsubscriptions(self.context)
+        data = adapted.get_user_data(user.getId())
+
+        return data and True or False
 
     # Question view
     def question(self):
@@ -2002,11 +2026,6 @@ class AddConclusions(grok.View):
                     url = conclusion.absolute_url() + '/edit'
 
         elif context.get_status().startswith('phase2-'):
-            api.content.transition(
-                obj=context,
-                transition='phase2-draft-conclusions'
-            )
-
             current_user_id = api.user.get_current().getId()
             user_roles = api.user.get_roles(
                 username=current_user_id,
@@ -2047,6 +2066,11 @@ class AddConclusions(grok.View):
                     conclusion = cs[0]
                     url = conclusion.absolute_url() + '/edit'
 
+            if context.get_status() != 'phase2-conclusions':
+                api.content.transition(
+                    obj=context,
+                    transition='phase2-draft-conclusions'
+                )
         else:
             raise ActionExecutionError(Invalid(u"Invalid context"))
 

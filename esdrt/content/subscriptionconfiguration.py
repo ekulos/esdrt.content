@@ -1,9 +1,13 @@
 from plone import api
 from Products.statusmessages.interfaces import IStatusMessage
 from five import grok
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from AccessControl import Unauthorized
 from plone.memoize.view import memoize
 from .observation import IObservation
 from .observation import ObservationView
+from .reviewfolder import IReviewFolder
 from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
 from esdrt.content.subscriptions.dexterity import UNSUBSCRIPTION_KEY
 from BTrees.OOBTree import OOBTree
@@ -114,19 +118,22 @@ NOTIFICATION_NAMES = {
 grok.templatedir('templates')
 
 
-class SubscriptionConfiguration(ObservationView):
-    grok.context(IObservation)
-    grok.name('subscription-configuration')
-    grok.require('zope2.View')
+class SubscriptionConfigurationMixin(grok.View):
+    grok.baseclass()
 
     @memoize
     def user(self):
+        if api.user.is_anonymous():
+            raise Unauthorized
         return api.user.get_current()
 
-    def user_roles(self, translated_roles=True):
+    def user_roles(self, context=None, translated_roles=True):
+        if context is None:
+            context = self.context
+
         user = self.user()
         roles = []
-        for role in api.user.get_roles(user=user, obj=self.context):
+        for role in api.user.get_roles(user=user, obj=context):
             if translated_roles:
                 translated = ROLE_TRANSLATOR.get(role)
                 if translated is not None:
@@ -136,11 +143,36 @@ class SubscriptionConfiguration(ObservationView):
                     roles.append(role)
         return roles
 
-    def my_subscriptions(self):
+    def get_unsubscribed_notifications(self, context=None):
+        if context is None:
+            context = self.context
+
+        if not(
+            IReviewFolder.providedBy(context) or IObservation.providedBy(context)
+        ):
+            return {}
+
         user = self.user()
-        adapted = INotificationUnsubscriptions(self.context)
-        unsubscribed_notifications = adapted.get_user_data(user.getId())
+        adapted = INotificationUnsubscriptions(context)
+        data = adapted.get_user_data(user.getId())
+
+        if IReviewFolder.providedBy(context):
+            return data
+
+        if not data:
+            parent = aq_parent(aq_inner(context))
+            return self.get_unsubscribed_notifications(context=parent)
+
+        return data
+
+
+    def my_subscriptions(self):
+        roles = []
+
         roles = self.user_roles(translated_roles=False)
+
+        unsubscribed_notifications = self.get_unsubscribed_notifications()
+
         items = {}
         for role in roles:
             data = copy.copy(NOTIFICATIONS_PER_ROLE.get(role))
@@ -159,29 +191,30 @@ class SubscriptionConfiguration(ObservationView):
         return ROLE_TRANSLATOR.get(rolename, rolename)
 
 
-class SaveSubscriptions(grok.View):
+class SubscriptionConfigurationReview(SubscriptionConfigurationMixin):
+    grok.context(IReviewFolder)
+    grok.name('subscription-configuration')
+    grok.require('zope2.View')
+
+
+class SubscriptionConfiguration(SubscriptionConfigurationReview, ObservationView):
     grok.context(IObservation)
+
+    def has_local_notifications_settings(self):
+        user = api.user.get_current()
+        adapted = INotificationUnsubscriptions(self.context)
+        data = adapted.get_user_data(user.getId())
+
+        return data and True or False
+
+
+class SaveSubscriptionsReview(SubscriptionConfigurationMixin):
+    grok.context(IReviewFolder)
     grok.require('zope2.View')
     grok.name('save-subscriptions')
 
-    @memoize
-    def user(self):
-        return api.user.get_current()
-
-    def user_roles(self, translated_roles=True):
-        user = self.user()
-        roles = []
-        for role in api.user.get_roles(user=user, obj=self.context):
-            if translated_roles:
-                translated = ROLE_TRANSLATOR.get(role)
-                if translated is not None:
-                    roles.append(translated)
-            else:
-                if role in ROLE_TRANSLATOR.keys():
-                    roles.append(role)
-        return roles
-
     def render(self):
+        user_roles = []
         if self.request.get('REQUEST_METHOD') == 'POST':
             user = self.user()
             data = self.request.get('subscription_data')
@@ -197,7 +230,7 @@ class SaveSubscriptions(grok.View):
                     deleted = notifications.difference(set(copied_item.keys()))
                     to_delete[rolename] = deleted
 
-            adapted.unsubscribe(user.getId(), to_delete)
+            adapted.unsubscribe(user.getId(), notifications=to_delete)
             status = IStatusMessage(self.request)
             status.add('Subscription preferences saved correctly', type='info')
             url = self.context.absolute_url()
@@ -208,11 +241,20 @@ class SaveSubscriptions(grok.View):
         return self.request.response.redirect(self.context.absolute_url())
 
 
-class ClearSubscriptions(grok.View):
+class SaveSubscriptions(SaveSubscriptionsReview):
+    grok.context(IObservation)
+
+
+class ClearSubscriptions(SubscriptionConfigurationMixin):
     grok.context(IObservation)
     grok.require('zope2.View')
+    grok.name('clear-subscriptions')
 
     def render(self):
-        adapted = IAnnotations(self.context)
-        adapted[UNSUBSCRIPTION_KEY] = OOBTree()
-        return 1
+        user = self.user()
+        adapted = INotificationUnsubscriptions(self.context)
+        adapted.unsubscribe(user.getId())
+
+        status = IStatusMessage(self.request)
+        status.add('Local subscription preferences cleared', type='info')
+        return self.request.response.redirect(self.context.absolute_url())

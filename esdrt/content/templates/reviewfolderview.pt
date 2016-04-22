@@ -105,14 +105,26 @@
 <body>
   <metal:main fill-slot="content-core">
     <metal:content-core define-macro="content-core">
-
-      <div class="actions" tal:condition="view/can_add_observation">
-        <a href="./++add++Observation"
-          tal:attributes="href string:${here/absolute_url}/++add++Observation"
-          class="standardButton defaultWFButton">
-            New observation
-        </a>
+      <div class="observationActions reviewfolder">
+        <ul class="observationActionsMenu visualNoMarker">
+          <li class="configurationButton">
+            <a href=""
+              tal:attributes="href string:${here/absolute_url}/subscription-configuration"
+              class="standardButton">
+                <span class="eea-icon"><!-- --></span>
+                  Configure notifications
+            </a>
+          </li>
+          <li class="deleteButton" tal:condition="view/can_add_observation">
+            <a href="./++add++Observation"
+               tal:attributes="href string:${here/absolute_url}/++add++Observation"
+               class="standardButton defaultWFButton">
+                 New observation
+            </a>
+          </li>
+        </ul>
       </div>
+      <div class="visualClear"><!-- --></div>
       <div id="tabs">
         <div class="tabs">
           <div class="active">

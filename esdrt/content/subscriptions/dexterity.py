@@ -48,7 +48,7 @@ class NotificationUnsubscriptions(object):
     def get_user_data(self, userid):
         return self.get().get(userid, OOBTree())
 
-    def unsubscribe(self, userid, notifications={}):
+    def unsubscribe(self, userid, notifications={}, roles=[]):
         """
         Save the unsubscribed notifications dict.
         The key of the dict should be the role name, and the value
@@ -61,7 +61,10 @@ class NotificationUnsubscriptions(object):
         """
         annotated = IAnnotations(self.context)
         data = annotated.get(UNSUBSCRIPTION_KEY, OOBTree())
-        data[userid] = notifications
+        if notifications:
+            data[userid] = notifications
+        else:
+            del data[userid]
         annotated[UNSUBSCRIPTION_KEY] = data
         return 1
 

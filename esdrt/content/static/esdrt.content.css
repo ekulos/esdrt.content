@@ -129,6 +129,10 @@
 .removeButton .eea-icon:before{
   content: "\f00d";
 }
+.configurationButton{
+	text-align: center;
+}
+
 .actions{
 	text-align: right;
 	margin-top: 10px;
