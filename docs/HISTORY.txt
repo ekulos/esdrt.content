@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.17 (unrelease)
+1.59.17 (2016-04-22)
 -------------------
 
 - refs #71532 check if the user can create a conclusion
