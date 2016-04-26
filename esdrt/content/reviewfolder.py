@@ -191,11 +191,15 @@ class ReviewFolderView(ReviewFolderMixin):
     grok.context(IReviewFolder)
     grok.require('zope2.View')
     grok.name('view')
+    
+    def can_export_observations(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: Export Observations', self)
 
 
 class ExportReviewFolderView(ReviewFolderMixin):
     grok.context(IReviewFolder)
-    grok.require('zope2.View')
+    grok.require('esdrt.content.ExportObservations')
     grok.name('export_as_xls')
 
     def build_file(self):
@@ -207,26 +211,32 @@ class ExportReviewFolderView(ReviewFolderMixin):
         data.title = "Observations"
 
         for observation in observations:
-            obs = observation.getObject()
             data.append([
                 safe_unicode(observation.getId),
+                safe_unicode(observation.getURL()),
                 safe_unicode(observation.get_ghg_source_sectors),
-                safe_unicode(obs.country_value()),
+                safe_unicode(observation.country_value),
                 safe_unicode(observation.text),
                 safe_unicode(observation.crf_code_value),
                 safe_unicode(observation.review_year),
-                safe_unicode(obs.year),
-                safe_unicode(obs.gas_value()),
-                safe_unicode(observation.overview_status.replace('<br>', '')),
+                safe_unicode(observation.year),
+                safe_unicode(observation.gas_value),
+                safe_unicode(', '.join(observation.get_highlight or [])),
+                safe_unicode(
+                    observation.overview_status.replace('<br>', '').replace('<br/>', '')
+                ),
                 safe_unicode(observation.observation_phase),
+                safe_unicode(observation.observation_finalisation_reason_step1 or""),
+                safe_unicode(observation.observation_finalisation_reason_step2 or""),
                 safe_unicode(observation.observation_status),
                 safe_unicode(observation.get_author_name),
             ])
 
         data.headers = [
-            'Observation', 'Sector', 'Country', 'In short', 'CRF Code',
-            'Review Year', 'Inventory year', 'GAS', 'Status',
-            'Step', 'Workflow', 'Author'
+            'Observation', 'URL', 'Sector', 'Country', 'In short', 'CRF Code',
+            'Review Year', 'Inventory year', 'GAS', 'Highlight', 'Status',
+            'Step', 'Conclusion step 1', 'Conclusion step 2', 'Workflow',
+            'Author'
         ]
 
         return data
@@ -235,7 +245,10 @@ class ExportReviewFolderView(ReviewFolderMixin):
         """ Export filtered observations in xls
         """
         now = datetime.now()
-        filename = 'EMRT-observations' + now.strftime("%Y%M%d%H%m")  + ".xls"
+        filename = 'EMRT-observations-%s-%s.xls' % (
+            self.context.getId(),
+            now.strftime("%Y%M%d%H%m")
+        )
 
         book = tablib.Databook((self.build_file(),))
 

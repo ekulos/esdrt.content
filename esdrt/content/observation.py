@@ -1424,6 +1424,10 @@ class ObservationView(ObservationMixin):
     grok.require('zope2.View')
     grok.name('view')
 
+    def can_export_observations(self):
+        sm = getSecurityManager()
+        return sm.checkPermission('esdrt.content: Export Observations', self)
+
 
 class DiffedView(ObservationView):
     grok.name('diffedview')
@@ -1434,7 +1438,7 @@ class DiffedView(ObservationView):
 class ExportAsDocView(ObservationMixin):
     grok.name('export_as_docx')
     grok.context(IObservation)
-    grok.require('zope2.View')
+    grok.require('esdrt.content.ExportObservations')
 
     def strip_special_chars(self, s):
         """ return s without special chars

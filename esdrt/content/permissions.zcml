@@ -74,6 +74,11 @@
           id="esdrt.content.AddObservation"
     title="esdrt.content: Add Observation"
     />
+    
+    <permission
+          id="esdrt.content.ExportObservations"
+    title="esdrt.content: Export Observations"
+    />
 
 
 

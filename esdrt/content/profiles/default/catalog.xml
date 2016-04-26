@@ -96,6 +96,7 @@
 
  <column value="observation_status" />
  <column value="country" />
+ <column value="country_value" />
  <column value="get_ghg_source_sectors" />
  <column value="get_status" />
  <column value="get_crf_code" />
@@ -110,6 +111,7 @@
  <column value="text" />
  <column value="crf_code_value" />
  <column value="review_year" />
+ <column value="year" />
  <column value="overview_status" />
  <column value="observation_phase" />
  <column value="observation_question_status" />
@@ -117,4 +119,6 @@
  <column value="observation_already_replied" />
  <column value="reply_comments_by_mse" />
  <column value="observation_finalisation_reason_step1" />
+ <column value="observation_finalisation_reason_step2" />
+ <column value="gas_value" />
 </object>

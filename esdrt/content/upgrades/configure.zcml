@@ -328,4 +328,11 @@
          destination="43"
          handler=".42_43.upgrade"
          profile="esdrt.content:default" />
+    <genericsetup:upgradeStep
+         title="Upgrade to 44."
+         description="Update local roles"
+         source="43"
+         destination="44"
+         handler=".43_44.upgrade"
+         profile="esdrt.content:default" />
 </configure>

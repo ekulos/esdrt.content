@@ -76,11 +76,13 @@ class Conclusion(dexterity.Container):
     def _vocabulary_value(self, vocabulary, term):
         vocab_factory = getUtility(IVocabularyFactory, name=vocabulary)
         vocabulary = vocab_factory(self)
+        if not term:
+            return u''
         try:
             value = vocabulary.getTerm(term)
             return value.title
         except LookupError:
-            return u''
+            return term
 
     def can_edit(self):
         sm = getSecurityManager()
