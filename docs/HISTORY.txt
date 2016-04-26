@@ -1,10 +1,12 @@
 Changelog
 =========
 
-1.59.18 (unrelease)
+1.59.18 (2016-04-26)
 -----------------
 
-- Nothing changed yet.
+- refs #69929, #71670 added exports view
+  added "esdrt.content: Export Observations" and "esdrt.content: Export an Observation" permissions
+  [lucas]
 
 1.59.17 (2016-04-22)
 -------------------

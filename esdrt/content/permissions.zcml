@@ -8,7 +8,7 @@
        <permission
           id="esdrt.content.AddConclusionsPhase2"
 	  title="esdrt.content: Add ConclusionsPhase2"
-	  />       
+	  />
 
 
        <permission
@@ -74,10 +74,15 @@
           id="esdrt.content.AddObservation"
     title="esdrt.content: Add Observation"
     />
-    
+
     <permission
           id="esdrt.content.ExportObservations"
     title="esdrt.content: Export Observations"
+    />
+
+    <permission
+          id="esdrt.content.ExportAnObservation"
+    title="esdrt.content: Export an Observation"
     />
 
 

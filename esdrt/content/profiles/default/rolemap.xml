@@ -58,6 +58,10 @@
       <role name="Manager" />
       <role name="Site Administrator" />
     </permission>
+    <permission name="esdrt.content: Export an Observation" acquire="False">
+      <role name="Manager" />
+      <role name="Site Administrator" />
+    </permission>
     <permission name="esdrt.content: View Answer Discussion" acquire="False">
       <role name="Manager" />
     </permission>
