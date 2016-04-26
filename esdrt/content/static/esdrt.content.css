@@ -122,8 +122,9 @@
 .backButton .eea-icon:before{
   content: "\f053";
 }
+
 .removeButton{
-	color: ;#d9534f;
+	color: #d9534f;
 }
 .removeButton .eea-icon:before{
   content: "\f00d";
@@ -145,6 +146,9 @@
 }
 .observationActions .position-1\3a 2 {
     margin-left: -47.75%;
+}
+.observationActions .position-5 {
+    margin-left: -66.59%;
 }
 #content .observationActions ul li{
 	display: inline;
@@ -474,8 +478,12 @@ div.phase2-observation{
 }
 #observations{
 	background-color: #F3F3F3;
-	padding: 20px !important;
+	padding: 10px 20px !important;
 	overflow: hidden;
+}
+#observations .actions{
+	margin-top: 0px;
+	margin-bottom: 5px;
 }
 #observations .collapsiblePanelTitle {
 	font-size: 120%;

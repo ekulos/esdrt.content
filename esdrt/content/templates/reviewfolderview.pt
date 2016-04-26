@@ -301,6 +301,16 @@
         </div>
 
       <div id="observations" tal:condition="liste">
+
+        <div class="actions">
+          <a class="standardButton" href=""
+             tal:condition="view/is_secretariat"
+             tal:define="query request/QUERY_STRING;
+                         querystring python:query and '?' + query or ''"
+             tal:attributes="href string:${context/absolute_url}/export_as_xls/$querystring">
+             <i class="eea-icon eea-icon-download">&nbsp;</i> Export in XLS
+          </a>
+        </div>
         <tal:block tal:define="Batch python:modules['Products.CMFPlone'].Batch;
              b_size python:20;
              b_start python:0;

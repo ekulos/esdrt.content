@@ -1,3 +1,6 @@
+import time
+import tablib
+from datetime import datetime
 from esdrt.content.timeit import timeit
 from AccessControl import getSecurityManager, Unauthorized
 from five import grok
@@ -8,10 +11,9 @@ from plone.memoize import ram
 from plone.memoize.view import memoize
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
 from eea.cache import cache
 from plone.batching import Batch
-
-import time
 
 grok.templatedir('templates')
 
@@ -31,10 +33,8 @@ class ReviewFolder(dexterity.Container):
     grok.implements(IReviewFolder)
 
 
-class ReviewFolderView(grok.View):
-    grok.context(IReviewFolder)
-    grok.require('zope2.View')
-    grok.name('view')
+class ReviewFolderMixin(grok.View):
+    grok.baseclass()
 
     @memoize
     def get_questions(self):
@@ -185,6 +185,66 @@ class ReviewFolderView(grok.View):
     def is_member_state_expert(self):
         user = api.user.get_current()
         return "extranet-esd-countries-msexpert" in user.getGroups()
+
+
+class ReviewFolderView(ReviewFolderMixin):
+    grok.context(IReviewFolder)
+    grok.require('zope2.View')
+    grok.name('view')
+
+
+class ExportReviewFolderView(ReviewFolderMixin):
+    grok.context(IReviewFolder)
+    grok.require('zope2.View')
+    grok.name('export_as_xls')
+
+    def build_file(self):
+        """ Create xls file
+        """
+        observations = self.get_questions()
+
+        data = tablib.Dataset()
+        data.title = "Observations"
+
+        for observation in observations:
+            obs = observation.getObject()
+            data.append([
+                safe_unicode(observation.getId),
+                safe_unicode(observation.get_ghg_source_sectors),
+                safe_unicode(obs.country_value()),
+                safe_unicode(observation.text),
+                safe_unicode(observation.crf_code_value),
+                safe_unicode(observation.review_year),
+                safe_unicode(obs.year),
+                safe_unicode(obs.gas_value()),
+                safe_unicode(observation.overview_status.replace('<br>', '')),
+                safe_unicode(observation.observation_phase),
+                safe_unicode(observation.observation_status),
+                safe_unicode(observation.get_author_name),
+            ])
+
+        data.headers = [
+            'Observation', 'Sector', 'Country', 'In short', 'CRF Code',
+            'Review Year', 'Inventory year', 'GAS', 'Status',
+            'Step', 'Workflow', 'Author'
+        ]
+
+        return data
+
+    def render(self):
+        """ Export filtered observations in xls
+        """
+        now = datetime.now()
+        filename = 'EMRT-observations' + now.strftime("%Y%M%d%H%m")  + ".xls"
+
+        book = tablib.Databook((self.build_file(),))
+
+        response = self.request.response
+        response.setHeader("content-type", "application/vnc.ms-excel")
+        response.setHeader("Content-disposition", "attachment;filename=" + filename)
+
+        return book.xls
+
 
 def _item_user(fun, self, user, item):
     return (user.getId(), item.getId(), item.modified())

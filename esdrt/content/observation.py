@@ -1,8 +1,12 @@
-from .comment import IComment
-from .commentanswer import ICommentAnswer
-from .conclusion import IConclusion
-from .crf_code_matching import get_category_ldap_from_crf_code
-from .crf_code_matching import get_category_value_from_crf_code
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
+import datetime
+import re
+from docx import Document
+from docx.shared import Pt
+from docx.enum.style import WD_STYLE_TYPE
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -40,6 +44,11 @@ from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 from zope.schema.interfaces import IVocabularyFactory
 from esdrt.content import MessageFactory as _
 from eea.cache import cache
+from .comment import IComment
+from .commentanswer import ICommentAnswer
+from .conclusion import IConclusion
+from .crf_code_matching import get_category_ldap_from_crf_code
+from .crf_code_matching import get_category_value_from_crf_code
 from esdrt.content.subscriptions.interfaces import INotificationUnsubscriptions
 import datetime
 
@@ -1058,13 +1067,8 @@ class AddForm(dexterity.AddForm):
             self.actions[k].addClass('standardButton')
 
 
-
-
-
-class ObservationView(grok.View):
-    grok.context(IObservation)
-    grok.require('zope2.View')
-    grok.name('view')
+class ObservationMixin(grok.View):
+    grok.baseclass()
 
     @property
     def user_roles(self):
@@ -1415,10 +1419,258 @@ class ObservationView(grok.View):
             return False
 
 
+class ObservationView(ObservationMixin):
+    grok.context(IObservation)
+    grok.require('zope2.View')
+    grok.name('view')
+
+
 class DiffedView(ObservationView):
     grok.name('diffedview')
     grok.context(IObservation)
     grok.require('zope2.View')
+
+
+class ExportAsDocView(ObservationMixin):
+    grok.name('export_as_docx')
+    grok.context(IObservation)
+    grok.require('zope2.View')
+
+    def strip_special_chars(self, s):
+        """ return s without special chars
+        """
+        return re.sub('\s+', ' ', s)
+
+    def build_file(self):
+        document = Document()
+
+        # Styles
+        style = document.styles.add_style('Label Bold', WD_STYLE_TYPE.PARAGRAPH)
+        style.font.bold = True
+        style = document.styles.add_style('Table Cell', WD_STYLE_TYPE.PARAGRAPH)
+        style.font.size = Pt(9)
+        style = document.styles.add_style('Table Cell Bold', WD_STYLE_TYPE.PARAGRAPH)
+        style.font.size = Pt(9)
+        style.font.bold = True
+
+        p = document.add_paragraph('Ref. Number')
+        document.add_heading(self.context.getId(), 0)
+
+        p = document.add_paragraph('')
+        table = document.add_table(rows=1, cols=6)
+        hdr_cells = table.rows[0].cells
+        hdr_cells[0].text = 'Country'
+        hdr_cells[0].paragraphs[0].style = "Table Cell Bold"
+        hdr_cells[1].text = 'Sector'
+        hdr_cells[1].paragraphs[0].style = "Table Cell Bold"
+        hdr_cells[2].text = 'Gases'
+        hdr_cells[2].paragraphs[0].style = "Table Cell Bold"
+        hdr_cells[3].text = 'Fuel'
+        hdr_cells[3].paragraphs[0].style = "Table Cell Bold"
+        hdr_cells[4].text = 'Inventory year'
+        hdr_cells[4].paragraphs[0].style = "Table Cell Bold"
+        hdr_cells[5].text = 'Phase'
+        hdr_cells[5].paragraphs[0].style = "Table Cell Bold"
+
+        row_cells = table.add_row().cells
+        row_cells[0].text = self.context.country_value() or ''
+        row_cells[0].paragraphs[0].style = "Table Cell"
+        row_cells[1].text = self.context.ghg_source_sectors_value() or ''
+        row_cells[1].paragraphs[0].style = "Table Cell"
+        row_cells[2].text = self.context.gas_value() or ''
+        row_cells[2].paragraphs[0].style = "Table Cell"
+        row_cells[3].text = self.context.fuel or ''
+        row_cells[3].paragraphs[0].style = "Table Cell"
+        row_cells[4].text = self.context.year or ''
+        row_cells[4].paragraphs[0].style = "Table Cell"
+        if self.context.observation_phase() == 'phase1-observation':
+            row_cells[5].text = "1"
+            row_cells[5].paragraphs[0].style = "Table Cell"
+        else:
+            row_cells[5].text = "2"
+            row_cells[5].paragraphs[0].style = "Table Cell"
+        p = document.add_paragraph('')
+
+        document.add_heading('Observation details', level=2)
+
+        p = document.add_paragraph('')
+        table = document.add_table(rows=1, cols=4)
+        hdr_cells = table.rows[0].cells
+        hdr_cells[0].text = 'Review Year'
+        hdr_cells[1].text = 'Parameter'
+        hdr_cells[2].text = 'Key category'
+        hdr_cells[3].text = 'Last update'
+        hdr_cells[0].paragraphs[0].style = "Table Cell Bold"
+        hdr_cells[1].paragraphs[0].style = "Table Cell Bold"
+        hdr_cells[2].paragraphs[0].style = "Table Cell Bold"
+        hdr_cells[3].paragraphs[0].style = "Table Cell Bold"
+
+        row_cells = table.add_row().cells
+        row_cells[0].text = "%s" % self.context.review_year or ''
+        row_cells[1].text = self.context.parameter_value() or ''
+        if self.context.ms_key_catagory:
+            row_cells[2].text = "MS Key category"
+        elif self.context.ms_key_catagory:
+            row_cells[2].text = "EU Key category"
+        else:
+            row_cells[2].text = ""
+        row_cells[3].text = self.context.modified().strftime(
+            '%d %b %Y, %H:%M CET'
+        )
+        row_cells[0].paragraphs[0].style = "Table Cell"
+        row_cells[1].paragraphs[0].style = "Table Cell"
+        row_cells[2].paragraphs[0].style = "Table Cell"
+        row_cells[3].paragraphs[0].style = "Table Cell"
+        p = document.add_paragraph('')
+
+        p = document.add_paragraph('Description flags', style="Label Bold")
+        p = document.add_paragraph(self.context.highlight_value())
+        p = document.add_paragraph('Short description by expert/reviewer', style="Label Bold")
+        p = document.add_paragraph(self.context.text)
+
+        if self.context.get_status() == 'phase1-close-requested':
+            document.add_heading('Finish observation', level=2)
+            document.add_heading('Observation Finish Requested', level=3)
+            p = document.add_paragraph('SE comments on finish observation request:', style="Label Bold")
+            p = document.add_paragraph(self.context.closing_comments)
+            if self.context.closing_deny_comments:
+                document.add_heading('Observation Finalisation previously denied', level=3)
+                p = document.add_paragraph('QE comments on finish observation request:', style="Label Bold")
+                p = document.add_paragraph(self.context.closing_deny_comments)
+
+        if self.context.get_status() == 'phase2-close-requested':
+            document.add_heading('Finish observation', level=2)
+            document.add_heading('Observation Finish Requested', level=3)
+            p = document.add_paragraph('RE comments on finish observation request:', style="Label Bold")
+            p = document.add_paragraph(self.context.closing_comments_phase2)
+            if self.context.closing_deny_comments_phase2:
+                document.add_heading('Observation Finalisation previously denied', level=3)
+                p = document.add_paragraph('LR comments on finish observation request:', style="Label Bold")
+                p = document.add_paragraph(self.context.closing_deny_comments_phase2)
+
+        conclusion = self.get_conclusion_phase2()
+        if conclusion:
+            document.add_page_break()
+            document.add_heading('Conclusions Step 2', level=2)
+
+            p = document.add_paragraph('Final status of observation:', style="Label Bold")
+            p = document.add_paragraph(conclusion.reason_value())
+            p = document.add_paragraph('Internal note for expert/reviewers:', style="Label Bold")
+            p = document.add_paragraph(conclusion.text)
+            p = document.add_paragraph('GHG estimates:', style="Label Bold")
+
+            table = document.add_table(rows=1, cols=8)
+            table.style = 'LightShading-Accent1'
+            hdr_cells = table.rows[0].cells
+            hdr_cells[0].text = '(Gg CO2 eq)'
+            hdr_cells[1].text = 'CO2'
+            hdr_cells[2].text = 'CH4'
+            hdr_cells[3].text = 'N2O'
+            hdr_cells[4].text = 'NOx'
+            hdr_cells[5].text = 'CO'
+            hdr_cells[6].text = 'NMVOC'
+            hdr_cells[7].text = 'SO2'
+            hdr_cells[0].paragraphs[0].style = "Table Cell Bold"
+            hdr_cells[1].paragraphs[0].style = "Table Cell Bold"
+            hdr_cells[2].paragraphs[0].style = "Table Cell Bold"
+            hdr_cells[3].paragraphs[0].style = "Table Cell Bold"
+            hdr_cells[4].paragraphs[0].style = "Table Cell Bold"
+            hdr_cells[5].paragraphs[0].style = "Table Cell Bold"
+            hdr_cells[6].paragraphs[0].style = "Table Cell Bold"
+            hdr_cells[7].paragraphs[0].style = "Table Cell Bold"
+            for item in conclusion.ghg_estimations:
+                row_cells = table.add_row().cells
+                row_cells[0].text = item['line_title']
+                row_cells[1].text = item['co2'] or '0.0'
+                row_cells[2].text = item['ch4'] or '0.0'
+                row_cells[3].text = item['n2o'] or '0.0'
+                row_cells[4].text = item['nox'] or '0.0'
+                row_cells[5].text = item['co'] or '0.0'
+                row_cells[6].text = item['nmvoc'] or '0.0'
+                row_cells[7].text = item['co2'] or '0.0'
+                row_cells[0].paragraphs[0].style = "Table Cell"
+                row_cells[1].paragraphs[0].style = "Table Cell"
+                row_cells[2].paragraphs[0].style = "Table Cell"
+                row_cells[3].paragraphs[0].style = "Table Cell"
+                row_cells[4].paragraphs[0].style = "Table Cell"
+                row_cells[5].paragraphs[0].style = "Table Cell"
+                row_cells[6].paragraphs[0].style = "Table Cell"
+                row_cells[7].paragraphs[0].style = "Table Cell"
+            p = document.add_paragraph('')
+
+            if self.context.closing_deny_comments_phase2:
+                document.add_heading('Observation Finalisation denied', level=3)
+                p = document.add_paragraph('LR comments on finish observation request:', style="Label Bold")
+                p = document.add_paragraph(self.context.closing_deny_comments_phase2)
+
+        conclusion = self.get_conclusion()
+        if conclusion:
+            if not self.get_conclusion_phase2():
+                document.add_page_break()
+            document.add_heading('Conclusions Step 1', level=2)
+
+            p = document.add_paragraph('Reason:', style="Label Bold")
+            p = document.add_paragraph(conclusion.reason_value())
+            p = document.add_paragraph('SE comments on conclusion:', style="Label Bold")
+            p = document.add_paragraph(conclusion.text)
+
+            if self.context.closing_deny_comments:
+                document.add_heading('Observation Finalisation denied', level=3)
+                p = document.add_paragraph('QE comments on finish observation request:', style="Label Bold")
+                p = document.add_paragraph(self.context.closing_deny_comments)
+            document.add_page_break()
+
+        chats = self.get_chat()
+        if chats:
+            document.add_heading('Q&A', level=2)
+            for chat in chats:
+                date = chat.effective_date
+                sent_info = "Sent on: %s"
+                if not date:
+                    date = chat.modified()
+                    sent_info = "Updated on: %s"
+
+                if chat.portal_type.lower() == 'comment':
+                    p = document.add_paragraph(
+                        '> %s' % self.strip_special_chars(chat.text)
+                    )
+                    p = document.add_paragraph(
+                        "From expert/reviewer To Member State \t\t %s" % (
+                            sent_info % date.strftime('%d %b %Y, %H:%M CET')
+                        )
+                    )
+
+                if chat.portal_type.lower() == 'commentanswer':
+                    p = document.add_paragraph(
+                        '< %s' % self.strip_special_chars(chat.text)
+                    )
+                    p = document.add_paragraph(
+                        "From Member State To expert/reviewer \t\t %s" % (
+                            sent_info % date.strftime('%d %b %Y, %H:%M CET')
+                        )
+                    )
+
+        return document
+
+    def render(self):
+        """ Export current filters observation in xls
+        """
+        document = self.build_file()
+
+        response = self.request.response
+        response.setHeader(
+            "content-type",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
+        response.setHeader(
+            "Content-disposition", "attachment;filename=" + self.context.getId() + ".docx"
+        )
+
+        f = StringIO()
+        document.save(f)
+        f.seek(0)
+        response.setHeader('Content-Length', len(f.getvalue()))
+        response.write(f.getvalue())
 
 
 class AddQuestionForm(Form):
