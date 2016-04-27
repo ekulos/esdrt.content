@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.59.19 (unrelease)
+1.59.19 (2016-04-27)
 -----------------
 
-- Nothing changed yet.
+- refs #71752, #71692 fix "go to conclusion" in step1
+  [lucas]
 
 1.59.18 (2016-04-26)
 -----------------
