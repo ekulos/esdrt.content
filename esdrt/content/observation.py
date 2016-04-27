@@ -1986,11 +1986,11 @@ class AddConclusions(grok.View):
 
     def render(self):
         context = aq_inner(self.context)
+        workflow = getToolByName(context, 'portal_workflow')
+        transitions_available = [
+            action['id'] for action in workflow.listActions(object=context)
+        ]
         if context.get_status().startswith('phase1-'):
-            api.content.transition(
-                obj=context,
-                transition='phase1-draft-conclusions'
-            )
             current_user_id = api.user.get_current().getId()
             user_roles = api.user.get_roles(
                 username=current_user_id,
@@ -2028,6 +2028,11 @@ class AddConclusions(grok.View):
                     cs = self.context.get_values_cat('Conclusion')
                     conclusion = cs[0]
                     url = conclusion.absolute_url() + '/edit'
+            if 'phase1-draft-conclusions' in transitions_available:
+                api.content.transition(
+                    obj=context,
+                    transition='phase1-draft-conclusions'
+                )
 
         elif context.get_status().startswith('phase2-'):
             current_user_id = api.user.get_current().getId()
@@ -2070,7 +2075,7 @@ class AddConclusions(grok.View):
                     conclusion = cs[0]
                     url = conclusion.absolute_url() + '/edit'
 
-            if context.get_status() != 'phase2-conclusions':
+            if 'phase2-draft-conclusions' in transitions_available:
                 api.content.transition(
                     obj=context,
                     transition='phase2-draft-conclusions'
