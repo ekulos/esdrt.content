@@ -391,6 +391,7 @@
   <exit-transition transition_id="phase1-recall-question-lr"/>
   <exit-transition transition_id="phase1-assign-answerer"/>
   <exit-transition transition_id="phase1-answer-to-lr"/>
+  <exit-transition transition_id="phase1-go-to-conclusions"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
@@ -959,6 +960,7 @@
   <exit-transition transition_id="phase2-add-answer"/>
   <exit-transition transition_id="phase2-recall-question-lr"/>
   <exit-transition transition_id="phase2-answer-to-lr"/>
+  <exit-transition transition_id="phase2-go-to-conclusions"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>
@@ -1449,7 +1451,7 @@
   <action url="%(content_url)s/add-conclusions?workflow_action=phase2-draft-conclusions" category="workflow" icon="">Add Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
-   <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion_phase2()and not here.aq_parent.get_conclusion_phase2() and here.aq_parent.get_status() == 'phase2-pending'</guard-expression>
+   <guard-expression>python:here.has_answers() and not here.aq_parent.get_conclusion_phase2() and here.aq_parent.get_status() == 'phase2-pending'</guard-expression>
   </guard>
  </transition>
  <transition transition_id="phase2-go-to-conclusions" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">

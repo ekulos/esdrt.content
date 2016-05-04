@@ -1134,14 +1134,14 @@
             </a>
           </tal:block>
 
-          <a href=""
+          <!-- <a href=""
             tal:condition="view/can_add_conclusion"
             id="add-conclusion-link"
             tal:attributes="href string:${here/absolute_url}/++add++Conclusion"
             class="standardButton">
             Add conclusions
-          </a>
-
+          </a> -->
+          
           <tal:block  tal:define="portalType question/portal_type/lower"
             tal:condition="python:portalType == 'comment'">
             <a href=""
@@ -1182,7 +1182,6 @@
                 style="display:none">
                   Upload file
           </span>
-
           <tal:block tal:repeat="action view/actions">
             <tal:block tal:condition="python:'draft-conclusions' in action['action']">
               <tal:block tal:condition="python: view.existing_conclusion() or view.can_add_conclusion()">
