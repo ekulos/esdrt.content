@@ -629,13 +629,13 @@
         </div>
 
             <div>
-              <div class="row collapsiblePanelTitle collapsed" data-panel="conclusion-discussion">
+              <div class="row collapsiblePanelTitle collapsed" data-panel="conclusion-discussion-1">
                 <div class="cell position-0 width-16">
                   Internal comments on conclusion between experts/reviewers/QE/LR
                   <span class="eea-icon eea-icon-left"></span>
                 </div>
               </div>
-              <div class="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager"  style="display:none"/>
+              <div class="conclusion-discussion conclusion-discussion-1" tal:content="structure provider:esdrt.content.commentmanager"  style="display:none"/>
             </div>
         </div>
         <div class="actions" tal:condition="view/in_conclusions_phase2">
@@ -810,13 +810,13 @@
         </div>
 
             <div>
-              <div class="row collapsiblePanelTitle collapsed" data-panel="conclusion-discussion">
+              <div class="row collapsiblePanelTitle collapsed" data-panel="conclusion-discussion-2">
                 <div class="cell position-0 width-16">
                   Conclusion comments
                   <span class="eea-icon eea-icon-left"></span>
                 </div>
               </div>
-              <div class="conclusion-discussion" tal:content="structure provider:esdrt.content.commentmanager"  style="display:none"/>
+              <div class="conclusion-discussion conclusion-discussion-2" tal:content="structure provider:esdrt.content.commentmanager"  style="display:none"/>
             </div>
         </div>
         <div class="actions" tal:condition="view/in_conclusions_phase1">

@@ -1453,7 +1453,7 @@
   </guard>
  </transition>
  <transition transition_id="phase2-go-to-conclusions" title="Go to Conclusions" new_state="" trigger="USER" before_script="" after_script="">
-  <action url="%(content_url)s/../add-conclusions?workflow_action=phase1-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
+  <action url="%(content_url)s/../add-conclusions?workflow_action=phase2-draft-conclusions" category="workflow" icon="">Go to Conclusions</action>
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
    <guard-expression>python:here.has_answers() and here.aq_parent.get_conclusion_phase2() and here.aq_parent.get_status() == 'phase2-pending'</guard-expression>

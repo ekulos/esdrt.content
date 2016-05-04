@@ -234,8 +234,10 @@
   <permission-map name="esdrt.content: Add Question" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: View Answer Discussion" acquired="True">
+   <permission-role>QualityExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Comment Discussion" acquired="True">
+   <permission-role>QualityExpert</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: View Conclusion Discussion" acquired="True">
    <permission-role>ReviewerPhase1</permission-role>

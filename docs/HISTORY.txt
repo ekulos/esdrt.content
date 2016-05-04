@@ -4,7 +4,8 @@ Changelog
 1.59.20 (unrelease)
 -----------------
 
-- Nothing changed yet.
+- refs #68919  fix Internal comments invisble for QA expert
+  [lucas]
 
 1.59.19 (2016-04-27)
 -----------------
