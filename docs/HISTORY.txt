@@ -5,6 +5,8 @@ Changelog
 -----------------
 
 - refs #68919  fix Internal comments invisble for QA expert
+- refs #71992 fix notifications emails
+- refs #30544 add "Go to conclusion" button for unanswered observation
   [lucas]
 
 1.59.19 (2016-04-27)
