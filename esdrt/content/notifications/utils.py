@@ -82,6 +82,11 @@ def get_users_in_context(observation, role, notification_name):
     for username in usernames:
         user = api.user.get(username=username)
         if user is not None:
+            roles = user.getRolesInContext(observation)
+            step = observation.observation_phase()
+            if 'phase2' in step:
+                if 'ReviewerPhase1' in roles and not 'ReviewerPhase2' in roles:
+                    continue
             if not exclude_user_from_notification(observation, user, role, notification_name):
                 users.append(user)
         else:
