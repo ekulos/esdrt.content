@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.20 (2016-05-05)
+1.59.20.1 (2016-05-05)
 -----------------
 
 - refs #68919  fix Internal comments invisble for QA expert
