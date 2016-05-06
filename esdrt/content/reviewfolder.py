@@ -1,10 +1,12 @@
 import time
 import tablib
 from datetime import datetime
-from esdrt.content.timeit import timeit
+from Acquisition import aq_inner
 from AccessControl import getSecurityManager, Unauthorized
 from five import grok
 from plone import api
+from plone.app.content.browser.tableview import Table
+from plone.batching import Batch
 from plone.directives import dexterity
 from plone.directives import form
 from plone.memoize import ram
@@ -12,8 +14,9 @@ from plone.memoize.view import memoize
 from plone.namedfile.interfaces import IImageScaleTraversable
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from esdrt.content.timeit import timeit
 from eea.cache import cache
-from plone.batching import Batch
 
 grok.templatedir('templates')
 
@@ -37,7 +40,7 @@ class ReviewFolderMixin(grok.View):
     grok.baseclass()
 
     @memoize
-    def get_questions(self):
+    def get_questions(self, sort_on="modified", sort_order="reverse"):
         country = self.request.form.get('country', '')
         reviewYear = self.request.form.get('reviewYear', '')
         inventoryYear = self.request.form.get('inventoryYear', '')
@@ -53,8 +56,8 @@ class ReviewFolderMixin(grok.View):
         query = {
             'path': path,
             'portal_type': ['Observation'],
-            'sort_on': 'modified',
-            'sort_order': 'reverse',
+            'sort_on': sort_on,
+            'sort_order': sort_order
         }
 
         if self.is_member_state_coordinator():
@@ -191,10 +194,65 @@ class ReviewFolderView(ReviewFolderMixin):
     grok.context(IReviewFolder)
     grok.require('zope2.View')
     grok.name('view')
-    
+
+    def contents_table(self):
+        table = ReviewFolderBrowserView(aq_inner(self.context), self.request)
+        return table.render()
+
     def can_export_observations(self):
         sm = getSecurityManager()
         return sm.checkPermission('esdrt.content: Export Observations', self)
+
+
+class ReviewFolderBrowserView(ReviewFolderMixin):
+    grok.context(IReviewFolder)
+    grok.require('zope2.View')
+    grok.name('get_table')
+
+    def folderitems(self, sort_on="modified", sort_order="reverse"):
+        """
+        """
+
+        questions = self.get_questions(sort_on, sort_order)
+        results = []
+        for i, obj in enumerate(questions):
+            results.append(dict(
+                brain=obj
+            ))
+
+        return results
+
+    def table(self, context, request, sort_on='modified', sort_order="reverse"):
+        pagesize = int(self.request.get('pagesize', 20))
+        url = context.absolute_url()
+        view_url = url + '/view'
+
+        table = Table(
+            self.request, url, view_url, self.folderitems(sort_on, sort_order),
+            pagesize=pagesize
+        )
+
+        table.render = ViewPageTemplateFile("templates/reviewfolder_get_table.pt")
+        table.is_secretariat = self.is_secretariat
+
+        return table
+
+    def update_table(self, pagenumber='1', sort_on='modified',
+                     sort_order="reverse", show_all=False):
+        self.request.set('sort_on', sort_on)
+        self.request.set('pagenumber', pagenumber)
+
+        table = self.table(
+            self.context, self.request, sort_on=sort_on, sort_order=sort_order
+        )
+
+        return table.render(table)
+
+    def render(self):
+        sort_on = self.request.get('sort_on', 'modified')
+        sort_order = self.request.get('sort_order', 'reverse')
+        pagenumber = self.request.get('pagenumber', '1')
+        return self.update_table(pagenumber, sort_on, sort_order)
 
 
 class ExportReviewFolderView(ReviewFolderMixin):

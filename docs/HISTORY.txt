@@ -4,7 +4,8 @@ Changelog
 1.59.21 (unrelease)
 -----------------
 
-- Nothing changed yet.
+- refs #68683 ajax sorting on reviewfolder view added
+  [lucas]
 
 1.59.20.1 (2016-05-05)
 -----------------

@@ -7,99 +7,166 @@
       i18n:domain="esdrt.content">
   <tal:block metal:fill-slot="javascript_head_slot">
     <script type="text/javascript">
-      $(document).ready(function(){
-        $(".observationText").text(function(index, currentText){
-          if (currentText.length > 500){
-            $(this).text(currentText.substr(0, 500) + "...");
-            $(this).attr("title", currentText);
-          }
-        });
-        $('table.observationList tr').superLink('a:first');
-        $(".chosen-select").chosen({width: "100%", allow_single_deselect: true});
-        $("#btnFilter").click(function(){
-          var filter = "";
-            if ($('#countryFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "country=" + $('#countryFilter').val();
-            }
-            if ($('#statusFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "status=" + $('#statusFilter').val();
-            }
-            if ($('#reviewYearFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "reviewYear=" + $('#reviewYearFilter').val();
-            }
-            if ($('#inventoryYearFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "inventoryYear=" + escape($('#inventoryYearFilter').val());
-            }
-            if ($('#freeTextFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "freeText=" + $('#freeTextFilter').val();
-            }
-            if ($("input:checked").length > 0){
-              var len = $("input:checked").length;
-              var highlights = "";
-              for(i=0; i < len; i++){
-                highlights += $("input:checked")[i].value + ","
-              }
-              highlights = highlights.substring(0, highlights.length - 1);
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "highlights=" + highlights;
-            }
-            if ($('#stepFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "step=" + $('#stepFilter').val();
-            }
-            if ($('#wfStatusFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "wfStatus=" + $('#wfStatusFilter').val();
-            }
-            if ($('#crfFilter').val() != ""){
-              if (filter == ""){
-                filter += "?";
-              }else{
-                filter += "&";
-              }
-              filter += "crfCode=" + $('#crfFilter').val();
-            }
-            window.location.href = window.location.pathname + filter;
+      (function($){
+        
+        /* enable reloading of the table for a given selector and set of overrides
+         * with optional default event prevention */
+            
+        $.fn.enableTableReload = function(selector, overrides, prevent) {
+            var $target = this;
+            if(arguments.count < 3)
+                prevent = false;
+            $target.delegate(selector, "click", function(event) {
+                
+                if(prevent)
+                    event.preventDefault();
+                replaceFolderContentsTable(overrides);
+            });
+            return $target;
+        };
 
-        })
-      })
+        function querystringConvert(){
+            var pairs = location.search.slice(1).split('&');
+
+            var result = {};
+            pairs.forEach(function(pair) {
+                pair = pair.split('=');
+                result[pair[0]] = decodeURIComponent(pair[1] || '');
+            });
+        
+            return result;
+        }
+        
+        function replaceFolderContentsTable(overrides) {
+            var defaults = querystringConvert();
+            var order = $('#observations-table').attr('data-sort_order');
+            defaults.sort_on = $('#observations-table').attr('data-sort_on');
+            if (defaults.sort_on == overrides.sort_on){
+              defaults.sort_order = (order == 'ascending' ? 'reverse': 'ascending');
+            } else {
+              defaults.sort_order = 'ascending';
+            }
+            $.get('get_table', $.extend(defaults, overrides), function(data) {
+                $("#observations").replaceWith(data);
+                // fix up links generated by batching
+                var orig_template = 'view';
+                $("div.listingBar a").each(function(){
+                    $(this).attr("href", $(this).attr("href").replace(/get_table/, orig_template));
+                });
+                $(initializeDnDReorder('#observations-table'));
+            });
+        }
+        
+        $(document).ready(function(){
+            /* folder contents table loading actions */
+            var ccore = $("#content-core");
+            ccore.enableTableReload("#reviewfolder-title", { "sort_on": "getId" });
+            ccore.enableTableReload("#reviewfolder-crf", { "sort_on": "crf_code" });
+            ccore.enableTableReload("#reviewfolder-year", { "sort_on": "review_year" });
+            ccore.enableTableReload("#reviewfolder-status", { "sort_on": "observation_status" });
+            ccore.enableTableReload("#reviewfolder-step", { "sort_on": "observation_step" });
+            ccore.enableTableReload("#reviewfolder-workflow", { "sort_on": "observation_finalisation_reason" });
+            ccore.delegate("div.listingBar a", "click", function(event) {
+                event.preventDefault();
+                var link = $(this).attr("href");
+                var page = decodeURI((RegExp("pagenumber\:int" + '=' + '(.+?)(&|$)').exec(link)||[,null])[1]);
+                replaceFolderContentsTable({ "pagenumber": page });
+            });
+            
+            $(".observationText").text(function(index, currentText){
+              if (currentText.length > 500){
+                $(this).text(currentText.substr(0, 500) + "...");
+                $(this).attr("title", currentText);
+              }
+            });
+            $('table.observationList tr').superLink('a:first');
+            $(".chosen-select").chosen({width: "100%", allow_single_deselect: true});
+            $("#btnFilter").click(function(){
+              var filter = "";
+                if ($('#countryFilter').val() != ""){
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "country=" + $('#countryFilter').val();
+                }
+                if ($('#statusFilter').val() != ""){
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "status=" + $('#statusFilter').val();
+                }
+                if ($('#reviewYearFilter').val() != ""){
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "reviewYear=" + $('#reviewYearFilter').val();
+                }
+                if ($('#inventoryYearFilter').val() != ""){
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "inventoryYear=" + escape($('#inventoryYearFilter').val());
+                }
+                if ($('#freeTextFilter').val() != ""){
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "freeText=" + $('#freeTextFilter').val();
+                }
+                if ($("input:checked").length > 0){
+                  var len = $("input:checked").length;
+                  var highlights = "";
+                  for(var i=0; i < len; i++){
+                    highlights += $("input:checked")[i].value + ",";
+                  }
+                  highlights = highlights.substring(0, highlights.length - 1);
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "highlights=" + highlights;
+                }
+                if ($('#stepFilter').val() != ""){
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "step=" + $('#stepFilter').val();
+                }
+                if ($('#wfStatusFilter').val() != ""){
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "wfStatus=" + $('#wfStatusFilter').val();
+                }
+                if ($('#crfFilter').val() != ""){
+                  if (filter == ""){
+                    filter += "?";
+                  }else{
+                    filter += "&";
+                  }
+                  filter += "crfCode=" + $('#crfFilter').val();
+                }
+                window.location.href = window.location.pathname + filter;
+    
+            });
+        
+        });
+      })(jQuery);
     </script>
   </tal:block>
 <body>
@@ -298,154 +365,34 @@
         </div>
       </div>
 
-      <tal:questions define="liste view/get_questions">
-
-        <div id="no-content" tal:condition="not:liste">
-
-          <p>
-            There are no observations to review.
-          </p>
-
+      <tal:questions>
+        
+        <div id="observations-list" tal:content="structure view/contents_table"></div>
+        
+        <div class="observationActions reviewfolder">
+          <ul class="observationActionsMenu visualNoMarker"
+              tal:condition="python:view.can_add_observation() or view.can_export_observations">
+            <li tal:condition="view/can_export_observations">
+              <a class="standardButton" href=""
+                 tal:define="query request/QUERY_STRING;
+                             querystring python:query and '?' + query or ''"
+                 tal:attributes="href string:${context/absolute_url}/export_as_xls/$querystring">
+                 <i class="eea-icon eea-icon-download">&nbsp;</i> Exports the results in XLS
+              </a>
+            </li>
+            <li class="deleteButton" tal:condition="view/can_add_observation">
+              <a href="./++add++Observation"
+                 tal:attributes="href string:${here/absolute_url}/++add++Observation"
+                 class="standardButton defaultWFButton">
+                   New observation
+              </a>
+            </li>
+          </ul>
         </div>
-
-      <div id="observations" tal:condition="liste">
-
-        <tal:block tal:define="Batch python:modules['Products.CMFPlone'].Batch;
-             b_size python:20;
-             b_start python:0;
-             b_start request/b_start | b_start;
-             batch python:Batch(liste, b_size, int(b_start), orphan=1);
-             toLocalizedTime nocall:here/@@plone/toLocalizedTime;">
-          <table class="observationList listing">
-            <thead>
-              <tr>
-                <th style="width:17%">
-                  Observation
-                </th>
-                <th style="width:45%">
-                  In short
-                </th>
-                <th>
-                  CRF code
-                </th>
-                <th style="width:47px">
-                  Review year
-                </th>
-                <th>
-                  Status
-                </th>
-                <th>
-                  Step
-                </th>
-                <th>
-                  Workflow
-                </th>
-                <th tal:condition="view/is_secretariat">
-                  Author
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tal:item tal:repeat="observation batch">
-                <tr tal:attributes="data-href observation/getURL;
-                    class string:clickableRow ${observation/observation_css_class};">
-                  <td class="observationRefCell">
-                      <a tal:attributes="href observation/getURL;"/>
-                      <span class="ref-num"
-                        tal:content="observation/getId">
-                        UK-WAS-13-001
-                      </span>
-                      <br/>
-                      <div class="potentialSignificantIssue"
-                           tal:condition="observation/observation_is_potential_significant_issue">
-                        Potential significant issue
-                      </div>
-                      <div class="potentialTechnicalCorrectionTag"
-                           tal:condition="observation/observation_is_potential_technical_correction">
-                        Potential technical correction
-                      </div>
-                      <div class="technicalCorrectionTag"
-                        tal:condition="observation/observation_is_technical_correction">
-                          Technical correction
-                      </div>
-                  </td>
-                  <td tal:content="observation/text"
-                    class="observationText">
-                    Observation description
-                  </td>
-                  <td tal:content="observation/crf_code_value">
-                    1A1 Energy industries
-                  </td>
-                  <td tal:content="observation/review_year" class="yearCell">
-                    2014
-                  </td>
-                  <td>
-                    <span
-                      tal:replace="structure observation/overview_status">
-                        Open
-                    </span>
-                  </td>
-                  <td>
-                    <div tal:attributes="class observation/observation_phase">&nbsp;</div>
-                  </td>
-                  <td >
-                    <span tal:condition="python: observation.observation_status == 'SRRE'">
-                      Sector Reviewer / Review Expert
-                    </span>
-                    <span tal:condition="python: observation.observation_status == 'LRQE'">
-                      Lead Reviewer / Quality Expert
-                    </span>
-                    <span tal:condition="python: observation.observation_status == 'MSC'">
-                      MS Coordinator
-                    </span>
-                    <span tal:condition="python: observation.observation_status == 'answered'">
-                      Answered
-                    </span>
-                    <span tal:condition="python: observation.observation_status == 'conclusions'">
-                      Conclusions
-                    </span>
-                    <span tal:condition="python: observation.observation_status == 'close-requested'">
-                      Close requested
-                    </span>
-                    <span tal:condition="python: observation.observation_status == 'finalised'">
-                      Finalised
-                    </span>
-                  </td>
-                  <td tal:condition="view/is_secretariat">
-                    <span tal:replace="observation/get_author_name" />
-                  </td>
-                </tr>
-              </tal:item>
-            </tbody>
-          </table>
-          <div metal:use-macro="here/batch_macros/macros/navigation" />
-        </tal:block>
-      </div>
-
-      <div class="observationActions reviewfolder">
-        <ul class="observationActionsMenu visualNoMarker"
-            tal:condition="python:(view.can_add_observation() and liste) or view.can_export_observations">
-          <li tal:condition="view/can_export_observations">
-            <a class="standardButton" href=""
-               tal:define="query request/QUERY_STRING;
-                           querystring python:query and '?' + query or ''"
-               tal:attributes="href string:${context/absolute_url}/export_as_xls/$querystring">
-               <i class="eea-icon eea-icon-download">&nbsp;</i> Exports the results in XLS
-            </a>
-          </li>
-          <li class="deleteButton" tal:condition="view/can_add_observation">
-            <a href="./++add++Observation"
-               tal:attributes="href string:${here/absolute_url}/++add++Observation"
-               class="standardButton defaultWFButton">
-                 New observation
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div id="workflowhelp">
-        WORKFLOW
-      </div>
-    </tal:questions>
+        <div id="workflowhelp">
+          WORKFLOW
+        </div>
+      </tal:questions>
     </metal:content-core>
   </metal:main>
 

@@ -1,0 +1,123 @@
+<div id="no-content" tal:condition="not: view/batch">
+
+  <p class="discreet">
+    There are no observations to review.
+  </p>
+
+</div>
+
+<div id="observations" tal:condition="view/batch">
+  <table tal:define="toLocalizedTime nocall:here/@@plone/toLocalizedTime;"
+         class="observationList listing"
+         id="observations-table"
+         tal:attributes="data-sort_on request/sort_on|string:modified;
+                         data-sort_order request/sort_order|nothing"
+         tal:condition="view/items">
+    <thead>
+      <tr>
+        <th style="width:17%"
+            class="nosort"
+            id="reviewfolder-title">
+          Observation
+        </th>
+        <th style="width:45%" class="nosort">
+          In short
+        </th>
+        <th id="reviewfolder-crf" class="nosort">
+          CRF code
+        </th>
+        <th style="width:47px" class="nosort"
+            id="reviewfolder-year">
+          Review year
+        </th>
+        <th id="reviewfolder-status" class="nosort">
+          Status
+        </th>
+        <th id="reviewfolder-step" class="nosort">
+          Step
+        </th>
+        <th id="reviewfolder-workflow" class="nosort">
+          Workflow
+        </th>
+        <th tal:condition="view/is_secretariat">
+          Author
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tal:item tal:repeat="obs view/batch">
+        <tr tal:define="observation obs/brain"
+            tal:attributes="data-href observation/getURL;
+            class string:clickableRow ${observation/observation_css_class};">
+          <td class="observationRefCell">
+              <a tal:attributes="href observation/getURL;"/>
+              <span class="ref-num"
+                tal:content="observation/getId">
+                UK-WAS-13-001
+              </span>
+              <br/>
+              <div class="potentialSignificantIssue"
+                   tal:condition="observation/observation_is_potential_significant_issue">
+                Potential significant issue
+              </div>
+              <div class="potentialTechnicalCorrectionTag"
+                   tal:condition="observation/observation_is_potential_technical_correction">
+                Potential technical correction
+              </div>
+              <div class="technicalCorrectionTag"
+                tal:condition="observation/observation_is_technical_correction">
+                  Technical correction
+              </div>
+          </td>
+          <td tal:content="observation/text"
+            class="observationText">
+            Observation description
+          </td>
+          <td tal:content="observation/crf_code_value">
+            1A1 Energy industries
+          </td>
+          <td tal:content="observation/review_year" class="yearCell">
+            2014
+          </td>
+          <td>
+            <span
+              tal:replace="structure observation/overview_status">
+                Open
+            </span>
+          </td>
+          <td>
+            <div tal:attributes="class observation/observation_phase">&nbsp;</div>
+          </td>
+          <td >
+            <span tal:condition="python: observation.observation_status == 'SRRE'">
+              Sector Reviewer / Review Expert
+            </span>
+            <span tal:condition="python: observation.observation_status == 'LRQE'">
+              Lead Reviewer / Quality Expert
+            </span>
+            <span tal:condition="python: observation.observation_status == 'MSC'">
+              MS Coordinator
+            </span>
+            <span tal:condition="python: observation.observation_status == 'answered'">
+              Answered
+            </span>
+            <span tal:condition="python: observation.observation_status == 'conclusions'">
+              Conclusions
+            </span>
+            <span tal:condition="python: observation.observation_status == 'close-requested'">
+              Close requested
+            </span>
+            <span tal:condition="python: observation.observation_status == 'finalised'">
+              Finalised
+            </span>
+          </td>
+          <td tal:condition="view/is_secretariat">
+            <span tal:replace="observation/get_author_name" />
+          </td>
+        </tr>
+      </tal:item>
+    </tbody>
+  </table>
+  <div class="visualClear" id="clear-space-before-navigation"><!-- --></div>
+  <div tal:replace="structure view/batching" tal:condition="not:view/show_all"/>
+</div>
