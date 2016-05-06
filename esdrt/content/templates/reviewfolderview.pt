@@ -8,16 +8,16 @@
   <tal:block metal:fill-slot="javascript_head_slot">
     <script type="text/javascript">
       (function($){
-        
+
         /* enable reloading of the table for a given selector and set of overrides
          * with optional default event prevention */
-            
+
         $.fn.enableTableReload = function(selector, overrides, prevent) {
             var $target = this;
             if(arguments.count < 3)
                 prevent = false;
             $target.delegate(selector, "click", function(event) {
-                
+
                 if(prevent)
                     event.preventDefault();
                 replaceFolderContentsTable(overrides);
@@ -33,10 +33,10 @@
                 pair = pair.split('=');
                 result[pair[0]] = decodeURIComponent(pair[1] || '');
             });
-        
+
             return result;
         }
-        
+
         function replaceFolderContentsTable(overrides) {
             var defaults = querystringConvert();
             var order = $('#observations-table').attr('data-sort_order');
@@ -54,9 +54,11 @@
                     $(this).attr("href", $(this).attr("href").replace(/get_table/, orig_template));
                 });
                 $(initializeDnDReorder('#observations-table'));
-            });
+                $('html,body').animate({
+                  scrollTop: $("#tabs").offset().top}, 0);
+                });
         }
-        
+
         $(document).ready(function(){
             /* folder contents table loading actions */
             var ccore = $("#content-core");
@@ -72,7 +74,7 @@
                 var page = decodeURI((RegExp("pagenumber\:int" + '=' + '(.+?)(&|$)').exec(link)||[,null])[1]);
                 replaceFolderContentsTable({ "pagenumber": page });
             });
-            
+
             $(".observationText").text(function(index, currentText){
               if (currentText.length > 500){
                 $(this).text(currentText.substr(0, 500) + "...");
@@ -162,9 +164,9 @@
                   filter += "crfCode=" + $('#crfFilter').val();
                 }
                 window.location.href = window.location.pathname + filter;
-    
+
             });
-        
+
         });
       })(jQuery);
     </script>
@@ -366,9 +368,9 @@
       </div>
 
       <tal:questions>
-        
+
         <div id="observations-list" tal:content="structure view/contents_table"></div>
-        
+
         <div class="observationActions reviewfolder">
           <ul class="observationActionsMenu visualNoMarker"
               tal:condition="python:view.can_add_observation() or view.can_export_observations">
