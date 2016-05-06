@@ -1424,9 +1424,26 @@ class ObservationView(ObservationMixin):
     grok.require('zope2.View')
     grok.name('view')
 
+    def get_current_counterparters(self):
+        """ Return list of current counterparters,
+            if the user can see counterpart action
+        """
+        actions = [action['action'] for action in self.actions()]
+        if not any('counterpart_form' in action for action  in actions):
+            return []
+
+        target = self.context
+        local_roles = target.get_local_roles()
+        users = [
+            u[0] for u in local_roles if 'CounterPart' in u[1]
+        ]
+        return [api.user.get(user) for user in users]
+
     def can_export_observation(self):
         sm = getSecurityManager()
-        return sm.checkPermission('esdrt.content: Export an Observation', self)
+        return sm.checkPermission(
+            'esdrt.content: Export an Observation', self.context
+        )
 
 
 class DiffedView(ObservationView):

@@ -39,6 +39,17 @@
 
 
         <tal:block condition="view/get_counterpart_users">
+
+          <p class="discrete" tal:define="counterparters view/get_current_counterparters"
+             tal:condition="counterparters">
+            <strong>Counterparts involved: </strong>
+            <tal:loop repeat="user counterparters">
+              <span tal:replace="python:user.getProperty('fullname', user.getId())"
+                    tal:condition="user" />
+              <span tal:condition="not:repeat/user/end">, </span>
+            </tal:loop>
+          </p>
+
           <form method="post"
                 tal:attributes="action string:${context/absolute_url}/${view/__name__}">
 

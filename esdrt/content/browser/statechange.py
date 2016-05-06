@@ -4,6 +4,7 @@ from plone import api
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
+from zope.annotation.interfaces import IAnnotations
 from z3c.form import button
 from z3c.form import field
 from z3c.form.form import Form
@@ -296,6 +297,16 @@ class AssignCounterPartForm(BrowserView):
             'extranet-esd-esdreview',
         ]
 
+    def get_current_counterparters(self):
+        """ Return list of current counterparters
+        """
+        target = self.assignation_target()
+        local_roles = target.get_local_roles()
+        users = [
+            u[0] for u in local_roles if 'CounterPart' in u[1]
+        ]
+        return [api.user.get(user) for user in users]
+
     def cache_get_users(fun, self, groupname):
         import time
         return (groupname, time.time() // 86400)
@@ -313,6 +324,7 @@ class AssignCounterPartForm(BrowserView):
             users.append((term[0], term[1]))
 
         return users
+
     def assignation_target(self):
         return aq_parent(aq_inner(self.context))
 

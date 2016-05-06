@@ -1113,10 +1113,26 @@
         </a>
         </div>
       </tal:conclu>
+
       </tal:last>
 
       <tal:qactions condition="python:(not view.in_conclusions_phase1()) and (not view.in_conclusions_phase2())">
         <div class="actions" tal:condition="repeat/question/end">
+
+          <tal:block tal:define="question view/question"
+                     tal:condition="python: question and '-counterpart-comments' in question.get_state_api()">
+
+            <p class="discrete" tal:define="counterparters view/get_current_counterparters"
+                 tal:condition="counterparters">
+              <strong>Counterparts involved: </strong>
+              <tal:loop repeat="user counterparters">
+                <span tal:replace="python:user.getProperty('fullname', user.getId())"
+                      tal:condition="user" /><span tal:condition="not:repeat/user/end">, </span>
+              </tal:loop>
+            </p>
+
+          </tal:block>
+
           <!--tal:block condition="view/can_edit">
             <a href=""
                 tal:attributes="href string:${here/absolute_url}/modifications"
@@ -1141,7 +1157,7 @@
             class="standardButton">
             Add conclusions
           </a> -->
-          
+
           <tal:block  tal:define="portalType question/portal_type/lower"
             tal:condition="python:portalType == 'comment'">
             <a href=""

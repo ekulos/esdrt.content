@@ -5,6 +5,7 @@ Changelog
 -----------------
 
 - refs #68683 ajax sorting on reviewfolder view added
+- refs #30550 added Counterpart's names in commenting loop
   [lucas]
 
 1.59.20.1 (2016-05-05)
