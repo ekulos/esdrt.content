@@ -377,7 +377,7 @@ class Inbox2ReviewFolderView(grok.View):
         }
         if freeText != "":
             query['SearchableText'] = freeText
-
+        import pdb; pdb.set_trace()
         return map(decorate, [b.getObject() for b in catalog.searchResults(query)])
 
     """
@@ -974,17 +974,34 @@ class InboxReviewFolderView(grok.View):
         return sm.checkPermission('esdrt.content: Add Observation', self)
 
 
-def decorate2(item):
-    """ prepare a plain object, so that we can cache it in a RAM cache """
-    user = api.user.get_current()
-    roles = api.user.get_roles(username=user.getId(), obj=item, inherit=True)
-    item.isCP = 'CounterPart' in roles
-    item.isMSA = 'MSAuthority' in roles
-    item.isSE = 'SectorExpert' in roles
-    item.isRE = 'ReviewExpert' in roles
-    item.isLR = 'LeadReviewer' in roles
-    item.isQE = "QualityExpert" in roles
-    return item
+class RoleMapItem(object):
+
+    def __init__(self, roles):
+        self.isCP = 'CounterPart' in roles
+        self.isMSA = 'MSAuthority' in roles
+        self.isSE = 'SectorExpert' in roles
+        self.isRE = 'ReviewExpert' in roles
+        self.isLR = 'LeadReviewer' in roles
+        self.isQE = "QualityExpert" in roles
+
+    def check_roles(self, rolename):
+        if rolename == 'CounterPart':
+            return self.isCP
+        elif rolename == 'MSAuthority':
+            return self.isMSA
+        elif rolename == 'SectorExpert':
+            return self.isSE
+        elif rolename == 'ReviewExpert':
+            return self.isRE
+        elif rolename == 'NotCounterPartPhase1':
+            return not self.isCP and self.isSE
+        elif rolename == 'NotCounterPartPhase2':
+            return not self.isCP and self.isRE
+        elif rolename == 'LeadReviewer':
+            return self.isLR
+        elif rolename == 'QualityExpert':
+            return self.isQE
+        return False
 
 
 class Inbox3ReviewFolderView(grok.View):
@@ -992,27 +1009,20 @@ class Inbox3ReviewFolderView(grok.View):
     grok.require('zope2.View')
     grok.name('inboxview')
 
+    def rolemap(self, observation):
+        """ prepare a plain object, so that we can cache it in a RAM cache """
+        user = api.user.get_current()
+        roles = api.user.get_roles(username=user.getId(), obj=observation, inherit=True)
+        return RoleMapItem(roles)
+
+    def update(self):
+        self.rolemap_observations = {}
+
     def batch(self, observations, b_size, b_start, orphan, b_start_str):
         observationsBatch = Batch(observations, int(b_size), int(b_start), orphan=1)
         observationsBatch.batchformkeys = []
         observationsBatch.b_start_str = b_start_str
         return observationsBatch
-
-    @cache(_catalog_change)
-    @timeit
-    def get_all_observations(self, freeText):
-        catalog = api.portal.get_tool('portal_catalog')
-        path = '/'.join(self.context.getPhysicalPath())
-        query = {
-            'path': path,
-            'portal_type': 'Observation',
-            'sort_on': 'modified',
-            'sort_order': 'reverse',
-        }
-        if freeText != "":
-            query['SearchableText'] = freeText
-
-        return map(decorate, [b.getObject() for b in catalog.searchResults(query)])
 
     def get_observations(self, rolecheck=None, **kw):
         freeText = self.request.form.get('freeText', '')
@@ -1030,43 +1040,33 @@ class Inbox3ReviewFolderView(grok.View):
         query.update(kw)
         #from logging import getLogger
         #log = getLogger(__name__)
+
+        observations = [b.getObject() for b in catalog.searchResults(query)]
         if rolecheck is None:
             #log.info('Querying Catalog: %s' % query)
-            return [b.getObject() for b in catalog.searchResults(query)]
-        else:
-            #log.info('Querying Catalog with Rolecheck %s: %s ' % (rolecheck, query))
+            return observations
 
-            def makefilter(rolename):
-                """
-                https://stackoverflow.com/questions/7045754/python-list-filtering-with-arguments
-                """
-                def myfilter(x):
-                    if rolename == 'CounterPart':
-                        return x.isCP
-                    elif rolename == 'MSAuthority':
-                        return x.isMSA
-                    elif rolename == 'SectorExpert':
-                        return x.isSE
-                    elif rolename == 'ReviewExpert':
-                        return x.isRE
-                    elif rolename == 'NotCounterPartPhase1':
-                        return not x.isCP and x.isSE
-                    elif rolename == 'NotCounterPartPhase2':
-                        return not x.isCP and x.isRE
-                    elif rolename == 'LeadReviewer':
-                        return x.isLR
-                    elif rolename == 'QualityExpert':
-                        return x.isQE
-                    return False
-                return myfilter
+        for obs in observations:
+            if obs.getId() not in self.rolemap_observations:
+                self.rolemap_observations[obs.getId()] = self.rolemap(obs)
 
-            filterfunc = makefilter(rolecheck)
+        #log.info('Querying Catalog with Rolecheck %s: %s ' % (rolecheck, query))
 
-            return filter(
-                filterfunc,
-                map(decorate2,
-                    [b.getObject() for b in catalog.searchResults(query)])
-            )
+        def makefilter(rolename):
+            """
+            https://stackoverflow.com/questions/7045754/python-list-filtering-with-arguments
+            """
+            def myfilter(x):
+                rolemap = self.rolemap_observations[x.getId()]
+                return rolemap.check_roles(rolename)
+            return myfilter
+
+        filterfunc = makefilter(rolecheck)
+
+        return filter(
+            filterfunc,
+            observations
+        )
 
     @timeit
     def get_draft_observations(self):
@@ -1171,6 +1171,38 @@ class Inbox3ReviewFolderView(grok.View):
         return answered_phase1 + answered_phase2 + pending_phase1 + pending_phase2
 
     @timeit
+    def get_approval_questions(self):
+        """
+         Role: Sector expert / Review expert
+         my questions sent to LR and MS and waiting for reply
+        """
+        # For a SE/RE, those on QE/LR pending to be sent to the MS
+        # or recalled by him, are unanswered questions
+
+        if not self.is_sector_expert_or_review_expert():
+            return []
+
+        statuses_phase1 = [
+            'phase1-drafted',
+            'phase1-recalled-lr'
+        ]
+
+        statuses_phase2 = [
+            'phase2-drafted',
+            'phase2-recalled-lr'
+        ]
+
+        phase1 = self.get_observations(
+            rolecheck="SectorExpert",
+            observation_question_status=statuses_phase1)
+
+        phase2 = self.get_observations(
+            rolecheck="ReviewExpert",
+            observation_question_status=statuses_phase2)
+
+        return phase1 + phase2
+
+    @timeit
     def get_unanswered_questions(self):
         """
          Role: Sector expert / Review expert
@@ -1189,16 +1221,6 @@ class Inbox3ReviewFolderView(grok.View):
             'phase2-expert-comments',
             'phase2-pending-answer-drafting'
         ]
-
-        # For a SE/RE, those on QE/LR pending to be sent to the MS
-        # or recalled by him, are unanswered questions
-        if self.is_sector_expert_or_review_expert():
-            statuses_phase1.extend([
-                'phase1-recalled-lr']
-            )
-            statuses_phase2.extend([
-                'phase2-recalled-lr']
-            )
 
         phase1 = self.get_observations(
             rolecheck="SectorExpert",
