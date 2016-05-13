@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.22 (unrelease)
+1.59.23 (unrelease)
 -----------------
 
 - Nothing changed yet.
