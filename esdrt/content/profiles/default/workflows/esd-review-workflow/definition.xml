@@ -585,6 +585,8 @@
   <permission-map name="esdrt.content: Add Conclusion" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ConclusionsPhase2" acquired="True">
+   <permission-role>ReviewerPhase2</permission-role>
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
   </permission-map>
@@ -643,6 +645,8 @@
   <permission-map name="esdrt.content: Add Conclusion" acquired="False">
   </permission-map>
   <permission-map name="esdrt.content: Add ConclusionsPhase2" acquired="True">
+   <permission-role>ReviewerPhase2</permission-role>
+   <permission-role>LeadReviewer</permission-role>
   </permission-map>
   <permission-map name="esdrt.content: Add ESDRTFile" acquired="True">
   </permission-map>
@@ -662,14 +666,14 @@
   </permission-map>
  </state>
  <transition transition_id="go-to-phase2" title="Go to phase 2" new_state="phase2-pending" trigger="USER" before_script="" after_script="">
-  
+
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase2</guard-role>
   </guard>
  </transition>
  <transition transition_id="phase1-approve" title="Open" new_state="phase1-pending" trigger="USER" before_script="" after_script="">
-  
+
   <guard>
    <guard-role>Manager</guard-role>
    <guard-role>ReviewerPhase1</guard-role>
@@ -760,6 +764,8 @@
   <guard>
    <guard-role>ReviewerPhase2</guard-role>
    <guard-role>LeadReviewer</guard-role>
+   <guard-role>ReviewExpert</guard-role>
+   <guard-role>SectorExpert</guard-role>
    <guard-expression>here/can_draft_conclusions</guard-expression>
   </guard>
  </transition>
@@ -838,7 +844,7 @@
  <variable variable_id="action" for_catalog="False" for_status="True" update_always="True">
   <description>Previous transition</description>
   <default>
-   
+
    <expression>transition/getId|nothing</expression>
   </default>
   <guard>
@@ -847,7 +853,7 @@
  <variable variable_id="actor" for_catalog="False" for_status="True" update_always="True">
   <description>The ID of the user who performed the previous transition</description>
   <default>
-   
+
    <expression>user/getId</expression>
   </default>
   <guard>
@@ -856,7 +862,7 @@
  <variable variable_id="comments" for_catalog="False" for_status="True" update_always="True">
   <description>Comment about the last transition</description>
   <default>
-   
+
    <expression>python:state_change.kwargs.get('comment', '')</expression>
   </default>
   <guard>
@@ -865,7 +871,7 @@
  <variable variable_id="review_history" for_catalog="False" for_status="False" update_always="False">
   <description>Provides access to workflow history</description>
   <default>
-   
+
    <expression>state_change/getHistory</expression>
   </default>
   <guard>
@@ -876,7 +882,7 @@
  <variable variable_id="time" for_catalog="False" for_status="True" update_always="True">
   <description>When the previous transition was performed</description>
   <default>
-   
+
    <expression>state_change/getDateTime</expression>
   </default>
   <guard>
