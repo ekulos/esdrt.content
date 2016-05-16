@@ -469,6 +469,11 @@ div.phase2-observation{
 #filters label{
 	font-weight: normal;
 }
+#filters::after {
+  content: '';
+  display: block;
+  clear: both;
+}
 #no-content {
 	background-color: #F3F3F3;
 	padding: 15px;
@@ -479,7 +484,6 @@ div.phase2-observation{
 #observations{
 	background-color: #F3F3F3;
 	padding: 10px 20px !important;
-	overflow: hidden;
 }
 #observations .actions{
 	margin-top: 0px;
