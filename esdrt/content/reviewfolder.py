@@ -1009,10 +1009,15 @@ class Inbox3ReviewFolderView(grok.View):
     grok.require('zope2.View')
     grok.name('inboxview')
 
+    @memoize
+    def get_current_user(self):
+        return api.user.get_current()
+
+
     def rolemap(self, observation):
         """ prepare a plain object, so that we can cache it in a RAM cache """
-        user = api.user.get_current()
-        roles = api.user.get_roles(username=user.getId(), obj=observation, inherit=True)
+        user = self.get_current_user()
+        roles = user.getRolesInContext(observation)
         return RoleMapItem(roles)
 
     def update(self):

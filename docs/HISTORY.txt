@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.59.23 (unrelease)
+1.59.23 (2016-05-16)
 -----------------
 
-- Nothing changed yet.
+- refs #28348 review "my view" for sector expert and review
+  [lucas]
 
 
 1.59.21 (2016-05-09)
