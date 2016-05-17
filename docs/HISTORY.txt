@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.24 (2016-05-16)
+1.59.25 (2016-05-16)
 -----------------
 
 - refs #28348 review "my view" for sector expert and review
