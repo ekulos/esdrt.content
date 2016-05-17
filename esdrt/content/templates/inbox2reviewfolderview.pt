@@ -64,7 +64,7 @@
         <!-- Sector expert / Review expert -->
         <tal:block tal:condition="view/is_sector_expert_or_review_expert">
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="my-actions">
+            <div class="collapsiblePanelTitle" data-panel="my-actions">
               <div>
                 My actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -386,7 +386,7 @@
             </table>
           </div>
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="other-actions-for-my-observations">
+            <div class="collapsiblePanelTitle" data-panel="other-actions-for-my-observations">
               <div>
                 Other actions for my observations
                 <span class="eea-icon eea-icon-left"></span>
@@ -709,7 +709,7 @@
         <!-- Lead Reviewer / Quality expert -->
         <tal:block tal:condition="view/is_lead_reviewer_or_quality_expert">
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="my-actions">
+            <div class="collapsiblePanelTitle" data-panel="my-actions">
               <div>
                 My actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1029,7 +1029,7 @@
             </table>
           </div>
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="my-teams-actions">
+            <div class="collapsiblePanelTitle" data-panel="my-teams-actions">
               <div>
                 My team's actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1193,7 +1193,7 @@
             </table>
           </div>
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="my-ms-actions">
+            <div class="collapsiblePanelTitle" data-panel="my-ms-actions">
               <div>
                 My MS' actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1282,7 +1282,7 @@
         <!-- MS Coordinator -->
         <tal:block tal:condition="view/is_member_state_coordinator">
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="my-actions">
+            <div class="collapsiblePanelTitle" data-panel="my-actions">
               <div>
                 My actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1446,7 +1446,7 @@
             </table>
           </div>
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="mse-actions">
+            <div class="collapsiblePanelTitle" data-panel="mse-actions">
               <div>
                 MS experts actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1532,7 +1532,7 @@
             </table>
           </div>
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="se-re-actions">
+            <div class="collapsiblePanelTitle" data-panel="se-re-actions">
               <div>
                 Sector expert / Review expert actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1621,7 +1621,7 @@
         <!-- MS Expert -->
         <tal:block tal:condition="view/is_member_state_expert">
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="my-actions">
+            <div class="collapsiblePanelTitle" data-panel="my-actions">
               <div>
                 My actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1707,7 +1707,7 @@
             </table>
           </div>
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="msc-actions">
+            <div class="collapsiblePanelTitle" data-panel="msc-actions">
               <div>
                 MSC actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1793,7 +1793,7 @@
             </table>
           </div>
           <div>
-            <div class="row collapsiblePanelTitle" data-panel="sr-re-actions">
+            <div class="collapsiblePanelTitle" data-panel="sr-re-actions">
               <div>
                 Sector expert/review expert actions
                 <span class="eea-icon eea-icon-left"></span>
@@ -1880,7 +1880,7 @@
           </div>
         </tal:block>
         <div>
-          <div class="row collapsiblePanelTitle" data-panel="finalised-observations">
+          <div class="collapsiblePanelTitle" data-panel="finalised-observations">
             <div>
               Finalised observations
               <span class="eea-icon eea-icon-left"></span>

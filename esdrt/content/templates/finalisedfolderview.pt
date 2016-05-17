@@ -76,7 +76,7 @@
 
       <div id="observations" class="myview" tal:condition="not:here/@@plone_portal_state/anonymous">
         <div>
-          <div class="row collapsiblePanelTitle" data-panel="finalised-observations">
+          <div class="collapsiblePanelTitle" data-panel="finalised-observations">
             <div>
               Finalised observations
               <span class="eea-icon eea-icon-left"></span>
@@ -84,7 +84,7 @@
           </div>
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row collapsibleListTitle" data-list="no-response-needed-observations">
+          <div class="collapsibleListTitle" data-list="no-response-needed-observations">
             <div>
               Finalised with 'no response needed'
               <span class="eea-icon eea-icon-left"></span>
@@ -169,7 +169,7 @@
             </tal:block>          
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row collapsibleListTitle" data-list="resolved-observations">
+          <div class="collapsibleListTitle" data-list="resolved-observations">
             <div>
               Finalised with 'resolved'
               <span class="eea-icon eea-icon-left"></span>
@@ -254,7 +254,7 @@
             </tal:block>  
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row collapsibleListTitle" data-list="unresolved-observations">
+          <div class="collapsibleListTitle" data-list="unresolved-observations">
             <div>
               Finalised with 'unresolved'
               <span class="eea-icon eea-icon-left"></span>
@@ -339,7 +339,7 @@
             </tal:block>            
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row collapsibleListTitle" data-list="party-resolved-observations">
+          <div class="collapsibleListTitle" data-list="party-resolved-observations">
             <div>
               Finalised with 'partly resolved'
               <span class="eea-icon eea-icon-left"></span>
@@ -424,7 +424,7 @@
             </tal:block>            
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row collapsibleListTitle" data-list="technical-correction-observations">
+          <div class="collapsibleListTitle" data-list="technical-correction-observations">
             <div>
               Finalised with 'technical correction'
               <span class="eea-icon eea-icon-left"></span>
@@ -509,7 +509,7 @@
             </tal:block>           
         </div>
         <div class="finalised-observations inboxSection">
-          <div class="row collapsibleListTitle" data-list="revised-estimate-observations">
+          <div class="collapsibleListTitle" data-list="revised-estimate-observations">
             <div>
               Finalised with 'revised estimate'
               <span class="eea-icon eea-icon-left"></span>
