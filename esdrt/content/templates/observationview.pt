@@ -78,6 +78,9 @@
             formselector: '#zc\\.page\\.browser_form',
             noform: function(el) {return $.plonepopups.noformerrorshow(el, 'redirect');},
             redirect: $.plonepopups.redirectbasehref,
+            config: {
+              onLoad: function() { hightlight_restructured(); }
+            },
             closeselector: '[name="form.buttons.cancel"]',
             width:'50%'
         });
