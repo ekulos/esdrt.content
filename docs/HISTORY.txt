@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.27 (unrelease)
+1.59.27 (2016-05-26)
 ------------------
 
 - refs #72138, #72739 fixed workflow permissions
