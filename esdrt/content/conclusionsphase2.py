@@ -30,6 +30,15 @@ from zope.interface import Invalid
 from zope.schema.interfaces import IVocabularyFactory
 from zope.lifecycleevent import ObjectModifiedEvent
 from zope.event import notify
+from z3c.form import interfaces
+
+
+DEFAULTCONCLUSIONTEXT = u"""For category x and gases a, b, c for year[s]... the TERT noted that...
+In response to a question raised during the review, [the Member State] explained that... [the Member State provided [a] revised estimate[s] for year[s] [and stated that it will be included in the next submission.]]
+The TERT [disagreed][agreed][party agreed] with the [explanation] [revised estimate] provided by [the Member State].
+[The TERT decided to calculate a technical correction.][The TERT noted that the issue is below the threshold of significance for technical correction.]
+The TERT recommends that... [[the Member State] include the revised estimate in its next submission.]
+"""
 
 
 class ITableRowSchema(form.Schema):
@@ -53,12 +62,12 @@ class IConclusionsPhase2(form.Schema, IImageScaleTraversable):
         title=_(u'Conclusion'),
         vocabulary='esdrt.content.conclusionphase2reasons',
         required=True,
-
     )
 
     text = schema.Text(
         title=_(u'Text'),
         required=True,
+        default=DEFAULTCONCLUSIONTEXT,
     )
 
     form.widget(ghg_estimations=DataGridFieldFactory)
@@ -151,7 +160,12 @@ class AddForm(dexterity.AddForm):
 
     def updateFields(self):
         super(AddForm, self).updateFields()
-        self.fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text')
+        from .observation import IObservation
+        conclusion_fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text') #, 'ghg_estimations')
+        observation_fields = field.Fields(IObservation).select('highlight')
+        self.fields = field.Fields(conclusion_fields, observation_fields)
+        self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
+        #self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
     def updateWidgets(self):
@@ -175,7 +189,7 @@ class AddForm(dexterity.AddForm):
         content.title = id
         content.id = id
         content.text = self.request.form.get('form.widgets.text', '')
-        reason = self.request.form.get('form.widgets.closing_reason')
+        reason = self.request.form.get('form.widgets.closing_reason', '')
         content.closing_reason = reason[0]
         adapted = IAllowDiscussion(content)
         adapted.allow_discussion = True
@@ -213,7 +227,9 @@ class EditForm(dexterity.EditForm):
         context = aq_inner(self.context)
         container = aq_parent(context)
         data = {}
-        data['text'] = context.text
+        data['text'] = DEFAULTCONCLUSIONTEXT
+        if context.text:
+            data['text'] = context.text
         if type(context.closing_reason) in (ListType, TupleType):
             data['closing_reason'] = context.closing_reason[0]
         else:
@@ -225,11 +241,11 @@ class EditForm(dexterity.EditForm):
     def updateFields(self):
         super(EditForm, self).updateFields()
         from .observation import IObservation
-        conclusion_fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text', 'ghg_estimations')
+        conclusion_fields = field.Fields(IConclusionsPhase2).select('closing_reason', 'text') #, 'ghg_estimations')
         observation_fields = field.Fields(IObservation).select('highlight')
         self.fields = field.Fields(conclusion_fields, observation_fields)
         self.fields['highlight'].widgetFactory = CheckBoxFieldWidget
-        self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
+        #self.fields['ghg_estimations'].widgetFactory = DataGridFieldFactory
         self.fields['text'].rows = 15
         self.groups = [g for g in self.groups if g.label == 'label_schema_default']
 
