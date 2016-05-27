@@ -234,7 +234,7 @@ class EditForm(dexterity.EditForm):
             data['closing_reason'] = context.closing_reason[0]
         else:
             data['closing_reason'] = context.closing_reason
-        data['ghg_estimations'] = context.ghg_estimations
+        #data['ghg_estimations'] = context.ghg_estimations
         data['highlight'] = container.highlight
         return data
 
@@ -267,8 +267,9 @@ class EditForm(dexterity.EditForm):
         context.text = text
         if type(closing_reason) in (ListType, TupleType):
             context.closing_reason = closing_reason[0]
-        context.ghg_estimations = data['ghg_estimations']
+        #context.ghg_estimations = data['ghg_estimations']
         highlight = self.request.form.get('form.widgets.highlight')
         container.highlight = highlight
         notify(ObjectModifiedEvent(context))
         notify(ObjectModifiedEvent(container))
+        
