@@ -319,7 +319,7 @@ class ExportReviewFolderForm(form.Form, ReviewFolderMixin):
     fields = field.Fields(IExportForm)
     ignoreContext = True
 
-    label = u"Export observation in XSL format"
+    label = u"Export observations in XSL format"
     name = u"export-observation-form"
 
     def updateWidgets(self):
