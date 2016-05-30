@@ -37,7 +37,8 @@ setup(name='esdrt.content',
           'cs.htmlmailer',
           'collective.deletepermission',
           'tablib',
-          'python-docx == 0.8.5'
+          'python-docx == 0.8.5',
+          'zc.dict'
       ],
       entry_points="""
       # -*- Entry points: -*-
