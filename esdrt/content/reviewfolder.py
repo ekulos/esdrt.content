@@ -301,7 +301,7 @@ def _createFieldsVocabulary():
 class IExportForm(Interface):
     exportFields = List(
         title=u"Fields to export",
-        description=u"Select which fields you want to add into xsl",
+        description=u"Select which fields you want to add into XLS",
         required=False,
         value_type=Choice(
             source=SimpleVocabulary(_createFieldsVocabulary())
@@ -319,7 +319,7 @@ class ExportReviewFolderForm(form.Form, ReviewFolderMixin):
     fields = field.Fields(IExportForm)
     ignoreContext = True
 
-    label = u"Export observations in XSL format"
+    label = u"Export observations in XLS format"
     name = u"export-observation-form"
 
     def updateWidgets(self):
