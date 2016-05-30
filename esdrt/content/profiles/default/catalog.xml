@@ -120,5 +120,7 @@
  <column value="reply_comments_by_mse" />
  <column value="observation_finalisation_reason_step1" />
  <column value="observation_finalisation_reason_step2" />
+ <column value="observation_finalisation_text_step1" />
+ <column value="observation_finalisation_text_step2" />
  <column value="gas_value" />
 </object>

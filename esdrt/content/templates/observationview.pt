@@ -861,13 +861,13 @@
       <tal:qactions condition="python:(not view.in_conclusions_phase1()) and (not view.in_conclusions_phase2())">
       <div class="actions"
         tal:condition="python:not view.get_questions() and view.can_add_conclusion()">
-        <a href=""
+        <!-- <a href=""
             tal:condition="view/can_add_conclusion"
             id="add-conclusion-link"
             tal:attributes="href string:${here/absolute_url}/++add++Conclusion"
             class="standardButton">
             Add conclusions
-        </a>
+        </a> -->
       </div>
 
       <div class="actions" tal:condition="view/can_add_question">

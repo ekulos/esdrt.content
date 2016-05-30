@@ -762,6 +762,7 @@
   <exit-transition transition_id="phase2-recall"/>
   <exit-transition transition_id="phase2-close"/>
   <exit-transition transition_id="phase2-send-to-lr"/>
+  <exit-transition transition_id="phase2-reopen"/>
   <permission-map name="Access contents information" acquired="False">
    <permission-role>CounterPart</permission-role>
    <permission-role>LeadReviewer</permission-role>

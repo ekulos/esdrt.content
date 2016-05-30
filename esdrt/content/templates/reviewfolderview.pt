@@ -6,6 +6,7 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="esdrt.content">
   <tal:block metal:fill-slot="javascript_head_slot">
+    <script type="text/javascript" src="++resource++orderedselect_input.js"></script>
     <script type="text/javascript">
       (function($){
 
@@ -185,7 +186,7 @@
             </a>
           </li>
           <li tal:condition="view/can_export_observations">
-            <a class="standardButton" href=""
+            <a class="standardButton export_as_xls" href=""
                tal:define="query request/QUERY_STRING;
                            querystring python:query and '?' + query or ''"
                tal:attributes="href string:${context/absolute_url}/export_as_xls/$querystring">
@@ -375,7 +376,7 @@
           <ul class="observationActionsMenu visualNoMarker"
               tal:condition="python:view.can_add_observation() or view.can_export_observations">
             <li tal:condition="view/can_export_observations">
-              <a class="standardButton" href=""
+              <a class="standardButton export_as_xls" href=""
                  tal:define="query request/QUERY_STRING;
                              querystring python:query and '?' + query or ''"
                  tal:attributes="href string:${context/absolute_url}/export_as_xls/$querystring">

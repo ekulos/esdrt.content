@@ -17,6 +17,15 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from esdrt.content.timeit import timeit
 from eea.cache import cache
+from zope.component import getUtility
+from zope.schema.interfaces import IVocabularyFactory
+from zc.dict import OrderedDict
+from z3c.form import button
+from z3c.form import field
+from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema import List, Choice, TextLine
+from zope.interface import Interface
+from z3c.form.interfaces import HIDDEN_MODE
 
 grok.templatedir('templates')
 
@@ -255,51 +264,163 @@ class ReviewFolderBrowserView(ReviewFolderMixin):
         return self.update_table(pagenumber, sort_on, sort_order)
 
 
-class ExportReviewFolderView(ReviewFolderMixin):
+EXPORT_FIELDS = OrderedDict([
+    ('getURL', 'URL'),
+    ('get_ghg_source_sectors', 'Sector'),
+    ('country_value', 'Country'),
+    ('text', 'Detail'),
+    ('observation_is_potential_significant_issue', 'Is potential significant issue'),
+    ('observation_is_potential_technical_correction', 'Is potential technical correction'),
+    ('observation_is_technical_correction', 'Is technical correction'),
+    ('crf_code_value', 'CRF Code'),
+    ('review_year', 'Review Year'),
+    ('year', 'Inventory year'),
+    ('gas_value', 'GAS'),
+    ('get_highlight', 'Highlight'),
+    ('overview_status', 'Status'),
+    ('observation_phase', 'Step'),
+    ('observation_finalisation_reason_step1', 'Conclusion step 1'),
+    ('observation_finalisation_text_step1', 'Conclusion step 1 note'),
+    ('observation_finalisation_reason_step2', 'Conclusion step 2'),
+    ('observation_finalisation_text_step2', 'Conclusion step 2 note'),
+    ('observation_status', 'Workflow'),
+    ('get_author_name', 'Author')
+])
+
+
+def _createFieldsVocabulary():
+    """ Create zope.schema vocabulary from EXPORT_FIELDS.
+        @return: list of SimpleTerm objects
+    """
+    terms = []
+    for key, value in EXPORT_FIELDS.items():
+        terms.append(SimpleVocabulary.createTerm(key, key, value))
+    return SimpleVocabulary(terms)
+
+
+class IExportForm(Interface):
+    exportFields = List(
+        title=u"Fields to export",
+        description=u"Select which fields you want to add into xsl",
+        required=False,
+        value_type=Choice(
+            source=SimpleVocabulary(_createFieldsVocabulary())
+        )
+    )
+
+    come_from = TextLine(title=u"Come from")
+
+
+class ExportReviewFolderForm(form.Form, ReviewFolderMixin):
     grok.context(IReviewFolder)
     grok.require('esdrt.content.ExportObservations')
     grok.name('export_as_xls')
 
-    def build_file(self):
+    fields = field.Fields(IExportForm)
+    ignoreContext = True
+
+    label = u"Export observation in XSL format"
+    name = u"export-observation-form"
+
+    def updateWidgets(self):
+        super(ExportReviewFolderForm, self).updateWidgets()
+        self.widgets['exportFields'].size = 20
+        self.widgets['come_from'].mode = HIDDEN_MODE
+        self.widgets['come_from'].value = '%s?%s' % (
+            self.context.absolute_url(), self.request['QUERY_STRING']
+        )
+
+    def action(self):
+        return '%s/export_as_xls?%s' % (
+            self.context.absolute_url(),
+            self.request['QUERY_STRING']
+        )
+
+    @button.buttonAndHandler(u'Export')
+    def handleExport(self, action):
+        data, errors = self.extractData()
+
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+
+        return self.build_file(data)
+
+    @button.buttonAndHandler(u"Back")
+    def handleCancel(self, action):
+        return self.request.response.redirect(
+            '%s?%s' % (self.context.absolute_url(), self.request['QUERY_STRING'])
+        )
+
+    def updateActions(self):
+        super(ExportReviewFolderForm, self).updateActions()
+        for k in self.actions.keys():
+            self.actions[k].addClass('standardButton')
+
+    def render(self):
+        if not self.request.get('form.buttons.extend', None):
+            return super(ExportReviewFolderForm, self).render()
+
+    def translate_highlihts(self, highlihts):
+        return [
+            self._vocabulary_value(
+                'esdrt.content.highlight',
+                highliht
+            ) for highliht in highlihts
+        ]
+
+    def _vocabulary_value(self, vocabulary, term):
+        vocab_factory = getUtility(IVocabularyFactory, name=vocabulary)
+        vocabulary = vocab_factory(self)
+        if not term:
+            return u''
+        try:
+            value = vocabulary.getTerm(term)
+            return value.title
+        except LookupError:
+            return term
+
+    def extract_data(self, data):
         """ Create xls file
         """
         observations = self.get_questions()
 
+        fields_toexport = data.get('exportFields', [])
         data = tablib.Dataset()
         data.title = "Observations"
-
         for observation in observations:
-            data.append([
-                safe_unicode(observation.getId),
-                safe_unicode(observation.getURL()),
-                safe_unicode(observation.get_ghg_source_sectors),
-                safe_unicode(observation.country_value),
-                safe_unicode(observation.text),
-                safe_unicode(observation.crf_code_value),
-                safe_unicode(observation.review_year),
-                safe_unicode(observation.year),
-                safe_unicode(observation.gas_value),
-                safe_unicode(', '.join(observation.get_highlight or [])),
-                safe_unicode(
-                    observation.overview_status.replace('<br>', '').replace('<br/>', '')
-                ),
-                safe_unicode(observation.observation_phase),
-                safe_unicode(observation.observation_finalisation_reason_step1 or""),
-                safe_unicode(observation.observation_finalisation_reason_step2 or""),
-                safe_unicode(observation.observation_status),
-                safe_unicode(observation.get_author_name),
-            ])
+            row = [observation.getId]
+            for key in fields_toexport:
+                if key in [
+                    'observation_is_potential_significant_issue',
+                    'observation_is_potential_technical_correction',
+                    'observation_is_technical_correction'
+                ]:
+                    row.append(observation[key] and 'Yes' or 'No')
+                elif key=='getURL':
+                    row.append(observation.getURL())
+                elif key=='get_highlight':
+                    row.append(
+                        safe_unicode(', '.join(
+                            self.translate_highlihts(observation[key] or [])
+                        ))
+                    )
+                elif key=='overview_status':
+                    row.append(
+                        safe_unicode(
+                            observation[key].replace('<br>', '').replace('<br/>', '')
+                        ),
+                    )
+                else:
+                    row.append(safe_unicode(observation[key]))
+            data.append(row)
 
-        data.headers = [
-            'Observation', 'URL', 'Sector', 'Country', 'In short', 'CRF Code',
-            'Review Year', 'Inventory year', 'GAS', 'Highlight', 'Status',
-            'Step', 'Conclusion step 1', 'Conclusion step 2', 'Workflow',
-            'Author'
-        ]
-
+        headers = ['Observation']
+        headers.extend([EXPORT_FIELDS[k] for k in fields_toexport])
+        data.headers = headers
         return data
 
-    def render(self):
+    def build_file(self, data):
         """ Export filtered observations in xls
         """
         now = datetime.now()
@@ -308,13 +429,13 @@ class ExportReviewFolderView(ReviewFolderMixin):
             now.strftime("%Y%M%d%H%m")
         )
 
-        book = tablib.Databook((self.build_file(),))
+        book = tablib.Databook((self.extract_data(data),))
 
         response = self.request.response
         response.setHeader("content-type", "application/vnc.ms-excel")
         response.setHeader("Content-disposition", "attachment;filename=" + filename)
-
-        return book.xls
+        response.write(book.xls)
+        return
 
 
 def _item_user(fun, self, user, item):

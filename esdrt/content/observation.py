@@ -942,7 +942,7 @@ class Observation(dexterity.Container):
         if conclusions and mtool.checkPermission('View', conclusions[0]):
             return conclusions[0]
         return None
-
+    
     def last_question_reply_number(self):
         questions = self.get_values_cat('Question')
         replynum = 0
@@ -1569,55 +1569,15 @@ class ExportAsDocView(ObservationMixin):
                 p = document.add_paragraph('LR comments on finish observation request:', style="Label Bold")
                 p = document.add_paragraph(self.context.closing_deny_comments_phase2)
 
-        conclusion = self.get_conclusion_phase2()
-        if conclusion:
+        conclusion_2 = self.get_conclusion_phase2()
+        if conclusion_2:
             document.add_page_break()
             document.add_heading('Conclusions Step 2', level=2)
 
             p = document.add_paragraph('Final status of observation:', style="Label Bold")
-            p = document.add_paragraph(conclusion.reason_value())
+            p = document.add_paragraph(conclusion_2.reason_value())
             p = document.add_paragraph('Internal note for expert/reviewers:', style="Label Bold")
-            p = document.add_paragraph(conclusion.text)
-            p = document.add_paragraph('GHG estimates:', style="Label Bold")
-
-            table = document.add_table(rows=1, cols=8)
-            table.style = 'LightShading-Accent1'
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = '(Gg CO2 eq)'
-            hdr_cells[1].text = 'CO2'
-            hdr_cells[2].text = 'CH4'
-            hdr_cells[3].text = 'N2O'
-            hdr_cells[4].text = 'NOx'
-            hdr_cells[5].text = 'CO'
-            hdr_cells[6].text = 'NMVOC'
-            hdr_cells[7].text = 'SO2'
-            hdr_cells[0].paragraphs[0].style = "Table Cell Bold"
-            hdr_cells[1].paragraphs[0].style = "Table Cell Bold"
-            hdr_cells[2].paragraphs[0].style = "Table Cell Bold"
-            hdr_cells[3].paragraphs[0].style = "Table Cell Bold"
-            hdr_cells[4].paragraphs[0].style = "Table Cell Bold"
-            hdr_cells[5].paragraphs[0].style = "Table Cell Bold"
-            hdr_cells[6].paragraphs[0].style = "Table Cell Bold"
-            hdr_cells[7].paragraphs[0].style = "Table Cell Bold"
-            for item in conclusion.ghg_estimations:
-                row_cells = table.add_row().cells
-                row_cells[0].text = item['line_title']
-                row_cells[1].text = item['co2'] or '0.0'
-                row_cells[2].text = item['ch4'] or '0.0'
-                row_cells[3].text = item['n2o'] or '0.0'
-                row_cells[4].text = item['nox'] or '0.0'
-                row_cells[5].text = item['co'] or '0.0'
-                row_cells[6].text = item['nmvoc'] or '0.0'
-                row_cells[7].text = item['co2'] or '0.0'
-                row_cells[0].paragraphs[0].style = "Table Cell"
-                row_cells[1].paragraphs[0].style = "Table Cell"
-                row_cells[2].paragraphs[0].style = "Table Cell"
-                row_cells[3].paragraphs[0].style = "Table Cell"
-                row_cells[4].paragraphs[0].style = "Table Cell"
-                row_cells[5].paragraphs[0].style = "Table Cell"
-                row_cells[6].paragraphs[0].style = "Table Cell"
-                row_cells[7].paragraphs[0].style = "Table Cell"
-            p = document.add_paragraph('')
+            p = document.add_paragraph(conclusion_2.text)
 
             if self.context.closing_deny_comments_phase2:
                 document.add_heading('Observation Finalisation denied', level=3)
@@ -1626,7 +1586,7 @@ class ExportAsDocView(ObservationMixin):
 
         conclusion = self.get_conclusion()
         if conclusion:
-            if not self.get_conclusion_phase2():
+            if not conclusion_2():
                 document.add_page_break()
             document.add_heading('Conclusions Step 1', level=2)
 
