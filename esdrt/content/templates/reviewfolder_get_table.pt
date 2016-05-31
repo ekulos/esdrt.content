@@ -11,7 +11,7 @@
          class="observationList listing"
          id="observations-table"
          tal:attributes="data-sort_on request/sort_on|string:modified;
-                         data-sort_order request/sort_order|nothing"
+                         data-sort_order request/sort_order|string:reverse"
          tal:condition="view/items">
     <thead>
       <tr>

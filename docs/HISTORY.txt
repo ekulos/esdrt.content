@@ -5,6 +5,7 @@ Changelog
 -----------------
 
 - Task #72885 Change a heading
+- Bug #72890 Overview list links not working
   [lucas]
 
 1.59.28 (2016-05-30)

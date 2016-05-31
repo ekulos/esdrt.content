@@ -361,12 +361,12 @@ class ExportReviewFolderForm(form.Form, ReviewFolderMixin):
         if not self.request.get('form.buttons.extend', None):
             return super(ExportReviewFolderForm, self).render()
 
-    def translate_highlihts(self, highlihts):
+    def translate_highlights(self, highlights):
         return [
             self._vocabulary_value(
                 'esdrt.content.highlight',
-                highliht
-            ) for highliht in highlihts
+                highlight
+            ) for highlight in highlights
         ]
 
     def _vocabulary_value(self, vocabulary, term):
@@ -402,7 +402,7 @@ class ExportReviewFolderForm(form.Form, ReviewFolderMixin):
                 elif key=='get_highlight':
                     row.append(
                         safe_unicode(', '.join(
-                            self.translate_highlihts(observation[key] or [])
+                            self.translate_highlights(observation[key] or [])
                         ))
                     )
                 elif key=='overview_status':
