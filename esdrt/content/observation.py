@@ -1576,7 +1576,7 @@ class ExportAsDocView(ObservationMixin):
 
             p = document.add_paragraph('Final status of observation:', style="Label Bold")
             p = document.add_paragraph(conclusion_2.reason_value())
-            p = document.add_paragraph('Internal note for expert/reviewers:', style="Label Bold")
+            p = document.add_paragraph('Recommendation/internal note:', style="Label Bold")
             p = document.add_paragraph(conclusion_2.text)
 
             if self.context.closing_deny_comments_phase2:

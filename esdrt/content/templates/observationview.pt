@@ -445,7 +445,7 @@
           <dl>
             <dt>Final status of observation:</dt>
             <dd><span tal:replace="conclusion/reason_value" /></dd>
-            <dt>Internal note for expert/reviewers:</dt>
+            <dt>Recommendation/internal note:</dt>
             <dd><span tal:replace="structure conclusion/text/output|conclusion/text|nothing" /></dd>
             <tal:comment replace="nothing">
               hide the table https://taskman.eionet.europa.eu/issues/71375

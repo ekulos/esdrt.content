@@ -4,14 +4,14 @@ Changelog
 1.59.29 (unrelease)
 -----------------
 
-- Nothing changed yet.
+- Task #72885 Change a heading
+  [lucas]
 
 1.59.28 (2016-05-30)
 -----------------
 
 - Fix #72796 observations export in xls
   [lucas]
-
 
 1.59.27.1 (2016-05-27)
 -----------------
