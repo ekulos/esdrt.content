@@ -190,10 +190,15 @@ def to_unicode(value):
 
 
 def question_status(context):
+    questions = [c for c in context.values() if c.portal_type == "Question"]
     if context.get_status() != 'phase1-pending' and context.get_status() != 'phase2-pending':
+        if context.get_status() in ['phase2-conclusions',]:
+            if questions:
+                question_state = api.content.get_state(questions[-1])
+                if question_state != 'phase2-closed':
+                    return question_state
         return context.get_status()
     else:
-        questions = [c for c in context.values() if c.portal_type == "Question"]
         if questions:
             question = questions[0]
             state = api.content.get_state(question)

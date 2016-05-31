@@ -869,15 +869,21 @@ class Observation(dexterity.Container):
         questions = self.get_values_cat('Question')
 
         if questions:
-            question = questions[0]
+            question = questions[-1]
             return question
 
     def observation_question_status(self):
+        questions = self.get_values_cat('Question')
         if self.get_status() != 'phase1-pending' and \
                 self.get_status() != 'phase2-pending':
+            if self.get_status() in ['phase2-conclusions',]:
+                if questions:
+                    question = questions[-1]
+                    question_state = api.content.get_state(question)
+                    if question_state != 'phase2-closed':
+                        return question_state
             return self.get_status()
         else:
-            questions = self.get_values_cat('Question')
             if questions:
                 question = questions[-1]
                 state = api.content.get_state(question)
@@ -942,7 +948,7 @@ class Observation(dexterity.Container):
         if conclusions and mtool.checkPermission('View', conclusions[0]):
             return conclusions[0]
         return None
-    
+
     def last_question_reply_number(self):
         questions = self.get_values_cat('Question')
         replynum = 0

@@ -455,23 +455,29 @@ class AddConclusions(grok.View):
     def render(self):
         parent = aq_parent(self.context)
         if api.content.get_state(parent).startswith('phase1-'):
-            api.content.transition(
-                obj=parent,
-                transition='phase1-draft-conclusions'
-            )
-            url = '%s/++add++Conclusion' % parent.absolute_url()
+            conclusion = parent.get_conclusion()
+            if not conclusion:
+                api.content.transition(
+                    obj=parent,
+                    transition='phase1-draft-conclusions'
+                )
+                url = '%s/++add++Conclusion' % parent.absolute_url()
+            else:
+                url = '%s/edit' % conclusion.absolute_url()
 
         elif api.content.get_state(parent).startswith('phase2-'):
-            api.content.transition(
-                obj=parent,
-                transition='phase2-draft-conclusions'
-            )
+            conclusionsphase2 = parent.get_conclusion_phase2()
+            if not conclusionsphase2:
+                api.content.transition(
+                    obj=parent,
+                    transition='phase2-draft-conclusions'
+                )
 
-            cp2 = parent.invokeFactory(
-                id=int(time()),
-                type_name='ConclusionsPhase2'
-            )
-            conclusionsphase2 = parent.get(cp2)
+                cp2 = parent.invokeFactory(
+                    id=int(time()),
+                    type_name='ConclusionsPhase2'
+                )
+                conclusionsphase2 = parent.get(cp2)
 
             url = '%s/edit' % conclusionsphase2.absolute_url()
         else:
