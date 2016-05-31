@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.59.29 (unrelease)
+1.59.29 (2016-05-31)
 -----------------
 
 - Task #72885 Change a heading
